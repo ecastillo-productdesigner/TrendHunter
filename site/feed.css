@@ -1,0 +1,4317 @@
+/* ===========================
+   Design Tokens
+   Source: Trend Hunter B2C Design System (Figma variables on "Feed Page")
+=========================== */
+:root {
+  /* Color — Background */
+  --color-background-surface: #0F0F0F;
+  --color-background-surface-raised: #0F0F0F;
+  --color-background-callout: #875FE7;
+  --color-background-bg-overlay: #343841;
+
+  /* AuthPrompt — the overlay stays dark in both themes, so its text keeps the dark values.
+     Not Figma variables: they pin color/text/primary, color/text/dim and color/icon/default
+     to their dark-mode values inside the prompt only. */
+  --auth-prompt-heading: #FFFFFF;
+  --auth-prompt-footer-text: #9AA4B2;
+  --auth-prompt-icon: #D1D5DB;
+  --auth-prompt-subtitle: #D1D5DB;
+  --auth-prompt-secondary-bg: rgba(255, 255, 255, 0.1);
+  --auth-prompt-secondary-label: #D1D5DB;
+
+  /* Edit Profile modal — pinned like the Auth Prompt: it stays dark in both themes */
+  --edit-profile-bg: #343841;                 /* color/background/bg-overlay */
+  --edit-profile-border: rgba(255, 255, 255, 0.25);
+  --edit-profile-heading: #FFFFFF;
+  --edit-profile-label: #9AA4B2;              /* color/text/dim */
+  --edit-profile-value: #F5F7F9;              /* color/text/body */
+  --edit-profile-badge-bg: #D1D5DB;           /* color/icon/default */
+  --edit-profile-badge-icon: #0F0F0F;         /* color/icon/inverse */
+  --edit-profile-focus: #BEFC4F;
+  --edit-profile-save-bg: #BEFC4F;
+  --edit-profile-save-label: #0F0F0F;
+  --edit-profile-save-bg-disabled: #E9FBC5;   /* buttons/primary/bg-disabled */
+  --edit-profile-save-label-disabled: #9AA4B2;
+
+  /* Toast — the Figma Toast component's own variables (toast/*); the same in both themes */
+  --toast-bg: #343841;
+  --toast-border: rgba(255, 255, 255, 0.25); /* #FFFFFF40 */
+  --toast-label: #D1D5DB;
+  --toast-icon-success: #BEFC4F; /* toast check: lime.500 in both themes */
+  --toast-icon-close: #D1D5DB;
+  /* Prototype settings button — pinned: no light-theme override, so it looks the same in both themes */
+  --settings-fab-bg: #343841;
+  --settings-fab-bg-hover: #697182;
+  --settings-fab-border: rgba(255, 255, 255, 0.25);
+  --settings-fab-icon: #F5F7F9;
+  --settings-fab-focus: #BEFC4F;
+  --settings-panel-bg: #343841;   /* color/background/bg-overlay */
+  --settings-panel-text: #FFFFFF;
+
+  /* Color — Border */
+  --color-border-default: rgba(255, 255, 255, 0.25);
+  --color-border-glass: rgba(255, 255, 255, 0.15);
+  --color-border-focus: #BEFC4F;
+  --color-border-on-topic: #875FE7;
+  --color-white-10: rgba(255, 255, 255, 0.1);
+
+  /* Color — Text */
+  --color-text-primary: #FFFFFF;
+  --color-text-body: #F5F7F9;
+  --color-text-secondary: #E5E7EB;
+  --color-text-dim: #9AA4B2;
+  --color-text-tertiary: #D1D5DB;
+  --color-text-accent: #A3FC03;
+  --color-text-on-topic: #875FE7;
+  --color-text-body-link: #BEFC4F;
+
+  /* Color — Scrim (not a Figma variable: black at 30%, per design spec) */
+  --color-scrim: rgba(0, 0, 0, 0.3);
+
+
+  /* Color — Icon */
+  --color-icon-avatar: #875FE7;
+  --color-icon-default: #D1D5DB;
+  --color-icon-signal: #BEFC4F;
+  --color-icon-signal-secondary: #FD4D13;
+  --trend-up-icon: #BEFC4F; /* every up arrow: lime.500 in both themes */
+  --trend-up-icon-outline: transparent; /* light theme rims up arrows on light backgrounds */
+
+  /* Saved bookmark and signed-in Profile icon. They stay lime.500 in both themes */
+  --bookmark-icon-active: #BEFC4F;
+  --article-bookmark-active: #BEFC4F; /* saved bookmark on the story page */
+  --nav-profile-icon: #D1D5DB;
+  --nav-profile-icon-active: #BEFC4F;
+  --checkbox-icon-checked: #BEFC4F; /* selected icons are lime.500 in dark theme */
+  --checkbox-icon-default: var(--color-icon-default);
+  --checkbox-check-mark: transparent; /* dark: the knocked-out check shows the page */
+  --profile-bookmark-active: #BEFC4F; /* saved bookmarks on the Profile page */
+  --filter-tab-active: var(--color-border-focus); /* selected tab underline */
+  --contributor-tab-active: var(--filter-tab-active); /* selected tab underline on the contributor page */
+  --profile-bio-more: var(--color-text-body-link);    /* More... in the contributor bio */
+  --profile-bio-link: var(--color-text-body-link);    /* links in the contributor bio */
+  --icon-selected-outline: transparent; /* light theme rims the selected Profile icon, saved bookmarks and the feed-complete check */
+  --body-quote-line: #BEFC4F;           /* pull quote rule: lime.500 in both themes */
+  --color-icon-inverse: #0F0F0F;
+  /* Not read from a dark frame: chosen to match how these elements already look in dark */
+  --color-icon-dim: #D1D5DB;
+  --color-text-inverse: #0F0F0F;
+
+  /* Buttons — Primary */
+  --buttons-primary-bg-default: #BEFC4F;
+  --buttons-primary-text-default: #0F0F0F;
+  --buttons-primary-bg-hover: #D8FF8F;
+  --buttons-primary-bg-disabled: #E9FBC5;
+  --buttons-primary-label-disabled: #9AA4B2;
+
+  /* Sign-in CTAs (Send me a sign-in link, Continue). Light theme swaps to a dark button with a lime label */
+  --auth-cta-bg: #BEFC4F;
+  --auth-cta-label: #0F0F0F;
+  --auth-link: var(--color-text-body-link); /* Resent code / Enter password instead / terms links */
+  --article-link: var(--color-text-body-link); /* links in the story body */
+  --article-link-underline: currentColor;
+
+  /* Form inputs — from the email sign-in frame */
+  --form-bg: #FFFFFF;
+  --form-border-default: #D1D5DB;
+  --form-border-focus: #BEFC4F;          /* lime.500 — same in both themes */
+  --form-label-input-text: #D1D5DB;
+
+  /* One-time code squares — from the OTC frame */
+  --otc-squares: #FFFFFF;
+  --otc-border-focus: #BEFC4F;          /* lime.500 — same in both themes */
+  --otc-border-error: #EF4444;
+  --otc-label: #343841;
+  --otc-border: rgba(255, 255, 255, 0.25); /* color/border/default */
+
+  /* Buttons — Tertiary */
+  --buttons-tertiary-bg: #0F0F0F;
+  --buttons-tertiary-bg-hover: rgba(255, 255, 255, 0.15);
+  --buttons-tertiary-border: rgba(255, 255, 255, 0.15);
+  --buttons-tertiary-label: #D1D5DB;
+  --buttons-tertiary-bg-secondary: #0F0F0F;
+  --buttons-tertiary-border-secondary: rgba(255, 255, 255, 0.15);
+  --buttons-tertiary-label-secondary: #D1D5DB;
+
+  /* Buttons — Secondary */
+  --buttons-secondary-bg: rgba(255, 255, 255, 0.1);
+  --buttons-secondary-border: rgba(255, 255, 255, 0.25);
+  --buttons-secondary-label: #D1D5DB;
+  --buttons-secondary-bg-hover: rgba(255, 255, 255, 0.15);
+  --buttons-secondary-border-focus: #BEFC4F;
+
+  /* Buttons — Sign in */
+  --buttons-sign-in-bg: #FFFFFF;
+  --buttons-sign-in-label: #0F0F0F;
+
+  /* Collection list */
+  --collection-list-background: #0F0F0F;
+  --collection-list-heading: #E5E7EB; /* color/text/secondary */
+  --collection-list-icon: #BEFC4F;    /* color/icon/signal */
+  --trend-list-background: #0F0F0F;
+
+  /* Trend card */
+  --trend-card-primary-text: #FFFFFF;
+  --trend-card-secondary-text: #F5F7F9;
+  --trend-card-icon: #D1D5DB; /* concrete.300 — every icon is concrete.300 in dark theme */
+  --trend-card-bookmark-active: #BEFC4F; /* saved bookmark on the card photos: lime.500 in both themes */
+  --trend-card-signal: #BEFC4F;          /* trending-up arrow on the card photos: lime.500 in both themes */
+
+  /* Predictions */
+  --prediction-card-background-card: #875FE7;
+  --prediction-card-background-onboarding-card: #343841; /* cover card and Make Your Call: same in both themes */
+  --prediction-card-border: rgba(255, 255, 255, 0.25);
+  --prediction-card-secondary-copy: #343841;
+  --prediction-card-button: #BEFC4F;
+  --prediction-card-button-hover: #D8FF8F; /* buttons/primary/bg-hover, in both themes */
+  --predictions-panel-heading: #E5E7EB;
+  --predictions-panel-card-text: #F5F7F9;
+
+  /* Prediction deck — copied from the sandbox's Prediction Cover Card demo */
+  --prediction-card-text: #E5E7EB;
+  --prediction-vote-in: #BEFC4F;          /* lime.500: I'm In overlay and check */
+  --prediction-vote-in-text: #343841;     /* card copy while the lime overlay shows */
+  --prediction-vote-out: #EF4444;         /* I'm Out overlay */
+  --prediction-vote-out-icon: #FD4D13;
+  --prediction-skip: #0F0F0F;             /* Skip overlay while dragging up */
+  --prediction-button-bg: #0F0F0F;
+  --prediction-button-label: #F5F7F9;
+  --prediction-button-border: rgba(255, 255, 255, 0.15); /* color/border/glass */
+  --prediction-card-copy: #FFFFFF;            /* pill label, context paragraph, Skip — color/text/primary (dark) */
+  --prediction-card-pill-bg: var(--color-white-10); /* Get context / Back pill */
+  --prediction-card-more: currentColor;       /* Read more: the paragraph white (dark under the lime I'm In overlay) */
+  --prediction-results-heading: #E5E7EB;
+  --prediction-results-text: #FFFFFF;
+  --prediction-results-item: #F5F7F9;
+  --prediction-results-divider: var(--color-border-default);
+  --prediction-results-button-bg: rgba(255, 255, 255, 0.1);
+  --prediction-results-button-label: #FFFFFF;
+  --prediction-badge-in: #BEFC4F;
+  --prediction-badge-out: #FD4D13;
+  --prediction-badge-label: #000000;
+
+  /* Typography — Families */
+  --type-font-display: 'Barlow Condensed', sans-serif;
+  --type-font-body: 'Inter', sans-serif;
+
+  /* Typography — Sizes */
+  --type-size-12: 12px;
+  --type-size-14: 14px;
+  --type-size-16: 16px;
+  --type-size-18: 18px;
+  --type-size-24: 24px;
+  --type-size-28: 28px;
+  --type-size-40: 40px;
+
+  /* Typography — Weights */
+  --type-weight-light: 300;
+  --type-weight-regular: 400;
+  --type-weight-medium: 500;
+  --type-weight-bold: 700;
+  --type-weight-extrabold: 800;
+  --type-weight-black: 900;
+
+  /* Typography — Line heights */
+  --type-line-height-ui-xs: 17px;
+  --type-line-height-ui-sm: 18px;
+  --type-line-height-ui-md: 19px;
+  --type-line-height-ui-lg: 22px;
+  --type-line-height-display-md: 28px;
+  --type-line-height-display-lg: 36px;
+  --type-utility-helper-line-height: 20px;
+
+  /* Typography — Letter spacing (Button / Button.Small styles: 1.8%) */
+  --type-letter-spacing-button: 0.018em;
+
+  /* Spacing */
+  --spacing-component-xs: 4px;
+  --spacing-component-sm: 8px;
+  --spacing-component-ms: 12px;
+  --spacing-layout-md: 16px;
+  --spacing-layout-lg: 24px;
+  --spacing-layout-xl: 32px;
+  --spacing-page-2xl: 48px;
+
+  /* Radius */
+  --radius-x-sm: 2px;
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-full: 100px;
+  --avatar-radius-soft: 2px;
+  --avatar-radius-full: 100px;
+
+  /* Avatar sizes */
+  --avatar-size-xl: 140px;
+
+  /* Stroke */
+  --stroke-default: 1px;
+  --stroke-weight-2: 2px;
+  --stroke-thick: 3px;
+  --stroke-focus: 2px;
+
+  /* Icon sizes */
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-xs: 12px;
+  --icon-size-lg: 24px;
+  --icon-size-xl: 32px;
+  --icon-size-2xl: 48px;
+  --icon-size-trend: 12px;
+
+  /* Image sizes */
+  --size-image-thumbnail-width: 128px;
+  --size-image-thumbnail-height: 125px;
+
+  /* Layout — measured from the Figma frame */
+  --layout-desktop-left: 373px;
+  --layout-feed-width: 482px;
+  --layout-page-max: 1464px;
+  --layout-page-gutter: 12px; /* side padding on mobile; 16px from 600px up */
+  --layout-nav-height: 61px;
+  --layout-wordmark-width: calc(var(--layout-wordmark-height) * 4);
+  --layout-wordmark-height: 26px;
+  --layout-trend-card-ratio: 434 / 772;
+  --layout-trend-card-content-right: 28%;
+  --layout-link-underline-offset: 4px; /* Read more: underline sits a little below the text */
+  --layout-sheet-max-width: 640px;  /* Read more article sheet, centered on wide screens */
+  --layout-predictions-stack-width: 341px;
+  --layout-predictions-stack-height: 419px;
+  --layout-prediction-card-width: 280px;
+  --layout-prediction-card-height: 376px;
+  --layout-prediction-compact-card-width: 360px;  /* compact deck in a story */
+  --layout-prediction-compact-card-height: 253px;
+  --layout-prediction-compact-stack-width: 398px; /* room for the tilted cards behind */
+  --layout-prediction-compact-stack-height: 312px;
+  --layout-prediction-card-copy-width: 256px;
+  --layout-prediction-button-width: 232px;
+  --layout-prediction-tilt-back: 10deg;
+  --layout-prediction-tilt-middle: 5deg;
+  --layout-prediction-vote-width: 120px;
+  --layout-prediction-vote-height: 53px;
+  --layout-prediction-card-perspective: 1200px;
+  --layout-prediction-clock-width: 13px;
+  --layout-prediction-clock-height: 16px;
+  --layout-toast-gap: 48px;
+  --layout-profile-width: 440px;
+  --layout-filter-tab-gap: 20px;
+  --layout-drawer-item-indent: 5px;
+  --size-drawer-width: 340px;
+  --size-auth-prompt-width: 472px;
+  --layout-auth-button-height: 50px;
+  --layout-auth-button-gap: 10px;
+  --layout-auth-provider-logo: 18px;
+  --layout-auth-email-icon-height: 16px;
+  --layout-login-width: 376px;
+  --layout-otc-digit-width: 56px;
+  --layout-otc-width: 479px;
+  --layout-terms-width: 419px;
+  --layout-settings-fab-size: 48px;
+  --layout-nav-profile-glyph: 16px;
+  --layout-edit-profile-width: 419px;
+  --layout-avatar-badge-size: 30px;
+  --layout-avatar-badge-inset: 10px;
+  --layout-settings-panel-gap: 10px;
+  --layout-settings-panel-two-line-height: 14px;
+  --layout-answers-input-height: 40px;
+  --layout-answers-chip-height: 40px;
+  --layout-answers-edge-fade: 24px;
+  --layout-answers-mobile-gutter: 20px;
+  --layout-answers-mobile-chip-height: 36px;
+  --motion-answers-ticker: 22s;
+  --layout-terms-checkbox-offset: 1px; /* centers the 20px box on the first 22px line */
+
+  /* Motion — not in Figma; defined here so timings live in one place */
+  --motion-toast-enter: 450ms;
+  --motion-toast-exit: 200ms;
+  --motion-ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-drawer: 350ms;
+  --motion-sheet: 400ms;            /* Read more article sheet sliding up */
+  /* Prediction deck — timings read from the sandbox demo */
+  --motion-card-settle: 200ms;
+  --motion-card-shift: 50ms;
+  --motion-card-nudge: 150ms;
+  --motion-card-fly: 460ms;
+  --motion-results-fade: 400ms;
+  --motion-ease-card-settle: cubic-bezier(0.3, 0, 0.5, 0.9);
+  --motion-ease-card-fly: cubic-bezier(0.37, 0, 0.63, 1);
+  /* Card flip — Get the context / Back to vote */
+  --motion-card-flip: 600ms;
+  --motion-ease-card-flip: cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+/* Light mode — Figma variable values from the "Feed Page" frame in Light mode.
+   Only tokens that change are listed; everything else inherits from :root. */
+:root[data-theme="light"] {
+  --color-background-surface: #F5F7F9;
+  --color-background-surface-raised: rgba(255, 255, 255, 0.75);
+
+  --color-border-default: #D1D5DB;
+  --color-border-glass: #E5E7EB;
+
+  --color-text-primary: #343841;
+  --color-text-body: #0F0F0F;
+  --color-text-secondary: #000000;
+  --color-text-dim: #343841;
+
+  --color-icon-default: #697182;
+  --color-icon-signal: #BEFC4F; /* feed-complete check */
+
+  --buttons-tertiary-bg: #F5F7F9;
+  --buttons-tertiary-border: #D1D5DB;
+  --buttons-tertiary-label: #343841;
+
+  --predictions-panel-heading: #0F0F0F;
+
+  /* From the light-mode Log In frame */
+  --color-text-tertiary: #343841; /* from the light TrendList frame (the Log In frame had #697182) */
+  --color-text-inverse: #000000;
+  --color-icon-dim: #9AA4B2;
+  --buttons-secondary-bg: #E5E7EB;
+  --buttons-secondary-border: #D1D5DB;  /* from the light Related Channels button */
+  --buttons-secondary-label: #343841;
+  --buttons-secondary-bg-hover: #D1D5DB; /* not in Figma yet: one step darker than the default fill */
+  --buttons-secondary-border-focus: #BEFC4F; /* channel button focus ring */
+
+  --color-border-focus: #BEFC4F; /* terms checkbox focus ring */
+  --color-text-body-link: #538100;
+  /* Exception: the primary CTAs (Go Deeper, Make Your Call) keep lime.500 in light theme */
+
+  /* From the light-mode Collection page's TrendList */
+  --trend-list-background: rgba(255, 255, 255, 0.25);
+
+  /* From the light-mode CollectionList on the channel page */
+  --collection-list-background: transparent; /* #FFFFFF00 */
+  --collection-list-heading: #343841;        /* color/text/secondary in this frame */
+
+  /* Requested light-theme colors */
+  --nav-profile-icon: #697182;  /* matches color/icon/default */
+  --color-text-accent: #875FE7; /* drawer headings */
+
+  --filter-tab-active: #9333EA;
+  --contributor-tab-active: #9333EA;
+  --profile-bio-more: #9333EA;
+  --profile-bio-link: #9333EA;
+  --icon-selected-outline: #343841; /* 0.5px rim, drawn by the *-stroke.svg masks */
+  --trend-up-icon-outline: #343841;
+  --article-link: #875FE7;
+  --article-link-underline: #875FE7;
+
+  /* Sign-in CTAs — from the light-mode Continue button: buttons/primary/bg and buttons/primary/label */
+  --auth-cta-bg: #0F0F0F;     /* Send me a sign-in link / Continue */
+  --auth-cta-label: #BEFC4F;  /* lime.500 */
+  --auth-link: #0F0F0F;
+  --buttons-primary-bg-disabled: rgba(0, 0, 0, 0.1); /* #0000001A */
+
+  /* One-time code: the square waiting for input is lime.700, the others #D1D5DB */
+  --otc-border: #D1D5DB;
+
+  /* Prediction results sit on color/background/bg-raised, so their text darkens in light theme */
+  --prediction-results-heading: #343841;
+  --prediction-results-text: #697182;
+  --prediction-results-item: #0F0F0F;
+  --prediction-results-divider: var(--color-border-default);
+  --prediction-results-button-bg: rgba(0, 0, 0, 0.1);
+  --prediction-results-button-label: #343841;
+
+  --checkbox-icon-checked: #0F0F0F;
+  --checkbox-icon-default: #0F0F0F;
+  --checkbox-check-mark: #BEFC4F;    /* lime.500 check inside the black box */
+
+  /* Active greens are lime.700 in light theme (hover and disabled states keep their own colors).
+     Exceptions keeping lime.500: Go Deeper, Make Your Call, the trend card arrow and saved bookmarks, and components that stay dark in both themes. */
+  /* Trend card icons (bookmark outline, share) — trend-card/icon in light theme */
+  --trend-card-icon: #F5F7F9;
+
+  --prediction-badge-in: #BEFC4F;
+
+  --edit-profile-save-bg: #0F0F0F;            /* Edit Profile Save: black with a lime label in light theme */
+  --edit-profile-save-label: #BEFC4F;
+  --edit-profile-focus: #BEFC4F;              /* Name underline and cursor while typing */
+}
+
+/* ===========================
+   Theme-specific assets
+=========================== */
+.theme-light-only {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-light-only {
+  display: block;
+}
+
+:root[data-theme="light"] .theme-dark-only {
+  display: none;
+}
+
+/* ===========================
+   Reset / Base
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--type-font-body);
+  background-color: var(--color-background-surface);
+  color: var(--color-text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ===========================
+   Shared — Type styles
+=========================== */
+.type-h4-caps {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* ===========================
+   Shared — Pill button (Buttons / Tertiary)
+=========================== */
+.pill-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-component-sm);
+  width: 100%;
+  padding: var(--spacing-layout-lg) var(--spacing-layout-xl);
+  background-color: var(--buttons-tertiary-bg);
+  border: var(--stroke-default) solid var(--buttons-tertiary-border);
+  border-radius: var(--radius-full);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--buttons-tertiary-label);
+  transition: background-color 0.15s ease;
+}
+
+.pill-button:hover {
+  background-color: var(--buttons-tertiary-bg-hover);
+}
+
+/* Mono icons are drawn with a mask so their color follows the theme tokens */
+.trend-icon {
+  width: var(--icon-size-trend);
+  height: var(--icon-size-trend);
+  flex-shrink: 0;
+  mask: var(--icon-mask) center / contain no-repeat;
+  -webkit-mask: var(--icon-mask) center / contain no-repeat;
+}
+
+.trend-icon--up {
+  position: relative;
+  mask: none;
+  -webkit-mask: none;
+}
+
+/* Up arrow: lime fill (::before) with a 0.5px rim (::after), shown in light theme */
+.trend-icon--up::before,
+.trend-icon--up::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.trend-icon--up::before {
+  background-color: var(--trend-up-icon);
+  mask: url("assets/feed/icon-trending-up.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-trending-up.svg") center / contain no-repeat;
+}
+
+.trend-icon--up::after {
+  background-color: var(--trend-up-icon-outline);
+  mask: url("assets/feed/icon-trending-up-stroke.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-trending-up-stroke.svg") center / contain no-repeat;
+}
+
+.trend-icon--down {
+  --icon-mask: url("assets/feed/icon-trending-down.svg");
+  background-color: var(--color-icon-signal-secondary);
+}
+
+.trend-card-collection .trend-icon--up::before {
+  background-color: var(--trend-card-signal);
+}
+
+/* On the card photos the arrow needs no rim */
+.trend-card-collection .trend-icon--up::after {
+  content: none;
+}
+
+/* ===========================
+   Shared — Primary button
+=========================== */
+.button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-component-sm) var(--spacing-layout-xl);
+  background-color: var(--buttons-primary-bg-default);
+  border-radius: var(--radius-x-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-sm);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--buttons-primary-text-default);
+  transition: background-color 0.15s ease;
+}
+
+/* Hover — lightens to buttons/primary/bg-hover */
+.button-primary:hover {
+  background-color: var(--buttons-primary-bg-hover);
+}
+
+/* ===========================
+   Main Navigation
+=========================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0 var(--layout-page-gutter);
+  background-color: var(--color-background-surface);
+}
+
+.nav-primary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--layout-page-max);
+  margin: 0 auto;
+  padding: var(--spacing-component-ms) 0;
+  background-color: var(--color-background-surface);
+  border-bottom: var(--stroke-default) solid var(--color-border-default);
+}
+
+.nav-menu,
+.nav-utilities {
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  gap: var(--spacing-component-ms);
+  padding: var(--spacing-component-sm) 0;
+}
+
+.nav-utilities {
+  gap: var(--spacing-layout-md);
+}
+
+.nav-menu-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+.nav-utility-icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+.nav-text-button {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-sm);
+  color: var(--color-text-primary);
+}
+
+/* Signed-out readers see "Login"; once signed in it becomes the Profile icon */
+.nav-profile {
+  display: none;
+  align-items: center;
+}
+
+.nav-profile-icon {
+  position: relative;
+  display: block;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  background-color: var(--nav-profile-icon);
+  /* The glyph is 16×16 (Figma vector, scaled up from 14), centered in the 24px slot */
+  mask: url("assets/feed/icon-profile.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+  -webkit-mask: url("assets/feed/icon-profile.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+}
+
+/* On the Profile page the icon turns solid lime. The fill (::before) and the outline (::after)
+   are separate layers so light theme can rim the lime with --icon-selected-outline */
+.nav-profile[aria-current="page"] .nav-profile-icon {
+  background-color: transparent;
+  mask: none;
+  -webkit-mask: none;
+}
+
+.nav-profile[aria-current="page"] .nav-profile-icon::before,
+.nav-profile[aria-current="page"] .nav-profile-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.nav-profile[aria-current="page"] .nav-profile-icon::before {
+  background-color: var(--nav-profile-icon-active);
+  mask: url("assets/feed/icon-profile-filled.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+  -webkit-mask: url("assets/feed/icon-profile-filled.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+}
+
+.nav-profile[aria-current="page"] .nav-profile-icon::after {
+  background-color: var(--icon-selected-outline);
+  mask: url("assets/feed/icon-profile-stroke.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+  -webkit-mask: url("assets/feed/icon-profile-stroke.svg") center / var(--layout-nav-profile-glyph) no-repeat;
+}
+
+:root[data-auth="signed-in"] .nav-login {
+  display: none;
+}
+
+:root[data-auth="signed-in"] .nav-profile {
+  display: flex;
+}
+
+.nav-wordmark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nav-wordmark img {
+  width: var(--layout-wordmark-width);
+  height: var(--layout-wordmark-height);
+}
+
+/* ===========================
+   Page Layout
+=========================== */
+.page-layout {
+  display: grid;
+  grid-template-columns: minmax(0, var(--layout-feed-width));
+  justify-content: center;
+  max-width: var(--layout-page-max);
+  margin: 0 auto;
+  padding-inline: var(--layout-page-gutter);
+}
+
+.rail-left,
+.rail-right {
+  display: none;
+}
+
+/* Rails stay pinned while the feed scrolls; a rail taller than the
+   viewport scrolls on its own so its lower content stays reachable */
+.rail-left,
+.rail-right {
+  position: sticky;
+  top: var(--layout-nav-height);
+  align-self: start;
+  max-height: calc(100vh - var(--layout-nav-height));
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--spacing-layout-lg);
+}
+
+.rail-left::-webkit-scrollbar,
+.rail-right::-webkit-scrollbar,
+.feed-column::-webkit-scrollbar {
+  display: none;
+}
+
+.feed-column {
+  margin-top: var(--spacing-layout-lg);
+}
+
+/* The mobile feed starts at the header and fills the screen width. */
+.page-layout--feed {
+  grid-template-columns: minmax(0, 1fr);
+  padding-inline: 0;
+}
+
+.page-layout--feed .feed-column {
+  margin-top: 0;
+}
+
+/* ===========================
+   Collection List & Trend List (left rail)
+=========================== */
+.rail-left {
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  padding: var(--spacing-layout-lg);
+  background-color: var(--color-background-surface-raised);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+}
+
+.collection-list,
+.story-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  list-style: none;
+}
+
+.story-lockup {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-component-ms);
+  height: var(--size-image-thumbnail-height);
+}
+
+.story-lockup-image {
+  width: var(--size-image-thumbnail-width);
+  height: var(--size-image-thumbnail-height);
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: var(--radius-x-sm);
+}
+
+.story-lockup-headline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-md);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  transition: color 0.15s ease;
+}
+
+/* TrendList label ("Now Trending") — color/text/tertiary, like the headlines below it */
+.trend-list-label {
+  color: var(--color-text-tertiary);
+}
+
+/* Hover — the headline brightens from color/text/tertiary to color/text/secondary */
+a.story-lockup:hover .story-lockup-headline {
+  color: var(--color-text-secondary);
+}
+
+/* ===========================
+   Trend Card
+=========================== */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+/* The discovery section follows the third story after the in-feed predictions. */
+.feed-explore {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-xl);
+  padding: var(--spacing-layout-lg) var(--spacing-layout-lg) var(--spacing-page-2xl);
+  background-color: var(--color-background-surface);
+}
+
+.feed-trending {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  padding: var(--spacing-layout-lg) var(--spacing-layout-md) var(--spacing-page-2xl);
+  background-color: var(--color-background-surface);
+}
+
+.trend-card {
+  position: relative;
+  aspect-ratio: var(--layout-trend-card-ratio);
+  overflow: hidden;
+  background-color: var(--color-background-surface);
+}
+
+.trend-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/feed/card-overlay.png");
+  background-size: cover;
+  pointer-events: none;
+}
+
+.trend-card--callout {
+  background-color: var(--color-background-callout);
+}
+
+.trend-card--callout::after {
+  content: none;
+}
+
+.trend-card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trend-card-collection {
+  position: absolute;
+  z-index: 1;
+  top: var(--spacing-layout-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  padding: var(--spacing-component-xs) var(--spacing-layout-md);
+  background-color: var(--buttons-tertiary-bg-secondary);
+  border: var(--stroke-default) solid var(--buttons-tertiary-border-secondary);
+  border-radius: var(--radius-full);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--buttons-tertiary-label-secondary);
+}
+
+.trend-card-content {
+  position: absolute;
+  z-index: 1;
+  left: var(--spacing-component-ms);
+  right: var(--layout-trend-card-content-right);
+  bottom: var(--spacing-layout-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-component-ms);
+}
+
+.trend-card-headline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+  color: var(--trend-card-primary-text);
+}
+
+.trend-card-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--trend-card-secondary-text);
+}
+
+.trend-card-actions {
+  position: absolute;
+  z-index: 1;
+  right: var(--spacing-component-ms);
+  bottom: var(--spacing-layout-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-xl);
+}
+
+.trend-card-action {
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+}
+
+/* Share — a mask, so its color comes from trend-card/icon like the bookmark beside it */
+.trend-card-share-icon {
+  display: block;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+  background-color: var(--trend-card-icon);
+  mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
+}
+
+/* Bookmark — Figma "Bookmark" component: Ready (outline) / Bookmarked (filled) */
+.bookmark-icon {
+  --icon-mask: url("assets/feed/icon-bookmark.svg");
+  display: block;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+  background-color: var(--color-icon-default);
+  mask: var(--icon-mask) center / contain no-repeat;
+  -webkit-mask: var(--icon-mask) center / contain no-repeat;
+}
+
+.bookmark-button[aria-pressed="true"] .bookmark-icon {
+  --icon-mask: url("assets/feed/icon-bookmark-filled.svg");
+  background-color: var(--bookmark-icon-active);
+}
+
+/* On trend cards the outline uses trend-card/icon, which stays light in both themes
+   so it reads on the dark photos */
+.trend-card .bookmark-button[aria-pressed="false"] .bookmark-icon {
+  background-color: var(--trend-card-icon);
+}
+
+.trend-card .bookmark-button[aria-pressed="true"] .bookmark-icon {
+  background-color: var(--trend-card-bookmark-active);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar--contributor {
+  background-color: var(--color-icon-avatar);
+}
+
+.avatar--initial {
+  background-color: var(--color-icon-avatar);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-md);
+  color: var(--color-text-dim);
+}
+
+/* ===========================
+   Feed Daily Complete
+=========================== */
+.feed-complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-layout-lg);
+  aspect-ratio: var(--layout-trend-card-ratio);
+  padding: var(--spacing-layout-lg) var(--spacing-component-ms);
+  background-color: var(--color-background-surface-raised);
+}
+
+.feed-complete-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-component-ms);
+  text-align: center;
+}
+
+.feed-complete-icon {
+  position: relative;
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+}
+
+/* Lime check circle (::before) with a 0.5px rim (::after), shown in light theme */
+.feed-complete-icon::before,
+.feed-complete-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.feed-complete-icon::before {
+  background-color: var(--color-icon-signal);
+  mask: url("assets/feed/icon-check.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-check.svg") center / contain no-repeat;
+}
+
+.feed-complete-icon::after {
+  background-color: var(--icon-selected-outline);
+  mask: url("assets/feed/icon-check-stroke.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-check-stroke.svg") center / contain no-repeat;
+}
+
+.feed-complete-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
+
+.feed-complete-text {
+  margin-top: calc(var(--spacing-component-ms) * -1 + var(--spacing-component-xs));
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-secondary);
+}
+
+.feed-complete .collection-list {
+  width: 100%;
+}
+
+/* ===========================
+   Footer
+=========================== */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-component-xs);
+  padding: var(--spacing-layout-lg) var(--layout-page-gutter);
+  background-color: var(--color-background-surface);
+  border-top: var(--stroke-default) solid var(--color-white-10);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-utility-helper-line-height);
+}
+
+.footer-links {
+  display: contents;
+  list-style: none;
+}
+
+.footer-links li {
+  display: flex;
+  gap: var(--spacing-component-xs);
+  color: var(--color-text-primary);
+}
+
+.footer-links li:not(:last-child)::after {
+  content: "|";
+  color: var(--color-text-dim);
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   Toast
+=========================== */
+.toast {
+  position: fixed;
+  z-index: 20;
+  left: 50%;
+  /* Clears the iPhone home indicator (needs viewport-fit=cover) */
+  bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-layout-md);
+  width: calc(100% - var(--layout-page-gutter) * 2);
+  padding: var(--spacing-layout-md);
+  background-color: var(--toast-bg);
+  /* Inside stroke, as in Figma, so the border doesn't add to the 56px height */
+  box-shadow: inset 0 0 0 var(--stroke-default) var(--toast-border);
+  border-radius: var(--avatar-radius-soft);
+}
+
+.toast[hidden] {
+  display: none;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+}
+
+.toast-message {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--toast-label);
+}
+
+/* Wider screens — the toast sizes to its content, as in Figma */
+@media (min-width: 600px) {
+  .toast {
+    justify-content: center;
+    gap: var(--layout-toast-gap);
+    width: auto;
+  }
+
+  .toast-message {
+    white-space: nowrap;
+  }
+}
+
+/* Desktop — centered on the feed column. In the two-column layout the feed
+   sits left of center, so shift by half the rail + gap */
+@media (min-width: 960px) {
+  .toast {
+    left: calc(50vw - (var(--spacing-layout-xl) + var(--layout-desktop-left)) / 2);
+  }
+}
+
+/* Three-column layout — the feed is centered on the page */
+@media (min-width: 1344px) {
+  .toast {
+    left: 50%;
+  }
+}
+
+/* Entrance — fades in while rising and settling into place */
+.toast {
+  opacity: 0;
+  translate: 0 var(--spacing-layout-md);
+  scale: 0.96;
+  transition:
+    opacity var(--motion-toast-exit) ease-in,
+    translate var(--motion-toast-exit) ease-in,
+    scale var(--motion-toast-exit) ease-in;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    opacity var(--motion-toast-enter) var(--motion-ease-out-soft),
+    translate var(--motion-toast-enter) var(--motion-ease-out-soft),
+    scale var(--motion-toast-enter) var(--motion-ease-out-soft);
+}
+
+/* Respect reduced-motion settings — fade only, no movement */
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .toast.is-visible {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+.toast-icon,
+.toast-close-icon,
+.drawer-close-icon {
+  display: block;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  flex-shrink: 0;
+  mask: var(--icon-mask) center / contain no-repeat;
+  -webkit-mask: var(--icon-mask) center / contain no-repeat;
+}
+
+.toast-icon {
+  --icon-mask: url("assets/feed/icon-toast-check.svg");
+  background-color: var(--toast-icon-success);
+}
+
+.toast-close-icon,
+.drawer-close-icon {
+  --icon-mask: url("assets/feed/icon-close.svg");
+  background-color: var(--color-icon-default);
+}
+
+.toast-close-icon {
+  background-color: var(--toast-icon-close);
+}
+
+/* ===========================
+   Drawer — slides in from the left over a scrim
+=========================== */
+.drawer {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--size-drawer-width);
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: var(--spacing-component-ms) var(--spacing-layout-md);
+  overflow-y: auto;
+  background-color: var(--color-background-surface);
+  border: 0;
+  border-right: var(--stroke-default) solid var(--color-border-default);
+  color: var(--color-text-primary);
+  translate: -100% 0;
+  transition:
+    translate var(--motion-drawer) var(--motion-ease-out-soft),
+    display var(--motion-drawer) allow-discrete,
+    overlay var(--motion-drawer) allow-discrete;
+}
+
+.drawer[open] {
+  translate: 0 0;
+}
+
+@starting-style {
+  .drawer[open] {
+    translate: -100% 0;
+  }
+}
+
+.drawer::backdrop {
+  background-color: var(--color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--motion-drawer) ease-out,
+    display var(--motion-drawer) allow-discrete,
+    overlay var(--motion-drawer) allow-discrete;
+}
+
+.drawer[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Page behind the drawer doesn't scroll while it's open */
+body:has(.drawer[open]),
+body:has(.article-sheet[open]) {
+  overflow: hidden;
+}
+
+/* ===========================
+   Article sheet — "Read more" on a prediction card slides the story up from the bottom.
+   A gap at the top keeps the page visible behind the scrim; the bar holds the close button.
+=========================== */
+.article-sheet {
+  position: fixed;
+  inset: var(--spacing-layout-xl) 0 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--layout-sheet-max-width);
+  height: auto;
+  max-height: none;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--color-background-surface);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-bottom: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  color: var(--color-text-primary);
+  translate: 0 100%;
+  transition:
+    translate var(--motion-sheet) var(--motion-ease-out-soft),
+    display var(--motion-sheet) allow-discrete,
+    overlay var(--motion-sheet) allow-discrete;
+}
+
+.article-sheet:not([open]) {
+  display: none;
+}
+
+.article-sheet[open] {
+  translate: 0 0;
+}
+
+@starting-style {
+  .article-sheet[open] {
+    translate: 0 100%;
+  }
+}
+
+.article-sheet::backdrop {
+  background-color: var(--color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--motion-sheet) ease-out,
+    display var(--motion-sheet) allow-discrete,
+    overlay var(--motion-sheet) allow-discrete;
+}
+
+.article-sheet[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .article-sheet[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.article-sheet-bar {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  padding: var(--spacing-component-ms) var(--spacing-layout-md);
+  border-bottom: var(--stroke-default) solid var(--color-border-default);
+}
+
+.article-sheet-close {
+  display: flex;
+  cursor: pointer;
+}
+
+.article-sheet-close:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--stroke-focus);
+}
+
+.article-sheet-frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background-color: var(--color-background-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-sheet,
+  .article-sheet[open] {
+    translate: 0 0;
+  }
+}
+
+/* The story page loaded inside the sheet (#sheet): just the article, no site chrome */
+:root[data-view="sheet"] .site-header,
+:root[data-view="sheet"] .rail-left,
+:root[data-view="sheet"] .rail-right,
+:root[data-view="sheet"] .feed-predictions-slot,
+:root[data-view="sheet"] .site-footer,
+:root[data-view="sheet"] .settings-panel,
+:root[data-view="sheet"] .settings-fab {
+  display: none;
+}
+
+:root[data-view="sheet"] .feed-column {
+  margin-top: 0;
+  background-color: transparent;
+  border: 0;
+}
+
+/* 24px between the sheet's top bar and the eyebrow, on phones too */
+:root[data-view="sheet"] .channel-content {
+  padding-top: var(--spacing-layout-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer,
+  .drawer[open] {
+    translate: 0 0;
+  }
+}
+
+.drawer-close {
+  display: flex;
+}
+
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  margin-top: var(--spacing-layout-md);
+}
+
+.drawer-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-layout-md);
+}
+
+.drawer-heading {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-layout-md);
+  list-style: none;
+}
+
+.drawer-link {
+  padding-left: var(--layout-drawer-item-indent);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-primary);
+  transition: color 0.15s ease;
+}
+
+/* Figma shows "Mind-Body" in color/text/tertiary — used here as the hover state */
+.drawer-link:hover {
+  color: var(--color-text-tertiary);
+}
+
+a.drawer-heading:hover {
+  text-decoration: underline;
+}
+
+.drawer-divider {
+  width: 100%;
+  height: 0;
+  border: 0;
+  border-top: var(--stroke-default) solid var(--color-border-default);
+}
+
+/* Log out — only in the drawer once someone is signed in */
+.drawer-signed-in-only {
+  display: none;
+}
+
+:root[data-auth="signed-in"] .drawer-divider.drawer-signed-in-only {
+  display: block;
+}
+
+:root[data-auth="signed-in"] .drawer-group.drawer-signed-in-only {
+  display: flex;
+}
+
+.drawer-logout {
+  text-align: left;
+}
+
+/* ===========================
+   Trend Hunter Answers
+=========================== */
+/* Reuse the discovery panel's frame, 24px padding, and 24px section gap. */
+.trend-answers {
+  min-width: 0;
+}
+
+@media (width < 960px) {
+  .trend-answers {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+}
+
+.answers-heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  gap: var(--spacing-component-sm);
+  color: var(--color-text-primary);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+}
+
+.answers-sparkle {
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  background-color: var(--color-text-accent);
+  mask: url("assets/feed/icon-answers-sparkles.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-answers-sparkles.svg") center / contain no-repeat;
+}
+
+.answers-heading .answers-sparkle { background-color: currentColor; }
+
+.answers-form { position: relative; }
+.answers-input {
+  appearance: none;
+  width: 100%;
+  height: var(--layout-answers-input-height);
+  padding: 0 var(--spacing-page-2xl) 0 calc(var(--spacing-component-ms) + var(--icon-size-sm) + var(--spacing-component-sm));
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-full);
+  background: var(--color-background-surface);
+  color: var(--color-text-primary);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+}
+.answers-input::-webkit-search-cancel-button { display: none; }
+.answers-input::placeholder { color: var(--color-text-tertiary); opacity: 1; }
+.answers-input:focus { outline: none; border-color: var(--color-border-focus); }
+.answers-input-icon {
+  position: absolute;
+  left: var(--spacing-component-ms);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.answers-submit {
+  position: absolute;
+  right: var(--spacing-component-ms);
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  border-radius: var(--radius-full);
+  background: var(--buttons-primary-bg-default);
+  color: var(--buttons-primary-text-default);
+  cursor: pointer;
+}
+.answers-submit:hover { background: var(--buttons-primary-bg-hover); }
+.answers-submit > span {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  background: currentColor;
+  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+}
+.answers-suggestions { display: grid; gap: var(--spacing-component-ms); min-width: 0; }
+.answers-suggestion-row {
+  display: flex;
+  gap: var(--spacing-component-ms);
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
+}
+.answers-suggestion-row.is-ticker { overflow: hidden; }
+.answers-suggestion-row::-webkit-scrollbar { display: none; }
+.answers-suggestion-track {
+  display: flex;
+  flex-shrink: 0;
+  width: max-content;
+  animation: answers-ticker var(--motion-answers-ticker) linear infinite;
+}
+.answers-suggestion-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--spacing-component-ms);
+  padding-right: var(--spacing-component-ms);
+}
+/* Three identical groups keep the two-row ticker filled through its seamless loop. */
+@keyframes answers-ticker {
+  to { transform: translateX(calc(-100% / 3)); }
+}
+@media (hover: hover) {
+  .answers-suggestions:hover .answers-suggestion-track { animation-play-state: paused; }
+}
+.answers-suggestions:focus-within .answers-suggestion-track { animation-play-state: paused; }
+/* Keyboard navigation presents the original buttons without moving or fading them. */
+.answers-suggestion-row:has(:focus-visible) {
+  overflow-x: auto;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+.answers-suggestion-row:has(:focus-visible) .answers-suggestion-track { animation: none; }
+.answers-suggestion-row:has(:focus-visible) .answers-suggestion-group[aria-hidden="true"] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .answers-suggestion-row.is-ticker { overflow-x: auto; mask-image: none; -webkit-mask-image: none; }
+  .answers-suggestion-track { animation: none; }
+  .answers-suggestion-group[aria-hidden="true"] { display: none; }
+}
+.answers-suggestion {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--spacing-component-sm);
+  min-height: var(--layout-answers-chip-height);
+  padding: var(--spacing-component-sm) var(--spacing-component-ms);
+  border: var(--stroke-default) solid var(--color-border-focus);
+  border-radius: var(--radius-full);
+  color: var(--color-text-primary);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.answers-suggestion .answers-sparkle { width: var(--icon-size-xs); height: var(--icon-size-xs); }
+.answers-suggestion:hover { background: var(--buttons-secondary-bg-hover); }
+.answers-suggestion:focus-visible, .answers-submit:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.answers-status { font: var(--type-weight-regular) var(--type-size-12)/var(--type-utility-helper-line-height) var(--type-font-body); color: var(--color-text-tertiary); }
+.answers-status[hidden], .feed-answers-slot[hidden] { display: none; }
+.feed-answers-slot { padding: var(--spacing-layout-lg) var(--layout-answers-mobile-gutter) var(--spacing-page-2xl); }
+.rail-right > .trend-answers { margin-bottom: var(--spacing-layout-lg); }
+.feed-discovery-rail { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); }
+.rail-right > .feed-discovery-rail { margin-top: var(--spacing-layout-lg); }
+
+
+.answers-mobile-suggestions { display: none; }
+@media (width < 960px) {
+  .trend-answers--feed { padding: 0; }
+  .trend-answers--feed .answers-heading {
+    justify-content: flex-start;
+    text-align: left;
+    font-size: var(--type-size-18);
+  }
+  .trend-answers--feed .answers-suggestions { display: none; }
+  .trend-answers--feed .answers-mobile-suggestions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-layout-lg);
+  }
+  .answers-mobile-suggestions .answers-suggestion {
+    min-height: var(--layout-answers-mobile-chip-height);
+    font-size: var(--type-size-16);
+    white-space: normal;
+    text-align: center;
+    justify-content: center;
+    line-height: var(--type-line-height-ui-sm);
+    max-width: 100%;
+  }
+  .trend-answers--inline { padding-inline: 0; padding-bottom: 0; }
+  /* Parent article/channel layouts already provide a 24px gap. Add the
+     difference so each divider has 32px above it as well as 32px below. */
+  .article:has(.prediction-inline-section) > .trend-answers--inline,
+  .product-recommendations + .trend-answers--inline {
+    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
+    border-top: var(--stroke-default) solid var(--color-border-default);
+    padding-top: var(--spacing-layout-xl);
+  }
+  .article:has(.trend-answers--inline) + .trend-card-list {
+    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
+    border-top: var(--stroke-default) solid var(--color-border-default);
+    padding-top: var(--spacing-layout-xl);
+  }
+}
+
+/* ===========================
+   Mobile article product recommendations — before Answers and More Stories
+=========================== */
+.product-recommendations { display: none; }
+@media (width < 960px) {
+  .product-recommendations:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-layout-lg);
+    min-width: 0;
+    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
+    padding-top: var(--spacing-layout-xl);
+    border-top: var(--stroke-default) solid var(--color-border-default);
+    color: var(--color-text-primary);
+  }
+  .product-recommendations-heading {
+    font-family: var(--type-font-display);
+    font-size: var(--type-size-18);
+    font-weight: var(--type-weight-light);
+    line-height: var(--type-line-height-ui-lg);
+    text-transform: uppercase;
+  }
+  .product-card-grid {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - var(--spacing-layout-md)) / 2);
+    gap: var(--spacing-layout-md);
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    list-style: none;
+  }
+  .product-card-grid::-webkit-scrollbar { display: none; }
+  .product-card-grid:focus-visible {
+    outline: var(--stroke-focus) solid var(--color-text-accent);
+    outline-offset: var(--spacing-component-xs);
+  }
+  .product-card-grid > li {
+    display: flex;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .product-card {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacing-component-sm);
+    min-width: 0;
+    padding: var(--spacing-component-sm);
+    border: var(--stroke-default) solid var(--color-border-default);
+    border-radius: var(--radius-x-sm);
+    color: inherit;
+    background-color: var(--color-background-surface);
+    text-decoration: none;
+  }
+  .product-card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 180 / 227;
+    object-fit: cover;
+  }
+  .product-card-title {
+    flex: 1;
+    font-family: var(--type-font-display);
+    font-size: var(--type-size-18);
+    font-weight: var(--type-weight-regular);
+    line-height: var(--type-line-height-ui-lg);
+  }
+  .product-card-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-component-sm);
+    margin-top: auto;
+    font-family: var(--type-font-display);
+    font-size: var(--type-size-18);
+    font-weight: var(--type-weight-light);
+    line-height: var(--type-line-height-ui-lg);
+  }
+  .product-card-price-label {
+    font-size: var(--type-size-12);
+    line-height: var(--type-line-height-ui-xs);
+    text-transform: uppercase;
+  }
+  .product-card-external {
+    align-self: center;
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+    flex-shrink: 0;
+    background-color: currentColor;
+    mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+    -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+    transform: rotate(-45deg);
+  }
+}
+
+/* ===========================
+   Predictions Panel (right rail)
+=========================== */
+.predictions-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-lg);
+  padding: var(--spacing-layout-lg) var(--spacing-layout-md);
+  background-color: var(--color-background-surface-raised);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+}
+
+/* Below 960px the panel sits in the feed, after the 3rd trend card (moved there by predictions.js) */
+.feed-predictions-slot {
+  padding-block: 0;
+}
+
+.feed-predictions-slot[hidden] {
+  display: none;
+}
+
+/* Center the mobile heading and deck as one group, keeping their 24px gap. */
+.feed-predictions-slot .predictions-panel {
+  aspect-ratio: var(--layout-trend-card-ratio);
+  padding-top: var(--spacing-layout-xl);
+}
+
+.feed-predictions-slot .predictions-panel:not(:has(.prediction-results)) {
+  justify-content: center;
+  padding-bottom: var(--spacing-layout-xl);
+}
+
+/* Narrow phones: the stack shrinks to the panel's width (set by predictions.js) */
+.feed-predictions-slot .prediction-stack {
+  margin-block: 0;
+  zoom: var(--prediction-stack-zoom, 1);
+}
+
+.predictions-panel .type-h4-caps {
+  text-align: center;
+  color: var(--predictions-panel-heading);
+}
+
+/* The results title takes the place of Daily Predictions at every screen size. */
+.predictions-panel:has(.prediction-results) > #predictions-heading {
+  display: none;
+}
+
+/* Results start 24px below the panel edge; only the results own that top inset. */
+.predictions-panel:has(.prediction-results) {
+  padding-top: 0;
+}
+.predictions-panel:has(.prediction-results) > .prediction-stack {
+  margin-block: 0;
+}
+
+/* Mobile results keep the same portrait frame as story cards and scroll within it. */
+.feed-predictions-slot .predictions-panel:has(.prediction-results) {
+  padding-inline: 0;
+  aspect-ratio: var(--layout-trend-card-ratio);
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+}
+.feed-predictions-slot .prediction-stack:has(.prediction-results) {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  zoom: 1;
+}
+.feed-predictions-slot .prediction-results {
+  padding-inline: var(--spacing-component-ms);
+  min-height: 0;
+  overflow: hidden;
+}
+.feed-predictions-slot .prediction-results-list {
+  padding-right: 0;
+  overscroll-behavior-y: contain;
+}
+
+/* Daily Predictions uses the shared 18px section-heading size on phones and desktop. */
+.feed-predictions-slot .predictions-panel .type-h4-caps {
+  font-size: var(--type-size-18);
+  line-height: var(--type-line-height-ui-lg);
+}
+
+.prediction-stack {
+  position: relative;
+  /* Keep the cards' stacking (z-index 98–120) inside the stack, so they scroll under the sticky nav */
+  isolation: isolate;
+  width: var(--layout-predictions-stack-width);
+  max-width: 100%;
+  height: var(--layout-predictions-stack-height);
+}
+
+.prediction-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--layout-prediction-card-width);
+  height: var(--layout-prediction-card-height);
+  transform: translate(-50%, -50%);
+  background-color: var(--prediction-card-background-card);
+  border: var(--stroke-default) solid var(--prediction-card-border);
+  border-radius: var(--radius-md);
+}
+
+.prediction-card--onboarding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-layout-lg) var(--spacing-layout-lg);
+  background-color: var(--prediction-card-background-onboarding-card);
+  border-color: var(--color-border-default);
+}
+
+.prediction-onboarding-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--type-line-height-display-md);
+  width: var(--layout-prediction-card-copy-width);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--predictions-panel-card-text);
+}
+
+/* Make Your Call — prediction-card/button and prediction-card/secondary-copy */
+.prediction-onboarding-button {
+  width: var(--layout-prediction-button-width);
+  padding: var(--spacing-layout-md) var(--spacing-layout-xl);
+  background-color: var(--prediction-card-button);
+  font-weight: var(--type-weight-black);
+  color: var(--prediction-card-secondary-copy);
+}
+
+.prediction-onboarding-button:hover {
+  background-color: var(--prediction-card-button-hover);
+}
+
+/* The cover sits above the deck until the reader makes their first call */
+.prediction-card--onboarding {
+  z-index: 120;
+}
+
+/* ===========================
+   Prediction deck — three cards show: the top one, then two tilted behind it.
+   predictions.js deals the cards, and drives the drag and the fly-off.
+=========================== */
+.prediction-card--call {
+  --card-x: 0px;
+  --card-y: 0px;
+  --card-tilt: 0deg;
+  background: none;
+  border: 0;
+  perspective: var(--layout-prediction-card-perspective);
+  transform: translate(-50%, -50%) translate(var(--card-x), var(--card-y)) rotate(var(--card-tilt));
+  transition: transform var(--motion-card-shift);
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+}
+
+.prediction-card--call[data-depth="0"] {
+  z-index: 100;
+  pointer-events: auto;
+  cursor: grab;
+  transition: transform var(--motion-card-settle) var(--motion-ease-card-settle), opacity var(--motion-card-settle);
+}
+
+.prediction-card--call[data-depth="1"] {
+  z-index: 99;
+  --card-tilt: var(--layout-prediction-tilt-middle);
+}
+
+.prediction-card--call[data-depth="2"] {
+  z-index: 98;
+  --card-tilt: var(--layout-prediction-tilt-back);
+}
+
+/* While dragging the card follows the pointer with no easing */
+.prediction-card--call.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.prediction-card--call.is-nudging {
+  transition: transform var(--motion-card-nudge) ease-out;
+}
+
+.prediction-card--call.is-flying {
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--motion-card-fly) var(--motion-ease-card-fly), opacity var(--motion-card-fly);
+}
+
+/* Flip — the card turns over on its vertical axis to show the context, and back again */
+.prediction-card-flipper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--motion-card-flip) var(--motion-ease-card-flip);
+}
+
+.prediction-card--call[data-flipped] .prediction-card-flipper {
+  transform: rotateY(180deg);
+}
+
+/* A slight lift at the midpoint, so it reads as turning a card over rather than spinning it */
+.prediction-card-flipper.is-turning {
+  animation: prediction-card-lift var(--motion-card-flip) var(--motion-ease-card-flip);
+}
+
+@keyframes prediction-card-lift {
+  50% { scale: 0.96; }
+}
+
+.prediction-card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--prediction-card-background-card);
+  border: var(--stroke-default) solid var(--prediction-card-border);
+  border-radius: var(--radius-md);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.prediction-card-face--back {
+  transform: rotateY(180deg);
+}
+
+/* The overlay previews the call: lime for In, red for Out, dark for Skip */
+.prediction-card-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.prediction-card--call[data-call="in"] .prediction-card-overlay {
+  background-color: var(--prediction-vote-in);
+}
+
+.prediction-card--call[data-call="out"] .prediction-card-overlay {
+  background-color: var(--prediction-vote-out);
+}
+
+.prediction-card--call[data-call="skip"] .prediction-card-overlay {
+  background-color: var(--prediction-skip);
+}
+
+.prediction-card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--spacing-component-ms);
+  color: var(--prediction-card-text);
+}
+
+.prediction-card--call[data-call="in"] .prediction-card-body {
+  color: var(--prediction-vote-in-text);
+}
+
+.prediction-card-deadline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+}
+
+.prediction-clock-icon {
+  flex-shrink: 0;
+  width: var(--layout-prediction-clock-width);
+  height: var(--layout-prediction-clock-height);
+  background-color: currentColor;
+  mask: url("assets/predictions/icon-clock.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-clock.svg") center / contain no-repeat;
+}
+
+/* Top bar: Get context / Back pill */
+.prediction-card-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Headline (front) or context (back), centred between the top bar and the buttons */
+.prediction-card-middle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-block: var(--spacing-component-ms);
+}
+
+/* Context side: the paragraph starts 16px below the flip pill on every card */
+.prediction-card-face--back .prediction-card-middle {
+  align-items: flex-start;
+  margin-top: var(--spacing-layout-md);
+  margin-bottom: var(--type-line-height-ui-lg); /* one empty line before the vote buttons */
+}
+
+.prediction-card-headline {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+}
+
+/* ===========================
+   Compact prediction deck — the Daily Predictions cards embedded in a story, in the 360×253
+   layout: headline centred, I'm Out / I'm In side by side, Skip This below. The cards reuse the
+   deck's classes, so they drag, tilt, fly off and show the call overlays exactly like the panel.
+=========================== */
+/* "Will this happen? Make your call" label sits above the deck, same style as the panel heading */
+.prediction-inline-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+}
+
+.prediction-inline-section > .type-h4-caps {
+  text-align: center;
+}
+
+/* Mobile article shortcut: a Read more arrival can return to the call at any point. */
+.prediction-shortcut {
+  display: none;
+  gap: var(--spacing-component-sm);
+  min-height: 44px;
+  padding: var(--spacing-component-ms) var(--spacing-layout-md);
+  border-radius: var(--radius-full);
+  background-color: var(--prediction-card-background-card);
+  color: var(--prediction-card-copy);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.prediction-shortcut-icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex-shrink: 0;
+  font-size: var(--icon-size-sm);
+  font-weight: var(--type-weight-regular);
+  line-height: 1;
+  text-transform: none;
+  font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
+}
+.prediction-shortcut:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-text-primary);
+  outline-offset: var(--spacing-component-xs);
+}
+@media (width < 960px) {
+  .prediction-inline-section {
+    scroll-margin-top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+  }
+  .prediction-shortcut:not([hidden]) {
+    position: fixed;
+    z-index: 30;
+    left: 50%;
+    bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    display: inline-flex;
+    max-width: calc(100% - var(--layout-settings-fab-size) * 2 - var(--spacing-layout-lg) * 2);
+  }
+}
+
+.prediction-inline-section > .prediction-stack {
+  align-self: center;
+  zoom: var(--prediction-stack-zoom, 1);
+}
+.prediction-inline-section .prediction-card--onboarding { display: none; }
+@media (width < 960px) {
+  .prediction-inline-section .prediction-card--read-more-intro [data-flip="context"] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.prediction-inline-section:has(> .prediction-stack .prediction-results) > .type-h4-caps { display: none; }
+.prediction-inline-section > .prediction-stack:has(.prediction-results) {
+  width: 100%;
+  height: auto;
+  max-width: none;
+  zoom: 1;
+}
+
+
+/* The completed results replace the invitation to make a call. */
+.prediction-inline-section:has(> .prediction-inline-stack.is-done) > .type-h4-caps {
+  display: none;
+}
+
+.prediction-inline-stack {
+  position: relative;
+  /* Keep the cards' stacking inside the stack, so they scroll under the sticky nav */
+  isolation: isolate;
+  width: 100%;
+  height: var(--layout-prediction-compact-stack-height);
+  /* Narrow phones: the stack shrinks to the column's width (set by predictions.js) */
+  zoom: var(--prediction-stack-zoom, 1);
+}
+
+/* Once every card is called, the results take the stack's place and size to their content */
+.prediction-inline-stack.is-done {
+  height: auto;
+  zoom: 1;
+}
+
+/* 360×253 as designed (a 3-line headline). A longer headline grows the card rather than clipping */
+.prediction-card--compact {
+  display: flex;
+  flex-direction: column;
+  width: var(--layout-prediction-compact-card-width);
+  height: auto;
+  min-height: var(--layout-prediction-compact-card-height);
+  overflow: hidden;
+  background-color: var(--prediction-card-background-card);
+  border: var(--stroke-default) solid var(--prediction-card-border);
+  border-radius: var(--radius-md);
+}
+
+.prediction-card--compact .prediction-card-body {
+  flex: 1;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-layout-lg);
+  padding: var(--spacing-layout-lg) var(--spacing-component-ms);
+  text-align: center;
+}
+
+.prediction-card--compact .prediction-card-actions {
+  gap: var(--spacing-layout-md);
+}
+
+.prediction-card--compact .prediction-skip {
+  margin-top: 0;
+}
+
+/* Get context / Back pill (Eyebrow Regular) */
+.prediction-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-xs);
+  padding: var(--spacing-component-xs) var(--spacing-component-ms);
+  background-color: var(--prediction-card-pill-bg);
+  border-radius: var(--radius-full);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--prediction-card-copy);
+  cursor: pointer;
+}
+
+.prediction-card-link:focus-visible {
+  outline: var(--stroke-focus) solid var(--prediction-card-copy);
+  outline-offset: var(--stroke-focus);
+}
+
+.prediction-card-link-icon {
+  flex-shrink: 0;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  background-color: currentColor;
+  mask: url("assets/predictions/icon-flip.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-flip.svg") center / contain no-repeat;
+}
+
+.prediction-card-context {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--prediction-card-copy);
+}
+
+/* A card restored to its back on page load skips the turn animation */
+.prediction-card--call.is-restoring .prediction-card-flipper,
+.prediction-card--call.is-restoring .prediction-card-face {
+  transition: none;
+}
+
+/* A card resting on its back is drawn flat: no 3D rotation, same look. Keeps taps on
+   Read more and Back landing where they appear on iPhone Safari (set by predictions.js) */
+.prediction-card--call.is-flat .prediction-card-flipper,
+.prediction-card--call.is-flat .prediction-card-face--back {
+  transform: none;
+}
+
+.prediction-card--call.is-flat .prediction-card-face--front {
+  visibility: hidden;
+}
+
+/* Read more after the context — same white and weight as the paragraph */
+.prediction-card .prediction-card-more,
+.prediction-results .prediction-result-more {
+  display: inline-flex; /* continues the paragraph, keeping the label and arrow together */
+  align-items: center;
+  gap: var(--spacing-component-xs);
+  text-decoration: none;
+  color: var(--prediction-card-more);
+  text-decoration-color: currentColor;
+}
+
+/* Always underlined so it reads as a link; the small arrow says it goes somewhere */
+.prediction-card-more-label {
+  text-decoration: underline;
+  text-underline-offset: var(--layout-link-underline-offset);
+}
+
+/* Material Symbols Rounded arrow_forward at 12px, tinted like the text */
+.prediction-card-more-icon {
+  flex-shrink: 0;
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+  background-color: currentColor;
+  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+}
+
+
+.prediction-card-more:focus-visible {
+  outline: var(--stroke-focus) solid var(--prediction-card-more);
+  outline-offset: var(--stroke-focus);
+}
+
+/* Keep white copy readable while the lime I'm In overlay shows */
+.prediction-card--call[data-call="in"] .prediction-card-link,
+.prediction-card--call[data-call="in"] .prediction-card-context,
+.prediction-card--call[data-call="in"] .prediction-skip {
+  color: var(--prediction-vote-in-text);
+}
+
+/* The vote buttons and Skip sit at the bottom of either face */
+.prediction-card-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.prediction-vote {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-component-sm);
+  width: var(--layout-prediction-vote-width);
+  height: var(--layout-prediction-vote-height);
+  background-color: var(--prediction-button-bg);
+  border: var(--stroke-default) solid var(--prediction-button-border);
+  border-radius: var(--radius-md);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-extrabold);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--prediction-button-label);
+  cursor: pointer;
+}
+
+.prediction-vote-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+.prediction-vote--out .prediction-vote-icon {
+  background-color: var(--prediction-vote-out-icon);
+  mask: url("assets/predictions/icon-out.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-out.svg") center / contain no-repeat;
+}
+
+.prediction-vote--in .prediction-vote-icon {
+  background-color: var(--prediction-vote-in);
+  mask: url("assets/predictions/icon-in.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-in.svg") center / contain no-repeat;
+}
+
+.prediction-skip {
+  margin-top: var(--spacing-component-ms);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  line-height: var(--type-utility-helper-line-height); /* Helper style: 12/20 */
+  color: var(--prediction-card-copy);
+  cursor: pointer;
+}
+
+/* ===========================
+   Prediction results — shown once every card has been called or skipped
+=========================== */
+.prediction-results {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: var(--spacing-layout-lg) var(--spacing-layout-lg) var(--spacing-layout-md);
+  background-color: var(--color-background-surface-raised);
+  animation: prediction-results-in var(--motion-results-fade) ease-out both;
+}
+
+@keyframes prediction-results-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.prediction-results-header {
+  text-align: center;
+}
+
+.prediction-results-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+  color: var(--prediction-results-heading);
+}
+
+.prediction-results-remaining {
+  margin-top: var(--spacing-component-xs);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-14);
+  color: var(--prediction-results-text);
+}
+
+.prediction-results-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin-top: var(--spacing-layout-md);
+  padding-right: var(--spacing-component-sm);
+  list-style: none;
+}
+
+.prediction-result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+  padding-bottom: var(--spacing-layout-lg);
+  margin-bottom: var(--spacing-layout-lg);
+  border-bottom: var(--stroke-default) solid var(--prediction-results-divider);
+}
+
+.prediction-result:last-child {
+  border-bottom: 0;
+}
+
+.prediction-result-headline {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-md);
+  text-transform: uppercase;
+  color: var(--prediction-results-item);
+}
+
+/* Illustrative In/Out vote totals beneath the result heading and saved-vote badge. */
+.prediction-result-split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-sm);
+}
+.prediction-result-split-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-12);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+  color: var(--prediction-results-item);
+}
+.prediction-result-split-labels > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-component-xs);
+}
+.prediction-result-split-labels strong {
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-extrabold);
+}
+.prediction-result-split-bar {
+  display: block;
+  width: 100%;
+  height: var(--spacing-component-sm);
+  overflow: hidden;
+  border-radius: var(--radius-full);
+}
+.prediction-result-split-in { fill: var(--prediction-badge-in); }
+.prediction-result-split-out { fill: var(--prediction-badge-out); }
+
+.prediction-result-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--spacing-component-ms);
+}
+.prediction-result-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--spacing-component-sm);
+}
+.prediction-result-top > .prediction-badge { white-space: nowrap; }
+.prediction-result-copy > .prediction-result-more { align-self: flex-start; }
+.prediction-results .prediction-result-more {
+  flex-shrink: 0;
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-body);
+}
+
+/* Result-story arrivals show the current call first and reveal other votes on demand. */
+.prediction-results--article {
+  height: auto;
+  gap: var(--spacing-layout-lg);
+}
+.prediction-results--article .prediction-results-list {
+  flex: none;
+  overflow: visible;
+  margin-top: 0;
+  padding-right: 0;
+}
+/* Article gutters already provide the 12px inset on phones. */
+@media (width < 960px) {
+  .prediction-inline-section .prediction-results {
+    padding-inline: 0;
+  }
+  .prediction-inline-section .prediction-results-list {
+    padding-right: 0;
+  }
+}
+/* Tablet articles sit inside a bordered frame without the phone's page gutter. */
+@media (600px <= width < 960px) {
+  .prediction-inline-section .prediction-results {
+    padding-inline: var(--spacing-component-ms);
+  }
+}
+.prediction-results-list--current > .prediction-result {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.prediction-results-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--layout-auth-button-height);
+  padding: var(--spacing-component-ms) var(--spacing-layout-md);
+  border: var(--stroke-default) solid var(--buttons-secondary-border);
+  border-radius: var(--radius-x-sm);
+  background: var(--buttons-secondary-bg);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+  color: var(--buttons-secondary-label);
+}
+.prediction-results-toggle:hover { background: var(--buttons-secondary-bg-hover); }
+.prediction-results-toggle:focus-visible {
+  outline: var(--stroke-focus) solid var(--buttons-secondary-border-focus);
+  outline-offset: var(--spacing-component-xs);
+}
+.prediction-other-votes[hidden] { display: none; }
+.prediction-results-empty {
+  font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body);
+  color: var(--color-text-body);
+}
+.predictions-panel.predictions-panel--article-result { display: none; }
+@media (min-width: 960px) {
+  .prediction-inline-section.prediction-inline-section--article-result { display: flex; }
+}
+
+/* Saved-vote badges retain their shared DS typography, colors and icons. */
+.prediction-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  padding: var(--spacing-component-sm) var(--spacing-component-ms);
+  border-radius: var(--radius-x-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-extrabold);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--prediction-badge-label);
+}
+
+.prediction-badge--in {
+  align-self: flex-start;
+  background-color: var(--prediction-badge-in);
+}
+
+.prediction-badge--out {
+  align-self: flex-start;
+  background-color: var(--prediction-badge-out);
+}
+
+.prediction-badge-icon {
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+  background-color: currentColor;
+}
+
+.prediction-badge--in .prediction-badge-icon {
+  mask: url("assets/predictions/icon-in.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-in.svg") center / contain no-repeat;
+}
+
+.prediction-badge--out .prediction-badge-icon {
+  mask: url("assets/predictions/icon-out.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-out.svg") center / contain no-repeat;
+}
+
+.prediction-results-finish {
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--layout-auth-button-height);
+  margin-top: var(--spacing-component-xs);
+  background-color: var(--prediction-results-button-bg);
+  border-radius: var(--radius-x-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-extrabold);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--prediction-results-button-label);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prediction-card--call,
+  .prediction-card--call[data-depth="0"],
+  .prediction-card--call.is-nudging,
+  .prediction-card--call.is-flying {
+    transition-duration: 1ms;
+  }
+
+  .prediction-results {
+    animation: none;
+  }
+
+  .prediction-card-flipper,
+  .prediction-card--call[data-flipped] .prediction-card-flipper {
+    transform: none;
+    transition: none;
+  }
+
+  .prediction-card-flipper.is-turning {
+    animation: none;
+  }
+
+  .prediction-card-face {
+    transition: opacity var(--motion-card-settle) ease;
+  }
+
+  .prediction-card-face--back {
+    transform: none;
+    opacity: 0;
+  }
+
+  .prediction-card--call[data-flipped] .prediction-card-face--back {
+    opacity: 1;
+  }
+
+  .prediction-card--call[data-flipped] .prediction-card-face--front {
+    opacity: 0;
+  }
+}
+
+/* ===========================
+   Toast link
+=========================== */
+.toast-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===========================
+   Profile page layout
+=========================== */
+.page-profile {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-lg);
+  width: 100%;
+  max-width: calc(var(--layout-profile-width) + var(--layout-page-gutter) * 2);
+  margin: calc(var(--spacing-layout-lg) * 2) auto var(--spacing-layout-xl);
+  padding: 0 var(--layout-page-gutter);
+}
+
+.profile-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+/* ===========================
+   Profile Header
+=========================== */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-md);
+  width: 100%;
+}
+
+.profile-avatar {
+  width: var(--avatar-size-xl);
+  height: var(--avatar-size-xl);
+  object-fit: cover;
+  border-radius: var(--avatar-radius-full);
+}
+
+.profile-name {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-24);
+  font-weight: var(--type-weight-medium);
+  line-height: var(--type-line-height-display-md);
+  text-align: center;
+  color: var(--color-text-primary);
+}
+
+/* Edit Profile — Buttons: size=small, style=tertiary */
+.edit-profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-component-sm);
+  padding: var(--spacing-component-xs) var(--spacing-component-ms);
+  background-color: var(--buttons-tertiary-bg);
+  border: var(--stroke-default) solid var(--buttons-tertiary-border);
+  border-radius: var(--radius-full);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--buttons-tertiary-label);
+  transition: background-color 0.15s ease;
+}
+
+/* Hover — buttons/tertiary/bg-hover */
+.edit-profile-button:hover {
+  background-color: var(--buttons-tertiary-bg-hover);
+}
+
+/* ===========================
+   Edit Profile modal — a <dialog>, so Escape closes it and focus stays inside
+=========================== */
+.edit-profile-modal {
+  width: calc(var(--layout-edit-profile-width) + var(--spacing-layout-xl) * 2);
+  max-width: calc(100% - var(--spacing-layout-md) * 2);
+  max-height: calc(100% - var(--spacing-layout-md) * 2);
+  margin: auto;
+  padding: var(--spacing-layout-lg) var(--spacing-layout-xl);
+  overflow-y: auto;
+  background-color: var(--edit-profile-bg);
+  border: var(--stroke-default) solid var(--edit-profile-border);
+  border-radius: var(--radius-x-sm);
+  opacity: 0;
+  scale: 0.96;
+  transition:
+    opacity var(--motion-toast-enter) var(--motion-ease-out-soft),
+    scale var(--motion-toast-enter) var(--motion-ease-out-soft),
+    display var(--motion-toast-enter) allow-discrete,
+    overlay var(--motion-toast-enter) allow-discrete;
+}
+
+.edit-profile-modal[open] {
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .edit-profile-modal[open] {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+.edit-profile-modal::backdrop {
+  background-color: var(--color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--motion-drawer) ease-out,
+    display var(--motion-drawer) allow-discrete,
+    overlay var(--motion-drawer) allow-discrete;
+}
+
+.edit-profile-modal[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .edit-profile-modal[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+body:has(.edit-profile-modal[open]) {
+  overflow: hidden;
+}
+
+.edit-profile-close .auth-close-icon {
+  background-color: var(--edit-profile-badge-bg);
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-xl);
+}
+
+.edit-profile-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+  color: var(--edit-profile-heading);
+}
+
+.edit-profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-md);
+}
+
+.edit-profile-avatar {
+  position: relative;
+  width: var(--avatar-size-xl);
+  height: var(--avatar-size-xl);
+}
+
+.edit-profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--avatar-radius-full);
+}
+
+/* Pencil badge on the avatar */
+.edit-profile-avatar-edit {
+  position: absolute;
+  right: var(--layout-avatar-badge-inset);
+  bottom: var(--layout-avatar-badge-inset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--layout-avatar-badge-size);
+  height: var(--layout-avatar-badge-size);
+  background-color: var(--edit-profile-badge-bg);
+  border-radius: var(--avatar-radius-full);
+  cursor: pointer;
+}
+
+.edit-profile-avatar-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  background-color: var(--edit-profile-badge-icon);
+  mask: url("assets/profile/icon-edit.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/profile/icon-edit.svg") center / contain no-repeat;
+}
+
+.edit-profile-preview {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-24);
+  font-weight: var(--type-weight-medium);
+  line-height: var(--type-line-height-display-md);
+  text-align: center;
+  color: var(--edit-profile-heading);
+}
+
+.edit-profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-xs);
+  width: 100%;
+}
+
+.edit-profile-label {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  line-height: var(--type-utility-helper-line-height);
+  color: var(--edit-profile-label);
+}
+
+/* The name sits on an underline (the Figma field), uppercase like the design */
+.edit-profile-input {
+  width: 100%;
+  padding: 0 0 var(--spacing-component-ms);
+  background: none;
+  border: 0;
+  border-bottom: var(--stroke-default) solid var(--edit-profile-border);
+  border-radius: 0;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--edit-profile-value);
+  caret-color: var(--edit-profile-focus);
+}
+
+.edit-profile-input:focus {
+  outline: none;
+  border-bottom-color: var(--edit-profile-focus);
+}
+
+.edit-profile-save {
+  width: 100%;
+  padding: var(--spacing-layout-md) var(--spacing-layout-xl);
+  background-color: var(--edit-profile-save-bg);
+  border-radius: var(--avatar-radius-soft);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-black);
+  line-height: var(--type-line-height-ui-sm);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--edit-profile-save-label);
+  cursor: pointer;
+}
+
+.edit-profile-save:disabled {
+  background-color: var(--edit-profile-save-bg-disabled);
+  color: var(--edit-profile-save-label-disabled);
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edit-profile-modal,
+  .edit-profile-modal[open] {
+    scale: 1;
+  }
+}
+
+/* ===========================
+   Filter Tab
+=========================== */
+.filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-filter-tab-gap);
+  width: 100%;
+  padding: 0 var(--spacing-component-ms);
+  background-color: var(--color-background-surface);
+  border-bottom: var(--stroke-default) solid var(--color-border-default);
+}
+
+.filter-tab {
+  padding: var(--spacing-component-sm) 0;
+  border-bottom: var(--stroke-weight-2) solid transparent;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-sm);
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+.filter-tab--active {
+  border-bottom-color: var(--filter-tab-active);
+}
+
+.page-contributor .filter-tab--active {
+  border-bottom-color: var(--contributor-tab-active);
+}
+
+/* ===========================
+   Trend List / Contributor Profile
+=========================== */
+.profile-story-list {
+  width: 100%;
+}
+
+.profile-story-headline {
+  flex: 1;
+  color: var(--color-text-body);
+}
+
+/* A saved story opens its page from anywhere on the row; the bookmark stays its own button */
+.profile-story-list .story-lockup {
+  position: relative;
+}
+
+.story-lockup-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.profile-story-list .bookmark-button[aria-pressed="true"] .bookmark-icon {
+  position: relative;
+  background-color: transparent;
+  mask: none;
+  -webkit-mask: none;
+}
+
+/* Saved: lime fill (::before) with the outline (::after) on top, rimmed in light theme */
+.profile-story-list .bookmark-button[aria-pressed="true"] .bookmark-icon::before,
+.profile-story-list .bookmark-button[aria-pressed="true"] .bookmark-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.profile-story-list .bookmark-button[aria-pressed="true"] .bookmark-icon::before {
+  background-color: var(--profile-bookmark-active);
+  mask: url("assets/feed/icon-bookmark-filled.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-bookmark-filled.svg") center / contain no-repeat;
+}
+
+.profile-story-list .bookmark-button[aria-pressed="true"] .bookmark-icon::after {
+  background-color: var(--icon-selected-outline);
+  mask: url("assets/feed/icon-bookmark-stroke.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-bookmark-stroke.svg") center / contain no-repeat;
+}
+
+.profile-story-list .bookmark-button {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================
+   Footer — full-width page variant
+=========================== */
+.site-footer--page {
+  margin-top: auto;
+  border-top-color: var(--color-border-default);
+}
+
+.site-footer--page .footer-links li {
+  color: var(--color-text-dim);
+}
+
+/* ===========================
+   Channel page — center column content
+=========================== */
+.channel-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+}
+
+/* ===========================
+   Masthead
+=========================== */
+.masthead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-ms);
+}
+
+.masthead-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--spacing-layout-md);
+}
+
+.masthead-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-40);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-lg);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+.sparkline-up {
+  position: relative;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+/* Lime fill (::before) with a 0.5px rim (::after), shown in light theme like the small up arrows */
+.sparkline-up::before,
+.sparkline-up::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.sparkline-up::before {
+  background-color: var(--trend-up-icon);
+  mask: url("assets/feed/icon-sparkline-up.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-sparkline-up.svg") center / contain no-repeat;
+}
+
+.sparkline-up::after {
+  background-color: var(--trend-up-icon-outline);
+  mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
+}
+
+.masthead-description {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-primary);
+}
+
+/* ===========================
+   Collection List (channel)
+=========================== */
+.channel-collections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  padding-block: var(--spacing-layout-lg);
+  background-color: var(--collection-list-background);
+  border-radius: var(--radius-x-sm);
+}
+
+.channel-collections .type-h4-caps {
+  color: var(--collection-list-heading);
+}
+
+.channel-collections .trend-icon--up::before {
+  background-color: var(--collection-list-icon);
+}
+
+/* ===========================
+   Trend Card List (channel) — the frame supplies its border
+=========================== */
+.trend-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+}
+
+/* Separate the inline predictions from the following story recommendations. */
+.article:has(.prediction-inline-section) + .trend-card-list {
+  border-top: var(--stroke-default) solid var(--color-border-default);
+  padding-top: var(--spacing-layout-xl);
+}
+
+.trend-card-list .feed-list {
+  padding: 0;
+}
+
+/* On phones, More Stories cards reach the screen edges while the heading keeps its inset. */
+@media (width < 600px) {
+  .page-layout:has(.trend-card-list) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trend-card-list > .feed-list {
+    margin-inline: calc(-1 * var(--layout-page-gutter));
+  }
+}
+
+/* ===========================
+   Channel List (left rail)
+=========================== */
+.channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  list-style: none;
+}
+
+.channel-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--spacing-layout-lg) var(--spacing-layout-xl) var(--spacing-layout-lg) var(--spacing-layout-md);
+  background-color: var(--buttons-secondary-bg);
+  border: var(--stroke-default) solid var(--buttons-secondary-border);
+  border-radius: var(--avatar-radius-soft);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-black);
+  line-height: var(--type-line-height-ui-sm);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--buttons-secondary-label);
+  transition: background-color 0.15s ease;
+}
+
+/* Hover — buttons/secondary/bg-hover */
+.channel-button:hover {
+  background-color: var(--buttons-secondary-bg-hover);
+}
+
+/* Focus — buttons/secondary/border-focus */
+.channel-button:focus-visible {
+  outline: none;
+  border-color: var(--buttons-secondary-border-focus);
+}
+
+/* Current page in the drawer (Figma shows it in color/text/tertiary) */
+.drawer-link[aria-current="page"] {
+  color: var(--color-text-tertiary);
+}
+
+/* ===========================
+   Trend detail — article column
+=========================== */
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+}
+
+/* ===========================
+   Article Masthead
+=========================== */
+.article-masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-component-ms);
+}
+
+.article-collection {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--buttons-tertiary-label);
+}
+
+.article-collection:hover {
+  text-decoration: underline;
+}
+
+.article-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-layout-md);
+  width: 100%;
+}
+
+.article-byline-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-sm);
+  min-width: 0;
+}
+
+.contributor-byline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+}
+
+.contributor-avatar {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  flex-shrink: 0;
+  border-radius: var(--avatar-radius-full);
+  background-color: var(--color-icon-avatar);
+  object-fit: cover;
+}
+
+.contributor-by {
+  font-weight: var(--type-weight-regular);
+  color: var(--color-text-dim);
+}
+
+.contributor-name {
+  font-weight: var(--type-weight-bold);
+  color: var(--color-text-tertiary);
+}
+
+.article-timestamp {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-layout-md);
+}
+
+.article-actions .bookmark-button,
+.article-actions .bookmark-icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+}
+
+.article-actions .bookmark-button[aria-pressed="false"] .bookmark-icon {
+  --icon-mask: url("assets/trend/masthead-bookmark.svg");
+}
+
+.article-actions .bookmark-button[aria-pressed="true"] .bookmark-icon {
+  position: relative;
+  background-color: transparent;
+  mask: none;
+  -webkit-mask: none;
+}
+
+/* Saved: lime fill (::before) with the outline (::after) on top, rimmed in light theme */
+.article-actions .bookmark-button[aria-pressed="true"] .bookmark-icon::before,
+.article-actions .bookmark-button[aria-pressed="true"] .bookmark-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.article-actions .bookmark-button[aria-pressed="true"] .bookmark-icon::before {
+  background-color: var(--article-bookmark-active);
+  mask: url("assets/trend/masthead-bookmark-filled.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/trend/masthead-bookmark-filled.svg") center / contain no-repeat;
+}
+
+.article-actions .bookmark-button[aria-pressed="true"] .bookmark-icon::after {
+  background-color: var(--icon-selected-outline);
+  mask: url("assets/trend/masthead-bookmark-stroke.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/trend/masthead-bookmark-stroke.svg") center / contain no-repeat;
+}
+
+.article-share,
+.article-share-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+}
+
+/* Share — color/icon/default, so it darkens on the light page in light mode */
+.article-share-icon {
+  display: block;
+  background-color: var(--color-icon-default);
+  mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
+}
+
+/* ===========================
+   Body Image + Caption Credit
+=========================== */
+.body-image {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-sm);
+}
+
+.body-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-x-sm);
+}
+
+.caption-credit {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+/* ===========================
+   Article Body
+=========================== */
+.article-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-xl);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-body);
+}
+
+.article-body h2 {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-24);
+  font-weight: var(--type-weight-medium);
+  line-height: var(--type-line-height-display-md);
+  color: var(--color-text-body);
+}
+
+/* Inline source links — color/text/body-link, underlined */
+.article-body a {
+  color: var(--article-link);
+  text-decoration: underline;
+  text-decoration-color: var(--article-link-underline);
+}
+
+.article-body strong {
+  font-weight: var(--type-weight-bold);
+}
+
+.article-signals {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-xl);
+  list-style: decimal inside;
+}
+
+/* ===========================
+   Body Quote
+=========================== */
+.body-quote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+  padding: var(--spacing-component-sm) 0 var(--spacing-component-sm) var(--spacing-component-ms);
+  border-left: var(--stroke-thick) solid var(--body-quote-line);
+  text-transform: uppercase;
+}
+
+.body-quote p {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  color: var(--color-text-body);
+}
+
+.body-quote figcaption {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-md);
+  color: var(--color-text-tertiary);
+}
+
+/* ===========================
+   Context Card (left rail)
+=========================== */
+.rail-left--trend {
+  gap: var(--spacing-layout-md);
+}
+
+.context-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+  padding: var(--spacing-layout-lg) var(--spacing-component-ms);
+  background-color: var(--color-background-surface);
+  border-top: var(--stroke-default) solid var(--color-border-on-topic);
+  border-bottom: var(--stroke-default) solid var(--color-border-on-topic);
+}
+
+.context-card-label {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--color-text-on-topic);
+}
+
+.context-card p {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-body);
+}
+
+/* ===========================
+   Collection page — Follow + share row
+=========================== */
+.masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-layout-lg);
+}
+
+.follow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Figma's stroke sits inside the 112×34 box, so the padding gives up the border width */
+  padding: calc(var(--spacing-component-sm) - var(--stroke-default)) calc(var(--spacing-layout-xl) - var(--stroke-default));
+  background-color: var(--buttons-secondary-bg);
+  border: var(--stroke-default) solid var(--buttons-secondary-border);
+  border-radius: var(--radius-x-sm);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-sm);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+/* ===========================
+   Trend List (collection page)
+=========================== */
+.collection-trends {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  padding-block: var(--spacing-layout-lg);
+  background-color: var(--trend-list-background);
+  border-radius: var(--radius-x-sm);
+}
+
+/* ===========================
+   Auth Prompt — centered modal shown to signed-out readers
+=========================== */
+.auth-prompt {
+  width: var(--size-auth-prompt-width);
+  max-width: calc(100% - var(--spacing-layout-md) * 2);
+  max-height: calc(100% - var(--spacing-layout-md) * 2);
+  margin: auto;
+  padding: var(--spacing-layout-xl) var(--spacing-layout-md) var(--spacing-layout-md);
+  overflow-y: auto;
+  background-color: var(--color-background-bg-overlay);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  opacity: 0;
+  scale: 0.96;
+  transition:
+    opacity var(--motion-toast-enter) var(--motion-ease-out-soft),
+    scale var(--motion-toast-enter) var(--motion-ease-out-soft),
+    display var(--motion-toast-enter) allow-discrete,
+    overlay var(--motion-toast-enter) allow-discrete;
+}
+
+.auth-prompt[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-xl);
+  opacity: 1;
+  scale: 1;
+}
+
+@starting-style {
+  .auth-prompt[open] {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+.auth-prompt::backdrop {
+  background-color: var(--color-scrim);
+  opacity: 0;
+  transition:
+    opacity var(--motion-drawer) ease-out,
+    display var(--motion-drawer) allow-discrete,
+    overlay var(--motion-drawer) allow-discrete;
+}
+
+.auth-prompt[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .auth-prompt[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+body:has(.auth-prompt[open]) {
+  overflow: hidden;
+}
+
+/* Figma's 48px side padding once there's room for it */
+@media (min-width: 600px) {
+  .auth-prompt {
+    padding-inline: var(--spacing-page-2xl);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-prompt,
+  .auth-prompt[open] {
+    scale: 1;
+  }
+}
+
+.auth-close {
+  position: absolute;
+  top: var(--spacing-component-ms);
+  right: var(--spacing-component-ms);
+  display: flex;
+}
+
+.auth-close-icon {
+  display: block;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  background-color: var(--color-icon-default);
+  mask: url("assets/auth/icon-close-20.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-close-20.svg") center / contain no-repeat;
+}
+
+.auth-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-page-2xl);
+  width: 100%;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  text-align: center;
+}
+
+.auth-title {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  font-weight: var(--type-weight-extrabold);
+  line-height: var(--type-line-height-display-md);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+.auth-subtitle {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-tertiary);
+}
+
+.auth-providers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-xl);
+  width: 100%;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--layout-auth-button-gap);
+  width: 100%;
+  height: var(--layout-auth-button-height);
+  padding: var(--spacing-component-sm) var(--spacing-layout-xl);
+  border-radius: var(--avatar-radius-soft);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-black);
+  line-height: var(--type-line-height-ui-sm);
+  letter-spacing: var(--type-letter-spacing-button);
+  text-transform: uppercase;
+}
+
+.auth-button--provider {
+  background-color: var(--buttons-sign-in-bg);
+  color: var(--buttons-sign-in-label);
+}
+
+.auth-button--email {
+  background-color: var(--buttons-secondary-bg);
+  border: var(--stroke-default) solid var(--color-border-default);
+  color: var(--color-text-tertiary);
+}
+
+/* Envelope — 20×16 centered in the 32px slot, in the button's label color */
+.auth-email-icon {
+  display: block;
+  width: var(--icon-size-md);
+  height: var(--layout-auth-email-icon-height);
+  background-color: var(--color-icon-dim);
+  mask: url("assets/auth/icon-email.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-email.svg") center / contain no-repeat;
+}
+
+.auth-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+}
+
+.auth-button-icon img {
+  width: var(--layout-auth-provider-logo);
+  height: var(--layout-auth-provider-logo);
+}
+
+/* Apple logo — fills the 32px slot, colored with color/icon/inverse for the white button */
+.auth-apple-icon {
+  display: block;
+  width: var(--icon-size-xl);
+  height: var(--icon-size-xl);
+  background-color: var(--color-icon-inverse);
+  mask: url("assets/auth/icon-apple.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-apple.svg") center / contain no-repeat;
+}
+
+.auth-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-component-xs);
+  padding: var(--spacing-component-xs) var(--spacing-component-ms);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  line-height: var(--type-utility-helper-line-height);
+}
+
+.auth-footer .footer-links li {
+  color: var(--color-text-dim);
+}
+
+/* Inside the always-dark prompt, keep heading, footer and × readable in light mode */
+.auth-prompt .auth-title {
+  color: var(--auth-prompt-heading);
+}
+
+.auth-prompt .auth-footer .footer-links li,
+.auth-prompt .auth-footer .footer-links li:not(:last-child)::after {
+  color: var(--auth-prompt-footer-text);
+}
+
+.auth-prompt .auth-close-icon {
+  background-color: var(--auth-prompt-icon);
+}
+
+.auth-prompt .auth-subtitle {
+  color: var(--auth-prompt-subtitle);
+}
+
+.auth-prompt .auth-button--email {
+  background-color: var(--auth-prompt-secondary-bg);
+  color: var(--auth-prompt-secondary-label);
+}
+
+.auth-prompt .auth-email-icon {
+  background-color: var(--auth-prompt-icon);
+}
+
+/* ===========================
+   Contributor Profile Header
+=========================== */
+/* Contributor profile sits closer to the nav than the account Profile page */
+.profile--contributor {
+  margin-top: var(--spacing-layout-lg);
+}
+
+.profile-avatar--contributor {
+  background-color: var(--color-icon-avatar);
+}
+
+.profile-identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-xs);
+  width: 100%;
+  text-align: center;
+}
+
+.profile-role {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.profile-bio {
+  width: 100%;
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-body);
+}
+
+.profile-bio a {
+  color: var(--profile-bio-link);
+  text-decoration: underline;
+}
+
+/* "More..." — a plain lime text button, no underline; it reveals the full bio */
+.profile-bio-more {
+  font: inherit;
+  color: var(--profile-bio-more);
+}
+
+.profile-bio-full:focus {
+  outline: none;
+}
+
+.profile--fictional .filter-tab:disabled { cursor: default; }
+
+.profile--fictional .profile-bio-full:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+}
+
+.avatar[href]:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--spacing-component-xs);
+}
+
+.profile-posts {
+  width: 100%;
+  padding-block: var(--spacing-layout-lg);
+  background-color: var(--trend-list-background);
+}
+
+/* ===========================
+   Log In page
+=========================== */
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-layout-xl);
+  width: 100%;
+  max-width: calc(var(--layout-login-width) + var(--layout-page-gutter) * 2);
+  margin: var(--spacing-page-2xl) auto var(--spacing-layout-xl);
+  padding: 0 var(--layout-page-gutter);
+}
+
+.login .auth-header {
+  gap: var(--spacing-component-xs);
+}
+
+.login .auth-button--provider {
+  border: var(--stroke-default) solid var(--color-border-default);
+  color: var(--color-text-inverse);
+}
+
+/* Back — takes the place of Menu in the sign-in header */
+.nav-back-icon {
+  display: block;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  background-color: var(--color-icon-default);
+  mask: url("assets/auth/icon-arrow-back.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-arrow-back.svg") center / contain no-repeat;
+}
+
+/* Email sign-in form */
+.email-sign-in {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-md);
+  width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-xs);
+}
+
+.form-label {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  line-height: var(--type-utility-helper-line-height);
+  color: var(--color-text-tertiary);
+}
+
+.form-input {
+  width: 100%;
+  height: var(--layout-auth-button-height);
+  padding: var(--spacing-layout-md);
+  background-color: var(--form-bg);
+  border: var(--stroke-focus) solid var(--form-border-default);
+  border-radius: var(--radius-sm);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-inverse);
+}
+
+.form-input::placeholder {
+  color: var(--form-label-input-text);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--form-border-focus);
+}
+
+.auth-button--primary {
+  background-color: var(--auth-cta-bg);
+  color: var(--auth-cta-label);
+  cursor: pointer;
+}
+
+.auth-button--primary:disabled {
+  background-color: var(--buttons-primary-bg-disabled);
+  color: var(--buttons-primary-label-disabled);
+  cursor: not-allowed;
+}
+
+/* The code screen is wider so its heading fits on one line */
+.login--code {
+  max-width: calc(var(--layout-otc-width) + var(--layout-page-gutter) * 2);
+}
+
+/* One-time code — six squares, 56×50 each on desktop, shrinking to fit narrow screens */
+.otc {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-component-sm);
+  width: 100%;
+  border: none;
+}
+
+.otc-digit {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: var(--layout-otc-digit-width);
+  height: var(--layout-auth-button-height);
+  background-color: var(--otc-squares);
+  border: var(--stroke-default) solid var(--otc-border);
+  border-radius: var(--avatar-radius-soft);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+  text-align: center;
+  color: var(--otc-label);
+  caret-color: var(--otc-label);
+}
+
+/* The square waiting for the next digit — marked by login.js, so it shows even without keyboard focus */
+.otc-digit.is-active,
+.otc-digit:focus {
+  outline: none;
+  border: var(--stroke-focus) solid var(--otc-border-focus);
+}
+
+.otc-expiry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-component-xs);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-tertiary);
+}
+
+.auth-link {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--auth-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Terms and Policies — a checkbox that unlocks Continue */
+.login--terms {
+  max-width: calc(var(--layout-terms-width) + var(--layout-page-gutter) * 2);
+}
+
+.terms-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-page-2xl);
+  width: 100%;
+}
+
+.terms-acceptance {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-component-ms);
+  max-width: var(--layout-login-width);
+  cursor: pointer;
+}
+
+.terms-checkbox-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  margin-top: var(--layout-terms-checkbox-offset);
+}
+
+/* The box (::before) and the check (::after) are separate layers so each takes its own color */
+.terms-checkbox-icon::before,
+.terms-checkbox-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.terms-checkbox-icon::before {
+  background-color: var(--checkbox-icon-default);
+  mask: url("assets/auth/icon-checkbox.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-checkbox.svg") center / contain no-repeat;
+}
+
+.terms-checkbox:checked + .terms-checkbox-icon::before {
+  background-color: var(--checkbox-icon-checked);
+  mask-image: url("assets/auth/icon-checkbox-checked.svg");
+  -webkit-mask-image: url("assets/auth/icon-checkbox-checked.svg");
+}
+
+.terms-checkbox-icon::after {
+  display: none;
+  background-color: var(--checkbox-check-mark);
+  mask: url("assets/auth/icon-checkbox-check.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/auth/icon-checkbox-check.svg") center / contain no-repeat;
+}
+
+.terms-checkbox:checked + .terms-checkbox-icon::after {
+  display: block;
+}
+
+.terms-checkbox:focus-visible + .terms-checkbox-icon {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--stroke-focus);
+}
+
+.terms-text {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  color: var(--color-text-tertiary);
+}
+
+.terms-link {
+  color: var(--auth-link);
+  text-decoration: underline;
+}
+
+/* Figma sets "Or" in Hanken Grotesk, which isn't a design-system font; the body face stands in */
+.auth-or {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  line-height: 1;
+  color: var(--color-text-body);
+}
+
+/* ===========================
+   Prototype settings — a round button fixed to the bottom right of every page
+=========================== */
+.settings-fab {
+  position: fixed;
+  right: calc(var(--spacing-layout-lg) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--layout-settings-fab-size);
+  height: var(--layout-settings-fab-size);
+  background-color: var(--settings-fab-bg);
+  border: var(--stroke-default) solid var(--settings-fab-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.settings-fab:hover {
+  background-color: var(--settings-fab-bg-hover);
+}
+
+.settings-fab:focus-visible {
+  outline: var(--stroke-focus) solid var(--settings-fab-focus);
+  outline-offset: var(--stroke-focus);
+}
+
+/* While the panel is open the gear turns into the Material Symbols "cancel" icon */
+.settings-fab-close {
+  display: none;
+  font-size: var(--icon-size-lg);
+  color: var(--settings-fab-icon);
+}
+
+.settings-fab[aria-expanded="true"] .settings-fab-close {
+  display: block;
+}
+
+.settings-fab[aria-expanded="true"] .settings-fab-icon {
+  display: none;
+}
+
+/* Settings panel — opens above the button */
+.settings-panel {
+  position: fixed;
+  right: calc(var(--spacing-layout-lg) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--spacing-layout-lg) + var(--layout-settings-fab-size) + var(--spacing-component-sm) + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--layout-settings-panel-gap);
+  padding: var(--spacing-component-ms);
+  background-color: var(--settings-panel-bg);
+  border-radius: var(--radius-x-sm);
+}
+
+.settings-panel[hidden] {
+  display: none;
+}
+
+.settings-panel-item {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-utility-helper-line-height);
+  text-align: left;
+  white-space: nowrap;
+  color: var(--settings-panel-text);
+  cursor: pointer;
+}
+
+.settings-panel-item--two-line {
+  line-height: var(--layout-settings-panel-two-line-height);
+}
+
+.settings-panel-item:hover {
+  text-decoration: underline;
+}
+
+.settings-fab-icon {
+  display: block;
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  background-color: var(--settings-fab-icon);
+  mask: url("assets/feed/icon-settings.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-settings.svg") center / contain no-repeat;
+}
+
+/* ===========================
+   Breakpoints
+=========================== */
+/* From 600px the page gutter returns to 16px, and the feed pages' frame runs edge to edge
+   until the 960px layout adds its own padding */
+@media (min-width: 600px) {
+  :root {
+    --layout-page-gutter: var(--spacing-layout-md);
+  }
+
+  .page-layout {
+    padding-inline: 0;
+  }
+
+  .page-layout--feed {
+    grid-template-columns: minmax(0, var(--layout-feed-width));
+  }
+
+  .page-layout--feed .feed-column {
+    margin-top: var(--spacing-layout-lg);
+  }
+
+  /* From 600px the feed frame returns with its own 24px inner padding. */
+  .feed-column {
+    background-color: var(--color-background-surface-raised);
+    border: var(--stroke-default) solid var(--color-border-default);
+  }
+
+  .feed-list,
+  .channel-content {
+    padding: var(--spacing-layout-lg) var(--spacing-layout-lg) 0;
+  }
+
+  .feed-predictions-slot .predictions-panel .type-h4-caps {
+    font-size: var(--type-size-18);
+    line-height: var(--type-line-height-ui-lg);
+  }
+}
+
+@media (min-width: 600px) {
+  .site-header {
+    padding: 0 var(--spacing-layout-lg);
+  }
+}
+
+/* Tablet / small desktop — feed + predictions */
+@media (min-width: 960px) {
+  :root {
+    --layout-wordmark-height: 40px;
+  }
+
+  .feed-explore-slot,
+  .feed-trending-slot,
+  .feed-answers-slot,
+  .prediction-inline-section {
+    display: none;
+  }
+
+  .article:has(.prediction-inline-section) + .trend-card-list {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .page-layout {
+    grid-template-columns: var(--layout-feed-width) var(--layout-desktop-left);
+    column-gap: var(--spacing-layout-xl);
+    padding: 0 var(--spacing-layout-lg);
+    /* Side padding sits outside the 1464px content, so the panels line up with the nav's edges */
+    max-width: calc(var(--layout-page-max) + var(--spacing-layout-lg) * 2);
+  }
+
+  .rail-right {
+    display: block;
+    padding-top: var(--spacing-layout-lg);
+  }
+
+  /* Feed frame stays put; the cards scroll inside it */
+  .feed-column {
+    position: sticky;
+    top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+    align-self: start;
+    height: calc(100vh - var(--layout-nav-height) - var(--spacing-layout-lg) * 2);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  /* 24px band pinned to the top of the frame; cards scroll beneath it */
+  .feed-column::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: block;
+    height: var(--spacing-layout-lg);
+    /* Same color as the frame, but opaque: the translucent raised surface
+       layered over the page surface, so cards don't show through */
+    background:
+      linear-gradient(var(--color-background-surface-raised), var(--color-background-surface-raised)),
+      var(--color-background-surface);
+  }
+
+  .feed-list,
+  .channel-content {
+    padding-top: 0;
+  }
+}
+
+/* Desktop — three columns, matches the 1512px Figma frame */
+@media (min-width: 1344px) {
+  .page-layout {
+    grid-template-columns: var(--layout-desktop-left) var(--layout-feed-width) var(--layout-desktop-left);
+    justify-content: space-between;
+  }
+
+  .rail-left {
+    display: flex;
+    padding-top: var(--spacing-layout-lg);
+  }
+}
+
+/* Article pages (trend.html, trend-maximalism.html) keep Daily Predictions in the right rail
+   on desktop, same as the feed; predictions.js skips moving it into the "Recommended" list below
+   960px, so it's simply hidden there (the rail's own default) instead of showing mid-article. */

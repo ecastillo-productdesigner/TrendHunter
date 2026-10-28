@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trend Hunter — Terms and Policies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="feed.css?v=50">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+    } catch (e) {}
+  </script>
+</head>
+<body class="page-profile page-login">
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <a href="login-code.html" class="nav-menu nav-back"><span class="nav-back-icon" aria-hidden="true"></span><span class="nav-text-button">Back</span></a>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="login login--terms">
+    <div class="auth-main">
+      <header class="auth-header">
+        <h1 class="auth-title">Terms and Policies</h1>
+        <p class="auth-subtitle">Please take a moment to review our terms and policies:</p>
+      </header>
+
+      <form class="terms-form">
+        <label class="terms-acceptance">
+          <input class="terms-checkbox visually-hidden" type="checkbox" required>
+          <span class="terms-checkbox-icon" aria-hidden="true"></span>
+          <span class="terms-text">By creating an account, you acknowledge that you are over the age of 17 and agree to the <a class="terms-link" href="#">Terms of Service,</a> <a class="terms-link" href="#">Terms of Subscription,</a> and <a class="terms-link" href="#">Privacy Policy.</a></span>
+        </label>
+        <button class="auth-button auth-button--primary" type="submit" disabled>Continue</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer site-footer--page">
+    <ul class="footer-links">
+      <li>©2026 Trend Hunter</li>
+      <li><a href="#">Copyright</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Cookie Preferences</a></li>
+      <li><a href="#">Your Privacy Choices</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Trend Hunter for Business</a></li>
+      <li><a href="#">Trend Hunter Shop</a></li>
+    </ul>
+  </footer>
+
+  <script src="login.js?v=5"></script>
+
+  <!-- Prototype settings — fixed bottom right, same look in both themes -->
+  <div class="settings-panel" id="settings-panel" hidden>
+    <button class="settings-panel-item" type="button" data-setting="deal">Deal predictions again</button>
+    <button class="settings-panel-item settings-panel-item--two-line" type="button" data-setting="deal-new-user">Deal predictions again<br>as a new user</button>
+    <button class="settings-panel-item" type="button" data-setting="read-more">Read more opens: Story page</button>
+    <button class="settings-panel-item" type="button" data-setting="osano">Open Osano</button>
+  </div>
+  <button class="settings-fab" type="button" aria-label="Prototype settings" aria-expanded="false" aria-controls="settings-panel">
+    <span class="settings-fab-icon" aria-hidden="true"></span>
+    <span class="settings-fab-close material-symbols-rounded" aria-hidden="true">cancel</span>
+  </button>
+  <script src="settings.js?v=2"></script>
+
+</body>
+</html>

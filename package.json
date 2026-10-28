@@ -1,0 +1,14 @@
+{
+  "name": "trendhunter-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Trend Hunter B2C prototype and design system",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "design-system:build": "python3 scripts/build-design-guide.py"
+  }
+}

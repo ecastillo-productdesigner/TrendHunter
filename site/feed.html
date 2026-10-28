@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trend Hunter — Your Feed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="feed.css?v=50">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <button class="nav-menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false">
+        <img class="nav-menu-icon theme-dark-only" src="assets/feed/icon-menu.svg" alt="">
+        <img class="nav-menu-icon theme-light-only" src="assets/feed/icon-menu-light.svg" alt="">
+        <span class="nav-text-button">Menu</span>
+      </button>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+        <a href="login.html" class="nav-text-button nav-login">Login</a>
+        <a href="userprofile.html" class="nav-profile" aria-label="Profile"><span class="nav-profile-icon" aria-hidden="true"></span></a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Drawer — opened by the Menu button -->
+  <dialog class="drawer" id="site-drawer" aria-label="Menu">
+    <button class="drawer-close" aria-label="Close menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Site">
+      <section class="drawer-group" aria-labelledby="drawer-channels">
+        <h2 class="drawer-heading" id="drawer-channels">Explore Channels</h2>
+        <ul class="drawer-links">
+          <li><a href="channel.html" class="drawer-link">Mind-Body</a></li>
+          <li><a href="channel-everyday-living.html" class="drawer-link">Everyday Living</a></li>
+          <li><a href="channel-experiences.html" class="drawer-link">Experiences</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <section class="drawer-group" aria-labelledby="drawer-business">
+        <h2 class="drawer-heading" id="drawer-business">Trend Hunter for Business</h2>
+        <ul class="drawer-links">
+          <li><a href="#" class="drawer-link">Trends &amp; Insights</a></li>
+          <li><a href="#" class="drawer-link">Solutions</a></li>
+          <li><a href="#" class="drawer-link">Events</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <div class="drawer-group">
+        <a href="#" class="drawer-heading">Trend Hunter Shop</a>
+      </div>
+      <hr class="drawer-divider drawer-signed-in-only">
+      <div class="drawer-group drawer-signed-in-only">
+        <button class="drawer-link drawer-logout">Log out</button>
+      </div>
+    </nav>
+  </dialog>
+
+  <!-- Auth Prompt — shown when a signed-out reader tries to bookmark -->
+  <dialog class="auth-prompt" aria-labelledby="auth-title">
+    <button class="auth-close" aria-label="Close"><span class="auth-close-icon" aria-hidden="true"></span></button>
+    <div class="auth-main">
+      <header class="auth-header">
+        <img src="assets/auth/logo-mark.svg" alt="" width="16" height="30">
+        <h2 class="auth-title" id="auth-title">Stay ahead</h2>
+        <p class="auth-subtitle">Create a free account to follow topics, save stories, and get updates on the trends that matter to you</p>
+      </header>
+      <div class="auth-providers">
+        <button class="auth-button auth-button--provider" data-auth="apple"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</button>
+        <button class="auth-button auth-button--provider" data-auth="google"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</button>
+      </div>
+      <a class="auth-button auth-button--email auth-prompt-email" href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Send me a sign-in link</a>
+    </div>
+    <footer class="auth-footer">
+      <ul class="footer-links">
+        <li><a href="#">Copyright</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </footer>
+  </dialog>
+
+  <div class="page-layout page-layout--feed">
+
+    <!-- Left rail: Collection List + Trend List -->
+    <aside class="rail-left" aria-label="Collections and trending stories">
+      <div class="feed-discovery-rail">
+        <section class="side-panel" aria-labelledby="sidebar-explore-heading">
+              <h2 id="sidebar-explore-heading" class="type-h4-caps">More to Explore</h2>
+              <ul class="collection-list">
+                <li><a href="collection-evidence-based-beauty.html" class="pill-button">Evidence-Based Beauty <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-back-to-school-transitions.html" class="pill-button">Back-to-School Transitions <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-longevity.html" class="pill-button">Longevity <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-peptides.html" class="pill-button">Peptides <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-adventure-active-travel.html" class="pill-button">Adventure &amp; Active Travel <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-andropause-hormonal-midlife.html" class="pill-button">Andropause &amp; Hormonal Midlife <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+              </ul>
+            </section>
+        <section class="side-panel" aria-labelledby="sidebar-trending-heading">
+              <h2 id="sidebar-trending-heading" class="type-h4-caps trend-list-label">Now Trending</h2>
+              <ul class="story-list">
+                <li><a href="trend-ai-shopping-assistant.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-ai-shopping.png" alt="" loading="lazy"><h3 class="story-lockup-headline">AI Chatbots Want to Be Your Holiday Shopping Assistant, But Can You Actually Trust Their Gift Ideas?</h3></a></li>
+                <li><a href="trend-school-health-basics.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-school-health.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Soap, Sleep and Balanced Meals: Purdue’s Erin Hoying Shares Back-to-School Health Basics</h3></a></li>
+                <li><a href="trend-dollar-store-shoppers.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-dollar-stores.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Dollar Stores Are Seeing an Unexpected New Wave of Wealthier Shoppers</h3></a></li>
+                <li><a href="trend-ai-gift-ideas.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-ai-gift-test.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Can AI Find a Good Gift for Someone Who Has Everything? I Put Four AI Assistants to the Ultimate Test</h3></a></li>
+              </ul>
+            </section>
+      </div>
+    </aside>
+
+    <!-- Center: Feed -->
+    <main class="feed-column">
+      <h1 class="visually-hidden">Your feed</h1>
+      <ol class="feed-list">
+          <li>
+            <article class="trend-card trend-card--callout">
+              <img class="trend-card-image" src="assets/feed/trend-01.png" alt="" loading="lazy">
+              <a href="collection-andropause-hormonal-midlife.html" class="trend-card-collection">Andropause &amp; Hormonal Midlife <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Men Are Challenging the Midlife 'Just Aging' Narrative</h2>
+                <p class="trend-card-summary">Testosterone replacement therapy has moved out of the anti-aging clinic and into the open, with doctors and patients publicly documenting the treatment as a fix for the fatigue, weight gain and low libido that primary care physicians have long chalked up to normal midlife decline.</p>
+                <a href="trend.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="trt" data-title="Men Are Challenging the Midlife &#x27;Just Aging&#x27; Narrative as Testosterone Therapy Gains Momentum" data-image="assets/profile/saved-trt.png" data-href="trend.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor.html" class="avatar avatar--contributor trend-card-action" aria-label="View Samantha Agate’s profile"><img src="assets/contributor/samantha-agate-64.png" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-02.png" alt="" loading="lazy">
+              <a href="collection-retailtainment-hubs.html" class="trend-card-collection">Retailtainment Hubs <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">How Gen Z Brands Like Edikted Are Converting TikTok Followers</h2>
+                <p class="trend-card-summary">The generation raised on Instagram checkout and next-day shipping is walking into physical stores again — and retailers from Urban Outfitters to Coach are rebuilding their formats around them. What started as a post-pandemic curiosity is now a measurable shift in where young shoppers spend, and it’s about to force a broader rethink of what a store is for.</p>
+                <a href="trend-retailtainment.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-03.png" alt="" loading="lazy">
+              <a href="collection-back-to-school-transitions.html" class="trend-card-collection">Back-to-School Transitions <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Morning Meltdowns Fatigue May Mean Child’s Routine Is Still Shape</h2>
+                <p class="trend-card-summary">As classrooms fill back up, parents watching tired kids and morning meltdowns are asking the same question about their back-to-school routine: when does this get easier? The honest answer is that the adjustment stretches well past the first-day photo — and how families handle the next few weeks will shape the rest of the school year.</p>
+                <a href="trend-school-routines.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="morning-meltdowns-fatigue-may-mean-child-s-routine-is-still-shape" data-title="Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape" data-image="assets/feed/trend-03.png" data-href="trend-school-routines.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-owen-brooks.html" class="avatar avatar--contributor trend-card-action" aria-label="View Owen Brooks’s profile"><img src="assets/authors/owen-brooks.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-04.png" alt="" loading="lazy">
+              <a href="collection-mind-body-for-families.html" class="trend-card-collection">Mind &amp; Body for Families <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Teens’ Phone Habits Are Costing Them Major Sleep. The Fallout Beginning</h2>
+                <p class="trend-card-summary">New research is drawing a sharper line between teen screen time and adolescent well-being, and the picture isn’t reassuring. A federal study of nearly 2,000 U.S. teenagers found heavy recreational screen use tracks with worse sleep, more anxiety and thinner support networks. What comes next will test whether families, schools and platforms can adjust before “problematic media use” becomes the default setting of adolescence.</p>
+                <a href="trend-teen-phone-sleep.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="teens-phone-habits-are-costing-them-major-sleep-the-fallout-beginning" data-title="Teens’ Phone Habits Are Costing Them Sleep. Families Are Rethinking the Nighttime Routine" data-image="assets/feed/trend-04.png" data-href="trend-teen-phone-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-05.png" alt="" loading="lazy">
+              <a href="collection-regulated-living.html" class="trend-card-collection">Regulated Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Your Bedroom Is Getting Louder. Sleep Earbuds Are Evolving to Keep Up</h2>
+                <p class="trend-card-summary">Sleep-specific earbuds have crossed the line from novelty to a defined product category. They're backed by pilot-study data, hardware built for side sleepers and a set of biosensing ambitions the current generation doesn’t quite deliver on. The noise-blocking layer works.</p>
+                <a href="trend-sleep-earbuds.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="your-bedroom-is-getting-louder-sleep-earbuds-are-evolving-to-keep-up" data-title="Your Bedroom Is Getting Louder. Sleep Earbuds Are Evolving to Keep Up" data-image="assets/feed/trend-05.png" data-href="trend-sleep-earbuds.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-nadia-patel.html" class="avatar avatar--contributor trend-card-action" aria-label="View Nadia Patel’s profile"><img src="assets/authors/nadia-patel.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-06.png" alt="" loading="lazy">
+              <a href="collection-clean-living-control.html" class="trend-card-collection">Clean Living Control <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Whole-House Water Filters Are Gaining Ground as Homeowners</h2>
+                <p class="trend-card-summary">For anyone who just closed on a house and is mapping out the major system upgrades, whole-house water filters are quickly moving from niche home improvement to mainstream household decision. Mounting evidence of PFAS and nitrate contamination in U.S. tap water is pushing filtration onto the renovation shortlist, and the market is shifting toward personalized, test-first purchases and certified contaminant-specific systems. Understand the trajectory now and you’ll make a smarter multi-thousand-dollar call before the next round of federal data lands.</p>
+                <a href="trend-whole-house-water.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="whole-house-water-filters-are-gaining-ground-as-homeowners" data-title="Whole-House Water Filters Are Gaining Ground as Homeowners Rethink Their Next Upgrade" data-image="assets/feed/trend-06.png" data-href="trend-whole-house-water.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li class="feed-explore-slot">
+            <section class="feed-explore" aria-labelledby="feed-explore-heading">
+              <h2 id="feed-explore-heading" class="type-h4-caps">More to Explore</h2>
+              <ul class="collection-list">
+                <li><a href="collection-evidence-based-beauty.html" class="pill-button">Evidence-Based Beauty <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-back-to-school-transitions.html" class="pill-button">Back-to-School Transitions <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-longevity.html" class="pill-button">Longevity <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-peptides.html" class="pill-button">Peptides <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-adventure-active-travel.html" class="pill-button">Adventure &amp; Active Travel <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-andropause-hormonal-midlife.html" class="pill-button">Andropause &amp; Hormonal Midlife <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+              </ul>
+            </section>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-07.png" alt="" loading="lazy">
+              <a href="collection-preventive-health.html" class="trend-card-collection">Preventive Health <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Prostate Cancer Symptoms Are Easy to Miss. Here’s What Men</h2>
+                <p class="trend-card-summary">Prostate cancer is the most commonly diagnosed cancer among American men in 2026, but its earliest symptoms are often easy to overlook. New screening guidance is urging doctors to pay closer attention to subtle symptoms men often dismiss as aging or back pain.</p>
+                <a href="trend-preventive-health-conversations.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="prostate-cancer-symptoms-are-easy-to-miss-here-s-what-men" data-title="Prostate Health Conversations Are Moving Into Everyday Midlife Care" data-image="assets/feed/trend-07.png" data-href="trend-preventive-health-conversations.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-08.png" alt="" loading="lazy">
+              <a href="collection-smart-home-energy.html" class="trend-card-collection">Smart Home &amp; Energy <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">How Garden Lighting Delivers Maximum Curb Appeal for Homeowners</h2>
+                <p class="trend-card-summary">Solar outdoor garden lighting has moved past its dim, single-season reputation. Battery upgrades, expanding product categories and a hard look at what curb appeal actually costs are pushing a new wave of yard lighting into the mainstream — and homeowners planning spring projects are the first to feel the shift.</p>
+                <a href="trend-garden-lighting.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-garden-lighting-delivers-maximum-curb-appeal-for-homeowners" data-title="How Garden Lighting Delivers Curb Appeal Without Turning the Yard Into a Showroom" data-image="assets/feed/trend-08.png" data-href="trend-garden-lighting.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-09.png" alt="" loading="lazy">
+              <a href="collection-budgeted-living.html" class="trend-card-collection">Budgeted Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Why Are Dollar Stores Seeing an Unexpected New Wave of Shoppers?</h2>
+                <p class="trend-card-summary">Households earning more than $100,000 are showing up in Dollar Tree aisles in numbers the chain hasn’t seen before, and executives are treating it as a structural shift rather than a blip.</p>
+                <a href="trend-dollar-store-shoppers.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="why-are-dollar-stores-seeing-an-unexpected-new-wave-of-shoppers" data-title="Why Dollar Stores Are Seeing an Unexpected New Wave of Shoppers" data-image="assets/feed/trend-09.png" data-href="trend-dollar-store-shoppers.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-nadia-patel.html" class="avatar avatar--contributor trend-card-action" aria-label="View Nadia Patel’s profile"><img src="assets/authors/nadia-patel.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li class="feed-trending-slot">
+            <section class="feed-trending" aria-labelledby="feed-trending-heading">
+              <h2 id="feed-trending-heading" class="type-h4-caps trend-list-label">Now Trending</h2>
+              <ul class="story-list">
+                <li><a href="trend-ai-shopping-assistant.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-ai-shopping.png" alt="" loading="lazy"><h3 class="story-lockup-headline">AI Chatbots Want to Be Your Holiday Shopping Assistant, But Can You Actually Trust Their Gift Ideas?</h3></a></li>
+                <li><a href="trend-school-health-basics.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-school-health.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Soap, Sleep and Balanced Meals: Purdue’s Erin Hoying Shares Back-to-School Health Basics</h3></a></li>
+                <li><a href="trend-dollar-store-shoppers.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-dollar-stores.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Dollar Stores Are Seeing an Unexpected New Wave of Wealthier Shoppers</h3></a></li>
+                <li><a href="trend-ai-gift-ideas.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-ai-gift-test.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Can AI Find a Good Gift for Someone Who Has Everything? I Put Four AI Assistants to the Ultimate Test</h3></a></li>
+              </ul>
+            </section>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-10.png" alt="" loading="lazy">
+              <a href="collection-protein-forward-eating.html" class="trend-card-collection">Protein-Forward Eating <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Protein Is Showing up in More Everyday Foods as Shoppers Rethink</h2>
+                <p class="trend-card-summary">Wellness influencers are ditching protein powder for ancestral organ...</p>
+                <a href="trend-everyday-protein.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="protein-is-showing-up-in-more-everyday-foods-as-shoppers-rethink" data-title="Protein Is Showing Up in More Everyday Foods as Shoppers Rethink Their Routine" data-image="assets/feed/trend-10.png" data-href="trend-everyday-protein.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-maya-chen.html" class="avatar avatar--contributor trend-card-action" aria-label="View Maya Chen’s profile"><img src="assets/authors/maya-chen.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-11.png" alt="" loading="lazy">
+              <a href="collection-budgeted-living.html" class="trend-card-collection">Budgeted Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Home Energy Upgrades Explained: The Popular Renovations That Consist</h2>
+                <p class="trend-card-summary">The remodels dominating home-improvement wish lists — oversized windows, chef’s kitchens, open floor plans — are increasingly at odds with the energy bill homeowners actually pay each month. As utility costs climb and heat pumps enter the mainstream, the gap between what looks impressive on a listing photo and what actually performs is about to reshape how families spend renovation dollars.</p>
+                <a href="trend-home-energy.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="home-energy-upgrades-explained-the-popular-renovations-that-consist" data-title="Home Energy Upgrades Explained: Renovations That Work Beyond the Photo" data-image="assets/feed/trend-11.png" data-href="trend-home-energy.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-marcus-bennett.html" class="avatar avatar--contributor trend-card-action" aria-label="View Marcus Bennett’s profile"><img src="assets/authors/marcus-bennett.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-12.png" alt="" loading="lazy">
+              <a href="collection-retailtainment-hubs.html" class="trend-card-collection">Retailtainment Hubs <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Gen Z Drives ‘Retailtainment’ Boom, Reshaping the In-Store</h2>
+                <p class="trend-card-summary">Retailtainment is rebuilding physical retail around experience, and the pressure is coming from the generation everyone assumed would kill it. Gen Z shoppers are showing up in stores more often than Baby Boomers, and they are arriving with expectations shaped by flagship design, fandom culture and personalized service. The retailers who read that shift correctly are pulling ahead. The ones treating stores as warehouses with cash registers are not.</p>
+                <a href="trend-gen-z-stores.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="gen-z-drives-retailtainment-boom-reshaping-the-in-store" data-title="Gen Z’s Retailtainment Boom Is Reshaping the In-Store Experience" data-image="assets/feed/trend-12.png" data-href="trend-gen-z-stores.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-13.png" alt="" loading="lazy">
+              <a href="collection-preventive-health.html" class="trend-card-collection">Preventive Health <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">What 1 Writer’s Face-Plant Revealed About a Rare Brain-Pressure</h2>
+                <p class="trend-card-summary">Months of chest pain, leg cramps, vertigo and eye floaters got chalked up to being out of shape — until one sidewalk fall during a routine walk cracked open a very different diagnosis.</p>
+                <a href="trend-health-storytelling.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="what-1-writer-s-face-plant-revealed-about-a-rare-brain-pressure" data-title="A Writer’s Health Journey Raises Questions About Symptoms That Do Not Fit a Simple Story" data-image="assets/feed/trend-13.png" data-href="trend-health-storytelling.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-nadia-patel.html" class="avatar avatar--contributor trend-card-action" aria-label="View Nadia Patel’s profile"><img src="assets/authors/nadia-patel.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-14.png" alt="" loading="lazy">
+              <a href="collection-sleep-medicine.html" class="trend-card-collection">Sleep Medicine <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Somatic Sleep Protocols Might Be Pulling Wellness Buyers Away From Melato</h2>
+                <p class="trend-card-summary">The shift to body-first sleep routines pairs ancestral practices like grounding and humming with the same wearable data stack high-performers use to train. What started as niche biohacking is starting to look like the next mainstream sleep playbook.</p>
+                <a href="trend-somatic-sleep.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="somatic-sleep-protocols-might-be-pulling-wellness-buyers-away-from-melato" data-title="Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape" data-image="assets/feed/trend-14.png" data-href="trend-somatic-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-owen-brooks.html" class="avatar avatar--contributor trend-card-action" aria-label="View Owen Brooks’s profile"><img src="assets/authors/owen-brooks.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-15.png" alt="" loading="lazy">
+              <a href="collection-longevity.html" class="trend-card-collection">Longevity Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Weekend-Only Walking Beats None, Study Finds. Here’s What’s Next</h2>
+                <p class="trend-card-summary">The 10,000-step gospel is quietly cracking. A JAMA Network Open cohort study and a Lancet Public Health meta-analysis both point in the same direction: fewer steps, spread across fewer days, still deliver real reductions in mortality risk. Expect step targets — and the wearables that promote them — to follow the evidence within the next guidance cycle.</p>
+                <a href="trend-weekend-walking.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="weekend-only-walking-beats-none-study-finds-here-s-what-s-next" data-title="Weekend Walking Is Inspiring a More Flexible Approach to Everyday Movement" data-image="assets/feed/trend-15.png" data-href="trend-weekend-walking.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-marcus-bennett.html" class="avatar avatar--contributor trend-card-action" aria-label="View Marcus Bennett’s profile"><img src="assets/authors/marcus-bennett.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-16.png" alt="" loading="lazy">
+              <a href="collection-back-to-school-transitions.html" class="trend-card-collection">Back-to-School Transitions <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">How Emotional Mirroring at Drop-Off Can Affect Kindergarten Separation</h2>
+                <p class="trend-card-summary">Kindergarten separation anxiety can make drop-off one of the year’s most predictable emotional flashpoints for families, and the pattern of what happens next is well-established. Understanding how the separation cycle typically unfolds, what drives it and where it usually lands can help parents make better choices at the classroom door — starting on day one.</p>
+                <a href="trend-kindergarten-dropoff.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-emotional-mirroring-at-drop-off-can-affect-kindergarten-separation" data-title="How Families Are Rethinking the Kindergarten Goodbye" data-image="assets/feed/trend-16.png" data-href="trend-kindergarten-dropoff.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-maya-chen.html" class="avatar avatar--contributor trend-card-action" aria-label="View Maya Chen’s profile"><img src="assets/authors/maya-chen.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-17.png" alt="" loading="lazy">
+              <a href="collection-solo-travel.html" class="trend-card-collection">Solo Travel <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Finding Travel Agent Candidates the Right Way: BBB’s Reviews</h2>
+                <p class="trend-card-summary">Complex trips — international travel, cruises, group itineraries — are pushing more travelers toward professional advisors, and the guardrails around that decision are getting more explicit. Consumer protection agencies have posted fresh guidance covering how to vet an advisor, understand refund rights and avoid payment scams. Here’s what’s on the table now, why the pressure is rising and how to move on it before you book.</p>
+                <a href="trend-travel-advisors.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="finding-travel-agent-candidates-the-right-way-bbb-s-reviews" data-title="Finding a Travel Advisor Starts With Better Questions" data-image="assets/feed/trend-17.png" data-href="trend-travel-advisors.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-18.png" alt="" loading="lazy">
+              <a href="collection-longevity.html" class="trend-card-collection">Longevity Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Guy Fieri’s Weighted Vest Rucking and Transformation Points</h2>
+                <p class="trend-card-summary">Guy Fieri says he has lost 30 pounds since 2020 on a routine built around rucking, HIIT, a daily cold plunge and intermittent fasting. The restaurateur and TV host’s regimen — weighted-vest hill walks, a barn gym, a wood-barrel sauna and a noon-to-8 eating window — reads less as a celebrity anecdote and more as a template for a specific shift in how men over 50 are training. Where that template goes from here is the part worth watching.</p>
+                <a href="trend-weighted-walking.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="guy-fieri-s-weighted-vest-rucking-and-transformation-points" data-title="Weighted Walking Is Giving the Everyday Fitness Routine a Different Look" data-image="assets/feed/trend-18.png" data-href="trend-weighted-walking.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-maya-chen.html" class="avatar avatar--contributor trend-card-action" aria-label="View Maya Chen’s profile"><img src="assets/authors/maya-chen.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="trend-card">
+              <img class="trend-card-image" src="assets/feed/trend-09.png" alt="" loading="lazy">
+              <a href="collection-budgeted-living.html" class="trend-card-collection">Budgeted Living <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
+              <div class="trend-card-content">
+                <h2 class="trend-card-headline">Inside Dollar Store Decorating Finds That Transform Any Home</h2>
+                <p class="trend-card-summary">Dollar Tree has quietly become a staging ground for home decor that punches well above its price point, with window clings that mimic stained glass, hammered glass bottles and woven straw baskets showing up in coverage from major shopping outlets.</p>
+                <a href="trend-dollar-store-decor.html" class="button-primary">Go Deeper</a>
+              </div>
+              <div class="trend-card-actions">
+                
+                <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="inside-dollar-store-decorating-finds-that-transform-any-home" data-title="Inside the Dollar Store Decorating Finds Giving Familiar Rooms a Fresh Look" data-image="assets/feed/trend-09.png" data-href="trend-dollar-store-decor.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
+                <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
+              </div>
+            </article>
+          </li>
+          <li>
+            <section class="feed-complete" aria-labelledby="feed-complete-heading">
+              <div class="feed-complete-header">
+                <span class="feed-complete-icon" aria-hidden="true"></span>
+                <h2 id="feed-complete-heading" class="feed-complete-title">That's your feed for today</h2>
+                <p class="feed-complete-text">Your next hunt drops tomorrow. In the meantime, explore a Collection.</p>
+              </div>
+              <ul class="collection-list">
+                <li><a href="collection-andropause-hormonal-midlife.html" class="pill-button">Andropause &amp; Hormonal Midlife <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-back-to-school-transitions.html" class="pill-button">Back-to-School Transitions <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection.html" class="pill-button">Group &amp; Friend Events <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-biohackers-body.html" class="pill-button">Biohacker's Body <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-clean-living-control.html" class="pill-button">Clean Living Control <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-food-as-an-experience.html" class="pill-button">Food as an Experience <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+                <li><a href="collection-lymphatic-system-literacy.html" class="pill-button">Lymphatic System Literacy <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+              </ul>
+            </section>
+          </li>
+      </ol>
+
+      <footer class="site-footer">
+        <ul class="footer-links">
+          <li>©2026 Trend Hunter</li>
+          <li><a href="#">Copyright</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+          <li><a href="#">Your Privacy Choices</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Trend Hunter for Business</a></li>
+          <li><a href="#">Trend Hunter Shop</a></li>
+        </ul>
+      </footer>
+    </main>
+
+    <!-- Right rail: Predictions Panel -->
+    <aside class="rail-right" aria-label="Daily predictions">
+      <section class="predictions-panel" aria-labelledby="predictions-heading">
+        <h2 id="predictions-heading" class="type-h4-caps">Daily Predictions</h2>
+        <div class="prediction-stack">
+          <div class="prediction-card prediction-card--onboarding">
+            <p class="prediction-onboarding-copy">
+              <span>Experts Predict The Next Trend.</span>
+              <span>Are you in or out?</span>
+            </p>
+            <a href="#" class="button-primary prediction-onboarding-button">Make Your Call</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+  </div>
+
+  <!-- Toast — stays until dismissed -->
+  <div class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true"></span>
+      <p class="toast-message"></p>
+    </div>
+    <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
+  </div>
+
+  <script src="app.js?v=6"></script>
+  <script src="predictions.js?v=41"></script>
+  <script src="answers.js?v=1"></script>
+
+  <!-- Prototype settings — fixed bottom right, same look in both themes -->
+  <div class="settings-panel" id="settings-panel" hidden>
+    <button class="settings-panel-item" type="button" data-setting="deal">Deal predictions again</button>
+    <button class="settings-panel-item settings-panel-item--two-line" type="button" data-setting="deal-new-user">Deal predictions again<br>as a new user</button>
+    <button class="settings-panel-item" type="button" data-setting="read-more">Read more opens: Story page</button>
+    <button class="settings-panel-item" type="button" data-setting="osano">Open Osano</button>
+  </div>
+  <button class="settings-fab" type="button" aria-label="Prototype settings" aria-expanded="false" aria-controls="settings-panel">
+    <span class="settings-fab-icon" aria-hidden="true"></span>
+    <span class="settings-fab-close material-symbols-rounded" aria-hidden="true">cancel</span>
+  </button>
+  <script src="settings.js?v=2"></script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "purpose": "Mobile prototype carousel. The first two display prices match the user reference; added product prices are prototype copy. All cards remain unlinked.",
+  "products": [
+    {
+      "title": "Magnesium Mineral Butter",
+      "page": "https://shoppantryproducts.com/products/magnesium-butter",
+      "image": "https://shoppantryproducts.com/cdn/shop/files/AfterlightImage_e4ff6793-7f33-479b-be08-1ae0fab27dd1.jpg?v=1741231267&width=1946"
+    },
+    {
+      "title": "Farm To Pet Turkey Crumbles",
+      "page": "https://farmtopettreats.com/products/turkey-cat-treats",
+      "image": "https://farmtopettreats.com/cdn/shop/files/Farm_to_Pet__Natural_Cat_Snacks_Turkey_Crumbles_Cat_Treats___Front_of_Bag.png?v=1757432655&width=2048"
+    },
+    {
+      "title": "Pantry Handpoured Lip Balm",
+      "page": "https://shoppantryproducts.com/products/lip-balm-tube",
+      "image": "https://shoppantryproducts.com/cdn/shop/products/82108659_2782436415109909_445861770473504768_o.jpg?v=1737052386&width=1946"
+    },
+    {
+      "title": "Farm To Pet Chicken Crumbles",
+      "page": "https://farmtopettreats.com/products/chicken-cat-treats",
+      "image": "https://farmtopettreats.com/cdn/shop/files/Farm_to_Pet__Lean_Cat_Snacks_Chicken_Crumbles_Cat_Treats___Front_of_Bag.png?v=1757433457&width=2048"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Fitness Reset — Trend Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="feed.css?v=50">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+    } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <button class="nav-menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false">
+        <img class="nav-menu-icon theme-dark-only" src="assets/feed/icon-menu.svg" alt="">
+        <img class="nav-menu-icon theme-light-only" src="assets/feed/icon-menu-light.svg" alt="">
+        <span class="nav-text-button">Menu</span>
+      </button>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+        <a href="login.html" class="nav-text-button nav-login">Login</a>
+        <a href="userprofile.html" class="nav-profile" aria-label="Profile"><span class="nav-profile-icon" aria-hidden="true"></span></a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Drawer — opened by the Menu button -->
+  <dialog class="drawer" id="site-drawer" aria-label="Menu">
+    <button class="drawer-close" aria-label="Close menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Site">
+      <section class="drawer-group" aria-labelledby="drawer-channels">
+        <h2 class="drawer-heading" id="drawer-channels">Explore Channels</h2>
+        <ul class="drawer-links">
+          <li><a href="channel.html" class="drawer-link">Mind-Body</a></li>
+          <li><a href="channel-everyday-living.html" class="drawer-link">Everyday Living</a></li>
+          <li><a href="channel-experiences.html" class="drawer-link">Experiences</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <section class="drawer-group" aria-labelledby="drawer-business">
+        <h2 class="drawer-heading" id="drawer-business">Trend Hunter for Business</h2>
+        <ul class="drawer-links">
+          <li><a href="#" class="drawer-link">Trends &amp; Insights</a></li>
+          <li><a href="#" class="drawer-link">Solutions</a></li>
+          <li><a href="#" class="drawer-link">Events</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <div class="drawer-group">
+        <a href="#" class="drawer-heading">Trend Hunter Shop</a>
+      </div>
+      <hr class="drawer-divider drawer-signed-in-only">
+      <div class="drawer-group drawer-signed-in-only">
+        <button class="drawer-link drawer-logout">Log out</button>
+      </div>
+    </nav>
+  </dialog>
+
+  <!-- Auth Prompt — shown when a signed-out reader tries to bookmark -->
+  <dialog class="auth-prompt" aria-labelledby="auth-title">
+    <button class="auth-close" aria-label="Close"><span class="auth-close-icon" aria-hidden="true"></span></button>
+    <div class="auth-main">
+      <header class="auth-header">
+        <img src="assets/auth/logo-mark.svg" alt="" width="16" height="30">
+        <h2 class="auth-title" id="auth-title">Stay ahead</h2>
+        <p class="auth-subtitle">Create a free account to follow topics, save stories, and get updates on the trends that matter to you</p>
+      </header>
+      <div class="auth-providers">
+        <button class="auth-button auth-button--provider" data-auth="apple"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</button>
+        <button class="auth-button auth-button--provider" data-auth="google"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</button>
+      </div>
+      <a class="auth-button auth-button--email auth-prompt-email" href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Send me a sign-in link</a>
+    </div>
+    <footer class="auth-footer">
+      <ul class="footer-links">
+        <li><a href="#">Copyright</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </footer>
+  </dialog>
+
+  <div class="page-layout">
+
+    <!-- Left rail: Collection List + Trend List -->
+    <aside class="rail-left" aria-label="Related collections and trending stories">
+      <section class="side-panel" aria-labelledby="related-heading">
+        <h2 id="related-heading" class="type-h4-caps">Related collections</h2><ul class="collection-list"><li><a href="collection-biohackers-body.html" class="pill-button">Biohacker&#x27;s Body <span class="trend-icon trend-icon--up" aria-label="Trending up" role="img"></span></a></li><li><a href="collection-cardio-and-its-health.html" class="pill-button">Cardio and Its Health <span class="trend-icon trend-icon--up" aria-label="Trending up" role="img"></span></a></li><li><a href="collection-longevity.html" class="pill-button">Longevity <span class="trend-icon trend-icon--up" aria-label="Trending up" role="img"></span></a></li><li><a href="collection-the-intuitive-body.html" class="pill-button">The Intuitive Body <span class="trend-icon trend-icon--up" aria-label="Trending up" role="img"></span></a></li></ul></section>
+
+      <section class="side-panel" aria-labelledby="trending-heading">
+        <h2 id="trending-heading" class="type-h4-caps trend-list-label">Now Trending</h2>
+        <ul class="story-list">
+          <li><a href="trend-school-breakfast.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-1.png" alt=""><h3 class="story-lockup-headline">Grades, Mood and Focus Are Linked to Breakfast Habits in Kids, Pediatric Research Shows</h3></a></li>
+          <li><a href="trend-farmers-market-weekend.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-2.png" alt=""><h3 class="story-lockup-headline">Union Square Greenmarket's 50th Anniversary Puts a Spotlight on the Best Farmers Markets in America</h3></a></li>
+          <li><a href="trend-seasonal-produce.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trending-3.png" alt=""><h3 class="story-lockup-headline">Seasonal Fruits and Vegetables by Month, Mapped: Here's Your Seasonal Produce Guide to What Peaks Where and When</h3></a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Center: Collection -->
+    <main class="feed-column">
+      <div class="channel-content">
+
+        <!-- Masthead -->
+        <header class="masthead">
+          <div class="masthead-title-row">
+            <h1 class="masthead-title">Fitness Reset</h1>
+            <span class="sparkline-up" role="img" aria-label="Trending up"></span>
+          </div>
+          <p class="masthead-description">A reset can begin with a more workable plan rather than a more dramatic target. Explore flexible training tools, community activities and everyday products designed around the lives people already lead.</p>
+          <div class="masthead-actions">
+            <button class="follow-button">Follow</button>
+            <button class="article-share" aria-label="Share"><span class="article-share-icon" aria-hidden="true"></span></button>
+          </div>
+        </header>
+
+        <!-- Trend List -->
+        <section class="collection-trends" aria-labelledby="collection-trends-heading"><h2 id="collection-trends-heading" class="type-h4-caps">Explore trends in this collection</h2><ul class="story-list"><li><a href="trend-weekend-walking.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-15.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Weekend Walking Is Inspiring a More Flexible Approach to Everyday Movement</h3></a></li><li><a href="trend-weekend-training-apps.html" class="story-lockup"><img class="story-lockup-image" src="assets/profile/saved-3.png" alt="" loading="lazy"><h3 class="story-lockup-headline">How Weekend Athletes Are Using Training Apps to Make Their Routine Work</h3></a></li><li><a href="trend-weighted-walking.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-18.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Weighted Walking Is Giving the Everyday Fitness Routine a Different Look</h3></a></li><li><a href="trend-run-club-connections.html" class="story-lockup"><img class="story-lockup-image" src="assets/collection/story-2.png" alt="" loading="lazy"><h3 class="story-lockup-headline">Why Run Clubs Are Replacing Dating Apps for Gen Z</h3></a></li></ul></section>
+
+        <!-- Trend Card List -->
+        <section class="trend-card-list" aria-labelledby="stories-heading"><h2 id="stories-heading" class="type-h4-caps">More Stories</h2><ol class="feed-list"><li><article class="trend-card"><img class="trend-card-image" src="assets/feed/trend-01.png" alt="" loading="lazy"><a href="collection-andropause-hormonal-midlife.html" class="trend-card-collection">Andropause &amp; Hormonal Midlife <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">Men Are Challenging the Midlife &#x27;Just Aging&#x27; Narrative as Testosterone Therapy Gains Momentum</h2><p class="trend-card-summary">Testosterone replacement therapy has moved out of the anti-aging clinic and into the open, with doctors and patients publicly documenting the treatment as a fix for the fatigue, weight gain and low libido that primary care physicians have long chalked up to normal midlife decline.</p><a href="trend.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="trt" data-title="Men Are Challenging the Midlife &#x27;Just Aging&#x27; Narrative as Testosterone Therapy Gains Momentum" data-image="assets/feed/trend-01.png" data-href="trend.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor.html" class="avatar avatar--contributor trend-card-action" aria-label="View Samantha Agate’s profile"><img src="assets/contributor/samantha-agate-64.png" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li><li><article class="trend-card"><img class="trend-card-image" src="assets/feed/trend-02.png" alt="" loading="lazy"><a href="collection-retailtainment-hubs.html" class="trend-card-collection">Retailtainment Hubs <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits</h2><p class="trend-card-summary">A saved outfit can now become a reason to leave the house. This story follows the imagined journey from a short video to a fitting room, with the store becoming part of the social experience rather than the final step of a transaction.</p><a href="trend-retailtainment.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li><li><article class="trend-card"><img class="trend-card-image" src="assets/feed/trend-03.png" alt="" loading="lazy"><a href="collection-back-to-school-transitions.html" class="trend-card-collection">Back-to-School Transitions <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape</h2><p class="trend-card-summary">The school year begins on a calendar, but family routines settle at their own pace. In this sample feature, a household discovers that the difficult part of returning to class is the chain of tiny transitions before anyone reaches the school gate.</p><a href="trend-school-routines.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="morning-meltdowns-fatigue-may-mean-child-s-routine-is-still-shape" data-title="Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape" data-image="assets/feed/trend-03.png" data-href="trend-school-routines.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor-owen-brooks.html" class="avatar avatar--contributor trend-card-action" aria-label="View Owen Brooks’s profile"><img src="assets/authors/owen-brooks.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li></ol></section>
+
+      </div>
+
+      <footer class="site-footer">
+        <ul class="footer-links">
+          <li>©2026 Trend Hunter</li>
+          <li><a href="#">Copyright</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+          <li><a href="#">Your Privacy Choices</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Trend Hunter for Business</a></li>
+          <li><a href="#">Trend Hunter Shop</a></li>
+        </ul>
+      </footer>
+    </main>
+
+    <!-- Right rail: Predictions Panel -->
+    <aside class="rail-right" aria-label="Daily predictions">
+      <section class="predictions-panel" aria-labelledby="predictions-heading">
+        <h2 id="predictions-heading" class="type-h4-caps">Daily Predictions</h2>
+        <div class="prediction-stack">
+          <div class="prediction-card prediction-card--onboarding">
+            <p class="prediction-onboarding-copy">
+              <span>Experts Predict The Next Trend.</span>
+              <span>Are you in or out?</span>
+            </p>
+            <a href="#" class="button-primary prediction-onboarding-button">Make Your Call</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+  </div>
+
+  <!-- Toast — stays until dismissed -->
+  <div class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true"></span>
+      <p class="toast-message"></p>
+    </div>
+    <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
+  </div>
+
+  <script src="app.js?v=6"></script>
+  <script src="predictions.js?v=41"></script>
+  <script src="answers.js?v=1"></script>
+
+  <!-- Prototype settings — fixed bottom right, same look in both themes -->
+  <div class="settings-panel" id="settings-panel" hidden>
+    <button class="settings-panel-item" type="button" data-setting="deal">Deal predictions again</button>
+    <button class="settings-panel-item settings-panel-item--two-line" type="button" data-setting="deal-new-user">Deal predictions again<br>as a new user</button>
+    <button class="settings-panel-item" type="button" data-setting="read-more">Read more opens: Story page</button>
+    <button class="settings-panel-item" type="button" data-setting="osano">Open Osano</button>
+  </div>
+  <button class="settings-fab" type="button" aria-label="Prototype settings" aria-expanded="false" aria-controls="settings-panel">
+    <span class="settings-fab-icon" aria-hidden="true"></span>
+    <span class="settings-fab-close material-symbols-rounded" aria-hidden="true">cancel</span>
+  </button>
+  <script src="settings.js?v=2"></script>
+
+</body>
+</html>

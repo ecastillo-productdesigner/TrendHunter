@@ -1,0 +1,93 @@
+html[data-demo-locked] { overflow: hidden; }
+html[data-demo-locked] body > :not(#demo-access):not(.demo-access-noscript) { display: none !important; }
+.demo-access[hidden], .demo-access-error[hidden] { display: none; }
+.demo-access {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  min-height: 100svh;
+  padding: var(--spacing-layout-lg);
+  background: var(--color-background-surface);
+  color: var(--color-text-body);
+  font-family: var(--type-font-body);
+}
+.demo-access-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  width: 100%;
+  max-width: var(--layout-login-width);
+}
+.demo-access-logo { width: var(--layout-wordmark-width); height: auto; align-self: flex-start; }
+.demo-access-intro { display: flex; flex-direction: column; gap: var(--spacing-component-sm); }
+.demo-access-intro h1 {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-28);
+  line-height: var(--type-line-height-display-md);
+  font-weight: var(--type-weight-extrabold);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+.demo-access-intro p { font-size: var(--type-size-16); line-height: var(--type-line-height-ui-lg); }
+.demo-access-intro .demo-access-kicker {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-14);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+.demo-access-form { display: flex; flex-direction: column; gap: var(--spacing-component-ms); }
+.demo-access-form label { font-size: var(--type-size-14); line-height: var(--type-line-height-ui-lg); }
+.demo-access-password {
+  display: flex;
+  align-items: stretch;
+  height: var(--layout-auth-button-height);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+}
+.demo-access-password:focus-within { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.demo-access-password input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: var(--spacing-component-ms);
+  border: 0;
+  outline: 0;
+  background: var(--color-background-surface-raised);
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-16);
+  color: var(--color-text-body);
+}
+.demo-access-password button {
+  padding-inline: var(--spacing-component-ms);
+  background: var(--color-background-surface-raised);
+  font: inherit;
+  font-size: var(--type-size-14);
+  color: var(--color-text-body);
+  cursor: pointer;
+}
+.demo-access-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--layout-auth-button-height);
+  padding: var(--spacing-component-ms) var(--spacing-layout-xl);
+  border: 0;
+  border-radius: var(--radius-x-sm);
+  background: var(--buttons-primary-bg-default);
+  color: var(--buttons-primary-text-default);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  line-height: var(--type-line-height-ui-lg);
+  font-weight: var(--type-weight-extrabold);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.demo-access-submit:hover { background: var(--buttons-primary-bg-hover); }
+.demo-access-submit:focus-visible, .demo-access-password button:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.demo-access-submit:disabled { cursor: wait; }
+.demo-access-error { color: var(--prediction-badge-out); font-size: var(--type-size-14); line-height: var(--type-line-height-ui-lg); }
+.demo-access-noscript { padding: var(--spacing-layout-lg); font-family: var(--type-font-body); color: var(--color-text-body); }

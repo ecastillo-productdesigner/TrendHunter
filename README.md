@@ -1,0 +1,35 @@
+# TrendHunter
+
+Trend Hunter B2C prototype and design system, kept in its own private repository.
+
+## Demo access
+
+The website opens with a password screen. The demo password is **`demo`**. Access lasts for the current tab session and survives navigation and refreshes. Choosing **Log out** in the profile menu ends demo access as well as the prototype sign-in session.
+
+This matches CSA's browser-only demo gate. The private repository protects access to the source on GitHub; the website password is a bypassable preview screen, not server authentication. The published static files can still be requested directly. No password is sent to a server.
+
+The same gate is applied to feed, article, collection, contributor, login and design-system pages, including direct links.
+
+## Local preview
+
+With Node.js 24 or newer:
+
+```sh
+npm run dev
+```
+
+Open http://127.0.0.1:4176/TrendHunter/. Set `PORT` to choose a different port.
+
+## Edit and publish
+
+- Edit the website in `site/` and the password screen in `access/`.
+- Run `npm run design-system:build` after changing the design-system generator or token definitions. This uses Python 3's standard library.
+- Run `npm run check` to build, check JavaScript syntax and validate local page references.
+- Push to `main` to publish through the GitHub Pages workflow.
+- `npm run build` creates `dist/`, copies the password screen, and injects it into every HTML page. `index.html` is generated from the feed so the website opens at its root URL.
+
+## Prototype content
+
+Prediction vote percentages, several story texts, and the six illustrated contributor profiles are sample content. Votes, sign-in state and demo access are stored in the browser. Product cards remain static and do not link to a shop.
+
+The original local prototype was copied from `TrendHunterB2C`; unrelated CSA files and repository history are not included.

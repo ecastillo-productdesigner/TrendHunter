@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <!-- Illustrative editorial copy for the local prototype. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Meet the Run-Club Founder Whose Viral TikTok Is Turning Sober Darties Into New College Party Themes — Trend Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward">
+  <link rel="stylesheet" href="feed.css?v=50">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+      // Opened from a prediction card's Read more...: show only the article
+      if (location.hash === '#sheet') document.documentElement.dataset.view = 'sheet';
+    } catch (e) {}
+  </script>
+</head>
+<body class="page-trend">
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <button class="nav-menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false">
+        <img class="nav-menu-icon theme-dark-only" src="assets/feed/icon-menu.svg" alt="">
+        <img class="nav-menu-icon theme-light-only" src="assets/feed/icon-menu-light.svg" alt="">
+        <span class="nav-text-button">Menu</span>
+      </button>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+        <a href="login.html" class="nav-text-button nav-login">Login</a>
+        <a href="userprofile.html" class="nav-profile" aria-label="Profile"><span class="nav-profile-icon" aria-hidden="true"></span></a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Drawer — opened by the Menu button -->
+  <dialog class="drawer" id="site-drawer" aria-label="Menu">
+    <button class="drawer-close" aria-label="Close menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Site">
+      <section class="drawer-group" aria-labelledby="drawer-channels">
+        <h2 class="drawer-heading" id="drawer-channels">Explore Channels</h2>
+        <ul class="drawer-links">
+          <li><a href="channel.html" class="drawer-link">Mind-Body</a></li>
+          <li><a href="channel-everyday-living.html" class="drawer-link">Everyday Living</a></li>
+          <li><a href="channel-experiences.html" class="drawer-link">Experiences</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <section class="drawer-group" aria-labelledby="drawer-business">
+        <h2 class="drawer-heading" id="drawer-business">Trend Hunter for Business</h2>
+        <ul class="drawer-links">
+          <li><a href="#" class="drawer-link">Trends &amp; Insights</a></li>
+          <li><a href="#" class="drawer-link">Solutions</a></li>
+          <li><a href="#" class="drawer-link">Events</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <div class="drawer-group">
+        <a href="#" class="drawer-heading">Trend Hunter Shop</a>
+      </div>
+      <hr class="drawer-divider drawer-signed-in-only">
+      <div class="drawer-group drawer-signed-in-only">
+        <button class="drawer-link drawer-logout">Log out</button>
+      </div>
+    </nav>
+  </dialog>
+
+  <!-- Auth Prompt — shown when a signed-out reader tries to bookmark -->
+  <dialog class="auth-prompt" aria-labelledby="auth-title">
+    <button class="auth-close" aria-label="Close"><span class="auth-close-icon" aria-hidden="true"></span></button>
+    <div class="auth-main">
+      <header class="auth-header">
+        <img src="assets/auth/logo-mark.svg" alt="" width="16" height="30">
+        <h2 class="auth-title" id="auth-title">Stay ahead</h2>
+        <p class="auth-subtitle">Create a free account to follow topics, save stories, and get updates on the trends that matter to you</p>
+      </header>
+      <div class="auth-providers">
+        <button class="auth-button auth-button--provider" data-auth="apple"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</button>
+        <button class="auth-button auth-button--provider" data-auth="google"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</button>
+      </div>
+      <a class="auth-button auth-button--email auth-prompt-email" href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Send me a sign-in link</a>
+    </div>
+    <footer class="auth-footer">
+      <ul class="footer-links">
+        <li><a href="#">Copyright</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </footer>
+  </dialog>
+
+  <div class="page-layout">
+
+    <!-- Left rail: Context Card + Collection List -->
+    <aside class="rail-left rail-left--trend" aria-label="Context and recommended collections">
+      <section class="context-card" aria-labelledby="context-heading">
+        <h2 id="context-heading" class="context-card-label">Here’s the context</h2>
+        <p>This fictional campus feature follows an organizer building a daytime gathering around movement, music and a place to talk. A party can have a recognizable rhythm without relying on the usual format.</p>
+      </section>
+
+      <section class="side-panel" aria-labelledby="recommended-heading">
+        <h2 id="recommended-heading" class="type-h4-caps">Recommended for you</h2>
+        <ul class="collection-list">
+          <li><a href="collection-back-to-school-transitions.html" class="pill-button">Back-to-School Transitions <span class="trend-icon trend-icon--down" role="img" aria-label="Trending down"></span></a></li>
+          <li><a href="collection.html" class="pill-button">Group &amp; Friend Events <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+          <li><a href="collection-biohackers-body.html" class="pill-button">Biohacker's Body <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+          <li><a href="collection-fitness-reset.html" class="pill-button">Fitness Reset <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Center: Trend detail -->
+    <main class="feed-column">
+      <div class="channel-content">
+
+        <article class="article">
+<header class="article-masthead"><a href="collection.html" class="article-collection">Group &amp; Friend Events <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><h1 class="masthead-title">Meet the Run-Club Founder Whose Viral TikTok Is Turning Sober Darties Into New College Party Themes</h1><div class="article-meta"><div class="article-byline-group"><p class="contributor-byline"><a href="contributor-maya-chen.html" class="avatar avatar--contributor" aria-label="View Maya Chen’s profile"><img src="assets/authors/maya-chen.webp" alt="" width="256" height="256"></a><span class="contributor-by">By</span><span class="contributor-name">Maya Chen</span></p></div><div class="article-actions"><button class="bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="sober-socials" data-title="Meet the Run-Club Founder Whose Viral TikTok Is Turning Sober Darties Into New College Party Themes" data-image="assets/collection/story-1.png" data-href="trend-sober-socials.html"><span class="bookmark-icon" aria-hidden="true"></span></button><button class="article-share" aria-label="Share"><span class="article-share-icon" aria-hidden="true"></span></button></div></div></header>
+<figure class="body-image"><img src="assets/collection/story-1.png" alt="Illustrative image for group &amp; friend events"><figcaption class="caption-credit">Illustrative photo · Sample editorial story</figcaption></figure>
+<div class="article-body"><p>This fictional campus feature follows an organizer building a daytime gathering around movement, music and a place to talk. A party can have a recognizable rhythm without relying on the usual format.</p><h2>What’s Happening</h2><p>The imagined event begins with an optional walk, then shifts to a courtyard with drinks, snacks and a short set from a student DJ. People can join at more than one point.</p><p>The details of the experience are the center of this story: what someone notices first, what makes participation easier and what remains useful when the initial novelty has passed.</p><h2>Why It’s Happening</h2><p>A flexible invitation lowers the pressure to participate in one particular way. Shared activities can also make meeting someone feel less like a formal introduction.</p><figure class="body-quote"><blockquote><p>Organizers could design more events with clear schedules, quieter areas and several ways to take part.</p></blockquote><figcaption>Trend Hunter perspective</figcaption></figure><h2>What Could Be Next</h2><p>Organizers could design more events with clear schedules, quieter areas and several ways to take part.</p><p>The signals below offer a way to follow how this idea develops. A new product or a compelling personal story can introduce a possibility; the more revealing question is how people adapt it to everyday life over time.</p><p>THREE SIGNALS TO WATCH:</p><ol class="article-signals"><li>Daytime social calendars.</li><li>Multiple ways to participate.</li><li>More considered event spaces.</li></ol></div></article>
+
+        <!-- Trend Card List -->
+        <section class="trend-card-list" aria-labelledby="stories-heading"><h2 id="stories-heading" class="type-h4-caps">More Stories</h2><ol class="feed-list"><li><article class="trend-card"><img class="trend-card-image" src="assets/collection/story-2.png" alt="" loading="lazy"><a href="collection.html" class="trend-card-collection">Group &amp; Friend Events <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">Why Run Clubs Are Replacing Dating Apps for Gen Z</h2><p class="trend-card-summary">An organized route can give strangers an easy opening conversation. This sample social feature looks at a neighborhood run club where the coffee afterward is as carefully planned as the route.</p><a href="trend-run-club-connections.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="run-club-connections" data-title="Why Run Clubs Are Replacing Dating Apps for Gen Z" data-image="assets/collection/story-2.png" data-href="trend-run-club-connections.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor-nadia-patel.html" class="avatar avatar--contributor trend-card-action" aria-label="View Nadia Patel’s profile"><img src="assets/authors/nadia-patel.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li><li><article class="trend-card"><img class="trend-card-image" src="assets/collection/story-3.png" alt="" loading="lazy"><a href="collection.html" class="trend-card-collection">Group &amp; Friend Events <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">Tinder Events and Sound Bath Benefits Signal How Wellness-First Dating Is Growing Beyond a Niche Curiosity</h2><p class="trend-card-summary">A shared activity can change the tone of a first meeting. This sample dating feature imagines a small event that combines an optional wellness session with plenty of ordinary conversation.</p><a href="trend-wellness-first-dating.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="wellness-first-dating" data-title="Tinder Events and Sound Bath Benefits Signal How Wellness-First Dating Is Growing Beyond a Niche Curiosity" data-image="assets/collection/story-3.png" data-href="trend-wellness-first-dating.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor-owen-brooks.html" class="avatar avatar--contributor trend-card-action" aria-label="View Owen Brooks’s profile"><img src="assets/authors/owen-brooks.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li><li><article class="trend-card"><img class="trend-card-image" src="assets/collection/story-4.png" alt="" loading="lazy"><a href="collection-everyday-living.html" class="trend-card-collection">Everyday Living <span class="trend-icon trend-icon--up" aria-hidden="true"></span></a><div class="trend-card-content"><h2 class="trend-card-headline">Couples Who Make At-Home Date Night a Recurring Priority Reconnect More Deeply</h2><p class="trend-card-summary">This sample relationship story follows a couple reserving one ordinary evening for a shared meal and an activity they choose together. The useful part is giving the time a place in the calendar.</p><a href="trend-at-home-date-night.html" class="button-primary">Go Deeper</a></div><div class="trend-card-actions"><button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="at-home-date-night" data-title="Couples Who Make At-Home Date Night a Recurring Priority Reconnect More Deeply" data-image="assets/collection/story-4.png" data-href="trend-at-home-date-night.html"><span class="bookmark-icon" aria-hidden="true"></span></button><a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a></div></article></li></ol></section>
+
+      </div>
+
+      <footer class="site-footer">
+        <ul class="footer-links">
+          <li>©2026 Trend Hunter</li>
+          <li><a href="#">Copyright</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+          <li><a href="#">Your Privacy Choices</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Trend Hunter for Business</a></li>
+          <li><a href="#">Trend Hunter Shop</a></li>
+        </ul>
+      </footer>
+    </main>
+
+    <!-- Right rail: Predictions Panel -->
+    <aside class="rail-right" aria-label="Daily predictions">
+      <section class="predictions-panel" aria-labelledby="predictions-heading">
+        <h2 id="predictions-heading" class="type-h4-caps">Daily Predictions</h2>
+        <div class="prediction-stack">
+          <div class="prediction-card prediction-card--onboarding">
+            <p class="prediction-onboarding-copy">
+              <span>Experts Predict The Next Trend.</span>
+              <span>Are you in or out?</span>
+            </p>
+            <a href="#" class="button-primary prediction-onboarding-button">Make Your Call</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+  </div>
+
+  <!-- Toast — stays until dismissed -->
+  <div class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true"></span>
+      <p class="toast-message"></p>
+    </div>
+    <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
+  </div>
+
+  <script src="app.js?v=6"></script>
+  <script src="predictions.js?v=41"></script>
+  <script src="answers.js?v=1"></script>
+
+  <!-- Prototype settings — fixed bottom right, same look in both themes -->
+  <div class="settings-panel" id="settings-panel" hidden>
+    <button class="settings-panel-item" type="button" data-setting="deal">Deal predictions again</button>
+    <button class="settings-panel-item settings-panel-item--two-line" type="button" data-setting="deal-new-user">Deal predictions again<br>as a new user</button>
+    <button class="settings-panel-item" type="button" data-setting="read-more">Read more opens: Story page</button>
+    <button class="settings-panel-item" type="button" data-setting="osano">Open Osano</button>
+  </div>
+  <button class="settings-fab" type="button" aria-label="Prototype settings" aria-expanded="false" aria-controls="settings-panel">
+    <span class="settings-fab-icon" aria-hidden="true"></span>
+    <span class="settings-fab-close material-symbols-rounded" aria-hidden="true">cancel</span>
+  </button>
+  <script src="settings.js?v=2"></script>
+
+</body>
+</html>
