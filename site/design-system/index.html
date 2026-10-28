@@ -33,6 +33,93 @@
               </div>
             </article></div><div class="ds-component-spec"><h4>From the feed</h4><p>Portrait image, collection label, headline, two-line summary, Go Deeper action, and a vertical rail for bookmarks and author links. Story cards have no share icon. Every Go Deeper action opens a matching article. There are 35 article destinations, including 33 illustrative stories using the original article structure and existing card photos.</p><dl><dt>Aspect ratio</dt><dd>434 / 772</dd><dt>Content left inset</dt><dd>12px</dd><dt>Content bottom inset</dt><dd>24px</dd><dt>Content right allowance</dt><dd>28%</dd><dt>Headline</dt><dd>28px / 28px · 800</dd><dt>Summary</dt><dd>16px / 22px · 400</dd></dl><p>On mobile the home feed card reaches both screen edges. Content keeps its own inner spacing.</p></div></div></article>
 <article class="ds-panel ds-component"><h3>Daily Predictions</h3><p>Below 960px, every article ends with the tall voting and context deck beneath a centered “MAKE YOUR CALL” heading. It uses the same 280 × 376px cards and Get context behavior as the main deck, replacing the compact article cards. On mobile arrivals from a prediction’s Read more link, the first card starts on its voting face without Get context; subsequent cards offer context normally. That heading disappears when “Your calls are locked in” results replace the deck, and returns when predictions are dealt again. The inline deck and its divider are hidden on desktop. Mobile readers arriving through a prediction’s Read more link get a compact purple Make your call shortcut while reading. It has no black outline or shadow and uses the Material Symbols Outlined arrow_downward icon. It jumps to the voting deck, hides when the deck is visible, and stays hidden once calls are complete. Each context face has a Read more link to its matching article. The ten predictions cover TRT, AI shopping, discount retail, store events, protein coffee, skin longevity, sleep rituals, run clubs, sober socials and home comfort. Context links and arrows keep the card’s text color inside articles. Read more stays inline with the context paragraph. An empty line of at least 22px separates that paragraph from the vote buttons. Daily Predictions is hidden on both desktop and mobile while results are displayed and returns with the cards. The results heading starts 24px below the panel’s top border. Mobile feed results keep the same 434 / 772 portrait frame as the other feed cards. The heading stays 24px from the top and the list fills the remaining height with internal scrolling. Mobile results in both the feed and articles use 12px side insets, shared by the headlines, vote bars and action rows. Article results avoid stacking extra padding on top of the existing phone page gutters. On mobile a divider separates predictions from More Stories. Result rows use the default design-system border token for their dividers, with 24px above and below each line and no divider under the last row. Each saved result places the headline on the left and its personal vote badge at the top right. Read more sits directly beneath the headline in the same left column. Sample In/Out percentages and a full-width lime/orange split bar sit below that heading group, separated by a 16px gap. The prototype percentages are illustrative and sum to 100%. Both You’re in and You’re out badges use the same position beside the headline. Links retain the shared DS type, underline and forward arrow. Links share the cards’ underlined label and forward arrow, and respect the existing story-page or sheet setting. Opening a story from the results shows only that prediction’s saved vote at the end of the article, on mobile and desktop, with the singular Your call is locked in heading. A full-width secondary View my other votes button reveals the other saved votes, then disappears so the expanded list remains visible. Those links open the matching story and focus its saved result. Reloading retains the article’s result context.</p><div class="ds-card-layout"><div class="ds-deck-preview"><div class="prediction-stack"><div class="prediction-card ds-deck-back ds-deck-back--one"></div><div class="prediction-card ds-deck-back ds-deck-back--two"></div><div class="prediction-card prediction-card--onboarding"><p class="prediction-onboarding-copy"><span>Experts Predict The Next Trend.</span><span>Are you in or out?</span></p><button type="button" class="button-primary prediction-onboarding-button">Make Your Call</button></div></div></div><div class="ds-component-spec"><h4>One deck across layouts</h4><p>The panel sits in the right rail on desktop. Below 960px it moves after the third story in the feed, with a 24px gap between its heading and deck.</p><dl><dt>Card</dt><dd>280 × 376px</dd><dt>Stack space</dt><dd>341 × 419px</dd><dt>Back card tilts</dt><dd>5° and 10°</dd><dt>Card radius</dt><dd>10px</dd><dt>Mobile group minimum vertical padding</dt><dd>32px</dd><dt>Outer feed gaps</dt><dd>0px top and bottom</dd></dl><p>The stack scales down on narrow phones. In the feed, the panel follows the story card’s proportions and centers the heading and deck as a group with a 24px gap. Prediction cards do not show a share icon.</p></div></div><div class="ds-votes"><button class="prediction-vote prediction-vote--out" type="button"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m out</button><button class="prediction-vote prediction-vote--in" type="button"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m in</button></div></article>
+<article class="ds-panel ds-component ds-results-component" id="prediction-results" aria-labelledby="ds-results-heading">
+  <h3 id="ds-results-heading">Prediction results</h3>
+  <p>Saved vote rows use the same product classes as the feed and article results. The headline sits on the left, the personal vote badge sits at the top right, and Read more appears below the headline when it links to another story. The full-width In/Out bar sits below this group. Percentages shown here are sample data.</p>
+  <div class="ds-two-column">
+    <div class="prediction-results ds-results-preview" aria-label="Saved vote row examples">
+      <ul class="prediction-results-list">
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy">
+              <p class="prediction-result-headline">More people will use AI to prepare for the holidays this year</p>
+              <a class="prediction-card-more prediction-result-more" href="../trend-ai-shopping-assistant.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+            </div>
+            <p class="prediction-badge prediction-badge--in"><span class="prediction-badge-icon" aria-hidden="true"></span>You're in</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 64% in, 36% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>64%</strong> In</span><span>Out <strong>36%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="64" height="8"></rect></svg>
+          </div>
+        </li>
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy">
+              <p class="prediction-result-headline">More shoppers will turn to dollar stores as cost of living rises</p>
+              <a class="prediction-card-more prediction-result-more" href="../trend-dollar-store-shoppers.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+            </div>
+            <p class="prediction-badge prediction-badge--out"><span class="prediction-badge-icon" aria-hidden="true"></span>You're out</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 57% in, 43% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>57%</strong> In</span><span>Out <strong>43%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="57" height="8"></rect></svg>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="ds-component-spec">
+      <h4>Layout and states</h4>
+      <p>The badge records your own call. It stays independent of the sample audience split. Both badge states use the same top-right position.</p>
+      <dl>
+        <dt>Headline</dt><dd>18px / 20px · Barlow Condensed · 700</dd>
+        <dt>Read more</dt><dd>16px / 22px · Inter · single underline and forward arrow</dd>
+        <dt>Split bar</dt><dd>8px tall · lime In / orange Out · full radius</dd>
+        <dt>Heading group to split</dt><dd>16px</dd>
+        <dt>Divider</dt><dd>1px · default DS border · #FFFFFF at 25% in dark theme</dd>
+        <dt>Space above / below divider</dt><dd>24px / 24px</dd>
+        <dt>Mobile side inset</dt><dd>12px in feed and article results</dd>
+      </dl>
+      <p>Feed results scroll inside the card. Article results expand with the page. The final row has no divider.</p>
+    </div>
+  </div>
+  <div class="ds-results-article-example">
+    <h4>Article saved vote</h4>
+    <p class="ds-note">The current article shows one saved vote without a redundant Read more link. This example button reveals another sample vote and disappears. It does not change your stored votes.</p>
+    <div class="prediction-results prediction-results--article ds-results-preview">
+      <header class="prediction-results-header"><h4 class="prediction-results-title">Your call is locked in</h4></header>
+      <ul class="prediction-results-list prediction-results-list--current">
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy"><p class="prediction-result-headline">More people will use AI to prepare for the holidays this year</p></div>
+            <p class="prediction-badge prediction-badge--in"><span class="prediction-badge-icon" aria-hidden="true"></span>You're in</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 64% in, 36% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>64%</strong> In</span><span>Out <strong>36%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="64" height="8"></rect></svg>
+          </div>
+        </li>
+      </ul>
+      <button class="prediction-results-toggle" type="button" aria-expanded="false" aria-controls="ds-other-votes" data-ds-view-votes>View my other votes</button>
+      <section class="prediction-other-votes" id="ds-other-votes" aria-label="Other sample votes" hidden>
+        <ul class="prediction-results-list">
+          <li class="prediction-result">
+            <div class="prediction-result-top">
+              <div class="prediction-result-copy">
+                <p class="prediction-result-headline">More shoppers will turn to dollar stores as cost of living rises</p>
+                <a class="prediction-card-more prediction-result-more" href="../trend-dollar-store-shoppers.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+              </div>
+              <p class="prediction-badge prediction-badge--out"><span class="prediction-badge-icon" aria-hidden="true"></span>You're out</p>
+            </div>
+            <div class="prediction-result-split" role="img" aria-label="Sample vote split: 57% in, 43% out">
+              <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>57%</strong> In</span><span>Out <strong>43%</strong></span></div>
+              <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="57" height="8"></rect></svg>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</article>
 <article class="ds-panel ds-component"><h3>Mobile product recommendations</h3><p>Mobile articles show You might be interested in between Make your call and Trend Hunter Answers. The heading is 18px. Four static product cards form a swipeable horizontal carousel showing two items at a time. Each card pairs a product photo, name, price and Shop Now label. The cards have no links or click actions, and no visible navigation arrows or position counter. The prediction cards, product cards and question pills each sit 32px above the following divider. Dividers also sit 32px above the next heading. The section is hidden on desktop.</p></article><article class="ds-panel ds-component"><h3>Prototype author portraits</h3><p>Generic editorial bylines use six fictional names and generated portraits, with a mix of women and men. Transparent images retain the existing purple avatar background, #875FE7, through the color-icon-avatar token. Matching story avatars use the same author as their destination article. Each story card uses the same author photo as its article. Fictional avatars link to a matching contributor page with a short and expanded biography, location, interests and article list. Predictions remains visible as a disabled label with no content or click behavior. The original contributor layout is reused.</p></article><article class="ds-panel ds-component"><h3>Trend Hunter Answers</h3><p>On desktop, Answers uses a bordered panel above predictions with a left-aligned 18px heading. On the mobile feed, it follows three story cards after Now Trending and uses a left-aligned 18px heading, a full-width search field with 20px screen gutters, and nine unique centered question pills with 24px vertical gaps, matching the reference. Every question pill uses 16px Inter. The mobile feed list is stationary. On mobile articles, Answers aligns with the More Stories content edge and the search field and ticker fill that width. Mobile article pages use the two-row ticker after article content, predictions and product recommendations, directly above More Stories. A divider separates products from Answers with 32px of space on each side. The ticker has 16px text, 12px gaps, a 22-second loop, and 24px edge fades. Mobile variants have no frame. On articles the last row of pills is 32px above the divider before More Stories, with 32px from that divider to the heading. The input is 40px tall with a 24px submit circle and matching 12px left and right control insets. Suggestions fill the field; submission shows a coming-soon message in this prototype.</p><div class="ds-explore-specimen"><section class="side-panel trend-answers trend-answers--feed" aria-labelledby="ds-answers-heading">
     <h2 class="answers-heading" id="ds-answers-heading"><span class="answers-sparkle" aria-hidden="true"></span>Trend Hunter Answers</h2>
     <form class="answers-form" role="search">

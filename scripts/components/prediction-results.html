@@ -1,0 +1,87 @@
+<article class="ds-panel ds-component ds-results-component" id="prediction-results" aria-labelledby="ds-results-heading">
+  <h3 id="ds-results-heading">Prediction results</h3>
+  <p>Saved vote rows use the same product classes as the feed and article results. The headline sits on the left, the personal vote badge sits at the top right, and Read more appears below the headline when it links to another story. The full-width In/Out bar sits below this group. Percentages shown here are sample data.</p>
+  <div class="ds-two-column">
+    <div class="prediction-results ds-results-preview" aria-label="Saved vote row examples">
+      <ul class="prediction-results-list">
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy">
+              <p class="prediction-result-headline">More people will use AI to prepare for the holidays this year</p>
+              <a class="prediction-card-more prediction-result-more" href="../trend-ai-shopping-assistant.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+            </div>
+            <p class="prediction-badge prediction-badge--in"><span class="prediction-badge-icon" aria-hidden="true"></span>You're in</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 64% in, 36% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>64%</strong> In</span><span>Out <strong>36%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="64" height="8"></rect></svg>
+          </div>
+        </li>
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy">
+              <p class="prediction-result-headline">More shoppers will turn to dollar stores as cost of living rises</p>
+              <a class="prediction-card-more prediction-result-more" href="../trend-dollar-store-shoppers.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+            </div>
+            <p class="prediction-badge prediction-badge--out"><span class="prediction-badge-icon" aria-hidden="true"></span>You're out</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 57% in, 43% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>57%</strong> In</span><span>Out <strong>43%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="57" height="8"></rect></svg>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="ds-component-spec">
+      <h4>Layout and states</h4>
+      <p>The badge records your own call. It stays independent of the sample audience split. Both badge states use the same top-right position.</p>
+      <dl>
+        <dt>Headline</dt><dd>18px / 20px · Barlow Condensed · 700</dd>
+        <dt>Read more</dt><dd>16px / 22px · Inter · single underline and forward arrow</dd>
+        <dt>Split bar</dt><dd>8px tall · lime In / orange Out · full radius</dd>
+        <dt>Heading group to split</dt><dd>16px</dd>
+        <dt>Divider</dt><dd>1px · default DS border · #FFFFFF at 25% in dark theme</dd>
+        <dt>Space above / below divider</dt><dd>24px / 24px</dd>
+        <dt>Mobile side inset</dt><dd>12px in feed and article results</dd>
+      </dl>
+      <p>Feed results scroll inside the card. Article results expand with the page. The final row has no divider.</p>
+    </div>
+  </div>
+  <div class="ds-results-article-example">
+    <h4>Article saved vote</h4>
+    <p class="ds-note">The current article shows one saved vote without a redundant Read more link. This example button reveals another sample vote and disappears. It does not change your stored votes.</p>
+    <div class="prediction-results prediction-results--article ds-results-preview">
+      <header class="prediction-results-header"><h4 class="prediction-results-title">Your call is locked in</h4></header>
+      <ul class="prediction-results-list prediction-results-list--current">
+        <li class="prediction-result">
+          <div class="prediction-result-top">
+            <div class="prediction-result-copy"><p class="prediction-result-headline">More people will use AI to prepare for the holidays this year</p></div>
+            <p class="prediction-badge prediction-badge--in"><span class="prediction-badge-icon" aria-hidden="true"></span>You're in</p>
+          </div>
+          <div class="prediction-result-split" role="img" aria-label="Sample vote split: 64% in, 36% out">
+            <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>64%</strong> In</span><span>Out <strong>36%</strong></span></div>
+            <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="64" height="8"></rect></svg>
+          </div>
+        </li>
+      </ul>
+      <button class="prediction-results-toggle" type="button" aria-expanded="false" aria-controls="ds-other-votes" data-ds-view-votes>View my other votes</button>
+      <section class="prediction-other-votes" id="ds-other-votes" aria-label="Other sample votes" hidden>
+        <ul class="prediction-results-list">
+          <li class="prediction-result">
+            <div class="prediction-result-top">
+              <div class="prediction-result-copy">
+                <p class="prediction-result-headline">More shoppers will turn to dollar stores as cost of living rises</p>
+                <a class="prediction-card-more prediction-result-more" href="../trend-dollar-store-shoppers.html"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+              </div>
+              <p class="prediction-badge prediction-badge--out"><span class="prediction-badge-icon" aria-hidden="true"></span>You're out</p>
+            </div>
+            <div class="prediction-result-split" role="img" aria-label="Sample vote split: 57% in, 43% out">
+              <div class="prediction-result-split-labels" aria-hidden="true"><span><strong>57%</strong> In</span><span>Out <strong>43%</strong></span></div>
+              <svg class="prediction-result-split-bar" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect class="prediction-result-split-out" width="100" height="8"></rect><rect class="prediction-result-split-in" width="57" height="8"></rect></svg>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</article>

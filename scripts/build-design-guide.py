@@ -127,6 +127,9 @@ product_component = '<article class="ds-panel ds-component"><h3>Mobile product r
 template = template.replace('<article class="ds-panel ds-component"><h3>Trend Hunter Answers</h3>', product_component + '<article class="ds-panel ds-component"><h3>Trend Hunter Answers</h3>')
 
 
+results_component = (Path(__file__).parent / 'components' / 'prediction-results.html').read_text()
+template = template.replace('<article class="ds-panel ds-component"><h3>Mobile product recommendations</h3>', results_component + '<article class="ds-panel ds-component"><h3>Mobile product recommendations</h3>')
+
 replacements = {'TRENDING':trending, 'EXPLORE':explore, 'COUNT':str(len(tokens)), 'SPACING':spacing, 'PALETTE':palette, 'TYPES':types, 'RADIUS':radius, 'ICONS':icon_gallery, 'LAYOUT':layout, 'MOTION':motion, 'CARD':card}
 for key,value in replacements.items(): template = template.replace('__'+key+'__',value)
 (OUT / 'index.html').write_text(template)

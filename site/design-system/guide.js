@@ -85,6 +85,12 @@ document.addEventListener('click', async event => {
 
 searchInput.addEventListener('input', () => { document.getElementById('ds-inventory').open = true; renderTokens(); });
 categoryFilter.addEventListener('change', () => { document.getElementById('ds-inventory').open = true; renderTokens(); });
+document.querySelector('[data-ds-view-votes]')?.addEventListener('click', event => {
+  const otherVotes = document.getElementById('ds-other-votes');
+  otherVotes.hidden = false;
+  event.currentTarget.remove();
+  if (event.detail === 0) otherVotes.querySelector('a')?.focus({ preventScroll: true });
+}, { once: true });
 window.addEventListener('resize', updateThemeValues);
 
 const navLinks = [...document.querySelectorAll('.ds-nav a')];
