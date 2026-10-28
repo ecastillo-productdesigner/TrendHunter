@@ -222,3 +222,7 @@
   margin: 0 auto var(--spacing-layout-md);
   font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
 }
+
+#email-sign-in { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
+#email-sign-in .ds-component-spec { display: flex; flex-direction: column; gap: var(--spacing-component-ms); }
+#email-sign-in .auth-error { color: var(--form-text-error); font-size: var(--type-size-12); }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=author-updates-3">
+  <link rel="stylesheet" href="feed.css?v=email-flow-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -42,22 +42,26 @@
         <p class="auth-subtitle">We've sent a code to <span class="otc-email">your email</span>. Enter it below</p>
       </header>
 
-      <fieldset class="otc">
+      <div class="auth-code-fields">
+        <p class="auth-error auth-error--center" id="code-error" role="alert" hidden>You entered an incorrect code. Please try again.</p>
+        <fieldset class="otc">
         <legend class="visually-hidden">6-digit sign-in code</legend>
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1" autofocus>
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2">
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3">
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4">
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5">
-        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6">
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-describedby="code-error" aria-label="Digit 1" autofocus>
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-describedby="code-error" aria-label="Digit 2">
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-describedby="code-error" aria-label="Digit 3">
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-describedby="code-error" aria-label="Digit 4">
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-describedby="code-error" aria-label="Digit 5">
+        <input class="otc-digit" type="text" inputmode="numeric" maxlength="1" aria-describedby="code-error" aria-label="Digit 6">
       </fieldset>
+      </div>
 
       <div class="otc-expiry">
         <p>This link expires in 15 minutes.</p>
+        <p class="auth-status" id="code-status" role="status"></p>
         <button class="auth-link otc-resend" type="button">Resent code</button>
       </div>
 
-      <a class="auth-link" href="#">Enter password instead</a>
+      <a class="auth-link" href="login-password.html">Enter password instead</a>
     </div>
   </main>
 
@@ -74,7 +78,7 @@
     </ul>
   </footer>
 
-  <script src="login.js?v=5"></script>
+  <script src="login.js?v=email-flow-2"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>

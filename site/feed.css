@@ -116,6 +116,8 @@
   --form-border-default: #D1D5DB;
   --form-border-focus: #BEFC4F;          /* lime.500 — same in both themes */
   --form-label-input-text: #D1D5DB;
+  --form-border-error: var(--otc-border-error);
+  --form-text-error: var(--otc-border-error);
 
   /* One-time code squares — from the OTC frame */
   --otc-squares: #FFFFFF;
@@ -3061,27 +3063,26 @@ body:has(.edit-profile-modal[open]) {
 .filter-tab:disabled { color: var(--color-text-dim); cursor: default; }
 .profile-predictions { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); }
 .profile-prediction-filters {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--spacing-component-ms);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-component-sm);
   width: 100%;
 }
-.profile-prediction-filters--author { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .profile-prediction-filters[hidden] { display: none; }
 .profile-prediction-filter {
   min-height: var(--spacing-layout-xl);
   padding: var(--spacing-component-xs) var(--spacing-layout-md);
-  border: 0;
-  border-radius: var(--radius-x-sm);
-  background: var(--buttons-secondary-bg);
-  color: var(--buttons-secondary-label);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-tertiary);
   font-family: var(--type-font-display);
   font-size: var(--type-size-16);
   font-weight: var(--type-weight-light);
   line-height: var(--type-line-height-ui-lg);
   cursor: pointer;
 }
-.profile-prediction-filter[aria-pressed="true"] { background: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
+.profile-prediction-filter[aria-pressed="true"] { border-color: var(--color-border-focus); background: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
 .profile-prediction-filter:focus-visible, .filter-tab[data-profile-section]:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .prediction-results--profile { height: auto; padding: 0; animation: none; }
 .prediction-results--profile .prediction-results-list { flex: none; margin-top: 0; padding-right: 0; overflow: visible; }
@@ -3994,7 +3995,8 @@ body:has(.auth-prompt[open]) {
 }
 
 /* Email sign-in form */
-.email-sign-in {
+.email-sign-in,
+.password-sign-in {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-layout-md);
@@ -4042,7 +4044,8 @@ body:has(.auth-prompt[open]) {
   cursor: pointer;
 }
 
-.auth-button--primary:disabled {
+.auth-button--primary:disabled,
+.auth-button--primary[aria-disabled="true"] {
   background-color: var(--buttons-primary-bg-disabled);
   color: var(--buttons-primary-label-disabled);
   cursor: not-allowed;
@@ -4059,6 +4062,7 @@ body:has(.auth-prompt[open]) {
   justify-content: center;
   gap: var(--spacing-component-sm);
   width: 100%;
+  min-inline-size: 0;
   border: none;
 }
 
@@ -4406,3 +4410,19 @@ body:has(.auth-prompt[open]) {
 /* Article pages (trend.html, trend-maximalism.html) keep Daily Predictions in the right rail
    on desktop, same as the feed; predictions.js skips moving it into the "Recommended" list below
    960px, so it's simply hidden there (the rail's own default) instead of showing mid-article. */
+
+/* Shared inline validation for the email, code and consent flow. */
+.auth-error {
+  font-family: var(--type-font-body);
+  font-size: var(--type-size-12);
+  line-height: var(--type-utility-helper-line-height);
+  color: var(--form-text-error);
+}
+.auth-error--center { text-align: center; }
+.form-input[aria-invalid="true"],
+.otc-digit[aria-invalid="true"] { border: var(--stroke-focus) solid var(--form-border-error); }
+.auth-code-fields { display: flex; flex-direction: column; gap: var(--spacing-component-sm); width: 100%; }
+.terms-field { display: flex; flex-direction: column; gap: var(--spacing-component-ms); width: 100%; max-width: var(--layout-login-width); }
+.auth-status:empty { display: none; }
+.auth-status { text-align: center; }
+.auth-subtitle { overflow-wrap: anywhere; }

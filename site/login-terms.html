@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=author-updates-3">
+  <link rel="stylesheet" href="feed.css?v=email-flow-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -42,13 +42,16 @@
         <p class="auth-subtitle">Please take a moment to review our terms and policies:</p>
       </header>
 
-      <form class="terms-form">
+      <form class="terms-form" novalidate>
+        <div class="terms-field">
+          <p class="auth-error" id="terms-error" role="alert" hidden>Please check this field if you want to proceed.</p>
         <label class="terms-acceptance">
-          <input class="terms-checkbox visually-hidden" type="checkbox" required>
+          <input class="terms-checkbox visually-hidden" type="checkbox" aria-describedby="terms-error" required>
           <span class="terms-checkbox-icon" aria-hidden="true"></span>
           <span class="terms-text">By creating an account, you acknowledge that you are over the age of 17 and agree to the <a class="terms-link" href="#">Terms of Service,</a> <a class="terms-link" href="#">Terms of Subscription,</a> and <a class="terms-link" href="#">Privacy Policy.</a></span>
         </label>
-        <button class="auth-button auth-button--primary" type="submit" disabled>Continue</button>
+        </div>
+        <button class="auth-button auth-button--primary" type="submit" aria-disabled="true">Continue</button>
       </form>
     </div>
   </main>
@@ -66,7 +69,7 @@
     </ul>
   </footer>
 
-  <script src="login.js?v=5"></script>
+  <script src="login.js?v=email-flow-2"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>
