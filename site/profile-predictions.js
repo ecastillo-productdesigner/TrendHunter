@@ -1,5 +1,5 @@
-// Profile histories are illustrative when this tab has no saved calls yet.
-// Real calls from the shared deck take precedence and are never replaced by fixtures.
+// Personal profiles use actual calls from the shared deck.
+// Only author histories contain illustrative sample calls.
 (() => {
   const profile = document.querySelector('.profile');
   const predictionPanel = document.getElementById('profile-predictions');
@@ -17,12 +17,6 @@
 
   const viewingAuthorHistory = () => isAuthor && (!isSignedIn() || selectedFilter === 'author');
 
-  const demoCalls = {
-    'telehealth-trt': 'in', 'ai-holidays': 'in', 'dollar-stores': 'out',
-    'retail-events': 'in', 'protein-coffee': 'out', 'skin-longevity': 'in',
-    'sleep-routines': 'out', 'run-club-connections': 'in', 'sober-socials': 'out',
-    'home-energy': 'in',
-  };
   const resolvedExamples = [
     { id: 'weekend-walking-history', text: 'Weekend-only walking will become a regular part of fitness plans', storyHref: 'trend-weekend-walking.html', sampleInPercent: 63, call: 'in', resolved: true },
     { id: 'sleep-earbuds-history', text: 'Sleep earbuds will become a standard upgrade for side sleepers', storyHref: 'trend-sleep-earbuds.html', sampleInPercent: 42, call: 'out', resolved: true },
@@ -46,10 +40,8 @@
 
   function personalHistory() {
     const calls = savedCalls();
-    const hasSavedCalls = PREDICTIONS.some(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out');
-    const source = hasSavedCalls ? calls : demoCalls;
-    const active = PREDICTIONS.filter(prediction => source[prediction.id]).map(prediction => ({ ...prediction, call: source[prediction.id], resolved: false }));
-    return hasSavedCalls ? active : [...active, ...resolvedExamples];
+    return PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
+      .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
   }
 
   function authorHistory() {
@@ -59,6 +51,7 @@
   }
 
   function renderHistory() {
+    if (!isAuthor && personalHistory().length === 0) selectedFilter = 'all';
     let history = viewingAuthorHistory() ? authorHistory() : personalHistory();
     if (!isAuthor && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
     list.innerHTML = history.map(prediction => {
@@ -71,7 +64,9 @@
     }).join('');
     list.hidden = history.length === 0;
     empty.hidden = history.length !== 0;
-    empty.textContent = selectedFilter === 'resolved' ? 'No resolved predictions yet.' : 'No predictions here yet.';
+    empty.querySelector('.profile-empty-title').textContent = selectedFilter === 'resolved' ? 'No resolved predictions yet' : selectedFilter === 'active' ? 'No active predictions yet' : 'No predictions yet';
+    empty.querySelector('.profile-empty-copy').textContent = selectedFilter === 'resolved' ? 'Your resolved predictions will appear here' : 'Vote on prediction cards to track them here';
+    if (!isAuthor) filters.hidden = personalHistory().length === 0;
   }
 
   function selectFilter(button) {
@@ -83,9 +78,10 @@
   function renderFilters() {
     const authorOnly = isAuthor && !isSignedIn();
     if (authorOnly) selectedFilter = 'author';
-    filters.hidden = authorOnly;
+    const noPersonalHistory = !isAuthor && personalHistory().length === 0;
+    filters.hidden = authorOnly || noPersonalHistory;
     filters.replaceChildren();
-    if (authorOnly) return;
+    if (authorOnly || noPersonalHistory) return;
 
     const filterOptions = isAuthor ? [['you', 'By Me'], ['author', `By ${authorName.split(' ')[0]}`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
     filters.classList.toggle('profile-prediction-filters--author', isAuthor);
@@ -144,7 +140,8 @@
 
   function restoreSection() {
     renderFilters();
-    const selected = primaryTabs.find(tab => `#${tab.dataset.profileSection}` === location.hash) || primaryTabs[0];
+    const hash = !isAuthor && location.hash === '#saved' ? '#stories' : location.hash;
+    const selected = primaryTabs.find(tab => `#${tab.dataset.profileSection}` === hash) || primaryTabs[0];
     selectSection(selected, false);
   }
   window.addEventListener('hashchange', restoreSection);

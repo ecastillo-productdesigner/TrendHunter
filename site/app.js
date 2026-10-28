@@ -146,7 +146,7 @@ let pendingBookmark = null;
 
 // ===========================
 // Saved stories — one list for the whole tab, so every bookmark for a story
-// (feed card, detail page, Saved tab) shows the same state.
+// (feed card, detail page, Stories tab) shows the same state.
 // Each bookmark names its story with data-story / data-title / data-image / data-href.
 // ===========================
 const SAVED_KEY = 'saved-stories';
@@ -189,23 +189,17 @@ const STORY_URLS = {
   "maximalism": "trend-maximalism.html"
 };
 
-// What Clementine's account already has saved, in the Figma order
-const DEFAULT_SAVED = [
-  { id: 'trt', title: "Men Are Challenging the Midlife 'Just Aging' Narrative as Testosterone Therapy Gains Momentum", image: 'assets/profile/saved-trt.png', href: 'trend.html' },
-  { id: 'maximalism', title: "Maximalism Is the Top Home Decor Trend of 2026: What's Happening, Why and What It Means Going Forward", image: 'assets/profile/saved-maximalism.png', href: 'trend-maximalism.html' },
-  { id: 'weekend-athletes', title: 'How weekend athletes are using pro-level training apps to crush their personal records', image: 'assets/profile/saved-3.png', href: 'trend-weekend-training-apps.html' },
-];
-
 function getSaved() {
   try {
     const stored = sessionStorage.getItem(SAVED_KEY);
     if (stored) return JSON.parse(stored).map((story) => ({ ...story, href: story.href || STORY_URLS[story.id] || '' }));
   } catch (e) {}
-  return DEFAULT_SAVED.slice();
+  return [];
 }
 
 function setSaved(list) {
   try { sessionStorage.setItem(SAVED_KEY, JSON.stringify(list)); } catch (e) {}
+  document.dispatchEvent(new Event('saved-stories-change'));
 }
 
 function storyFrom(bookmark) {
@@ -217,7 +211,7 @@ function bookmarksFor(id) {
   return [...document.querySelectorAll('.bookmark-button[data-story]')].filter((b) => b.dataset.story === id);
 }
 
-// Newest saves go to the top of the Saved list
+// Newest saves go to the top of the Stories list
 function setStorySaved(bookmark, saved) {
   if (!bookmark.dataset.story) {
     bookmark.setAttribute('aria-pressed', String(saved));
@@ -230,7 +224,7 @@ function setStorySaved(bookmark, saved) {
   bookmarksFor(story.id).forEach((b) => b.setAttribute('aria-pressed', String(saved)));
 }
 
-// The Saved tab is the account's own list, so it shows the saves even before sign-in;
+// The Stories tab is the account's own list, so it shows the saves even before sign-in;
 // everywhere else a signed-out reader sees empty bookmarks
 const savedList = document.querySelector('.profile-story-list');
 
@@ -248,10 +242,13 @@ function escapeHTML(text) {
   return div.innerHTML.replace(/"/g, '&quot;');
 }
 
-// Build the Saved tab from the saved list. Unsaving keeps the row (as an outline)
-// until the page is left, so a mistaken tap can be undone.
-if (savedList) {
-  savedList.innerHTML = getSaved().map((s) => {
+// Keep the Stories panel and its empty state in sync with actual saved stories.
+function renderSavedStories() {
+  if (!savedList) return;
+  const stories = getSaved();
+  savedList.hidden = stories.length === 0;
+  document.querySelector('#profile-saved .profile-empty-state').hidden = stories.length !== 0;
+  savedList.innerHTML = stories.map((s) => {
     const title = escapeHTML(s.title);
     const headline = s.href ? `<a href="${escapeHTML(s.href)}" class="story-lockup-link">${title}</a>` : title;
     return `
@@ -263,6 +260,9 @@ if (savedList) {
   }).join('');
 }
 
+renderSavedStories();
+document.addEventListener('saved-stories-change', renderSavedStories);
+window.addEventListener('pageshow', renderSavedStories);
 syncBookmarks();
 
 function saveBookmark(bookmark) {

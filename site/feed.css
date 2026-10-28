@@ -3028,7 +3028,7 @@ body:has(.edit-profile-modal[open]) {
 
 /* Profile Predictions uses the shared result rows with compact DS filter buttons. */
 .profile-panel, .profile-predictions { width: 100%; }
-.profile-panel[hidden], .profile-predictions-empty[hidden] { display: none; }
+.profile-panel[hidden], .profile-empty-state[hidden], .profile-story-list[hidden], .prediction-results-list[hidden] { display: none; }
 .filter-tab[data-profile-section] { cursor: pointer; }
 .filter-tab:disabled { color: var(--color-text-dim); cursor: default; }
 .profile-predictions { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); }
@@ -3058,7 +3058,29 @@ body:has(.edit-profile-modal[open]) {
 .prediction-results--profile { height: auto; padding: 0; animation: none; }
 .prediction-results--profile .prediction-results-list { flex: none; margin-top: 0; padding-right: 0; overflow: visible; }
 .prediction-results--profile .prediction-result:last-child { padding-bottom: 0; margin-bottom: 0; }
-.profile-predictions-empty { font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body); color: var(--color-text-dim); }
+.profile-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  width: 100%;
+  min-height: calc(var(--spacing-page-2xl) * 3);
+  padding: var(--spacing-component-sm) var(--spacing-layout-md) var(--spacing-page-2xl);
+  text-align: center;
+}
+.profile-empty-state .profile-empty-title {
+  margin: 0;
+  font: var(--type-weight-extrabold) var(--type-size-12)/var(--type-line-height-ui-xs) var(--type-font-display);
+  text-transform: uppercase;
+  color: var(--color-text-body);
+}
+.profile-empty-state .profile-empty-copy {
+  width: calc(var(--spacing-page-2xl) * 5);
+  max-width: 100%;
+  margin: 0;
+  font: var(--type-weight-regular) var(--type-size-14)/var(--type-line-height-ui-md) var(--type-font-body);
+  color: var(--color-text-secondary);
+}
 
 /* ===========================
    Trend List / Contributor Profile

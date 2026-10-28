@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=profile-tabs-2">
+  <link rel="stylesheet" href="feed.css?v=profile-empty-1">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -107,38 +107,34 @@
       <button class="edit-profile-button" type="button" aria-haspopup="dialog" aria-controls="edit-profile-modal">Edit Profile</button>
     </section>
 
-    <!-- Filter Tab -->
+    <!-- Profile sections -->
     <nav class="filter-tabs" role="tablist" aria-label="Profile sections">
-      <button id="profile-saved-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="profile-saved" data-profile-section="saved">Saved</button>
+      <button id="profile-saved-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="profile-saved" data-profile-section="stories">Stories</button>
+      <button id="profile-collections-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-collections" tabindex="-1" data-profile-section="collections">Collections</button>
       <button id="profile-predictions-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-predictions" tabindex="-1" data-profile-section="predictions">Predictions</button>
-      <button class="filter-tab" type="button" disabled aria-disabled="true">Collections</button>
     </nav>
 
-    <!-- Trend List / Contributor Profile -->
-    <section id="profile-saved" class="profile-panel" role="tabpanel" aria-labelledby="profile-saved-tab" data-profile-panel="saved">
-    <ul class="story-list profile-story-list">
-      <li class="story-lockup">
-        <img class="story-lockup-image" src="assets/profile/saved-trt.png" alt="">
-        <h2 class="story-lockup-headline profile-story-headline"><a href="trend.html" class="story-lockup-link">Men Are Challenging the Midlife 'Just Aging' Narrative as Testosterone Therapy Gains Momentum</a></h2>
-        <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="true"><span class="bookmark-icon" aria-hidden="true"></span></button>
-      </li>
-      <li class="story-lockup">
-        <img class="story-lockup-image" src="assets/profile/saved-maximalism.png" alt="">
-        <h2 class="story-lockup-headline profile-story-headline"><a href="trend-maximalism.html" class="story-lockup-link">Maximalism Is the Top Home Decor Trend of 2026: What's Happening, Why and What It Means Going Forward</a></h2>
-        <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="true"><span class="bookmark-icon" aria-hidden="true"></span></button>
-      </li>
-      <li class="story-lockup">
-        <img class="story-lockup-image" src="assets/profile/saved-3.png" alt="">
-        <h2 class="story-lockup-headline profile-story-headline">How weekend athletes are using pro-level training apps to crush their personal records</h2>
-        <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="true"><span class="bookmark-icon" aria-hidden="true"></span></button>
-      </li>
-    </ul>
+    <section id="profile-saved" class="profile-panel" role="tabpanel" aria-labelledby="profile-saved-tab" data-profile-panel="stories">
+      <ul class="story-list profile-story-list"></ul>
+      <div class="profile-empty-state" role="status" hidden>
+        <h2 class="profile-empty-title">No saved stories yet</h2>
+        <p class="profile-empty-copy">Bookmark stories to see them here</p>
+      </div>
+    </section>
+    <section id="profile-collections" class="profile-panel" role="tabpanel" aria-labelledby="profile-collections-tab" data-profile-panel="collections" hidden>
+      <div class="profile-empty-state" role="status">
+        <h2 class="profile-empty-title">No collections yet</h2>
+        <p class="profile-empty-copy">Follow collections from their detail pages to track them here</p>
+      </div>
     </section>
     <section id="profile-predictions" class="profile-predictions profile-panel" role="tabpanel" aria-labelledby="profile-predictions-tab" data-profile-panel="predictions" hidden>
       <div class="profile-prediction-filters" role="group"></div>
       <div class="prediction-results prediction-results--profile">
         <ul class="prediction-results-list"></ul>
-        <p class="profile-predictions-empty" role="status" hidden></p>
+        <div class="profile-predictions-empty profile-empty-state" role="status" hidden>
+          <h2 class="profile-empty-title">No predictions yet</h2>
+          <p class="profile-empty-copy">Vote on prediction cards to track them here</p>
+        </div>
       </div>
     </section>
   </main>
@@ -185,9 +181,9 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=profile-tabs-3"></script>
+  <script src="app.js?v=profile-empty-1"></script>
   <script src="predictions.js?v=profile-tabs-1"></script>
-  <script src="profile-predictions.js?v=2"></script>
+  <script src="profile-predictions.js?v=3"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>

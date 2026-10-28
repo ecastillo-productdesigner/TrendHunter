@@ -140,6 +140,11 @@
 #profile-prediction-tabs .prediction-badge { color: var(--prediction-badge-label); }
 #profile-prediction-tabs .prediction-badge--resolved { color: var(--color-text-dim); }
 #profile-prediction-tabs .profile-prediction-filters { margin-bottom: var(--spacing-layout-md); }
+#profile-empty-states { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
+.ds-profile-empty-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-layout-lg); }
+.ds-profile-empty-example { min-width: 0; background: var(--color-background-surface); }
+.ds-profile-empty-example .profile-empty-state { margin-top: var(--spacing-layout-lg); }
+@media (max-width: 959px) { .ds-profile-empty-grid { grid-template-columns: minmax(0, 1fr); } }
 .ds-results-article-example { margin-top: var(--spacing-layout-xl); }
 .ds-results-article-example > h4 { margin-bottom: var(--spacing-layout-md); font: var(--type-weight-medium) var(--type-size-16)/1.5 var(--type-font-body); }
 .ds-results-article-example > .ds-note { margin-bottom: var(--spacing-layout-lg); }
