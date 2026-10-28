@@ -6,4 +6,4 @@
 - The demo password gate is in `access/`. It is injected into every published HTML page by `npm run build`; `dist/` is generated and ignored by Git.
 - Keep the prototype's sample voting data and fictional authors clearly identified in source and documentation.
 - Run `npm run check` before publishing. Review the relevant mobile or desktop flow in the browser when changing behavior or layout.
-- Pushes to `main` publish the built `dist/` folder through GitHub Pages.
+- GitHub keeps the source private. The private Sites preview is bound by `.openai/hosting.json`; publish it with the Sites workflow after changes. The GitHub workflow checks builds but does not publish.
