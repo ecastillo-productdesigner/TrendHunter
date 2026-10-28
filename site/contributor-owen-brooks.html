@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=profile-empty-1">
+  <link rel="stylesheet" href="feed.css?v=author-updates-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -18,6 +18,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt">
 </head>
 <body class="page-profile page-contributor">
 
@@ -33,12 +34,13 @@
         <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
       </a>
       <div class="nav-utilities">
+        <a class="nav-predictions" href="predictions.html" aria-label="Daily Predictions"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
         <button class="theme-toggle" aria-label="Switch to light theme">
           <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
           <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
         </button>
         <a href="login.html" class="nav-text-button nav-login">Login</a>
-        <a href="userprofile.html" class="nav-profile" aria-label="Profile"><span class="nav-profile-icon" aria-hidden="true"></span></a>
+        <button class="nav-profile" aria-label="Account menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="account-drawer"><span class="nav-profile-icon" aria-hidden="true"></span></button>
       </div>
     </nav>
   </header>
@@ -67,10 +69,6 @@
       <hr class="drawer-divider">
       <div class="drawer-group">
         <a href="#" class="drawer-heading">Trend Hunter Shop</a>
-      </div>
-      <hr class="drawer-divider drawer-signed-in-only">
-      <div class="drawer-group drawer-signed-in-only">
-        <button class="drawer-link drawer-logout">Log out</button>
       </div>
     </nav>
   </dialog>
@@ -117,7 +115,7 @@
 <li><a href="trend-neurocosmetics.html" class="story-lockup"><img class="story-lockup-image" src="assets/contributor/post-2.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Neurocosmetics Promise Calmer Skin Under Stress. Here&#x27;s What the Science Actually Shows</h2></a></li>
 <li><a href="trend-school-routines.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-03.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape</h2></a></li>
 <li><a href="trend-somatic-sleep.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-14.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape</h2></a></li>
-<li><a href="trend-wellness-first-dating.html" class="story-lockup"><img class="story-lockup-image" src="assets/collection/story-3.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Tinder Events and Sound Bath Benefits Signal How Wellness-First Dating Is Growing Beyond a Niche Curiosity</h2></a></li></ul></section>
+<li><a href="trend-wellness-first-dating.html" class="story-lockup"><img class="story-lockup-image" src="assets/collection/story-3.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Tinder Events and Sound Bath Benefits Signal How Wellness-First Dating Is Growing Beyond a Niche Curiosity</h2></a></li></ul><div class="profile-author-empty profile-empty-state profile-empty-state--author" role="status" hidden><h2 class="profile-empty-title">Nothing here yet</h2><p class="profile-empty-copy"></p></div></section>
     <section id="profile-predictions" class="profile-predictions profile-panel" role="tabpanel" aria-labelledby="profile-predictions-tab" data-profile-panel="predictions" hidden>
       <div class="profile-prediction-filters" role="group"></div>
       <div class="prediction-results prediction-results--profile">
@@ -152,9 +150,9 @@
     <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
   </div>
 
-  <script src="app.js?v=profile-empty-1"></script>
-  <script src="predictions.js?v=profile-tabs-1"></script>
-  <script src="profile-predictions.js?v=3"></script>
+  <script src="app.js?v=author-updates-1"></script>
+  <script src="predictions.js?v=author-updates-1"></script>
+  <script src="profile-predictions.js?v=author-updates-1"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>

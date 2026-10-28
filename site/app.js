@@ -28,25 +28,39 @@ updateToggleLabel();
 // Drawer — a modal <dialog>, so focus stays inside and Escape closes it.
 // Closes from the ×, the Escape key, or a click on the scrim.
 // ===========================
-const drawer = document.querySelector('.drawer');
-const menuButton = document.querySelector('.nav-menu');
+function bindDrawer(panel, trigger) {
+  trigger.addEventListener('click', () => {
+    panel.showModal();
+    trigger.setAttribute('aria-expanded', 'true');
+  });
+  panel.querySelector('.drawer-close').addEventListener('click', () => panel.close());
+  panel.addEventListener('click', event => {
+    const box = panel.getBoundingClientRect();
+    const outside = event.clientX > box.right || event.clientX < box.left
+      || event.clientY > box.bottom || event.clientY < box.top;
+    if (event.target === panel && outside) panel.close();
+  });
+  panel.addEventListener('close', () => trigger.setAttribute('aria-expanded', 'false'));
+}
+bindDrawer(document.querySelector('.drawer'), document.querySelector('.nav-menu'));
 
-menuButton.addEventListener('click', () => {
-  drawer.showModal();
-  menuButton.setAttribute('aria-expanded', 'true');
-});
-
-drawer.querySelector('.drawer-close').addEventListener('click', () => drawer.close());
-
-// A click on the scrim lands on the dialog itself, outside its box
-drawer.addEventListener('click', (event) => {
-  const box = drawer.getBoundingClientRect();
-  const outside = event.clientX > box.right || event.clientX < box.left
-    || event.clientY > box.bottom || event.clientY < box.top;
-  if (event.target === drawer && outside) drawer.close();
-});
-
-drawer.addEventListener('close', () => menuButton.setAttribute('aria-expanded', 'false'));
+const accountTrigger = document.querySelector('.nav-profile');
+if (accountTrigger) {
+  const accountDrawer = document.createElement('dialog');
+  accountDrawer.id = 'account-drawer';
+  accountDrawer.className = 'drawer drawer--account';
+  accountDrawer.setAttribute('aria-label', 'Account menu');
+  accountDrawer.innerHTML = `
+    <button class="drawer-close" type="button" aria-label="Close account menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Account">
+      <ul class="drawer-links">
+        <li><a class="drawer-link" href="userprofile.html">Profile</a></li>
+        <li><button class="drawer-link drawer-logout" type="button">Log Out</button></li>
+      </ul>
+    </nav>`;
+  document.body.append(accountDrawer);
+  bindDrawer(accountDrawer, accountTrigger);
+}
 
 // ===========================
 // Toast — shown when a story is saved or unsaved; hides after 5 seconds or from its close button.
@@ -131,11 +145,11 @@ document.querySelectorAll('.nav-login, .auth-prompt-email').forEach((link) => {
   });
 });
 
-// Log out (in the drawer) — signs out and returns to the feed
-document.querySelector('.drawer-logout').addEventListener('click', () => {
+// Log out (only in the account drawer) — signs out and returns to the feed
+document.querySelectorAll('.drawer-logout').forEach(button => button.addEventListener('click', () => {
   signOut();
   window.location.href = 'feed.html';
-});
+}));
 
 // ===========================
 // Auth Prompt — opens when a signed-out reader tries to bookmark.

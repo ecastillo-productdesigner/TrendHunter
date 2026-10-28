@@ -1,0 +1,10 @@
+<article class="ds-panel ds-component ds-account-menu" id="account-menu">
+  <h3>Account drawer and predictions shortcut</h3>
+  <p>The signed-in profile icon opens the shared Menu drawer component from the right, with Profile and Log Out. Log Out appears only in this account drawer, not in the left Menu drawer. Profile opens the user profile. Log Out ends the sign-in session and returns to the feed. The close icon, Escape key and scrim dismiss the drawer.</p>
+  <button type="button" class="button-primary" data-ds-account-open aria-haspopup="dialog" aria-controls="ds-account-drawer" aria-expanded="false">Open account drawer</button>
+  <dialog class="drawer drawer--account" id="ds-account-drawer" aria-label="Account drawer example"><button class="drawer-close" type="button" aria-label="Close account drawer example"><span class="drawer-close-icon" aria-hidden="true"></span></button><nav class="drawer-nav" aria-label="Account example"><ul class="drawer-links"><li><a class="drawer-link" href="../userprofile.html">Profile</a></li><li><button class="drawer-link" type="button" data-ds-account-dismiss>Log Out</button></li></ul></nav></dialog>
+  <p class="ds-note">Log Out in this isolated example closes the preview. Use the live prototype to check actual sign-out.</p>
+  <div class="ds-votes"><a class="nav-predictions" href="../predictions.html" aria-label="Daily Predictions, default icon"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a><a class="nav-predictions" href="../predictions.html" aria-current="page" aria-label="Daily Predictions, selected icon"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a></div>
+  <p>The lightning shortcut sits before the theme control and opens the dedicated Daily Predictions page. The selected icon uses <code>var(--color-border-focus)</code>. This page reuses the shared prediction deck, votes, context and results.</p>
+  <p><a class="ds-text-link" href="../predictions.html">Open Daily Predictions</a></p>
+</article>

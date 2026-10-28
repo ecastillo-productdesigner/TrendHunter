@@ -636,6 +636,15 @@ button {
 .nav-utilities {
   gap: var(--spacing-layout-md);
 }
+.nav-predictions { display: flex; color: var(--color-icon-default); }
+.nav-predictions-icon { width: var(--icon-size-lg); height: var(--icon-size-lg); font-family: 'Material Symbols Outlined'; font-size: var(--icon-size-lg); font-weight: 400; font-style: normal; line-height: 1; letter-spacing: normal; text-transform: none; white-space: nowrap; font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.nav-predictions[aria-current="page"] { color: var(--color-border-focus); }
+.nav-predictions[aria-current="page"] .nav-predictions-icon { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.nav-predictions:focus-visible, .nav-profile:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+@media (max-width: 359px) {
+  .nav-utilities { gap: var(--spacing-component-sm); }
+  .nav-primary .nav-wordmark img { width: calc(var(--spacing-layout-lg) * 4); height: var(--spacing-layout-lg); }
+}
 
 .nav-menu-icon {
   width: var(--icon-size-md);
@@ -1297,6 +1306,14 @@ a.story-lockup:hover .story-lockup-headline {
     translate: -100% 0;
   }
 }
+.drawer--account {
+  inset: 0 0 0 auto;
+  border-right: 0;
+  border-left: var(--stroke-default) solid var(--color-border-default);
+  translate: 100% 0;
+}
+.drawer--account .drawer-close { margin-left: auto; }
+@starting-style { .drawer--account[open] { translate: 100% 0; } }
 
 .drawer::backdrop {
   background-color: var(--color-scrim);
@@ -1865,6 +1882,15 @@ a.drawer-heading:hover {
 .predictions-panel .type-h4-caps {
   text-align: center;
   color: var(--predictions-panel-heading);
+}
+.page-predictions { display: flex; flex-direction: column; min-height: 100vh; }
+.predictions-page { flex: 1; width: 100%; max-width: var(--layout-feed-width); margin-inline: auto; padding: var(--spacing-layout-xl) var(--spacing-layout-md); }
+.predictions-page .predictions-panel { border: 0; padding: 0; }
+.predictions-page .prediction-stack { zoom: var(--prediction-stack-zoom, 1); }
+.predictions-page .prediction-stack:has(.prediction-results) { width: 100%; height: calc(var(--layout-predictions-stack-height) + var(--spacing-page-2xl) * 2); zoom: 1; }
+@media (min-width: 960px) {
+  .page-trend .prediction-card--current-article [data-flip],
+  .page-trend .prediction-card--current-article .prediction-card-context { display: none; }
 }
 
 /* The results title takes the place of Daily Predictions at every screen size. */
@@ -2645,6 +2671,7 @@ a.drawer-heading:hover {
   height: var(--icon-size-xs);
   background-color: currentColor;
 }
+.prediction-badge--resolved .prediction-badge-icon { background-color: var(--color-icon-default); }
 
 .prediction-badge--in .prediction-badge-icon {
   mask: url("assets/predictions/icon-in.svg") center / contain no-repeat;
@@ -2735,9 +2762,9 @@ a.drawer-heading:hover {
   align-items: center;
   gap: var(--spacing-layout-lg);
   width: 100%;
-  max-width: calc(var(--layout-profile-width) + var(--layout-page-gutter) * 2);
+  max-width: calc(var(--layout-profile-width) + var(--spacing-layout-md) * 2);
   margin: calc(var(--spacing-layout-lg) * 2) auto var(--spacing-layout-xl);
-  padding: 0 var(--layout-page-gutter);
+  padding: 0 var(--spacing-layout-md);
 }
 
 .profile-title {
@@ -3042,7 +3069,7 @@ body:has(.edit-profile-modal[open]) {
 .profile-prediction-filters[hidden] { display: none; }
 .profile-prediction-filter {
   min-height: var(--spacing-layout-xl);
-  padding: var(--spacing-component-xs) var(--spacing-component-ms);
+  padding: var(--spacing-component-xs) var(--spacing-layout-md);
   border: 0;
   border-radius: var(--radius-x-sm);
   background: var(--buttons-secondary-bg);
@@ -3081,6 +3108,9 @@ body:has(.edit-profile-modal[open]) {
   font: var(--type-weight-regular) var(--type-size-14)/var(--type-line-height-ui-md) var(--type-font-body);
   color: var(--color-text-secondary);
 }
+.profile-empty-state--author .profile-empty-copy { width: 100%; max-width: var(--layout-profile-width); }
+.profile-posts.profile-posts--empty { padding-block: 0; }
+.contributor-byline[href]:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
 /* ===========================
    Trend List / Contributor Profile

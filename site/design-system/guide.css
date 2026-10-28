@@ -141,6 +141,7 @@
 #profile-prediction-tabs .prediction-badge--resolved { color: var(--color-text-dim); }
 #profile-prediction-tabs .profile-prediction-filters { margin-bottom: var(--spacing-layout-md); }
 #profile-empty-states { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
+.ds-author-empty-states, .ds-account-menu { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 .ds-profile-empty-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-layout-lg); }
 .ds-profile-empty-example { min-width: 0; background: var(--color-background-surface); }
 .ds-profile-empty-example .profile-empty-state { margin-top: var(--spacing-layout-lg); }

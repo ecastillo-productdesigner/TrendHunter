@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=profile-empty-1">
+  <link rel="stylesheet" href="feed.css?v=author-updates-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -16,6 +16,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt">
 </head>
 <body class="page-profile">
 
@@ -31,12 +32,13 @@
         <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
       </a>
       <div class="nav-utilities">
+        <a class="nav-predictions" href="predictions.html" aria-label="Daily Predictions"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
         <button class="theme-toggle" aria-label="Switch to light theme">
           <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
           <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
         </button>
         <a href="login.html" class="nav-text-button nav-login">Login</a>
-        <a href="userprofile.html" class="nav-profile" aria-label="Profile" aria-current="page"><span class="nav-profile-icon" aria-hidden="true"></span></a>
+        <button class="nav-profile" aria-label="Account menu" aria-current="page" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="account-drawer"><span class="nav-profile-icon" aria-hidden="true"></span></button>
       </div>
     </nav>
   </header>
@@ -65,10 +67,6 @@
       <hr class="drawer-divider">
       <div class="drawer-group">
         <a href="#" class="drawer-heading">Trend Hunter Shop</a>
-      </div>
-      <hr class="drawer-divider drawer-signed-in-only">
-      <div class="drawer-group drawer-signed-in-only">
-        <button class="drawer-link drawer-logout">Log out</button>
       </div>
     </nav>
   </dialog>
@@ -109,7 +107,7 @@
 
     <!-- Profile sections -->
     <nav class="filter-tabs" role="tablist" aria-label="Profile sections">
-      <button id="profile-saved-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="profile-saved" data-profile-section="stories">Stories</button>
+      <button id="profile-saved-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="profile-saved" data-profile-section="stories">Saved</button>
       <button id="profile-collections-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-collections" tabindex="-1" data-profile-section="collections">Collections</button>
       <button id="profile-predictions-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-predictions" tabindex="-1" data-profile-section="predictions">Predictions</button>
     </nav>
@@ -181,9 +179,9 @@
     </form>
   </dialog>
 
-  <script src="app.js?v=profile-empty-1"></script>
-  <script src="predictions.js?v=profile-tabs-1"></script>
-  <script src="profile-predictions.js?v=3"></script>
+  <script src="app.js?v=author-updates-1"></script>
+  <script src="predictions.js?v=author-updates-1"></script>
+  <script src="profile-predictions.js?v=author-updates-1"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>

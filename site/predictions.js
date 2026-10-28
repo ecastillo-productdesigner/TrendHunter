@@ -206,6 +206,7 @@ if (stack) {
     const card = document.createElement('article');
     const backId = `prediction-context-${prediction.id}`;
     card.className = 'prediction-card prediction-card--call';
+    if (document.body.classList.contains('page-trend') && new URL(prediction.storyHref, location.href).pathname === location.pathname) card.classList.add('prediction-card--current-article');
     if (readMoreArticleArrival && !firstArrivalCardAssigned && (!articlePredictionArrival.predictionId || articlePredictionArrival.predictionId === prediction.id)) {
       card.classList.add('prediction-card--read-more-intro');
       firstArrivalCardAssigned = true;
@@ -271,6 +272,7 @@ if (stack) {
 
   // Turn the card over and move focus to the flip control on the side now showing
   function flipCard(card, toBack) {
+    if (card.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches) return;
     const flipper = card.querySelector('.prediction-card-flipper');
     unflatten(card);
     if (toBack) {
@@ -299,6 +301,10 @@ if (stack) {
   function restoreFlip(id) {
     const top = dealtCards()[0];
     if (!top || top.dataset.id !== id) return;
+    if (top.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches) {
+      saveDeck({ flipped: null });
+      return;
+    }
     top.classList.add('is-restoring');
     setFace(top, true);
     top.classList.add('is-flat');
@@ -569,6 +575,23 @@ if (stack) {
   } else if (cover) {
     cover.remove();
   }
+  const desktopArticle = window.matchMedia('(min-width: 960px)');
+  desktopArticle.addEventListener('change', () => {
+    if (!desktopArticle.matches) return;
+    const current = stack.querySelector('.prediction-card--current-article[data-flipped]');
+    if (!current) return;
+    unflatten(current);
+    setFace(current, false);
+    saveDeck({ flipped: null });
+  });
+}
+
+if (document.body.classList.contains('page-predictions')) {
+  const pagePanel = document.querySelector('.predictions-panel');
+  const stackWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-predictions-stack-width'));
+  const fitPageStack = () => pagePanel.style.setProperty('--prediction-stack-zoom', String(Math.min(1, pagePanel.clientWidth / stackWidth)));
+  window.addEventListener('resize', fitPageStack);
+  fitPageStack();
 }
 
 // ===========================

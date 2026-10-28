@@ -8,6 +8,8 @@
   const isAuthor = document.body.classList.contains('page-contributor');
   const authorName = profile.querySelector('.profile-name')?.textContent.trim() || 'Author';
   const authorId = profile.dataset.authorId;
+  const firstName = authorName.split(' ')[0];
+  const postsPanel = profile.querySelector('[data-profile-panel="posts"]');
   const primaryTabs = [...profile.querySelectorAll('[data-profile-section]')];
   const panels = [...profile.querySelectorAll('[data-profile-panel]')];
   const filters = predictionPanel.querySelector('.profile-prediction-filters');
@@ -40,14 +42,27 @@
 
   function personalHistory() {
     const calls = savedCalls();
-    return PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
+    const active = PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
+    // Illustrative past votes make the resolved state reviewable after a first call.
+    return active.length ? [...active, ...resolvedExamples] : [];
   }
 
   function authorHistory() {
-    const calls = authorExamples[authorId] || authorExamples['samantha-agate'];
+    const calls = authorExamples[authorId] || {};
     return [...PREDICTIONS, ...resolvedExamples].filter(prediction => calls[prediction.id])
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: Boolean(prediction.resolved) }));
+  }
+
+  function renderPosts() {
+    if (!postsPanel) return;
+    const stories = postsPanel.querySelector('.story-list');
+    const postsEmpty = postsPanel.querySelector('.profile-author-empty');
+    const noPosts = !stories.querySelector('.story-lockup');
+    stories.hidden = noPosts;
+    postsEmpty.hidden = !noPosts;
+    postsPanel.classList.toggle('profile-posts--empty', noPosts);
+    postsEmpty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't posted yet. Check back soon, or browse the feed for more from our contributors.`;
   }
 
   function renderHistory() {
@@ -57,7 +72,6 @@
     list.innerHTML = history.map(prediction => {
       let badgeLabel;
       if (viewingAuthorHistory()) {
-        const firstName = authorName.split(' ')[0];
         badgeLabel = `${firstName} ${prediction.resolved ? 'was' : 'is'} ${prediction.call}`;
       }
       return resultRow(prediction, prediction.call, true, { resolved: prediction.resolved, badgeLabel });
@@ -66,6 +80,8 @@
     empty.hidden = history.length !== 0;
     empty.querySelector('.profile-empty-title').textContent = selectedFilter === 'resolved' ? 'No resolved predictions yet' : selectedFilter === 'active' ? 'No active predictions yet' : 'No predictions yet';
     empty.querySelector('.profile-empty-copy').textContent = selectedFilter === 'resolved' ? 'Your resolved predictions will appear here' : 'Vote on prediction cards to track them here';
+    empty.classList.toggle('profile-empty-state--author', viewingAuthorHistory());
+    if (viewingAuthorHistory()) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
     if (!isAuthor) filters.hidden = personalHistory().length === 0;
   }
 
@@ -83,7 +99,7 @@
     filters.replaceChildren();
     if (authorOnly || noPersonalHistory) return;
 
-    const filterOptions = isAuthor ? [['you', 'By Me'], ['author', `By ${authorName.split(' ')[0]}`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
+    const filterOptions = isAuthor ? [['you', 'By You'], ['author', `By ${firstName}`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
     filters.classList.toggle('profile-prediction-filters--author', isAuthor);
     filters.setAttribute('aria-label', isAuthor ? 'Whose predictions' : 'Prediction status');
     for (const [value, label] of filterOptions) {
@@ -139,6 +155,7 @@
   });
 
   function restoreSection() {
+    renderPosts();
     renderFilters();
     const hash = !isAuthor && location.hash === '#saved' ? '#stories' : location.hash;
     const selected = primaryTabs.find(tab => `#${tab.dataset.profileSection}` === hash) || primaryTabs[0];

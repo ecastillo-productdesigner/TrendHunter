@@ -1,5 +1,19 @@
 'use strict';
 
+const accountExample = document.getElementById('ds-account-drawer');
+const accountExampleTrigger = document.querySelector('[data-ds-account-open]');
+accountExampleTrigger?.addEventListener('click', () => {
+  accountExample.showModal();
+  accountExampleTrigger.setAttribute('aria-expanded', 'true');
+});
+accountExample?.querySelector('.drawer-close').addEventListener('click', () => accountExample.close());
+accountExample?.querySelector('[data-ds-account-dismiss]').addEventListener('click', () => accountExample.close());
+accountExample?.addEventListener('close', () => accountExampleTrigger.setAttribute('aria-expanded', 'false'));
+accountExample?.addEventListener('click', event => {
+  const box = accountExample.getBoundingClientRect();
+  if (event.target === accountExample && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)) accountExample.close();
+});
+
 const themeButton = document.getElementById('ds-theme');
 const searchInput = document.getElementById('ds-search');
 const categoryFilter = document.getElementById('ds-filter');
