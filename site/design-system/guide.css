@@ -137,6 +137,9 @@
 .ds-results-preview .prediction-result:last-child { margin-bottom: 0; padding-bottom: 0; }
 .ds-results-preview .prediction-result-headline { color: var(--prediction-results-item); }
 .ds-results-preview .prediction-badge { color: var(--prediction-badge-label); }
+#profile-prediction-tabs .prediction-badge { color: var(--prediction-badge-label); }
+#profile-prediction-tabs .prediction-badge--resolved { color: var(--color-text-dim); }
+#profile-prediction-tabs .profile-prediction-filters { margin-bottom: var(--spacing-layout-md); }
 .ds-results-article-example { margin-top: var(--spacing-layout-xl); }
 .ds-results-article-example > h4 { margin-bottom: var(--spacing-layout-md); font: var(--type-weight-medium) var(--type-size-16)/1.5 var(--type-font-body); }
 .ds-results-article-example > .ds-note { margin-bottom: var(--spacing-layout-lg); }

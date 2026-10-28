@@ -96,6 +96,22 @@ function resultVoteSplit(prediction) {
     </div>`;
 }
 
+function resultRow(prediction, call, includeReadMore = true, { resolved = false, badgeLabel } = {}) {
+  const escapeResult = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+  const label = badgeLabel || (resolved ? `You were ${call}` : `You're ${call}`);
+  return `
+    <li class="prediction-result" data-id="${escapeResult(prediction.id)}" data-result-status="${resolved ? 'resolved' : 'active'}">
+      <div class="prediction-result-top">
+        <div class="prediction-result-copy">
+          <p class="prediction-result-headline">${escapeResult(prediction.text)}</p>
+          ${includeReadMore ? `<a class="prediction-card-more prediction-result-more" href="${escapeResult(prediction.storyHref)}" aria-label="Read more about ${escapeResult(prediction.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>` : ''}
+        </div>
+        <p class="prediction-badge prediction-badge--${call}${resolved ? ' prediction-badge--resolved' : ''}"><span class="prediction-badge-icon" aria-hidden="true"></span>${escapeResult(label)}</p>
+      </div>
+      ${resultVoteSplit(prediction)}
+    </li>`;
+}
+
 const CALLS_KEY = 'prediction-calls';
 const DECK_KEY = 'prediction-deck';
 const RETURN_KEY = 'predictions-return'; // read by app.js on the story page
@@ -307,27 +323,14 @@ if (stack) {
     if (!cards.length) showResults();
   }
 
-  function resultRow(prediction, call, includeReadMore = true) {
-    return `
-      <li class="prediction-result" data-id="${escapeHTML(prediction.id)}">
-        <div class="prediction-result-top">
-          <div class="prediction-result-copy">
-            <p class="prediction-result-headline">${escapeHTML(prediction.text)}</p>
-            ${includeReadMore ? `<a class="prediction-card-more prediction-result-more" href="${escapeHTML(prediction.storyHref)}" aria-label="Read more about ${escapeHTML(prediction.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>` : ''}
-          </div>
-          <p class="prediction-badge prediction-badge--${call}"><span class="prediction-badge-icon" aria-hidden="true"></span>${call === 'in' ? "You're in" : "You're out"}</p>
-        </div>
-        ${resultVoteSplit(prediction)}
-      </li>`;
-  }
-
   function showResults() {
     const calls = getCalls();
     const called = PREDICTIONS.filter((p) => calls[p.id]);
     const current = articlePredictionArrival?.source === 'results'
       ? called.find((p) => p.id === articlePredictionArrival.predictionId)
       : null;
-    const finishButton = skipped.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
+    const remaining = current ? PREDICTIONS.filter(prediction => !calls[prediction.id]) : skipped;
+    const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
     if (current) {
       const others = called.filter((p) => p.id !== current.id);
       stack.innerHTML = `
@@ -362,7 +365,7 @@ if (stack) {
     const finish = stack.querySelector('.prediction-results-finish');
     if (finish) {
       finish.addEventListener('click', () => {
-        queue = skipped;
+        queue = remaining;
         skipped = [];
         saveDeck({ skipped: [] });
         stack.innerHTML = '';
@@ -555,7 +558,8 @@ if (stack) {
   const deck = getDeck();
   skipped = PREDICTIONS.filter((p) => !calls[p.id] && deck.skipped.includes(p.id));
   queue = PREDICTIONS.filter((p) => !calls[p.id] && !deck.skipped.includes(p.id));
-  layoutDeck();
+  if (articlePredictionArrival?.source === 'results' && calls[articlePredictionArrival.predictionId]) showResults();
+  else layoutDeck();
   if (readMoreArticleArrival) saveDeck({ flipped: null });
   else if (deck.flipped) restoreFlip(deck.flipped);
 

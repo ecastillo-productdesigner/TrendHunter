@@ -2635,6 +2635,10 @@ a.drawer-heading:hover {
   align-self: flex-start;
   background-color: var(--prediction-badge-out);
 }
+.prediction-badge--resolved {
+  background-color: var(--buttons-secondary-bg);
+  color: var(--color-text-dim);
+}
 
 .prediction-badge-icon {
   width: var(--icon-size-xs);
@@ -3021,6 +3025,40 @@ body:has(.edit-profile-modal[open]) {
 .page-contributor .filter-tab--active {
   border-bottom-color: var(--contributor-tab-active);
 }
+
+/* Profile Predictions uses the shared result rows with compact DS filter buttons. */
+.profile-panel, .profile-predictions { width: 100%; }
+.profile-panel[hidden], .profile-predictions-empty[hidden] { display: none; }
+.filter-tab[data-profile-section] { cursor: pointer; }
+.filter-tab:disabled { color: var(--color-text-dim); cursor: default; }
+.profile-predictions { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); }
+.profile-prediction-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-component-ms);
+  width: 100%;
+}
+.profile-prediction-filters--author { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.profile-prediction-filters[hidden] { display: none; }
+.profile-prediction-filter {
+  min-height: var(--spacing-layout-xl);
+  padding: var(--spacing-component-xs) var(--spacing-component-ms);
+  border: 0;
+  border-radius: var(--radius-x-sm);
+  background: var(--buttons-secondary-bg);
+  color: var(--buttons-secondary-label);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+  cursor: pointer;
+}
+.profile-prediction-filter[aria-pressed="true"] { background: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
+.profile-prediction-filter:focus-visible, .filter-tab[data-profile-section]:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.prediction-results--profile { height: auto; padding: 0; animation: none; }
+.prediction-results--profile .prediction-results-list { flex: none; margin-top: 0; padding-right: 0; overflow: visible; }
+.prediction-results--profile .prediction-result:last-child { padding-bottom: 0; margin-bottom: 0; }
+.profile-predictions-empty { font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body); color: var(--color-text-dim); }
 
 /* ===========================
    Trend List / Contributor Profile

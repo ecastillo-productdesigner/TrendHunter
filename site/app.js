@@ -109,11 +109,13 @@ function isSignedIn() {
 function signIn() {
   try { sessionStorage.setItem(AUTH_KEY, 'true'); } catch (e) {}
   document.documentElement.dataset.auth = 'signed-in';
+  document.dispatchEvent(new Event('auth-change'));
 }
 
 function signOut() {
   try { sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
   delete document.documentElement.dataset.auth;
+  document.dispatchEvent(new Event('auth-change'));
 }
 
 if (isSignedIn()) document.documentElement.dataset.auth = 'signed-in';

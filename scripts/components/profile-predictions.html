@@ -1,0 +1,30 @@
+<article class="ds-panel ds-component" id="profile-prediction-tabs">
+  <h3>Profile prediction tabs</h3>
+  <p>Predictions opens from the existing profile tabs. Personal profiles filter calls by All, Active and Resolved. Signed-in author profiles use By Me and By [first name] in that position. Signed-out readers see the author’s predictions directly, without those filters. Posts and Saved remain separate panels. The controls below preview selected states; the linked profiles show the full lists.</p>
+  <div class="ds-two-column">
+    <div class="ds-component-spec">
+      <h4>Personal profile</h4>
+      <div class="profile-prediction-filters" role="group" aria-label="Personal prediction filter example" data-ds-profile-filters>
+        <button type="button" class="profile-prediction-filter" aria-pressed="true">All</button>
+        <button type="button" class="profile-prediction-filter" aria-pressed="false">Active</button>
+        <button type="button" class="profile-prediction-filter" aria-pressed="false">Resolved</button>
+      </div>
+      <p><a class="ds-text-link" href="../userprofile.html#predictions">Open profile predictions</a></p>
+    </div>
+    <div class="ds-component-spec">
+      <h4>Author profile · signed in</h4>
+      <div class="profile-prediction-filters profile-prediction-filters--author" role="group" aria-label="Author prediction filter example" data-ds-profile-filters>
+        <button type="button" class="profile-prediction-filter" aria-pressed="true">By Me</button>
+        <button type="button" class="profile-prediction-filter" aria-pressed="false">By Owen</button>
+      </div>
+      <p><a class="ds-text-link" href="../contributor-owen-brooks.html#predictions">Open author predictions</a></p>
+    </div>
+  </div>
+  <p class="ds-note">Compact filters keep the existing 16px type. They use component/xs (4px) vertical padding, component/ms (12px) horizontal padding, layout/xl (32px) minimum height and component/ms (12px) between buttons.</p>
+  <p class="ds-note">Results reuse the shared headline, Read more, badge and split bar. Active calls use You’re in / You’re out. Resolved calls use muted You were in / You were out badges. Author histories show the author’s first name on the badge. Sample history is shown when this tab has no saved calls; recorded calls take precedence.</p>
+  <div class="ds-votes">
+    <p class="prediction-badge prediction-badge--in">You’re in</p>
+    <p class="prediction-badge prediction-badge--in prediction-badge--resolved">You were in</p>
+    <p class="prediction-badge prediction-badge--out prediction-badge--resolved">You were out</p>
+  </div>
+</article>

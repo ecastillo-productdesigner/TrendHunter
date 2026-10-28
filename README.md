@@ -37,4 +37,6 @@ Open http://127.0.0.1:4176/TrendHunter/. Set `PORT` to choose a different port.
 
 Prediction vote percentages, several story texts, and the six illustrated contributor profiles are sample content. Votes, sign-in state and demo access are stored in the browser. Product cards remain static and do not link to a shop.
 
+Profile Predictions reuses the feed/article result row. Personal profiles have All, Active and Resolved filters. Signed-in author profiles have By Me and By [first name] instead. Signed-out author profiles show only the author’s history, without the secondary filters. Filter buttons use the DS 4px vertical and 12px horizontal padding, with a 32px minimum height and unchanged 16px type. When no deck calls have been recorded, profile lists show an illustrative history with active and resolved examples; real recorded calls take precedence. Author histories are fictional demonstration data, not a claim about any writer’s actual votes. The profile filters do not write or replace votes.
+
 The original local prototype was copied from `TrendHunterB2C`; unrelated CSA files and repository history are not included.

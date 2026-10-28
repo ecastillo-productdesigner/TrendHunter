@@ -92,6 +92,13 @@ document.querySelector('[data-ds-view-votes]')?.addEventListener('click', event 
   if (event.detail === 0) otherVotes.querySelector('a')?.focus({ preventScroll: true });
 }, { once: true });
 window.addEventListener('resize', updateThemeValues);
+for (const group of document.querySelectorAll('[data-ds-profile-filters]')) {
+  group.addEventListener('click', event => {
+    const selected = event.target.closest('button');
+    if (!selected) return;
+    for (const button of group.querySelectorAll('button')) button.setAttribute('aria-pressed', String(button === selected));
+  });
+}
 
 const navLinks = [...document.querySelectorAll('.ds-nav a')];
 const sectionObserver = new IntersectionObserver(entries => {

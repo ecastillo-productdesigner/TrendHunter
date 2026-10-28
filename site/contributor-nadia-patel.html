@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=50">
+  <link rel="stylesheet" href="feed.css?v=profile-tabs-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -99,7 +99,7 @@
     </footer>
   </dialog>
 
-  <main class="profile profile--contributor profile--fictional">
+  <main data-author-id="nadia-patel" class="profile profile--contributor profile--fictional">
     <section class="profile-header" aria-label="Contributor">
       <img class="profile-avatar profile-avatar--contributor" src="assets/authors/nadia-patel.webp" width="256" height="256" alt="">
       <div class="profile-identity"><h1 class="profile-name">Nadia Patel</h1><p class="profile-role">Health &amp; Consumer Habits Writer</p></div>
@@ -108,15 +108,22 @@
         <div class="profile-bio-full" id="bio-full" tabindex="-1" hidden><p>Nadia Patel looks at how people make room for wellbeing in ordinary life, covering accessible technology, active communities and changing shopping habits. Based in Raleigh, Nadia is curious about the practical questions behind a new habit: who it helps, what it costs and how it fits into a normal week. Her stories follow the people adapting tools and routines to their own needs, with a focus on clarity and everyday usefulness. She enjoys local walking groups, trying new podcast series and finding small ways to make a busy day feel less rushed.</p><p><strong>Based in:</strong> Raleigh, North Carolina<br><strong>Areas of interest:</strong> Accessible technology, active communities and value-minded choices</p></div>
       </div>
     </section>
-    <nav class="filter-tabs" aria-label="Contributor sections">
-      <span class="filter-tab filter-tab--active" aria-current="page">Posts</span>
-      <button class="filter-tab" type="button" disabled aria-disabled="true">Predictions</button>
+    <nav class="filter-tabs" role="tablist" aria-label="Contributor sections">
+      <button id="profile-posts-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="contributor-posts" data-profile-section="posts">Posts</button>
+      <button id="profile-predictions-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-predictions" tabindex="-1" data-profile-section="predictions">Predictions</button>
     </nav>
-    <section class="profile-posts" id="contributor-posts" aria-label="Posts"><ul class="story-list"><li><a href="trend-dollar-store-shoppers.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-09.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Why Dollar Stores Are Seeing an Unexpected New Wave of Shoppers</h2></a></li>
+    <section class="profile-posts profile-panel" id="contributor-posts" role="tabpanel" aria-labelledby="profile-posts-tab" data-profile-panel="posts"><ul class="story-list"><li><a href="trend-dollar-store-shoppers.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-09.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Why Dollar Stores Are Seeing an Unexpected New Wave of Shoppers</h2></a></li>
 <li><a href="trend-health-storytelling.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-13.png" alt="" loading="lazy"><h2 class="story-lockup-headline">A Writer’s Health Journey Raises Questions About Symptoms That Do Not Fit a Simple Story</h2></a></li>
 <li><a href="trend-run-club-connections.html" class="story-lockup"><img class="story-lockup-image" src="assets/collection/story-2.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Why Run Clubs Are Replacing Dating Apps for Gen Z</h2></a></li>
 <li><a href="trend-sleep-earbuds.html" class="story-lockup"><img class="story-lockup-image" src="assets/feed/trend-05.png" alt="" loading="lazy"><h2 class="story-lockup-headline">Your Bedroom Is Getting Louder. Sleep Earbuds Are Evolving to Keep Up</h2></a></li>
 <li><a href="trend-weekend-training-apps.html" class="story-lockup"><img class="story-lockup-image" src="assets/profile/saved-3.png" alt="" loading="lazy"><h2 class="story-lockup-headline">How Weekend Athletes Are Using Training Apps to Make Their Routine Work</h2></a></li></ul></section>
+    <section id="profile-predictions" class="profile-predictions profile-panel" role="tabpanel" aria-labelledby="profile-predictions-tab" data-profile-panel="predictions" hidden>
+      <div class="profile-prediction-filters" role="group"></div>
+      <div class="prediction-results prediction-results--profile">
+        <ul class="prediction-results-list"></ul>
+        <p class="profile-predictions-empty" role="status" hidden></p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer site-footer--page">
@@ -141,7 +148,9 @@
     <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
   </div>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=profile-tabs-2"></script>
+  <script src="predictions.js?v=profile-tabs-1"></script>
+  <script src="profile-predictions.js?v=2"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>
