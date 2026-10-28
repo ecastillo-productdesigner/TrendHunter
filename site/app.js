@@ -124,7 +124,10 @@ if (isSignedIn()) document.documentElement.dataset.auth = 'signed-in';
 // so the Log In page can send the reader back here
 document.querySelectorAll('.nav-login, .auth-prompt-email').forEach((link) => {
   link.addEventListener('click', () => {
-    try { sessionStorage.setItem('return-to', window.location.pathname.split('/').pop() || 'feed.html'); } catch (e) {}
+    try {
+      const page = window.location.pathname.split('/').pop() || 'feed.html';
+      sessionStorage.setItem('return-to', `${page}${window.location.hash}`);
+    } catch (e) {}
   });
 });
 
