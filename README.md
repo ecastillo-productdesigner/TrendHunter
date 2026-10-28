@@ -43,4 +43,4 @@ The original local prototype was copied from `TrendHunterB2C`; unrelated CSA fil
 
 Author profiles show first-name empty-state copy only when posts or author votes are absent. Samantha’s main article byline links to her contributor bio. Profile side padding and filter horizontal padding are 16px.
 
-The profile icon opens a right-side account drawer using the Menu drawer component, with Profile and Log Out actions. The lightning shortcut opens `predictions.html`; its selected color is `--color-border-focus`. Desktop article prediction cards hide context and Read more only for the story already open, retaining the same deck and other cards’ controls.
+The profile icon opens a right-side account drawer using the Menu drawer component, with Profile and Log Out actions. On mobile and tablet below 960px, the lightning shortcut opens `predictions.html`; it is hidden in desktop navigation. Its selected color is `--color-border-focus`. Desktop article prediction cards hide context and Read more only for the story already open, retaining the same deck and other cards’ controls.

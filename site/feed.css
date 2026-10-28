@@ -1889,6 +1889,7 @@ a.drawer-heading:hover {
 .predictions-page .prediction-stack { zoom: var(--prediction-stack-zoom, 1); }
 .predictions-page .prediction-stack:has(.prediction-results) { width: 100%; height: calc(var(--layout-predictions-stack-height) + var(--spacing-page-2xl) * 2); zoom: 1; }
 @media (min-width: 960px) {
+  .nav-primary .nav-predictions { display: none; }
   .page-trend .prediction-card--current-article [data-flip],
   .page-trend .prediction-card--current-article .prediction-card-context { display: none; }
 }
