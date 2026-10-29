@@ -234,5 +234,7 @@
 .ds-profile-comparison-grid .prediction-result-headline {
   font: var(--type-weight-bold) var(--type-size-18)/var(--type-line-height-ui-md) var(--type-font-display);
 }
-.ds-profile-comparison-grid .profile-call-mark.prediction-badge--out { color: var(--prediction-badge-label); }
 @media (max-width: 1099px) { .ds-profile-comparison-grid { grid-template-columns: minmax(0, 1fr); } }
+
+.ds-email-hover { background-color: var(--auth-email-bg-hover); }
+#answers-response-page { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }

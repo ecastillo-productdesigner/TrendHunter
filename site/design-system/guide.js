@@ -161,7 +161,7 @@ comparisonExample?.addEventListener('click', event => {
   const call = vote.dataset.dsProfileCall;
   const comparison = comparisonExample.querySelector('.profile-call-comparison');
   comparison.dataset.readerCall = call;
-  comparison.innerHTML = `<span class="profile-call-label">You voted</span><span class="prediction-badge prediction-badge--${call} profile-call-mark"><span class="prediction-badge-icon" aria-hidden="true"></span><span class="visually-hidden">${call === 'in' ? 'In' : 'Out'}</span></span>`;
+  comparison.innerHTML = `<span class="prediction-badge prediction-badge--${call} profile-reader-badge"><span class="prediction-badge-icon" aria-hidden="true"></span>You’re ${call}</span>`;
   choices.remove();
   comparisonExample.querySelector('.prediction-result-more').focus({ preventScroll: true });
 });

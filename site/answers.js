@@ -1,11 +1,17 @@
 // Trend Hunter Answers: one instance moves between the desktop rail and the mobile feed.
 (() => {
+  const answerPageUrl = new URL('answers.html', document.currentScript?.src || location.href);
+  const openAnswer = question => {
+    const destination = new URL(answerPageUrl);
+    destination.searchParams.set('q', question.trim().slice(0, 200));
+    location.assign(destination.href);
+  };
   const answersTemplate = `
     <h2 class="answers-heading" id="trend-answers-heading"><span class="answers-sparkle" aria-hidden="true"></span>Trend Hunter Answers</h2>
     <form class="answers-form" role="search">
       <label class="visually-hidden" for="trend-answers-input">Ask Trend Hunter</label>
       <span class="answers-sparkle answers-input-icon" aria-hidden="true"></span>
-      <input class="answers-input" id="trend-answers-input" name="question" type="search" placeholder="Ask Trend Hunter..." autocomplete="off" required>
+      <input class="answers-input" id="trend-answers-input" name="question" type="search" placeholder="Ask Trend Hunter..." autocomplete="off" maxlength="200" required>
       <button class="answers-submit" type="submit" aria-label="Submit question"><span aria-hidden="true"></span></button>
     </form>
     <div class="answers-suggestions" aria-label="Suggested questions">
@@ -154,22 +160,19 @@
       row.classList.add('is-ticker');
       row.append(track);
     });
-    // Keep a clicked visual copy from taking focus before the click fills the input.
+    // Keep a clicked visual copy from taking focus before the click opens its answer.
     answers.addEventListener('pointerdown', (event) => {
       if (event.target.closest('.answers-suggestion-group[aria-hidden="true"]')) event.preventDefault();
     });
     answers.addEventListener('click', (event) => {
       const suggestion = event.target.closest('.answers-suggestion[data-question]');
       if (!suggestion) return;
-      input.value = suggestion.dataset.question;
-      status.hidden = true;
-      input.focus();
+      openAnswer(suggestion.dataset.question);
     });
     answers.querySelector('form').addEventListener('submit', (event) => {
       event.preventDefault();
       if (!input.value.trim()) { input.focus(); return; }
-      status.textContent = 'Trend Hunter Answers is coming soon.';
-      status.hidden = false;
+      openAnswer(input.value);
     });
   });
 })();

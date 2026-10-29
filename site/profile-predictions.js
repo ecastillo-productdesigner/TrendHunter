@@ -92,9 +92,8 @@
     if (readerCall) {
       comparison = `
         <div class="profile-call-comparison" data-reader-call="${readerCall}"${prediction.resolved ? ' data-resolved="true"' : ''}>
-          <span class="profile-call-label">You voted</span>
-          <span class="prediction-badge prediction-badge--${readerCall}${prediction.resolved ? ' prediction-badge--resolved' : ''} profile-call-mark">
-            <span class="prediction-badge-icon" aria-hidden="true"></span><span class="visually-hidden">${readerCall === 'in' ? 'In' : 'Out'}</span>
+          <span class="prediction-badge prediction-badge--${readerCall}${prediction.resolved ? ' prediction-badge--resolved' : ''} profile-reader-badge">
+            <span class="prediction-badge-icon" aria-hidden="true"></span>You’re ${readerCall}
           </span>
         </div>`;
     } else if (prediction.resolved) {
