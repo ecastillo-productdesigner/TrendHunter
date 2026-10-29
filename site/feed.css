@@ -2468,6 +2468,7 @@ a.drawer-heading:hover {
 }
 
 .prediction-vote {
+  --prediction-hover-overlay: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2484,6 +2485,13 @@ a.drawer-heading:hover {
   text-transform: uppercase;
   color: var(--prediction-button-label);
   cursor: pointer;
+  /* Tint the black fill without changing the label, icon or border colors. */
+  box-shadow: inset 0 0 0 var(--layout-prediction-vote-height) var(--prediction-hover-overlay);
+  transition: box-shadow 0.15s ease;
+}
+.prediction-vote:hover { --prediction-hover-overlay: var(--buttons-tertiary-bg-hover); }
+@media (prefers-reduced-motion: reduce) {
+  .prediction-vote { transition: none; }
 }
 
 .prediction-vote-icon {
