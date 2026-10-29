@@ -80,6 +80,27 @@ const PREDICTIONS = [
   },
 ];
 
+// Fictional profile-only examples also resolve on their related story pages.
+// They stay outside the daily catalogue and keep votes in a separate browser key.
+function profileComparisonExamples(authorId) {
+  return [
+    { state: 'in', text: 'Smart rings will become the default way to plan a nightly wind-down routine', storyHref: 'trend-smart-ring-sleep.html', sampleInPercent: 64, exampleReaderCall: 'in' },
+    { state: 'out', text: 'Protein snack stations will become a standard office perk', storyHref: 'trend-everyday-protein.html', sampleInPercent: 41, exampleReaderCall: 'out' },
+    { state: 'pending', text: 'Neighborhood supper clubs will become the next weekend social ritual', storyHref: 'trend-sober-socials.html', sampleInPercent: 57, exampleReaderCall: null },
+  ].map(({ state, ...prediction }) => ({ ...prediction, id: `profile-example-${authorId}-${state}`, call: 'in', resolved: false, comparisonExample: true }));
+}
+
+function findPrediction(id) {
+  const standard = PREDICTIONS.find(prediction => prediction.id === id);
+  if (standard) return standard;
+  const example = /^profile-example-([a-z-]+)-(in|out|pending)$/.exec(id || '');
+  return example ? profileComparisonExamples(example[1]).find(prediction => prediction.id === id) : undefined;
+}
+
+function predictionStoryPath(href) {
+  return new URL(href, location.href).pathname.replace(/\.html$/, '').replace(/\/$/, '');
+}
+
 function resultVoteSplit(prediction) {
   const inPercent = prediction.sampleInPercent;
   const outPercent = 100 - inPercent;
@@ -114,6 +135,7 @@ function resultRow(prediction, call, includeReadMore = true, { resolved = false,
 
 const CALLS_KEY = 'prediction-calls';
 const DECK_KEY = 'prediction-deck';
+const PROFILE_EXAMPLE_CALLS_KEY = 'profile-comparison-example-calls';
 const RETURN_KEY = 'predictions-return'; // read by app.js on the story page
 const READ_MORE_MODE_KEY = 'read-more-mode'; // 'page' (default) or 'sheet', set from the prototype settings
 
@@ -144,13 +166,18 @@ const articlePredictionArrival = (() => {
   if (!document.body.classList.contains('page-trend')) return null;
   let arrival = null;
   try { arrival = JSON.parse(sessionStorage.getItem(RETURN_KEY)); } catch (e) {}
-  if (arrival?.to === location.pathname) {
+  if (arrival?.to && predictionStoryPath(arrival.to) === predictionStoryPath(location.pathname)) {
     try { history.replaceState({ ...history.state, predictionArrival: arrival }, ''); } catch (e) {}
     return arrival;
   }
   const previous = history.state?.predictionArrival;
-  return previous?.to === location.pathname ? previous : null;
+  return previous?.to && predictionStoryPath(previous.to) === predictionStoryPath(location.pathname) ? previous : null;
 })();
+
+const profileStoryPrediction = articlePredictionArrival?.source === 'profile'
+  ? findPrediction(articlePredictionArrival.predictionId) : null;
+const profileStoryArrival = profileStoryPrediction && predictionStoryPath(profileStoryPrediction.storyHref) === predictionStoryPath(location.pathname)
+  ? profileStoryPrediction : null;
 
 const stack = document.querySelector('.prediction-stack');
 
@@ -161,10 +188,17 @@ if (stack) {
     try { return JSON.parse(sessionStorage.getItem(CALLS_KEY)) || {}; } catch (e) { return {}; }
   };
 
+  const callKey = prediction => prediction?.comparisonExample ? PROFILE_EXAMPLE_CALLS_KEY : CALLS_KEY;
+  const predictionCall = prediction => {
+    if (!prediction) return null;
+    try { return (JSON.parse(sessionStorage.getItem(callKey(prediction))) || {})[prediction.id]; } catch { return null; }
+  };
   const saveCall = (id, call) => {
-    const calls = getCalls();
-    calls[id] = call;
-    try { sessionStorage.setItem(CALLS_KEY, JSON.stringify(calls)); } catch (e) {}
+    const key = callKey(findPrediction(id));
+    try {
+      const calls = JSON.parse(sessionStorage.getItem(key)) || {};
+      sessionStorage.setItem(key, JSON.stringify({ ...calls, [id]: call }));
+    } catch (e) {}
   };
 
   // The rest of the deck's state is kept for the tab too, so moving to another page
@@ -206,7 +240,9 @@ if (stack) {
     const card = document.createElement('article');
     const backId = `prediction-context-${prediction.id}`;
     card.className = 'prediction-card prediction-card--call';
-    if (document.body.classList.contains('page-trend') && new URL(prediction.storyHref, location.href).pathname === location.pathname) card.classList.add('prediction-card--current-article');
+    if (document.body.classList.contains('page-trend') && predictionStoryPath(prediction.storyHref) === predictionStoryPath(location.pathname)) card.classList.add('prediction-card--current-article');
+    const storyAlreadyOpen = prediction.id === profileStoryArrival?.id;
+    if (storyAlreadyOpen) card.classList.add('prediction-card--profile-story');
     if (readMoreArticleArrival && !firstArrivalCardAssigned && (!articlePredictionArrival.predictionId || articlePredictionArrival.predictionId === prediction.id)) {
       card.classList.add('prediction-card--read-more-intro');
       firstArrivalCardAssigned = true;
@@ -218,7 +254,7 @@ if (stack) {
           <div class="prediction-card-overlay"></div>
           <div class="prediction-card-body">
             <div class="prediction-card-toolbar">
-              <button class="prediction-card-link" type="button" data-flip="context" aria-expanded="false" aria-controls="${backId}">Get context<span class="prediction-card-link-icon" aria-hidden="true"></span></button>
+              ${storyAlreadyOpen ? '' : `<button class="prediction-card-link" type="button" data-flip="context" aria-expanded="false" aria-controls="${backId}">Get context<span class="prediction-card-link-icon" aria-hidden="true"></span></button>`}
             </div>
             <div class="prediction-card-middle">
               <h3 class="prediction-card-headline">${escapeHTML(prediction.text)}</h3>
@@ -226,7 +262,7 @@ if (stack) {
             ${voteButtons}
           </div>
         </div>
-        <div class="prediction-card-face prediction-card-face--back" id="${backId}" inert>
+        ${storyAlreadyOpen ? '' : `<div class="prediction-card-face prediction-card-face--back" id="${backId}" inert>
           <div class="prediction-card-overlay"></div>
           <div class="prediction-card-body">
             <div class="prediction-card-toolbar">
@@ -237,7 +273,7 @@ if (stack) {
             </div>
             ${voteButtons}
           </div>
-        </div>
+        </div>`}
       </div>`;
     return card;
   }
@@ -332,9 +368,12 @@ if (stack) {
   function showResults() {
     const calls = getCalls();
     const called = PREDICTIONS.filter((p) => calls[p.id]);
-    const current = articlePredictionArrival?.source === 'results'
+    const requested = findPrediction(articlePredictionArrival?.predictionId);
+    if (requested?.comparisonExample && predictionCall(requested)) called.push(requested);
+    const current = ['results', 'profile'].includes(articlePredictionArrival?.source)
       ? called.find((p) => p.id === articlePredictionArrival.predictionId)
       : null;
+    if (current?.comparisonExample) calls[current.id] = predictionCall(current);
     const remaining = current ? PREDICTIONS.filter(prediction => !calls[prediction.id]) : skipped;
     const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
     if (current) {
@@ -384,7 +423,7 @@ if (stack) {
   // fromDrag skips the nudge, since the card is already out of place.
   function commit(card, call, fromDrag = false) {
     if (card.classList.contains('is-flying')) return;
-    const prediction = PREDICTIONS.find((p) => p.id === card.dataset.id);
+    const prediction = findPrediction(card.dataset.id);
     // Skip This (the button) slides the card away without the dark overlay; dragging up keeps it
     if (call === 'skip' && !fromDrag) delete card.dataset.call;
     else card.dataset.call = call;
@@ -564,12 +603,18 @@ if (stack) {
   const deck = getDeck();
   skipped = PREDICTIONS.filter((p) => !calls[p.id] && deck.skipped.includes(p.id));
   queue = PREDICTIONS.filter((p) => !calls[p.id] && !deck.skipped.includes(p.id));
-  if (articlePredictionArrival?.source === 'results' && calls[articlePredictionArrival.predictionId]) showResults();
+  // A profile Read more chooses this exact unfinished call, ahead of the saved deck order.
+  // Keep two other pending cards behind it and bypass the onboarding cover.
+  if (profileStoryArrival && !predictionCall(profileStoryArrival)) {
+    queue = [profileStoryArrival, ...queue.filter(prediction => prediction.id !== profileStoryArrival.id)];
+    skipped = skipped.filter(prediction => prediction.id !== profileStoryArrival.id);
+  }
+  if (['results', 'profile'].includes(articlePredictionArrival?.source) && predictionCall(findPrediction(articlePredictionArrival.predictionId))) showResults();
   else layoutDeck();
-  if (readMoreArticleArrival) saveDeck({ flipped: null });
+  if (readMoreArticleArrival || profileStoryArrival) saveDeck({ flipped: null });
   else if (deck.flipped) restoreFlip(deck.flipped);
 
-  if (cover && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
+  if (cover && !profileStoryArrival && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
     cover.remove();
     placeCover(cover);
   } else if (cover) {

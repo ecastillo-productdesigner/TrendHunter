@@ -14,6 +14,7 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   let feedbackAnimation;
 
   video.muted = true;
+  sound.dataset.muted = 'true';
   if (reducedMotion.matches) video.pause();
 
   function syncLabel() {
@@ -58,6 +59,7 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
 
   sound.addEventListener('click', () => {
     video.muted = !video.muted;
+    sound.dataset.muted = String(video.muted);
     sound.setAttribute('aria-label', video.muted ? 'Unmute story video' : 'Mute story video');
     sound.querySelector('.trend-card-video-symbol').textContent = video.muted ? 'volume_off' : 'volume_up';
     status.textContent = video.muted ? 'Video muted' : 'Video unmuted';

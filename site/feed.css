@@ -944,8 +944,13 @@ a.story-lockup:hover .story-lockup-headline {
   filter: drop-shadow(0 1px 6px rgb(0 0 0 / 25%));
 }
 .trend-card-video-feedback .trend-card-video-symbol {
+  color: var(--trend-card-bookmark-active);
   font-size: var(--icon-size-2xl);
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+.trend-card-sound[data-muted="false"] .trend-card-video-symbol {
+  color: var(--trend-card-bookmark-active);
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 32;
 }
 .trend-card-sound {
   display: grid;

@@ -65,11 +65,7 @@
     if (!history.length) return history;
     // Review-only predictions show all three requested comparison states on each
     // creator profile. Their fictional reader calls never enter the daily deck.
-    const examples = [
-      { id: `profile-example-${authorId}-in`, text: 'Smart rings will become the default way to plan a nightly wind-down routine', storyHref: 'trend-smart-ring-sleep.html', sampleInPercent: 64, exampleReaderCall: 'in' },
-      { id: `profile-example-${authorId}-out`, text: 'Protein snack stations will become a standard office perk', storyHref: 'trend-everyday-protein.html', sampleInPercent: 41, exampleReaderCall: 'out' },
-      { id: `profile-example-${authorId}-pending`, text: 'Neighborhood supper clubs will become the next weekend social ritual', storyHref: 'trend-sober-socials.html', sampleInPercent: 57, exampleReaderCall: null },
-    ].map(prediction => ({ ...prediction, call: 'in', resolved: false, comparisonExample: true }));
+    const examples = profileComparisonExamples(authorId);
     return [...examples, ...history];
   }
 
@@ -246,8 +242,13 @@
     const calls = savedCalls();
     try {
       sessionStorage.removeItem(RETURN_KEY);
-      if (calls[id]) {
-        sessionStorage.setItem(RETURN_KEY, JSON.stringify({ to: new URL(link.getAttribute('href'), location.href).pathname, predictionId: id, source: 'results' }));
+      const prediction = isAuthor ? authorHistory().find(item => item.id === id) : null;
+      const readerCall = prediction?.comparisonExample
+        ? (isSignedIn() ? savedExampleCalls()[id] || prediction.exampleReaderCall : null)
+        : calls[id];
+      const source = calls[id] ? 'results' : prediction && !readerCall && !prediction.resolved ? 'profile' : null;
+      if (source) {
+        sessionStorage.setItem(RETURN_KEY, JSON.stringify({ to: new URL(link.getAttribute('href'), location.href).pathname, predictionId: id, source }));
       }
     } catch { /* The story link still works without storage. */ }
   });

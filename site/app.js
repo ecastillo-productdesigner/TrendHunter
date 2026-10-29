@@ -419,6 +419,6 @@ window.addEventListener('pageshow', (event) => {
   let ret = null;
   try { ret = JSON.parse(sessionStorage.getItem(RETURN_KEY)); } catch (e) {}
   if (!ret) return;
-  if (location.pathname === ret.to && !event.persisted) window.scrollTo(0, 0);
+  if (ret.to && location.pathname.replace(/\.html$/, '') === ret.to.replace(/\.html$/, '') && !event.persisted) window.scrollTo(0, 0);
   try { sessionStorage.removeItem(RETURN_KEY); } catch (e) {}
 });
