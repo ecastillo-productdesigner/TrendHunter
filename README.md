@@ -1,16 +1,16 @@
 # TrendHunter
 
-Trend Hunter B2C prototype and design system, kept in its own private repository.
+Trend Hunter B2C prototype and design system, kept in its own public repository.
 
 ## Private preview
 
-The preview is hosted privately with Sites at https://trendhunter-ecastillo.mcclatchy-me-8401.chatgpt.site. Sites requires an authorized account before the demo password screen. GitHub Pages could not be enabled because the current GitHub plan does not support Pages for this private repository.
+The preview is hosted privately with Sites at https://trendhunter-ecastillo.mcclatchy-me-8401.chatgpt.site. Sites requires an authorized account before the demo password screen. The source repository is public on GitHub; the hosted Sites preview retains its existing access settings.
 
 ## Demo access
 
 The website opens with a password screen. The demo password is **`demo`**. Access lasts for the current tab session and survives navigation and refreshes. Choosing **Log out** in the profile menu ends demo access as well as the prototype sign-in session.
 
-This matches CSA's browser-only demo gate. The private repository protects access to the source on GitHub; the website password is a bypassable preview screen, not server authentication. The published static files can still be requested directly. No password is sent to a server.
+This matches CSA's browser-only demo gate. The source is publicly available on GitHub. The website password is a bypassable preview screen, not server authentication. The published static files can still be requested directly. No password is sent to a server.
 
 The same gate is applied to feed, article, collection, contributor, login and design-system pages, including direct links.
 
@@ -29,7 +29,7 @@ Open http://127.0.0.1:4176/TrendHunter/. Set `PORT` to choose a different port.
 - Edit the website in `site/` and the password screen in `access/`.
 - Run `npm run design-system:build` after changing the design-system generator or token definitions. This uses Python 3's standard library.
 - Run `npm run check` to build, check JavaScript syntax and validate local page references.
-- Push to `main` to keep the private GitHub source current. The GitHub workflow runs the build checks.
+- Push to `main` to keep the public GitHub source current. The GitHub workflow runs the build checks.
 - Publish the private preview through Sites using `.openai/hosting.json`. The Site source must be synchronized and its exact commit packaged before deployment.
 - `npm run build` creates `dist/`, copies the password screen, and injects it into every HTML page. `index.html` is generated from the feed so the website opens at its root URL.
 
@@ -66,3 +66,5 @@ The gap between You voted and either In / Out square mark is 8px (`--spacing-com
 Read more on a creator prediction with Make your call carries that prediction to its related story. The unvoted prediction starts face-up at the front of the same three-card deck used by the feed, with no onboarding cover, Get context or Read more on the current card. Other pending cards remain behind it. This works for daily predictions and profile-only fictional examples, and recognizes both .html and extensionless Site routes. Sample votes made on the story use the separate example-call key and update the creator comparison without entering personal voting history. Reloading after a call shows the existing saved-call state.
 
 Feed playback feedback uses filled lime (#BEFC4F) play_circle and pause_circle (FILL 1). Sound on uses filled volume_up in #BEFC4F; muted uses unfilled volume_off in the bookmark outline color.
+
+Articles opened through a prediction’s Read more use the Make your call section heading on desktop and mobile. The arrival context survives reload; saved-call results retain Your call is locked in. Feed and Daily Predictions pages keep their existing heading.

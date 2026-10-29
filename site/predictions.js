@@ -174,6 +174,16 @@ const articlePredictionArrival = (() => {
   return previous?.to && predictionStoryPath(previous.to) === predictionStoryPath(location.pathname) ? previous : null;
 })();
 
+// A reader opening a prediction's story is here to make that call.
+// The mobile article already uses this label; match it in the desktop rail too.
+if (articlePredictionArrival) {
+  const heading = document.getElementById('predictions-heading');
+  if (heading) {
+    heading.textContent = 'Make your call';
+    heading.closest('.rail-right')?.setAttribute('aria-label', 'Make your call');
+  }
+}
+
 const profileStoryPrediction = articlePredictionArrival?.source === 'profile'
   ? findPrediction(articlePredictionArrival.predictionId) : null;
 const profileStoryArrival = profileStoryPrediction && predictionStoryPath(profileStoryPrediction.storyHref) === predictionStoryPath(location.pathname)
@@ -454,14 +464,12 @@ if (stack) {
 
   // Buttons on the top card
   stack.addEventListener('click', (event) => {
-    // Read more goes to the story page. On phones and tablets it notes which story it's heading to,
-    // so app.js can open it at the top. The prototype settings can switch phones and tablets
-    // to the bottom sheet instead, for comparison.
+    // Remember the Read more origin at every viewport so article headings match the flow.
+    // The prototype settings can switch phones and tablets to a bottom sheet instead.
     const more = event.target.closest('.prediction-card-more');
     if (more) {
       const fromResults = more.classList.contains('prediction-result-more');
       const desktop = window.matchMedia('(min-width: 960px)').matches;
-      if (desktop && !fromResults) return;
       try {
         sessionStorage.setItem(RETURN_KEY, JSON.stringify({
           to: new URL(more.getAttribute('href'), location.href).pathname,
