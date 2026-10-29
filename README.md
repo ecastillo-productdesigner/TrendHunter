@@ -2,9 +2,9 @@
 
 Trend Hunter B2C prototype and design system, kept in its own public repository.
 
-## Private preview
+## Public website
 
-The preview is hosted privately with Sites at https://trendhunter-ecastillo.mcclatchy-me-8401.chatgpt.site. Sites requires an authorized account before the demo password screen. The source repository is public on GitHub; the hosted Sites preview retains its existing access settings.
+Open https://ecastillo-productdesigner.github.io/TrendHunter/ and enter the demo password **demo**. GitHub Pages hosts this public website independently of ChatGPT workspace access. Anyone with the URL can open it. The public repository is https://github.com/ecastillo-productdesigner/TrendHunter.
 
 ## Demo access
 
@@ -29,8 +29,7 @@ Open http://127.0.0.1:4176/TrendHunter/. Set `PORT` to choose a different port.
 - Edit the website in `site/` and the password screen in `access/`.
 - Run `npm run design-system:build` after changing the design-system generator or token definitions. This uses Python 3's standard library.
 - Run `npm run check` to build, check JavaScript syntax and validate local page references.
-- Push to `main` to keep the public GitHub source current. The GitHub workflow runs the build checks.
-- Publish the private preview through Sites using `.openai/hosting.json`. The Site source must be synchronized and its exact commit packaged before deployment.
+- Push to `main` to update the public GitHub source and website. The GitHub workflow runs the build checks, uploads the checked `dist/` website, and deploys it to GitHub Pages. A failed check prevents publication.
 - `npm run build` creates `dist/`, copies the password screen, and injects it into every HTML page. `index.html` is generated from the feed so the website opens at its root URL.
 
 ## Prototype content

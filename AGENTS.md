@@ -6,4 +6,4 @@
 - The demo password gate is in `access/`. It is injected into every published HTML page by `npm run build`; `dist/` is generated and ignored by Git.
 - Keep the prototype's sample voting data and fictional authors clearly identified in source and documentation.
 - Run `npm run check` before publishing. Review the relevant mobile or desktop flow in the browser when changing behavior or layout.
-- The user made the GitHub source repository public. The private Sites preview is bound by `.openai/hosting.json`; publish it with the Sites workflow after changes. The GitHub workflow checks builds but does not publish.
+- The user made the GitHub repository and website public. The GitHub workflow checks and publishes `dist/` to GitHub Pages on pushes to `main`. The public website is https://ecastillo-productdesigner.github.io/TrendHunter/ and retains the browser-only demo password screen. Use GitHub Pages only; the user requested removal of ChatGPT Sites hosting.
