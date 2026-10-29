@@ -99,9 +99,9 @@
     filters.replaceChildren();
     if (authorOnly || noPersonalHistory) return;
 
-    const filterOptions = isAuthor ? [['you', 'By You'], ['author', `By ${firstName}`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
+    const filterOptions = isAuthor ? [['you', 'Your votes'], ['author', `${firstName}’s votes`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
     filters.classList.toggle('profile-prediction-filters--author', isAuthor);
-    filters.setAttribute('aria-label', isAuthor ? 'Whose predictions' : 'Prediction status');
+    filters.setAttribute('aria-label', isAuthor ? 'Whose votes' : 'Prediction status');
     for (const [value, label] of filterOptions) {
       const button = document.createElement('button');
       button.type = 'button';
