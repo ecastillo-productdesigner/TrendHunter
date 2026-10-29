@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=profile-comparison-5">
+  <link rel="stylesheet" href="feed.css?v=feed-video-1">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -16,7 +16,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt,pause_circle,play_circle,volume_off,volume_up">
 </head>
 <body>
 
@@ -144,8 +144,11 @@
             </article>
           </li>
           <li>
-            <article class="trend-card">
-              <img class="trend-card-image" src="assets/feed/trend-02.png" alt="" loading="lazy">
+            <article class="trend-card trend-card--video" id="feed-video-story" data-feed-video>
+              <video class="trend-card-image trend-card-video" src="assets/feed/trend-02-loop.mp4" poster="assets/feed/trend-02.png" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+              <button class="trend-card-playback" type="button" data-video-playback aria-label="Pause story video"></button>
+              <span class="trend-card-video-feedback" aria-hidden="true"><span class="trend-card-video-symbol">pause_circle</span></span>
+              <span class="visually-hidden" data-video-status role="status"></span>
               <a href="collection-retailtainment-hubs.html" class="trend-card-collection">Retailtainment Hubs <span class="trend-icon trend-icon--up" role="img" aria-label="Trending up"></span></a>
               <div class="trend-card-content">
                 <h2 class="trend-card-headline">How Gen Z Brands Like Edikted Are Converting TikTok Followers</h2>
@@ -153,6 +156,8 @@
                 <a href="trend-retailtainment.html" class="button-primary">Go Deeper</a>
               </div>
               <div class="trend-card-actions">
+                <button class="trend-card-action trend-card-sound" type="button" data-video-sound aria-label="Unmute story video"><span class="trend-card-video-symbol" aria-hidden="true">volume_off</span></button>
+                <button class="trend-card-action" type="button" data-video-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
                 
                 <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
                 <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
@@ -519,6 +524,7 @@
   <script src="app.js?v=author-updates-1"></script>
   <script src="predictions.js?v=author-updates-1"></script>
   <script src="answers.js?v=1"></script>
+  <script src="feed-video.js?v=feed-video-1"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>
