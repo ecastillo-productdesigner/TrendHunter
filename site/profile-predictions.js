@@ -9,15 +9,20 @@
   const authorName = profile.querySelector('.profile-name')?.textContent.trim() || 'Author';
   const authorId = profile.dataset.authorId;
   const firstName = authorName.split(' ')[0];
+  const EXAMPLE_CALLS_KEY = 'profile-comparison-example-calls';
   const postsPanel = profile.querySelector('[data-profile-panel="posts"]');
   const primaryTabs = [...profile.querySelectorAll('[data-profile-section]')];
   const panels = [...profile.querySelectorAll('[data-profile-panel]')];
   const filters = predictionPanel.querySelector('.profile-prediction-filters');
   const list = predictionPanel.querySelector('.prediction-results-list');
   const empty = predictionPanel.querySelector('.profile-predictions-empty');
-  let selectedFilter = isAuthor ? (isSignedIn() ? 'you' : 'author') : 'all';
-
-  const viewingAuthorHistory = () => isAuthor && (!isSignedIn() || selectedFilter === 'author');
+  let selectedFilter = isAuthor ? 'author' : 'all';
+  const callStatus = isAuthor ? document.createElement('p') : null;
+  if (callStatus) {
+    callStatus.className = 'visually-hidden';
+    callStatus.setAttribute('role', 'status');
+    predictionPanel.appendChild(callStatus);
+  }
 
   const resolvedExamples = [
     { id: 'weekend-walking-history', text: 'Weekend-only walking will become a regular part of fitness plans', storyHref: 'trend-weekend-walking.html', sampleInPercent: 63, call: 'in', resolved: true },
@@ -40,6 +45,11 @@
     catch { return {}; }
   }
 
+  function savedExampleCalls() {
+    try { return JSON.parse(sessionStorage.getItem(EXAMPLE_CALLS_KEY)) || {}; }
+    catch { return {}; }
+  }
+
   function personalHistory() {
     const calls = savedCalls();
     const active = PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
@@ -50,8 +60,17 @@
 
   function authorHistory() {
     const calls = authorExamples[authorId] || {};
-    return [...PREDICTIONS, ...resolvedExamples].filter(prediction => calls[prediction.id])
+    const history = [...PREDICTIONS, ...resolvedExamples].filter(prediction => calls[prediction.id])
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: Boolean(prediction.resolved) }));
+    if (!history.length) return history;
+    // Review-only predictions show all three requested comparison states on each
+    // creator profile. Their fictional reader calls never enter the daily deck.
+    const examples = [
+      { id: `profile-example-${authorId}-in`, text: 'Smart rings will become the default way to plan a nightly wind-down routine', storyHref: 'trend-smart-ring-sleep.html', sampleInPercent: 64, exampleReaderCall: 'in' },
+      { id: `profile-example-${authorId}-out`, text: 'Protein snack stations will become a standard office perk', storyHref: 'trend-everyday-protein.html', sampleInPercent: 41, exampleReaderCall: 'out' },
+      { id: `profile-example-${authorId}-pending`, text: 'Neighborhood supper clubs will become the next weekend social ritual', storyHref: 'trend-sober-socials.html', sampleInPercent: 57, exampleReaderCall: null },
+    ].map(prediction => ({ ...prediction, call: 'in', resolved: false, comparisonExample: true }));
+    return [...examples, ...history];
   }
 
   function renderPosts() {
@@ -65,23 +84,72 @@
     postsEmpty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't posted yet. Check back soon, or browse the feed for more from our contributors.`;
   }
 
+  // Author profiles combine the creator's call and the reader's call in one row.
+  // Personal status filters continue to use the existing shared result row.
+  function comparisonRow(prediction, readerCall) {
+    const row = resultRow(prediction, prediction.call, true, {
+      resolved: prediction.resolved,
+      badgeLabel: `${firstName} ${prediction.resolved ? 'was' : 'is'} ${prediction.call}`,
+    });
+    let comparison;
+    let choices = '';
+    if (readerCall) {
+      comparison = `
+        <div class="profile-call-comparison" data-reader-call="${readerCall}"${prediction.resolved ? ' data-resolved="true"' : ''}>
+          <span class="profile-call-label">You voted</span>
+          <span class="prediction-badge prediction-badge--${readerCall}${prediction.resolved ? ' prediction-badge--resolved' : ''} profile-call-mark">
+            <span class="prediction-badge-icon" aria-hidden="true"></span><span class="visually-hidden">${readerCall === 'in' ? 'In' : 'Out'}</span>
+          </span>
+        </div>`;
+    } else if (prediction.resolved) {
+      comparison = '<p class="profile-call-unavailable">No vote to compare</p>';
+    } else {
+      comparison = `
+        <div class="profile-call-comparison profile-call-comparison--pending">
+          <button type="button" class="button-primary profile-call-start" data-profile-make-call aria-expanded="false" aria-controls="profile-call-${prediction.id}">Make your call</button>
+        </div>`;
+      choices = `<div class="profile-call-choices" id="profile-call-${prediction.id}" role="group" aria-label="Your call on ${prediction.id}" hidden>
+          <button class="prediction-vote prediction-vote--out" type="button" data-profile-call="out"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m out</button>
+          <button class="prediction-vote prediction-vote--in" type="button" data-profile-call="in"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m in</button>
+        </div>`;
+    }
+    const template = document.createElement('template');
+    template.innerHTML = row;
+    const card = template.content.firstElementChild;
+    card.classList.add('prediction-result--comparison');
+    const top = card.querySelector('.prediction-result-top');
+    const creatorBadge = top.querySelector('.prediction-badge');
+    const calls = document.createElement('div');
+    calls.className = 'profile-call-column';
+    creatorBadge.replaceWith(calls);
+    calls.appendChild(creatorBadge);
+    calls.insertAdjacentHTML('beforeend', comparison);
+    if (choices) top.insertAdjacentHTML('afterend', choices);
+    return card.outerHTML;
+  }
+
   function renderHistory() {
     if (!isAuthor && personalHistory().length === 0) selectedFilter = 'all';
-    let history = viewingAuthorHistory() ? authorHistory() : personalHistory();
+    let history = isAuthor ? authorHistory() : personalHistory();
     if (!isAuthor && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
+    const readerCalls = new Map(isSignedIn() ? personalHistory().map(prediction => [prediction.id, prediction.call]) : []);
+    const exampleCalls = savedExampleCalls();
+    list.classList.toggle('prediction-results-list--comparison', isAuthor);
     list.innerHTML = history.map(prediction => {
-      let badgeLabel;
-      if (viewingAuthorHistory()) {
-        badgeLabel = `${firstName} ${prediction.resolved ? 'was' : 'is'} ${prediction.call}`;
+      if (isAuthor) {
+        const readerCall = prediction.comparisonExample
+          ? (isSignedIn() ? exampleCalls[prediction.id] || prediction.exampleReaderCall : null)
+          : readerCalls.get(prediction.id);
+        return comparisonRow(prediction, readerCall);
       }
-      return resultRow(prediction, prediction.call, true, { resolved: prediction.resolved, badgeLabel });
+      return resultRow(prediction, prediction.call, true, { resolved: prediction.resolved });
     }).join('');
     list.hidden = history.length === 0;
     empty.hidden = history.length !== 0;
     empty.querySelector('.profile-empty-title').textContent = selectedFilter === 'resolved' ? 'No resolved predictions yet' : selectedFilter === 'active' ? 'No active predictions yet' : 'No predictions yet';
     empty.querySelector('.profile-empty-copy').textContent = selectedFilter === 'resolved' ? 'Your resolved predictions will appear here' : 'Vote on prediction cards to track them here';
-    empty.classList.toggle('profile-empty-state--author', viewingAuthorHistory());
-    if (viewingAuthorHistory()) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
+    empty.classList.toggle('profile-empty-state--author', isAuthor);
+    if (isAuthor) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
     if (!isAuthor) filters.hidden = personalHistory().length === 0;
   }
 
@@ -92,16 +160,13 @@
   }
 
   function renderFilters() {
-    const authorOnly = isAuthor && !isSignedIn();
-    if (authorOnly) selectedFilter = 'author';
     const noPersonalHistory = !isAuthor && personalHistory().length === 0;
-    filters.hidden = authorOnly || noPersonalHistory;
+    filters.hidden = isAuthor || noPersonalHistory;
     filters.replaceChildren();
-    if (authorOnly || noPersonalHistory) return;
+    if (isAuthor || noPersonalHistory) return;
 
-    const filterOptions = isAuthor ? [['you', 'Your votes'], ['author', `${firstName}’s votes`]] : [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
-    filters.classList.toggle('profile-prediction-filters--author', isAuthor);
-    filters.setAttribute('aria-label', isAuthor ? 'Whose votes' : 'Prediction status');
+    const filterOptions = [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
+    filters.setAttribute('aria-label', 'Prediction status');
     for (const [value, label] of filterOptions) {
       const button = document.createElement('button');
       button.type = 'button';
@@ -142,13 +207,46 @@
   }
 
   predictionPanel.addEventListener('click', event => {
+    const startCall = event.target.closest('[data-profile-make-call]');
+    if (startCall && isAuthor) {
+      if (!isSignedIn()) {
+        try { sessionStorage.setItem('return-to', `${location.pathname.split('/').pop()}#predictions`); } catch {}
+        location.href = 'login.html';
+        return;
+      }
+      const choices = document.getElementById(startCall.getAttribute('aria-controls'));
+      const expanded = startCall.getAttribute('aria-expanded') === 'true';
+      choices.hidden = expanded;
+      startCall.setAttribute('aria-expanded', String(!expanded));
+      startCall.textContent = expanded ? 'Make your call' : 'Cancel';
+      if (!expanded) choices.querySelector('button').focus({ preventScroll: true });
+      return;
+    }
+    const vote = event.target.closest('[data-profile-call]');
+    if (vote && isAuthor && isSignedIn()) {
+      const id = vote.closest('.prediction-result').dataset.id;
+      const call = vote.dataset.profileCall;
+      const prediction = authorHistory().find(item => item.id === id);
+      if (!['in', 'out'].includes(call) || !prediction || prediction.resolved) return;
+      const key = prediction.comparisonExample ? EXAMPLE_CALLS_KEY : CALLS_KEY;
+      const previous = prediction.comparisonExample ? savedExampleCalls() : savedCalls();
+      try { sessionStorage.setItem(key, JSON.stringify({ ...previous, [id]: call })); }
+      catch {
+        callStatus.textContent = 'Your call could not be saved. Please try again.';
+        return;
+      }
+      renderHistory();
+      callStatus.textContent = `Your call is locked in. You voted ${call}.`;
+      list.querySelector(`[data-id="${id}"] .prediction-result-more`)?.focus({ preventScroll: true });
+      return;
+    }
     const link = event.target.closest('.prediction-result-more');
     if (!link) return;
     const id = link.closest('.prediction-result').dataset.id;
     const calls = savedCalls();
     try {
       sessionStorage.removeItem(RETURN_KEY);
-      if (!viewingAuthorHistory() && calls[id]) {
+      if (calls[id]) {
         sessionStorage.setItem(RETURN_KEY, JSON.stringify({ to: new URL(link.getAttribute('href'), location.href).pathname, predictionId: id, source: 'results' }));
       }
     } catch { /* The story link still works without storage. */ }
@@ -163,9 +261,13 @@
   }
   window.addEventListener('hashchange', restoreSection);
   window.addEventListener('pageshow', restoreSection);
-  document.addEventListener('prediction-deal', renderHistory);
+  document.addEventListener('prediction-deal', () => {
+    if (isAuthor) {
+      try { sessionStorage.removeItem(EXAMPLE_CALLS_KEY); } catch {}
+    }
+    renderHistory();
+  });
   document.addEventListener('auth-change', () => {
-    if (isAuthor) selectedFilter = isSignedIn() ? 'you' : 'author';
     renderFilters();
     renderHistory();
   });

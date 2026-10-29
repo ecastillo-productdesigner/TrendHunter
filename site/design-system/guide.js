@@ -142,3 +142,26 @@ fetch('tokens.json')
     updateThemeValues();
   })
   .catch(() => { countLabel.textContent = 'Token inventory could not load. Refresh this page to try again.'; });
+
+// This isolated comparison example never writes to the reader's real prototype calls.
+const comparisonExample = document.querySelector('[data-ds-comparison="pending"]');
+comparisonExample?.addEventListener('click', event => {
+  const start = event.target.closest('[data-ds-profile-make-call]');
+  const choices = comparisonExample.querySelector('.profile-call-choices');
+  if (start) {
+    const expanded = start.getAttribute('aria-expanded') === 'true';
+    start.setAttribute('aria-expanded', String(!expanded));
+    start.textContent = expanded ? 'Make your call' : 'Cancel';
+    choices.hidden = expanded;
+    if (!expanded) choices.querySelector('button').focus({ preventScroll: true });
+    return;
+  }
+  const vote = event.target.closest('[data-ds-profile-call]');
+  if (!vote) return;
+  const call = vote.dataset.dsProfileCall;
+  const comparison = comparisonExample.querySelector('.profile-call-comparison');
+  comparison.dataset.readerCall = call;
+  comparison.innerHTML = `<span class="profile-call-label">You voted</span><span class="prediction-badge prediction-badge--${call} profile-call-mark"><span class="prediction-badge-icon" aria-hidden="true"></span><span class="visually-hidden">${call === 'in' ? 'In' : 'Out'}</span></span>`;
+  choices.remove();
+  comparisonExample.querySelector('.prediction-result-more').focus({ preventScroll: true });
+});

@@ -226,3 +226,13 @@
 #email-sign-in { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 #email-sign-in .ds-component-spec { display: flex; flex-direction: column; gap: var(--spacing-component-ms); }
 #email-sign-in .auth-error { color: var(--form-text-error); font-size: var(--type-size-12); }
+
+#profile-call-comparison { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
+.ds-profile-comparison-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-layout-lg); }
+.ds-profile-comparison-grid .ds-component-spec { min-width: 0; }
+.ds-profile-comparison-grid .ds-component-spec > h4 { margin-bottom: var(--spacing-layout-md); }
+.ds-profile-comparison-grid .prediction-result-headline {
+  font: var(--type-weight-bold) var(--type-size-18)/var(--type-line-height-ui-md) var(--type-font-display);
+}
+.ds-profile-comparison-grid .profile-call-mark.prediction-badge--out { color: var(--prediction-badge-label); }
+@media (max-width: 1099px) { .ds-profile-comparison-grid { grid-template-columns: minmax(0, 1fr); } }
