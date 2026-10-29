@@ -93,7 +93,7 @@
       comparison = `
         <div class="profile-call-comparison" data-reader-call="${readerCall}"${prediction.resolved ? ' data-resolved="true"' : ''}>
           <span class="prediction-badge prediction-badge--${readerCall}${prediction.resolved ? ' prediction-badge--resolved' : ''} profile-reader-badge">
-            <span class="prediction-badge-icon" aria-hidden="true"></span>You’re ${readerCall}
+            <span class="prediction-badge-icon" aria-hidden="true"></span>${prediction.resolved ? 'You were' : 'You’re'} ${readerCall}
           </span>
         </div>`;
     } else if (prediction.resolved) {

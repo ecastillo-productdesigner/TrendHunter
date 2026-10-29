@@ -3174,26 +3174,38 @@ body:has(.edit-profile-modal[open]) {
   gap: var(--spacing-component-sm);
   width: 100%;
 }
-.profile-call-comparison--pending { contain: inline-size; }
 .profile-reader-badge {
   width: 100%;
   justify-content: center;
   line-height: var(--type-line-height-ui-xs);
   white-space: nowrap;
 }
-.profile-call-start,
-.profile-call-start:hover {
+.profile-call-start {
   width: 100%;
   height: var(--profile-call-badge-size);
   min-height: var(--profile-call-badge-size);
-  padding: var(--spacing-component-sm) var(--spacing-component-ms);
+  padding: 0 var(--spacing-component-ms);
+  gap: var(--spacing-component-sm);
+  border: var(--stroke-default) solid currentColor;
   font-size: var(--type-size-14);
   font-weight: var(--type-weight-extrabold);
   line-height: var(--type-line-height-ui-xs);
   white-space: nowrap;
-  background: var(--color-background-callout);
-  color: var(--prediction-button-label);
+  background: transparent;
+  color: var(--color-text-on-topic);
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
+.profile-call-start::after {
+  content: "";
+  flex-shrink: 0;
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+  background: currentColor;
+  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+}
+.profile-call-start[aria-expanded="true"]::after { display: none; }
+.profile-call-start:hover, .profile-call-start:focus-visible { background: transparent; color: var(--color-text-primary); }
 .profile-call-start:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .profile-call-choices { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--spacing-component-ms); }
 .profile-call-choices[hidden] { display: none; }
