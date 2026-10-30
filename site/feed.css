@@ -300,6 +300,7 @@
   --layout-profile-width: 440px;
   --layout-profile-call-width: 128px;
   --layout-share-menu-width: 176px; /* Reserves room for the Link Copied confirmation. */
+  --layout-story-share-size: 30px;
   --layout-filter-tab-gap: 20px;
   --layout-drawer-item-indent: 5px;
   --size-drawer-width: 340px;
@@ -1048,10 +1049,10 @@ a.story-lockup:hover .story-lockup-headline {
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
 }
-.story-share { display: grid; place-items: center; flex-shrink: 0; }
+.story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
 .story-share:focus-visible, .prediction-share:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
-/* Share — vector arrow with a 28×22px silhouette in the 32px action box.
+/* Share — vector arrow with a 28×22px silhouette in the story action box.
    The SVG stays crisp at any scale and uses the unsaved bookmark's color. */
 .trend-card-share-icon {
   display: block;
@@ -1061,7 +1062,12 @@ a.story-lockup:hover .story-lockup-headline {
   mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
   -webkit-mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
 }
+/* Keep the SVG at its native 32px scale: its 28×22px arrow fits the 30px box. */
+.story-share .trend-card-share-icon { width: 100%; height: 100%; mask-size: var(--icon-size-xl); -webkit-mask-size: var(--icon-size-xl); }
 :is(.story-share, .prediction-share, [data-share-menu]):is(:hover, :focus-visible) .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
+:is(.story-share, .prediction-share, [data-share-menu])[aria-expanded="true"] .trend-card-share-icon,
+.article-share[aria-expanded="true"] .article-share-icon,
+[data-answer-share][aria-expanded="true"] .answer-share-icon { background-color: var(--bookmark-icon-active); }
 
 /* Contextual share menu — top layer prevents story-card clipping. */
 .share-menu {

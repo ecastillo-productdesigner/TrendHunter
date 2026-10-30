@@ -1132,10 +1132,11 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "Crisp SVG on every card. Story slot: 32px with a 28\u00d722px arrow; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Story slot: 30px with a 28\u00d722px arrow; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
         "Default \u00b7 bookmark color",
-        "Hover / keyboard focus \u00b7 white"
+        "Hover / keyboard focus \u00b7 white",
+        "Active \u00b7 menu open \u00b7 #BEFC4F"
       ]
     },
     {
