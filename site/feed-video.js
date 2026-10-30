@@ -1,4 +1,4 @@
-// The second feed card uses a five-second silent motion study of its existing photo.
+// The second feed card uses the supplied ten-second video, including its audio track.
 // Playback intent belongs to the reader; scrolling never clears an explicit pause.
 document.querySelectorAll('[data-feed-video]').forEach(card => {
   const video = card.querySelector('video');

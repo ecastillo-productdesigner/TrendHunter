@@ -248,6 +248,8 @@ if (stack) {
 
   function buildCard(prediction) {
     const card = document.createElement('article');
+    card.dataset.shareTitle = prediction.text;
+    card.dataset.shareUrl = prediction.storyHref;
     const backId = `prediction-context-${prediction.id}`;
     card.className = 'prediction-card prediction-card--call';
     if (document.body.classList.contains('page-trend') && predictionStoryPath(prediction.storyHref) === predictionStoryPath(location.pathname)) card.classList.add('prediction-card--current-article');
@@ -780,6 +782,8 @@ document.querySelectorAll('.prediction-inline-stack').forEach((inlineStack) => {
 
   function buildCard(prediction) {
     const card = document.createElement('article');
+    card.dataset.shareTitle = prediction.text;
+    card.dataset.shareUrl = prediction.storyHref;
     card.className = 'prediction-card prediction-card--call prediction-card--compact';
     card.dataset.id = prediction.id;
     card.innerHTML = `

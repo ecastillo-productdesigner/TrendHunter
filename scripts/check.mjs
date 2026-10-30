@@ -5,6 +5,9 @@ import { build, filesIn, outputRoot, projectRoot } from './build.mjs';
 
 await build();
 const failures = [];
+const inventoryAudit = spawnSync('python3', [path.join(projectRoot, 'scripts/audit-design-system.py')], { encoding: 'utf8' });
+if (inventoryAudit.status !== 0) failures.push(inventoryAudit.stderr || 'Design-system inventory audit failed');
+else console.log(inventoryAudit.stdout.trim());
 for (const file of await filesIn(outputRoot)) {
   if (file.endsWith('.js')) {
     const result = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });

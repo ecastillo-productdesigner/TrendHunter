@@ -17,6 +17,7 @@
   const list = predictionPanel.querySelector('.prediction-results-list');
   const empty = predictionPanel.querySelector('.profile-predictions-empty');
   let selectedFilter = isAuthor ? 'author' : 'all';
+  let entrancePlayed = false;
   const callStatus = isAuthor ? document.createElement('p') : null;
   if (callStatus) {
     callStatus.className = 'visually-hidden';
@@ -146,6 +147,10 @@
     empty.classList.toggle('profile-empty-state--author', isAuthor);
     if (isAuthor) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
     if (!isAuthor) filters.hidden = personalHistory().length === 0;
+    if (isAuthor && !predictionPanel.hidden && history.length && !entrancePlayed) {
+      entrancePlayed = true;
+      playComparisonEntrance(list);
+    }
   }
 
   function selectFilter(button) {
@@ -260,7 +265,7 @@
     selectSection(selected, false);
   }
   window.addEventListener('hashchange', restoreSection);
-  window.addEventListener('pageshow', restoreSection);
+  window.addEventListener('pageshow', event => { if (event.persisted) restoreSection(); });
   document.addEventListener('prediction-deal', () => {
     if (isAuthor) {
       try { sessionStorage.removeItem(EXAMPLE_CALLS_KEY); } catch {}

@@ -1,0 +1,1291 @@
+{
+  "assets": [
+    {
+      "path": "assets/auth/icon-apple.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-arrow-back.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-checkbox-check.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-checkbox-checked.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-checkbox.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-close-20.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-email.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/icon-google.png",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "channel-experiences.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "login.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/auth/logo-mark.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "channel-experiences.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": true
+    },
+    {
+      "path": "assets/feed/icon-answers-sparkles.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-bookmark-filled.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-bookmark-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-bookmark.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-check-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-check.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-close.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-link.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-menu-light.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "channel-experiences.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-menu.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "channel-experiences.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-more.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-profile-filled.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-profile-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-profile.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-settings.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-share-custom.png",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-share.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-sparkline-up-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-sparkline-up.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-theme-light.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "login-email.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "login-terms.html",
+        "channel-experiences.html",
+        "login-code.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "login.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "login-password.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-theme.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "login-email.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "login-terms.html",
+        "channel-experiences.html",
+        "login-code.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "login.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "login-password.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-toast-check.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-trending-down.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-trending-up-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-trending-up.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/wordmark-light.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "login-email.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "login-terms.html",
+        "channel-experiences.html",
+        "login-code.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "login.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "login-password.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": true
+    },
+    {
+      "path": "assets/feed/wordmark.svg",
+      "references": [
+        "collection-peptides.html",
+        "collection-mind-body-for-families.html",
+        "feed.html",
+        "contributor-sofia-morales.html",
+        "channel-everyday-living.html",
+        "collection-sleep-medicine.html",
+        "collection-health-technology.html",
+        "trend-neurocosmetics.html",
+        "collection-longevity.html",
+        "collection-fitness-reset.html",
+        "trend.html",
+        "collection-retailtainment-hubs.html",
+        "contributor-owen-brooks.html",
+        "trend-health-storytelling.html",
+        "predictions.html",
+        "collection-food-as-an-experience.html",
+        "collection-lymphatic-system-literacy.html",
+        "answers.html",
+        "collection-evidence-based-beauty.html",
+        "trend-retailtainment.html",
+        "login-email.html",
+        "collection-supplement-science.html",
+        "collection.html",
+        "trend-sober-socials.html",
+        "collection-back-to-school-transitions.html",
+        "collection-modern-anxiety-care.html",
+        "trend-school-health-basics.html",
+        "collection-andropause-hormonal-midlife.html",
+        "contributor-maya-chen.html",
+        "collection-nervous-system-gym.html",
+        "collection-everyday-living.html",
+        "login-terms.html",
+        "channel-experiences.html",
+        "login-code.html",
+        "trend-school-routines.html",
+        "collection-preventive-health.html",
+        "login.html",
+        "trend-run-club-connections.html",
+        "trend-school-breakfast.html",
+        "contributor-daniel-reed.html",
+        "trend-weighted-walking.html",
+        "trend-weekend-walking.html",
+        "prediction-filter-options.html",
+        "collection-regulated-living.html",
+        "collection-gut-brain-axis.html",
+        "collection-tactile-home-design.html",
+        "collection-solo-travel.html",
+        "trend-travel-advisors.html",
+        "trend-wellness-first-dating.html",
+        "contributor.html",
+        "contributor-nadia-patel.html",
+        "collection-protein-forward-eating.html",
+        "trend-weekend-training-apps.html",
+        "channel.html",
+        "userprofile.html",
+        "login-password.html",
+        "trend-smart-ring-sleep.html",
+        "trend-maximalism.html",
+        "collection-smart-home-energy.html",
+        "collection-her-health.html",
+        "collection-metabolic-life.html",
+        "trend-ai-shopping-assistant.html",
+        "trend-teen-phone-sleep.html",
+        "trend-evening-wellness-rituals.html",
+        "collection-cardio-and-its-health.html",
+        "trend-kindergarten-dropoff.html",
+        "trend-dollar-store-decor.html",
+        "trend-at-home-date-night.html",
+        "trend-garden-lighting.html",
+        "trend-farmers-market-weekend.html",
+        "trend-seasonal-produce.html",
+        "trend-somatic-sleep.html",
+        "trend-ai-gift-ideas.html",
+        "contributor-marcus-bennett.html",
+        "trend-preventive-health-conversations.html",
+        "collection-biohackers-body.html",
+        "collection-beauty-from-within.html",
+        "trend-home-energy.html",
+        "trend-everyday-protein.html",
+        "collection-wellness-maxxing.html",
+        "trend-sleep-earbuds.html",
+        "collection-the-intuitive-body.html",
+        "collection-ai-everyday-life.html",
+        "trend-gen-z-stores.html",
+        "trend-whole-house-water.html",
+        "trend-skin-longevity.html",
+        "collection-clean-living-control.html",
+        "collection-adventure-active-travel.html",
+        "collection-budgeted-living.html",
+        "collection-modern-hydration-caffeine.html",
+        "trend-dollar-store-shoppers.html"
+      ],
+      "used": true,
+      "brand": true
+    },
+    {
+      "path": "assets/predictions/icon-arrow-forward.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/predictions/icon-clock.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/predictions/icon-flip.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/predictions/icon-in.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/predictions/icon-out.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/predictions/icon-share.svg",
+      "references": [],
+      "used": false,
+      "brand": false
+    },
+    {
+      "path": "assets/profile/icon-edit.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/trend/masthead-bookmark-filled.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/trend/masthead-bookmark-stroke.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/trend/masthead-bookmark.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/trend/masthead-share.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    }
+  ],
+  "materialSymbols": [
+    "arrow_downward",
+    "bolt",
+    "cancel",
+    "pause_circle",
+    "play_circle",
+    "volume_off",
+    "volume_up"
+  ],
+  "families": [
+    {
+      "name": "Bookmark",
+      "group": "Navigation and saved",
+      "note": "Outlined when inactive; filled lime when saved. Story and profile: 32px. Article: 20px. Photo-card icons stay light; article/profile follow the theme and use a separate outline layer in light mode.",
+      "states": [
+        "Inactive \u00b7 not saved",
+        "Active \u00b7 saved"
+      ]
+    },
+    {
+      "name": "Profile",
+      "group": "Navigation and saved",
+      "note": "24px slot with a 16px glyph. Outline off-page; filled lime on the personal profile page.",
+      "states": [
+        "Inactive",
+        "Active \u00b7 current page"
+      ]
+    },
+    {
+      "name": "Daily Predictions shortcut",
+      "group": "Navigation and saved",
+      "note": "24px Material Symbols Outlined bolt. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.",
+      "states": [
+        "Inactive",
+        "Active \u00b7 current page"
+      ]
+    },
+    {
+      "name": "Menu",
+      "group": "Navigation and saved",
+      "note": "20px. The menu glyph has dark and light theme assets; opening the drawer does not change its shape.",
+      "states": [
+        "Default \u00b7 follows theme"
+      ]
+    },
+    {
+      "name": "Theme toggle",
+      "group": "Navigation and saved",
+      "note": "24px. Sun switches to light theme; moon switches to dark theme.",
+      "states": [
+        "Dark \u00b7 sun",
+        "Light \u00b7 moon"
+      ]
+    },
+    {
+      "name": "Back",
+      "group": "Navigation and saved",
+      "note": "20px. Authentication navigation.",
+      "states": [
+        "Default"
+      ]
+    },
+    {
+      "name": "Share",
+      "group": "Sharing",
+      "note": "The same share action across the app. Story slot: 32px, custom 28\u00d722px PNG. Prediction: 24px at top right. Article: 20px. Answers: 16px. Opening the menu does not change the glyph; on prediction cards it flips with the card face.",
+      "states": [
+        "Story \u00b7 closed / open"
+      ]
+    },
+    {
+      "name": "Share-menu icons",
+      "group": "Sharing",
+      "note": "20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. The Email preview illustrates that shared hover.",
+      "states": [
+        "Copy link",
+        "Email",
+        "More",
+        "Shared hover \u00b7 Email"
+      ]
+    },
+    {
+      "name": "Volume",
+      "group": "Media",
+      "note": "32px Material Symbols Outlined. Muted: FILL 0, bookmark gray. Sound on: FILL 1, #BEFC4F.",
+      "states": [
+        "Inactive \u00b7 muted",
+        "Active \u00b7 sound on"
+      ]
+    },
+    {
+      "name": "Play and pause feedback",
+      "group": "Media",
+      "note": "48px, FILL 1, #BEFC4F. These are transient feedback icons after a tap, rather than permanent selected states.",
+      "states": [
+        "Play feedback",
+        "Pause feedback"
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "group": "Authentication and settings",
+      "note": "20px. Unchecked outline and checked lime box use the actual separate box/check layers.",
+      "states": [
+        "Inactive \u00b7 unchecked",
+        "Active \u00b7 checked"
+      ]
+    },
+    {
+      "name": "Prototype settings",
+      "group": "Authentication and settings",
+      "note": "48px control with a 24px gear; open state uses Material Symbols Rounded cancel, FILL 0.",
+      "states": [
+        "Inactive \u00b7 closed",
+        "Active \u00b7 open"
+      ]
+    },
+    {
+      "name": "Profile edit",
+      "group": "Authentication and settings",
+      "note": "Edit avatar badge.",
+      "states": [
+        "Default"
+      ]
+    },
+    {
+      "name": "Apple and Google",
+      "group": "Authentication and settings",
+      "note": "Provider sign-in icons. The Apple mask follows the provider surface; Google retains its multicolor PNG. Both buttons hover to #E5E7EB.",
+      "states": [
+        "Apple",
+        "Google"
+      ]
+    },
+    {
+      "name": "Close",
+      "group": "Authentication and settings",
+      "note": "Shared close action. Drawer/toast: 24px. Authentication: 20px. Share dialog uses the text \u00d7. Source variants remain listed in the asset inventory.",
+      "states": [
+        "Drawer \u00b7 24px",
+        "Share dialog \u00b7 \u00d7"
+      ]
+    },
+    {
+      "name": "Prediction vote icons",
+      "group": "Predictions and signals",
+      "note": "In uses a lime check; Out uses an orange-red cross. Vote buttons use 20px icons. Creator/reader badges use 12px: black on filled creator chips, state color in reader comparisons, gray when resolved. See comparison components for those contexts.",
+      "states": [
+        "In",
+        "Out"
+      ]
+    },
+    {
+      "name": "Trend arrows",
+      "group": "Predictions and signals",
+      "note": "Up and down trend directions. Pills use 12px; mastheads use the larger up arrow. The up arrow has a supporting light-theme outline layer.",
+      "states": [
+        "Up \u00b7 pill",
+        "Down \u00b7 pill"
+      ]
+    },
+    {
+      "name": "Prediction context and time",
+      "group": "Predictions and signals",
+      "note": "16px flip icon for Get context / Back to call. Clock has its own 13\u00d716px box.",
+      "states": [
+        "Get context / back",
+        "Time"
+      ]
+    },
+    {
+      "name": "Forward and jump",
+      "group": "Predictions and signals",
+      "note": "Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.",
+      "states": [
+        "Read more",
+        "Jump down"
+      ]
+    },
+    {
+      "name": "Answers sparkles",
+      "group": "Predictions and signals",
+      "note": "The Answers symbol is reused for prompts, questions and source labels.",
+      "states": [
+        "Default"
+      ]
+    },
+    {
+      "name": "Success checks",
+      "group": "Predictions and signals",
+      "note": "The complete-feed circle is 48px with a light-theme rim; toast check is 24px.",
+      "states": [
+        "Feed complete",
+        "Toast success"
+      ]
+    },
+    {
+      "name": "Answer feedback",
+      "group": "Answers feedback",
+      "note": "24px outlined thumbs. Active feedback changes the icon color and button surface. Up and down share one SVG, rotated for the down state.",
+      "states": [
+        "Helpful \u00b7 Inactive",
+        "Helpful \u00b7 Active",
+        "Unhelpful \u00b7 Inactive",
+        "Unhelpful \u00b7 Active"
+      ]
+    },
+    {
+      "name": "Text glyph controls",
+      "group": "Answers feedback",
+      "note": "These controls are text glyphs rather than icon files. Included so the reference covers all visible icon sources.",
+      "states": [
+        "Previous",
+        "Next",
+        "Citation",
+        "New thread"
+      ]
+    }
+  ]
+}

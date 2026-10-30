@@ -165,3 +165,28 @@ comparisonExample?.addEventListener('click', event => {
   choices.remove();
   comparisonExample.querySelector('.prediction-result-more').focus({ preventScroll: true });
 });
+
+// Filter the complete icon catalog without changing product state.
+const iconSearch = document.getElementById('ds-icon-search');
+iconSearch?.addEventListener('input', () => {
+  const query = iconSearch.value.trim().toLowerCase();
+  let matches = 0;
+  document.querySelectorAll('[data-icon-search]').forEach(item => {
+    item.hidden = !item.dataset.iconSearch.toLowerCase().includes(query);
+    if (!item.hidden) matches++;
+  });
+  document.querySelectorAll('.ds-icon-group').forEach(group => {
+    group.hidden = ![...group.querySelectorAll('.ds-icon-family')].some(item => !item.hidden);
+  });
+  document.getElementById('ds-icon-empty').hidden = matches !== 0;
+  if(query && ![...document.querySelectorAll('.ds-icon-family')].some(item=>!item.hidden) && matches) document.getElementById('icon-assets').open=true;
+});
+
+const buttonSearch = document.getElementById('ds-button-search');
+buttonSearch?.addEventListener('input', () => {
+ const query=buttonSearch.value.trim().toLowerCase(); let count=0;
+ document.querySelectorAll('[data-button-search]').forEach(item=>{item.hidden=!item.dataset.buttonSearch.toLowerCase().includes(query);if(!item.hidden)count++;});
+ document.getElementById('ds-button-empty').hidden=count!==0;
+});
+
+document.querySelector('[data-ds-replay-comparison]')?.addEventListener('click',event=>{event.currentTarget.closest('#profile-call-comparison').querySelectorAll('.prediction-results-list').forEach(playComparisonEntrance);});

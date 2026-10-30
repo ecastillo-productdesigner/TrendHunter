@@ -145,6 +145,7 @@
   /* Buttons — Sign in */
   --buttons-sign-in-bg: #FFFFFF;
   --buttons-sign-in-label: #0F0F0F;
+  --buttons-sign-in-bg-hover: #E5E7EB;
 
   /* Collection list */
   --collection-list-background: #0F0F0F;
@@ -161,6 +162,8 @@
 
   /* Predictions */
   --prediction-card-background-card: #875FE7;
+  --prediction-shortcut-bg-hover: #FFFFFF;
+  --prediction-shortcut-label-hover: #875FE7;
   --prediction-card-background-onboarding-card: #343841; /* cover card and Make Your Call: same in both themes */
   --prediction-card-border: rgba(255, 255, 255, 0.25);
   --prediction-card-secondary-copy: #343841;
@@ -322,6 +325,9 @@
   --layout-answers-mobile-gutter: 20px;
   --layout-answers-mobile-chip-height: 36px;
   --motion-answers-ticker: 22s;
+  --motion-comparison-enter: 500ms;
+  --motion-comparison-split: 650ms;
+  --motion-comparison-stagger: 70ms;
   --layout-answers-page-width: 820px;
   --answers-page-bg: #000000;
   --auth-email-bg-hover: rgba(255, 255, 255, 0.15);
@@ -910,7 +916,7 @@ a.story-lockup:hover .story-lockup-headline {
   object-fit: cover;
 }
 
-/* Second feed story: five-second video, with separate media and story controls. */
+/* Second feed story: supplied video, with separate media and story controls. */
 .trend-card-playback {
   position: absolute;
   z-index: 1;
@@ -988,6 +994,7 @@ a.story-lockup:hover .story-lockup-headline {
   white-space: nowrap;
   color: var(--buttons-tertiary-label-secondary);
 }
+.trend-card-collection:hover, .trend-card-collection:focus-visible { color: var(--trend-card-primary-text); }
 
 .trend-card-content {
   position: absolute;
@@ -1041,6 +1048,8 @@ a.story-lockup:hover .story-lockup-headline {
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
 }
+.story-share { display: grid; place-items: center; flex-shrink: 0; }
+.story-share:focus-visible, .prediction-share:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
 /* Feed share — supplied transparent PNG, centered in the 32px action box.
    The mask keeps its silhouette and the same icon color as the bookmark. */
@@ -1082,7 +1091,8 @@ a.story-lockup:hover .story-lockup-headline {
   white-space: nowrap;
   cursor: pointer;
 }
-.share-menu-item:hover { background: var(--buttons-tertiary-bg-hover); }
+.share-menu-item:hover, .share-menu-item:focus-visible { background: transparent; color: var(--color-text-primary); }
+.share-menu-item:hover .share-menu-icon, .share-menu-item:focus-visible .share-menu-icon { background-color: currentColor; }
 .share-menu-item:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: calc(-1 * var(--stroke-focus)); }
 .share-menu-icon { display: block; flex: 0 0 var(--icon-size-md); width: var(--icon-size-md); height: var(--icon-size-md); background: var(--color-icon-default); }
 .share-menu-icon--link { mask: url("assets/feed/icon-link.svg") center / contain no-repeat; -webkit-mask: url("assets/feed/icon-link.svg") center / contain no-repeat; }
@@ -2083,6 +2093,9 @@ a.drawer-heading:hover {
   background-color: var(--prediction-card-background-onboarding-card);
   border-color: var(--color-border-default);
 }
+.prediction-share { position: absolute; top: var(--spacing-component-ms); right: var(--spacing-component-ms); z-index: 4; display: grid; place-items: center; width: var(--icon-size-xl); height: var(--icon-size-xl); }
+.prediction-share .trend-card-share-icon { width: var(--icon-size-lg); height: var(--icon-size-lg); mask-size: contain; -webkit-mask-size: contain; background-color: var(--prediction-card-copy); }
+.prediction-card--compact .prediction-card-headline { padding-inline: var(--spacing-layout-lg); }
 
 .prediction-onboarding-copy {
   flex: 1;
@@ -2326,6 +2339,9 @@ a.drawer-heading:hover {
   text-transform: none;
   font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
 }
+.prediction-shortcut { transition: background-color 0.15s ease, color 0.15s ease; }
+.prediction-shortcut:hover, .prediction-shortcut:focus-visible { background-color: var(--prediction-shortcut-bg-hover); color: var(--prediction-shortcut-label-hover); }
+@media (prefers-reduced-motion: reduce) { .prediction-shortcut { transition: none; } }
 .prediction-shortcut:focus-visible {
   outline: var(--stroke-focus) solid var(--color-text-primary);
   outline-offset: var(--spacing-component-xs);
@@ -4003,6 +4019,7 @@ body:has(.auth-prompt[open]) {
   background-color: var(--buttons-sign-in-bg);
   color: var(--buttons-sign-in-label);
 }
+.auth-button--provider:hover { background-color: var(--buttons-sign-in-bg-hover); }
 
 .auth-button--email {
   background-color: var(--buttons-secondary-bg);

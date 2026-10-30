@@ -1,6 +1,7 @@
 // One contextual share menu for feed stories, articles, collections and Answers.
 (() => {
-  const triggers = '.article-share, [data-video-share], [data-answer-share], [data-share-menu]';
+  const triggers = '.article-share, [data-video-share], [data-story-share], [data-answer-share], [data-share-menu]';
+  const appUrl = new URL('.', document.currentScript.src);
   const menu = document.createElement('div');
   menu.id = 'story-share-menu';
   menu.className = 'share-menu';
@@ -40,11 +41,13 @@
 
   function shareData(trigger) {
     const card = trigger.closest('.trend-card');
-    const link = card?.querySelector('.trend-card-content a[href]');
+    const prediction = trigger.closest('.prediction-card');
+    const link = card?.querySelector('.trend-card-content a[href]') || prediction?.querySelector('.prediction-card-more[href]');
     return {
-      title: trigger.dataset.shareTitle || card?.querySelector('.trend-card-headline')?.textContent.trim()
+      title: trigger.dataset.shareTitle || prediction?.dataset.shareTitle || card?.querySelector('.trend-card-headline')?.textContent.trim()
+        || prediction?.querySelector('.prediction-card-headline')?.textContent.trim() || (prediction ? 'Daily Predictions' : '')
         || document.querySelector('h1')?.textContent.trim() || document.title,
-      url: new URL(trigger.dataset.shareUrl || link?.href || location.href, location.href).href,
+      url: new URL(trigger.dataset.shareUrl || prediction?.dataset.shareUrl || link?.href || (prediction ? new URL('predictions.html', appUrl).href : location.href), location.href).href,
     };
   }
 
@@ -171,4 +174,32 @@
     const box = sheet.getBoundingClientRect();
     if (event.target === sheet && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)) sheet.close();
   });
+
+  // Deck cards are replaced as readers vote or skip. Keep their Share action attached.
+  function addPredictionShare(card) {
+    if (!card.querySelector('.prediction-card-headline, .prediction-onboarding-copy')) return;
+    const faces = [...card.querySelectorAll('.prediction-card-face')];
+    // A control inside each face inherits its 3D rotation and inert state.
+    for (const target of faces.length ? faces : [card]) {
+      if (target.querySelector(':scope > .prediction-share')) continue;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'prediction-share';
+      button.dataset.storyShare = '';
+      button.setAttribute('aria-label', 'Share prediction');
+      button.setAttribute('aria-haspopup', 'menu');
+      button.setAttribute('aria-expanded', 'false');
+      button.innerHTML = '<span class="trend-card-share-icon" aria-hidden="true"></span>';
+      target.append(button);
+    }
+  }
+  document.querySelectorAll('.prediction-card').forEach(addPredictionShare);
+  new MutationObserver(records => {
+    for (const record of records) for (const node of record.addedNodes) {
+      if (!(node instanceof Element)) continue;
+      const owner = node.closest('.prediction-card');
+      if (owner) addPredictionShare(owner);
+      node.querySelectorAll('.prediction-card').forEach(addPredictionShare);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 })();
