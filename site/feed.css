@@ -1051,16 +1051,17 @@ a.story-lockup:hover .story-lockup-headline {
 .story-share { display: grid; place-items: center; flex-shrink: 0; }
 .story-share:focus-visible, .prediction-share:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
-/* Feed share — supplied transparent PNG, centered in the 32px action box.
-   The mask keeps its silhouette and the same icon color as the bookmark. */
+/* Share — vector arrow with a 28×22px silhouette in the 32px action box.
+   The SVG stays crisp at any scale and uses the unsaved bookmark's color. */
 .trend-card-share-icon {
   display: block;
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
   background-color: var(--trend-card-icon);
-  mask: url("assets/feed/icon-share-custom.png") center / calc(var(--icon-size-xl) - var(--spacing-component-xs)) auto no-repeat;
-  -webkit-mask: url("assets/feed/icon-share-custom.png") center / calc(var(--icon-size-xl) - var(--spacing-component-xs)) auto no-repeat;
+  mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
 }
+:is(.story-share, .prediction-share, [data-share-menu]):is(:hover, :focus-visible) .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
 
 /* Contextual share menu — top layer prevents story-card clipping. */
 .share-menu {
@@ -2096,7 +2097,7 @@ a.drawer-heading:hover {
   border-color: var(--color-border-default);
 }
 .prediction-share { position: absolute; top: var(--spacing-component-ms); right: var(--spacing-component-ms); z-index: 4; display: grid; place-items: center; width: var(--icon-size-xl); height: var(--icon-size-xl); }
-.prediction-share .trend-card-share-icon { width: var(--icon-size-lg); height: var(--icon-size-lg); mask-size: contain; -webkit-mask-size: contain; background-color: var(--prediction-card-copy); }
+.prediction-share .trend-card-share-icon { width: var(--icon-size-lg); height: var(--icon-size-lg); }
 .prediction-card--compact .prediction-card-headline { padding-inline: var(--spacing-layout-lg); }
 
 .prediction-onboarding-copy {

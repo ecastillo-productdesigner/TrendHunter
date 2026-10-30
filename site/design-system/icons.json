@@ -531,10 +531,8 @@
     },
     {
       "path": "assets/feed/icon-share-custom.png",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
@@ -1134,9 +1132,10 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "The same share action across the app. Story slot: 32px, custom 28\u00d722px PNG. Prediction: 24px at top right. Article: 20px. Answers: 16px. Opening the menu does not change the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Story slot: 32px with a 28\u00d722px arrow; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
-        "Story \u00b7 closed / open"
+        "Default \u00b7 bookmark color",
+        "Hover / keyboard focus \u00b7 white"
       ]
     },
     {
