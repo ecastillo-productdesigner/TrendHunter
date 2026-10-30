@@ -3188,6 +3188,10 @@ body:has(.edit-profile-modal[open]) {
   line-height: var(--type-line-height-ui-xs);
   white-space: nowrap;
 }
+/* Only the reader's comparison label is unfilled; creator and saved-vote badges keep their fills. */
+.prediction-result--comparison .profile-reader-badge { background-color: transparent; }
+.prediction-result--comparison .profile-reader-badge.prediction-badge--in:not(.prediction-badge--resolved) { color: var(--prediction-badge-in); }
+.prediction-result--comparison .profile-reader-badge.prediction-badge--out:not(.prediction-badge--resolved) { color: var(--prediction-badge-out); }
 .profile-call-start {
   width: 100%;
   height: var(--profile-call-badge-size);
