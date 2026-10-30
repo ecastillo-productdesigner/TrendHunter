@@ -240,6 +240,7 @@
 #answers-response-page { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 
 .ds-vote-hover { --prediction-hover-overlay: var(--buttons-tertiary-bg-hover); }
+.ds-context-hover { background-color: var(--buttons-tertiary-bg-hover); }
 .ds-vote-examples { grid-template-columns: repeat(auto-fit, minmax(var(--layout-prediction-vote-width), 1fr)); }
 #prediction-vote-hover { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 

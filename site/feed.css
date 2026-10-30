@@ -2462,6 +2462,7 @@ a.drawer-heading:hover {
   cursor: pointer;
 }
 
+.prediction-card-link:hover, .prediction-card-link:focus-visible { background-color: var(--buttons-tertiary-bg-hover); }
 .prediction-card-link:focus-visible {
   outline: var(--stroke-focus) solid var(--prediction-card-copy);
   outline-offset: var(--stroke-focus);

@@ -69,6 +69,7 @@ def build_button_reference(project, out):
     shortcut='<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>'
     pair('Make your call · sticky pill',f'<button class="button-primary prediction-shortcut ds-shortcut-example">Make your call{shortcut}</button>',f'<button class="button-primary prediction-shortcut ds-shortcut-example ds-shortcut-hover">Make your call{shortcut}</button>')
     pair('Make your call · comparison','<button class="button-primary profile-call-start">Make your call</button>','<button class="button-primary profile-call-start ds-call-start-hover">Make your call</button>')
+    pair('Get context / Back to call','<span class="prediction-card-link">Get context<span class="prediction-card-link-icon"></span></span>','<span class="prediction-card-link ds-context-hover">Get context<span class="prediction-card-link-icon"></span></span>')
     for direction in ['in','out']:
         pair('Vote · '+direction,f'<button class="prediction-vote prediction-vote--{direction}"><span class="prediction-vote-icon"></span>I’m {direction}</button>',f'<button class="prediction-vote prediction-vote--{direction} ds-vote-hover"><span class="prediction-vote-icon"></span>I’m {direction}</button>')
     pair('Prediction status filter','<button class="profile-prediction-filter" aria-pressed="false">All</button>','<button class="profile-prediction-filter" aria-pressed="true">All</button>','Active')
