@@ -1042,14 +1042,15 @@ a.story-lockup:hover .story-lockup-headline {
   height: var(--icon-size-xl);
 }
 
-/* Share — a mask, so its color comes from trend-card/icon like the bookmark beside it */
+/* Feed share — supplied transparent PNG, centered in the 32px action box.
+   The mask keeps its silhouette and the same icon color as the bookmark. */
 .trend-card-share-icon {
   display: block;
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
   background-color: var(--trend-card-icon);
-  mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
+  mask: url("assets/feed/icon-share-custom.png") center / calc(var(--icon-size-xl) - var(--spacing-component-xs)) auto no-repeat;
+  -webkit-mask: url("assets/feed/icon-share-custom.png") center / calc(var(--icon-size-xl) - var(--spacing-component-xs)) auto no-repeat;
 }
 
 /* Contextual share menu — top layer prevents story-card clipping. */
