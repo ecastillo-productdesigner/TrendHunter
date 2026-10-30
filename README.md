@@ -75,3 +75,5 @@ All suggested questions and submitted custom questions in Trend Hunter Answers o
 Continue with Email hover uses the fixed `--auth-email-bg-hover` token, white at 15% opacity, on the login page and authentication prompt.
 
 The shared I’m in / I’m out voting buttons use a 15% white hover overlay on the existing black fill, from `--buttons-tertiary-bg-hover`, with a 150ms fade. Labels, icons and borders keep their default colors. Reduced-motion users get an immediate state change. The DS includes default and hover samples at `#prediction-vote-hover`.
+
+Collection and channel mastheads keep the final word and green trend arrow in one inline group with an 8px DS gap. Earlier words wrap naturally; the arrow never occupies a line by itself. The DS documents the component at `#heading-trend-arrow`.

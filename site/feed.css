@@ -3331,10 +3331,7 @@ body:has(.edit-profile-modal[open]) {
 }
 
 .masthead-title-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: var(--spacing-layout-md);
+  display: block;
 }
 
 .masthead-title {
@@ -3345,6 +3342,15 @@ body:has(.edit-profile-modal[open]) {
   text-transform: uppercase;
   color: var(--color-text-primary);
 }
+
+/* Keep the last word and trend arrow together when a heading wraps. */
+.masthead-title-tail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-sm);
+  white-space: nowrap;
+}
+.masthead-title-tail .sparkline-up { flex-shrink: 0; }
 
 .sparkline-up {
   position: relative;
