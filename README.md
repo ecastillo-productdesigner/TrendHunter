@@ -54,7 +54,7 @@ The combined author prediction component is documented in the DS under `#profile
 
 Each populated creator profile starts with three sample predictions so In, Out and Make your call are visible for review. These fictional examples are identified in this documentation and source, without a visible sample label on the cards. Their fictional reader calls and any calls made on these samples use a separate `profile-comparison-example-calls` browser key and never populate personal All / Active / Resolved history or the daily prediction deck. They link to related prototype stories. The prototype deal-again action resets these sample choices. Reader chips and creator badges share a height calculated from the DS 17px line height and 8px vertical padding (33px).
 
-Comparison call columns use a fixed 144px width across In, Out, resolved and unvoted rows, with 12px left and right padding on creator badges. Make your call uses that same width and 33px height, with the same typography, a transparent background, purple outline, purple label and right arrow. The outline, label and arrow turn white on hover or keyboard focus in the dark theme. Resolved reader calls use the past tense: You were in / You were out.
+Comparison call columns use a fixed 128px width across In, Out, resolved and unvoted rows, with 4px left and right padding on creator badges and comparison controls. Make your call uses that same width and 33px height, with the same typography, a transparent background, purple outline, purple label and right arrow. The outline, label and arrow turn white on hover or keyboard focus in the dark theme. Resolved reader calls use the past tense: You were in / You were out.
 
 ## Feed video demo
 

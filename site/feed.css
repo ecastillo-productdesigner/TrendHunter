@@ -295,7 +295,7 @@
   --layout-prediction-clock-height: 16px;
   --layout-toast-gap: 48px;
   --layout-profile-width: 440px;
-  --layout-profile-call-width: 144px;
+  --layout-profile-call-width: 128px;
   --layout-filter-tab-gap: 20px;
   --layout-drawer-item-indent: 5px;
   --size-drawer-width: 340px;
@@ -3176,7 +3176,7 @@ body:has(.edit-profile-modal[open]) {
   justify-content: center;
   white-space: nowrap;
   line-height: var(--type-line-height-ui-xs);
-  padding-inline: var(--spacing-component-ms);
+  padding-inline: var(--spacing-component-xs);
 }
 .profile-call-comparison {
   display: flex;
@@ -3187,6 +3187,7 @@ body:has(.edit-profile-modal[open]) {
 }
 .profile-reader-badge {
   width: 100%;
+  padding-inline: var(--spacing-component-xs);
   justify-content: center;
   line-height: var(--type-line-height-ui-xs);
   white-space: nowrap;
@@ -3199,7 +3200,7 @@ body:has(.edit-profile-modal[open]) {
   width: 100%;
   height: var(--profile-call-badge-size);
   min-height: var(--profile-call-badge-size);
-  padding: 0 var(--spacing-component-ms);
+  padding: 0 var(--spacing-component-xs);
   gap: var(--spacing-component-sm);
   border: var(--stroke-default) solid currentColor;
   font-size: var(--type-size-14);
