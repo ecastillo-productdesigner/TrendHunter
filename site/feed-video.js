@@ -65,20 +65,6 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
     status.textContent = video.muted ? 'Video muted' : 'Video unmuted';
   });
 
-  card.querySelector('[data-video-share]').addEventListener('click', async () => {
-    const link = card.querySelector('.trend-card-content a');
-    const data = { title: card.querySelector('.trend-card-headline').textContent, url: link.href };
-    try {
-      if (navigator.share && navigator.canShare?.(data)) await navigator.share(data);
-      else {
-        await navigator.clipboard.writeText(data.url);
-        status.textContent = 'Story link copied';
-      }
-    } catch (error) {
-      if (error.name !== 'AbortError') status.textContent = 'The story link could not be shared. Open Go Deeper to copy its address.';
-    }
-  });
-
   video.addEventListener('play', syncLabel);
   video.addEventListener('pause', syncLabel);
   if ('IntersectionObserver' in window) {

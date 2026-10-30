@@ -283,7 +283,7 @@ const ANSWER_STORIES = [
         <section class="answer-section"><${sectionHeading}>What to watch next</${sectionHeading}><ul>${topic.watch.map(item => `<li>${escape(item)}</li>`).join('')}</ul>${cite}</section>
       </div>
       <p class="answer-demo">Fictional example for this prototype. Source labels and percentages are illustrative.</p>
-      <div class="answer-feedback-row"><button class="answer-icon-button" type="button" data-answer-feedback="up" aria-label="Helpful answer" aria-pressed="false">${thumb}</button><button class="answer-icon-button" type="button" data-answer-feedback="down" aria-label="Unhelpful answer" aria-pressed="false"><span style="display:block;transform:rotate(180deg)">${thumb}</span></button><button class="answer-outline-button answer-share" type="button" data-answer-share><span class="answer-share-icon" aria-hidden="true"></span>Share</button></div>
+      <div class="answer-feedback-row"><button class="answer-icon-button" type="button" data-answer-feedback="up" aria-label="Helpful answer" aria-pressed="false">${thumb}</button><button class="answer-icon-button" type="button" data-answer-feedback="down" aria-label="Unhelpful answer" aria-pressed="false"><span style="display:block;transform:rotate(180deg)">${thumb}</span></button><button class="answer-outline-button answer-share" type="button" data-answer-share aria-haspopup="menu" aria-expanded="false" data-share-title="${escape(question)}" data-share-url="${escape(answerUrl(question))}"><span class="answer-share-icon" aria-hidden="true"></span>Share</button></div>
       <section class="answer-sources" id="${sourcesId}" aria-label="Illustrative source stories"><div class="answer-sources-header"><${sectionHeading}>Explore the stories</${sectionHeading}><div class="answer-source-controls"><button class="answer-outline-button" type="button" data-source-scroll="-1" aria-label="Previous sources">←</button><button class="answer-outline-button" type="button" data-source-scroll="1" aria-label="Next sources">→</button></div></div><div class="answer-source-track" tabindex="0" aria-label="Related prototype stories. Scroll to browse.">${ANSWER_STORIES.map(story => `<a class="answer-source-card" href="${story.href}"><div><span class="answers-sparkle" aria-hidden="true"></span>Trend Hunter · Demo</div><strong>${story.title}</strong><p><img src="${story.image}" alt="" loading="lazy">${story.copy}</p></a>`).join('')}</div></section>
       <section class="answer-related"><${sectionHeading}>Related questions</${sectionHeading}>${topic.related.map(q => `<a href="${answerUrl(q)}">${escape(q)}</a>`).join('')}</section>
     </article>`;
@@ -317,7 +317,7 @@ const ANSWER_STORIES = [
     heading.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     announcement.textContent = 'Your example answer is ready.';
   });
-  thread.addEventListener('click', async event => {
+  thread.addEventListener('click', event => {
     const feedback = event.target.closest('[data-answer-feedback]');
     if (feedback) {
       const selected = feedback.getAttribute('aria-pressed') !== 'true';
@@ -328,15 +328,6 @@ const ANSWER_STORIES = [
     if (scroll) {
       const track = scroll.closest('.answer-sources').querySelector('.answer-source-track');
       track.scrollBy({ left: Number(scroll.dataset.sourceScroll) * track.clientWidth * 0.8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-    }
-    const share = event.target.closest('[data-answer-share]');
-    if (share) {
-      const question = questions[Number(share.closest('[data-answer-index]').dataset.answerIndex)];
-      const data = { title: question, url: new URL(answerUrl(question), location.href).href };
-      try {
-        if (navigator.share && navigator.canShare?.(data)) await navigator.share(data);
-        else { await navigator.clipboard.writeText(data.url); announcement.textContent = 'Answer link copied.'; }
-      } catch (error) { if (error.name !== 'AbortError') announcement.textContent = 'The link could not be shared. Copy the page address instead.'; }
     }
   });
   document.querySelector('[data-new-thread]').addEventListener('click', () => {
