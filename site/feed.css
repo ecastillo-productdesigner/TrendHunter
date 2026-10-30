@@ -1042,7 +1042,7 @@ a.story-lockup:hover .story-lockup-headline {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-layout-xl);
+  gap: var(--spacing-layout-lg);
 }
 
 .trend-card-action {
@@ -1860,120 +1860,117 @@ a.drawer-heading:hover {
     line-height: var(--type-line-height-ui-sm);
     max-width: 100%;
   }
-  .trend-answers--inline { padding-inline: 0; padding-bottom: 0; }
-  /* Parent article/channel layouts already provide a 24px gap. Add the
-     difference so each divider has 32px above it as well as 32px below. */
-  .article:has(.prediction-inline-section) > .trend-answers--inline,
-  .product-recommendations + .trend-answers--inline {
-    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
-    border-top: var(--stroke-default) solid var(--color-border-default);
-    padding-top: var(--spacing-layout-xl);
-  }
-  .article:has(.trend-answers--inline) + .trend-card-list {
-    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
-    border-top: var(--stroke-default) solid var(--color-border-default);
-    padding-top: var(--spacing-layout-xl);
-  }
+
+}
+
+.trend-answers--inline { padding: 0; border: 0; border-radius: 0; background: transparent; }
+/* Parent article/channel layouts already provide a 24px gap. Add the
+   difference so each divider has 32px above it as well as 32px below. */
+.article:has(.prediction-inline-section) > .trend-answers--inline,
+.product-recommendations + .trend-answers--inline {
+  margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
+  border-top: var(--stroke-default) solid var(--color-border-default);
+  padding-top: var(--spacing-layout-xl);
 }
 
 /* ===========================
-   Mobile article product recommendations — before Answers and More Stories
+   Article product recommendations — before Answers and More Stories
 =========================== */
 .product-recommendations { display: none; }
-@media (width < 960px) {
-  .product-recommendations:not([hidden]) {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-layout-lg);
-    min-width: 0;
-    margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
-    padding-top: var(--spacing-layout-xl);
-    border-top: var(--stroke-default) solid var(--color-border-default);
-    color: var(--color-text-primary);
-  }
-  .product-recommendations-heading {
-    font-family: var(--type-font-display);
-    font-size: var(--type-size-18);
-    font-weight: var(--type-weight-light);
-    line-height: var(--type-line-height-ui-lg);
-    text-transform: uppercase;
-  }
-  .product-card-grid {
-    position: relative;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: calc((100% - var(--spacing-layout-md)) / 2);
-    gap: var(--spacing-layout-md);
-    min-width: 0;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    list-style: none;
-  }
-  .product-card-grid::-webkit-scrollbar { display: none; }
-  .product-card-grid:focus-visible {
-    outline: var(--stroke-focus) solid var(--color-text-accent);
-    outline-offset: var(--spacing-component-xs);
-  }
-  .product-card-grid > li {
-    display: flex;
-    min-width: 0;
-    scroll-snap-align: start;
-  }
-  .product-card {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: var(--spacing-component-sm);
-    min-width: 0;
-    padding: var(--spacing-component-sm);
-    border: var(--stroke-default) solid var(--color-border-default);
-    border-radius: var(--radius-x-sm);
-    color: inherit;
-    background-color: var(--color-background-surface);
-    text-decoration: none;
-  }
-  .product-card-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 180 / 227;
-    object-fit: cover;
-  }
-  .product-card-title {
-    flex: 1;
-    font-family: var(--type-font-display);
-    font-size: var(--type-size-18);
-    font-weight: var(--type-weight-regular);
-    line-height: var(--type-line-height-ui-lg);
-  }
-  .product-card-price {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--spacing-component-sm);
-    margin-top: auto;
-    font-family: var(--type-font-display);
-    font-size: var(--type-size-18);
-    font-weight: var(--type-weight-light);
-    line-height: var(--type-line-height-ui-lg);
-  }
-  .product-card-price-label {
-    font-size: var(--type-size-12);
-    line-height: var(--type-line-height-ui-xs);
-    text-transform: uppercase;
-  }
-  .product-card-external {
-    align-self: center;
-    width: var(--icon-size-xs);
-    height: var(--icon-size-xs);
-    flex-shrink: 0;
-    background-color: currentColor;
-    mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-    -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-    transform: rotate(-45deg);
-  }
+.product-recommendations:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  min-width: 0;
+  scroll-margin-top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+  margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
+  padding-top: var(--spacing-layout-xl);
+  border-top: var(--stroke-default) solid var(--color-border-default);
+  color: var(--color-text-primary);
+}
+.product-recommendations-heading {
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+  text-transform: uppercase;
+}
+.product-card-grid {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  /* Two complete cards plus a 24px glimpse of the next card signal horizontal browsing. */
+  grid-auto-columns: calc((100% - var(--spacing-layout-md) * 2 - var(--spacing-layout-lg)) / 2);
+  gap: var(--spacing-layout-md);
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+}
+.product-card-grid::-webkit-scrollbar { display: none; }
+.product-card-grid:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-text-accent);
+  outline-offset: var(--spacing-component-xs);
+}
+.product-card-grid > li {
+  display: flex;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.product-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--spacing-component-sm);
+  min-width: 0;
+  padding: var(--spacing-component-sm);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+  color: inherit;
+  background-color: var(--color-background-surface);
+  text-decoration: none;
+}
+.product-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 180 / 227;
+  object-fit: cover;
+}
+.product-card-title {
+  flex: 1;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-regular);
+  line-height: var(--type-line-height-ui-lg);
+}
+.product-card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--spacing-component-sm);
+  margin-top: auto;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-18);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-lg);
+}
+.product-card-price-label {
+  font-size: var(--type-size-12);
+  line-height: var(--type-line-height-ui-xs);
+  text-transform: uppercase;
+}
+.product-card-external {
+  align-self: center;
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+  flex-shrink: 0;
+  background-color: currentColor;
+  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
+  transform: rotate(-45deg);
 }
 
 /* ===========================
@@ -3502,8 +3499,9 @@ body:has(.edit-profile-modal[open]) {
   gap: var(--spacing-layout-lg);
 }
 
-/* Separate the inline predictions from the following story recommendations. */
-.article:has(.prediction-inline-section) + .trend-card-list {
+/* Separate the article's final Answers module from More Stories at every viewport. */
+.article + .trend-card-list {
+  margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
   border-top: var(--stroke-default) solid var(--color-border-default);
   padding-top: var(--spacing-layout-xl);
 }
@@ -3596,10 +3594,14 @@ body:has(.edit-profile-modal[open]) {
   line-height: var(--type-line-height-ui-xs);
   text-transform: uppercase;
   color: var(--buttons-tertiary-label);
+  text-decoration: none;
+  transition: color 150ms ease;
 }
 
-.article-collection:hover {
-  text-decoration: underline;
+.article-collection:hover,
+.article-collection:focus-visible {
+  color: var(--color-text-primary);
+  text-decoration: none;
 }
 
 .article-meta {
@@ -4567,11 +4569,6 @@ body:has(.auth-prompt[open]) {
   .feed-answers-slot,
   .prediction-inline-section {
     display: none;
-  }
-
-  .article:has(.prediction-inline-section) + .trend-card-list {
-    border-top: 0;
-    padding-top: 0;
   }
 
   .page-layout {

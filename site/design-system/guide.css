@@ -241,6 +241,8 @@
 
 .ds-vote-hover { --prediction-hover-overlay: var(--buttons-tertiary-bg-hover); }
 .ds-context-hover { background-color: var(--buttons-tertiary-bg-hover); }
+.ds-shopping-specimen { max-width: var(--layout-feed-width); margin-inline: auto; }
+#shopping-module { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 .ds-vote-examples { grid-template-columns: repeat(auto-fit, minmax(var(--layout-prediction-vote-width), 1fr)); }
 #prediction-vote-hover { scroll-margin-top: calc(var(--ds-header-height) + var(--ds-nav-height) + var(--spacing-layout-lg)); }
 
@@ -321,6 +323,7 @@
 .ds-button-canvas > .trend-card-collection { position: static; transform: none; }
 .ds-button-canvas:has(.trend-card-collection, .trend-card-action.bookmark-button) { background: #0F0F0F; --color-icon-default: var(--trend-card-icon); }
 .ds-collection-hover { color: var(--trend-card-primary-text); }
+.ds-article-collection-hover { color: var(--color-text-primary); }
 .ds-button-canvas:has(.share-menu-item) { background: var(--color-background-surface); }
 .ds-button-canvas .share-menu-item:not(.ds-share-icon-hover, .is-copied) { color: var(--color-text-secondary); }
 .ds-button-canvas:has(.settings-panel-item) { background: var(--settings-panel-bg); }

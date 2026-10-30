@@ -1,4 +1,4 @@
-// Trend Hunter Answers: one instance moves between the desktop rail and the mobile feed.
+// Articles keep shopping and Answers inline; the feed moves Answers between its rail and list.
 (() => {
   const answerPageUrl = new URL('answers.html', document.currentScript?.src || location.href);
   const openAnswer = question => {
@@ -99,13 +99,14 @@
     const productRecommendations = article ? document.createElement('section') : null;
     if (productRecommendations) {
       productRecommendations.className = 'product-recommendations';
+      productRecommendations.id = 'product-recommendations';
       productRecommendations.setAttribute('aria-labelledby', 'product-recommendations-heading');
       productRecommendations.innerHTML = productRecommendationsTemplate;
       setupProductCarousel(productRecommendations);
       productRecommendations.hidden = true;
       article.append(productRecommendations);
     }
-    const feedAnchor = document.querySelector('.feed-trending-slot') || document.querySelector('.feed-explore-slot');
+    const feedAnchor = article ? null : document.querySelector('.feed-trending-slot') || document.querySelector('.feed-explore-slot');
     if (feedAnchor) {
       liveAnswers.classList.add('trend-answers--feed');
       mobileSlot = document.createElement('li');
@@ -121,14 +122,14 @@
     const leftRail = document.querySelector('.rail-left');
 
     const placeModules = () => {
-      liveAnswers.classList.toggle('trend-answers--inline', !desktop.matches && !mobileSlot && Boolean(article));
-      if (desktop.matches || (!mobileSlot && !article)) rail.prepend(liveAnswers);
+      liveAnswers.classList.toggle('trend-answers--inline', Boolean(article));
+      if (article) article.append(liveAnswers);
+      else if (desktop.matches || !mobileSlot) rail.prepend(liveAnswers);
       else if (mobileSlot) mobileSlot.append(liveAnswers);
-      else article.append(liveAnswers);
       if (mobileSlot) mobileSlot.hidden = desktop.matches;
       if (productRecommendations) {
-        productRecommendations.hidden = desktop.matches;
-        if (!desktop.matches) liveAnswers.before(productRecommendations);
+        productRecommendations.hidden = false;
+        liveAnswers.before(productRecommendations);
       }
       if (discovery && leftRail) {
         const home = desktop.matches && !wideDesktop.matches ? rail : leftRail;
