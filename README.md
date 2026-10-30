@@ -97,3 +97,9 @@ Article shopping recommendations and Trend Hunter Answers stay inline on desktop
 Each of the 35 stories includes two short contextual links within its paragraphs, opening relevant collections or related prototype stories. The links remain underlined and use the existing article tokens: #BEFC4F in dark mode and #875FE7 in light mode. The DS shows an example at `#story-text-links`.
 
 Story collection links change to primary text on hover and keyboard focus (white in dark mode), without an underline, pill outline, background or layout shift. The trend arrow keeps its signal color. The DS includes both states.
+
+Channel and collection pages share the same divider above More Stories as articles, with 32px of space on either side.
+
+The shopping carousel shares the 24px left and right edge fades used by Answers; keyboard focus removes the mask. Article-header Share and Bookmark icons turn primary text color on hover and keyboard focus, without a background. Share keeps its lime active state while open.
+
+Shopping card Shop Now labels and arrows use #BEFC4F in both themes and align at their vertical centers in the price row.

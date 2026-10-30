@@ -1907,10 +1907,14 @@ a.drawer-heading:hover {
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
   list-style: none;
 }
 .product-card-grid::-webkit-scrollbar { display: none; }
 .product-card-grid:focus-visible {
+  mask-image: none;
+  -webkit-mask-image: none;
   outline: var(--stroke-focus) solid var(--color-text-accent);
   outline-offset: var(--spacing-component-xs);
 }
@@ -1949,7 +1953,7 @@ a.drawer-heading:hover {
 .product-card-price {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: var(--spacing-component-sm);
   margin-top: auto;
   font-family: var(--type-font-display);
@@ -1958,11 +1962,13 @@ a.drawer-heading:hover {
   line-height: var(--type-line-height-ui-lg);
 }
 .product-card-price-label {
+  color: var(--trend-up-icon);
   font-size: var(--type-size-12);
   line-height: var(--type-line-height-ui-xs);
   text-transform: uppercase;
 }
 .product-card-external {
+  color: var(--trend-up-icon);
   align-self: center;
   width: var(--icon-size-xs);
   height: var(--icon-size-xs);
@@ -3499,8 +3505,8 @@ body:has(.edit-profile-modal[open]) {
   gap: var(--spacing-layout-lg);
 }
 
-/* Separate the article's final Answers module from More Stories at every viewport. */
-.article + .trend-card-list {
+/* Separate More Stories from the preceding article, collection or channel content. */
+.channel-content > .trend-card-list {
   margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
   border-top: var(--stroke-default) solid var(--color-border-default);
   padding-top: var(--spacing-layout-xl);
@@ -3712,6 +3718,13 @@ body:has(.edit-profile-modal[open]) {
   background-color: var(--color-icon-default);
   mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
   -webkit-mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
+}
+
+/* Header actions share the same theme-aware hover as the collection label. */
+.article-actions .bookmark-button[aria-pressed="false"]:is(:hover, :focus-visible) .bookmark-icon,
+.article-actions .bookmark-button[aria-pressed="true"]:is(:hover, :focus-visible) .bookmark-icon::before,
+.article-share:not([aria-expanded="true"]):is(:hover, :focus-visible) .article-share-icon {
+  background-color: var(--color-text-primary);
 }
 
 /* ===========================
