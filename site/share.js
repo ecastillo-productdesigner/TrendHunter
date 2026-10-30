@@ -2,6 +2,7 @@
 (() => {
   const triggers = '.article-share, [data-video-share], [data-story-share], [data-answer-share], [data-share-menu]';
   const appUrl = new URL('.', document.currentScript.src);
+  const COPY_CONFIRMATION_DURATION = 5000; // Matches TOAST_DURATION in app.js.
   const menu = document.createElement('div');
   menu.id = 'story-share-menu';
   menu.className = 'share-menu';
@@ -11,7 +12,7 @@
   const topLayer = typeof menu.showPopover === 'function';
   if (topLayer) menu.setAttribute('popover', 'manual');
   menu.innerHTML = `
-    <button class="share-menu-item" role="menuitem" type="button" data-share-copy tabindex="-1"><span class="share-menu-icon share-menu-icon--link" aria-hidden="true"></span>Copy link</button>
+    <button class="share-menu-item" role="menuitem" type="button" data-share-copy tabindex="-1"><span class="share-menu-icon share-menu-icon--link" aria-hidden="true"></span><span data-share-copy-label aria-live="polite" aria-atomic="true">Copy link</span></button>
     <a class="share-menu-item" role="menuitem" data-share-email tabindex="-1"><span class="share-menu-icon share-menu-icon--email" aria-hidden="true"></span>Email</a>
     <button class="share-menu-item" role="menuitem" type="button" data-share-more tabindex="-1"><span class="share-menu-icon share-menu-icon--more" aria-hidden="true"></span>More</button>`;
   const status = document.createElement('p');
@@ -25,12 +26,32 @@
     <div class="share-sheet-heading"><h2 id="share-sheet-title">Share</h2><button class="share-sheet-close" type="button" aria-label="Close share options">×</button></div>
     <p class="share-sheet-story"></p>
     <label class="share-sheet-label" for="share-sheet-url">Link</label><input id="share-sheet-url" type="url" readonly>
-    <div class="share-sheet-actions"><button class="share-sheet-copy" type="button">Copy link</button><a class="share-sheet-email">Email</a></div>`;
+    <div class="share-sheet-actions"><button class="share-sheet-copy" type="button"><span data-share-copy-label aria-live="polite" aria-atomic="true">Copy link</span></button><a class="share-sheet-email">Email</a></div>`;
   document.body.append(menu, sheet, status);
+  const copyMenuItem = menu.querySelector('[data-share-copy]');
+  const copySheetButton = sheet.querySelector('.share-sheet-copy');
   let activeTrigger = null;
   let lastTrigger = null;
   let data = null;
   let statusTimer;
+  let copyTimer;
+
+  function resetCopyConfirmation() {
+    clearTimeout(copyTimer);
+    for (const button of [copyMenuItem, copySheetButton]) {
+      button.classList.remove('is-copied');
+      button.querySelector('[data-share-copy-label]').textContent = 'Copy link';
+    }
+  }
+
+  function confirmCopy(button) {
+    resetCopyConfirmation();
+    clearTimeout(statusTimer);
+    status.hidden = true;
+    button.classList.add('is-copied');
+    button.querySelector('[data-share-copy-label]').textContent = 'Link Copied';
+    copyTimer = setTimeout(resetCopyConfirmation, COPY_CONFIRMATION_DURATION);
+  }
 
   function announce(message) {
     clearTimeout(statusTimer);
@@ -57,6 +78,7 @@
 
   function close(restoreFocus = false) {
     if (!activeTrigger) return;
+    resetCopyConfirmation();
     const previous = activeTrigger;
     if (topLayer && menu.matches(':popover-open')) menu.hidePopover();
     menu.hidden = true;
@@ -106,16 +128,15 @@
     sheet.showModal();
   }
 
-  async function copyLink() {
+  async function copyLink(button) {
     const copiedData = data;
     try {
       await navigator.clipboard.writeText(copiedData.url);
-      if (data === copiedData) {
-        if (sheet.open) sheet.close();
-        close(true);
-      }
-      announce('Link copied');
+      // A delayed clipboard result must not change a different story's menu.
+      if (data !== copiedData || (button === copyMenuItem ? !activeTrigger : !sheet.open)) return;
+      confirmCopy(button);
     } catch {
+      if (data !== copiedData || (button === copyMenuItem ? !activeTrigger : !sheet.open)) return;
       if (!sheet.open) moreOptions();
       const field = sheet.querySelector('input');
       field.focus();
@@ -134,7 +155,7 @@
     if (activeTrigger && !menu.contains(event.target)) close();
   });
   menu.addEventListener('click', async event => {
-    if (event.target.closest('[data-share-copy]')) await copyLink();
+    if (event.target.closest('[data-share-copy]')) await copyLink(copyMenuItem);
     if (event.target.closest('[data-share-email]')) close(true);
     if (event.target.closest('[data-share-more]')) {
       if (!navigator.share) { moreOptions(); return; }
@@ -166,8 +187,11 @@
   document.addEventListener('scroll', event => { if (activeTrigger && !menu.contains(event.target)) close(); }, true);
   window.addEventListener('resize', () => { if (activeTrigger) position(); });
   sheet.querySelector('.share-sheet-close').addEventListener('click', () => sheet.close());
-  sheet.addEventListener('close', () => { if (lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true }); });
-  sheet.querySelector('.share-sheet-copy').addEventListener('click', copyLink);
+  sheet.addEventListener('close', () => {
+    resetCopyConfirmation();
+    if (lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true });
+  });
+  copySheetButton.addEventListener('click', () => copyLink(copySheetButton));
   sheet.querySelector('.share-sheet-email').addEventListener('click', () => sheet.close());
   sheet.querySelector('input').addEventListener('click', event => event.target.select());
   sheet.addEventListener('click', event => {

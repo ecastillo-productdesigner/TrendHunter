@@ -1142,12 +1142,13 @@
     {
       "name": "Share-menu icons",
       "group": "Sharing",
-      "note": "20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. The Email preview illustrates that shared hover.",
+      "note": "20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.",
       "states": [
         "Copy link",
         "Email",
         "More",
-        "Shared hover \u00b7 Email"
+        "Shared hover \u00b7 Email",
+        "Copied \u00b7 5 seconds"
       ]
     },
     {

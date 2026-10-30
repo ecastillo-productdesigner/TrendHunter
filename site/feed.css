@@ -299,7 +299,7 @@
   --layout-toast-gap: 48px;
   --layout-profile-width: 440px;
   --layout-profile-call-width: 128px;
-  --layout-share-menu-width: 152px;
+  --layout-share-menu-width: 176px; /* Reserves room for the Link Copied confirmation. */
   --layout-filter-tab-gap: 20px;
   --layout-drawer-item-indent: 5px;
   --size-drawer-width: 340px;
@@ -1110,6 +1110,8 @@ a.story-lockup:hover .story-lockup-headline {
 .share-sheet-actions { display: flex; gap: var(--spacing-component-sm); margin-top: var(--spacing-layout-md); }
 .share-sheet-actions > * { flex: 1; padding: var(--spacing-component-ms); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-sm); color: inherit; font: var(--type-size-14) / var(--type-line-height-ui-lg) var(--type-font-body); text-decoration: none; text-align: center; }
 .share-sheet-actions > *:hover, .share-sheet-close:hover { background: var(--buttons-tertiary-bg-hover); }
+.share-menu-item.is-copied, .share-sheet-copy.is-copied { color: var(--toast-icon-success); }
+.share-menu-item.is-copied .share-menu-icon { background-color: currentColor; }
 .share-sheet :focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
 /* Bookmark — Figma "Bookmark" component: Ready (outline) / Bookmarked (filled) */

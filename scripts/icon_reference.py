@@ -97,8 +97,8 @@ def build_icon_reference(project, out):
     merge(['Custom share','Article and Answers share'], 'Share',
           'The same share action across the app. Story slot: 32px, custom 28×22px PNG. Prediction: 24px at top right. Article: 20px. Answers: 16px. Opening the menu does not change the glyph; on prediction cards it flips with the card face.', lambda fs:[fs[0]['states'][0]])
     merge(['Copy link','Email','More'], 'Share-menu icons',
-          '20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. The Email preview illustrates that shared hover.',
-          lambda fs:[dict(f['states'][0],label=f['name']) for f in fs]+[dict(fs[1]['states'][1],label='Shared hover · Email')])
+          '20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.',
+          lambda fs:[dict(f['states'][0],label=f['name']) for f in fs]+[dict(fs[1]['states'][1],label='Shared hover · Email'),state('Copied · 5 seconds','<span class="share-menu-item is-copied">'+span('share-menu-icon share-menu-icon--link')+'</span>')])
     merge(['In check','Out cross'], 'Prediction vote icons',
           'In uses a lime check; Out uses an orange-red cross. Vote buttons use 20px icons. Creator/reader badges use 12px: black on filled creator chips, state color in reader comparisons, gray when resolved. See comparison components for those contexts.',
           lambda fs:[dict(fs[0]['states'][0],label='In'),dict(fs[1]['states'][0],label='Out')])
