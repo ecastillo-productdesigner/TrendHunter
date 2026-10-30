@@ -100,6 +100,6 @@ Story collection links change to primary text on hover and keyboard focus (white
 
 Channel and collection pages share the same divider above More Stories as articles, with 32px of space on either side.
 
-The shopping carousel shares the 24px left and right edge fades used by Answers; keyboard focus removes the mask. Article-header Share and Bookmark icons turn primary text color on hover and keyboard focus, without a background. Share keeps its lime active state while open.
+The shopping carousel has no edge fades; its 24px next-card preview stays visible. Article-header Share and Bookmark icons turn primary text color on hover and keyboard focus, without a background. Share keeps its lime active state while open.
 
-Shopping card Shop Now labels and arrows use #BEFC4F in both themes and align at their vertical centers in the price row.
+Shopping card Shop Now labels match the 18px price, with 18px arrows. Labels and arrows use #BEFC4F in both themes and align at their vertical centers in the price row.

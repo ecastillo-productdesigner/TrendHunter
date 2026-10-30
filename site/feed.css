@@ -1907,14 +1907,10 @@ a.drawer-heading:hover {
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
   list-style: none;
 }
 .product-card-grid::-webkit-scrollbar { display: none; }
 .product-card-grid:focus-visible {
-  mask-image: none;
-  -webkit-mask-image: none;
   outline: var(--stroke-focus) solid var(--color-text-accent);
   outline-offset: var(--spacing-component-xs);
 }
@@ -1963,15 +1959,15 @@ a.drawer-heading:hover {
 }
 .product-card-price-label {
   color: var(--trend-up-icon);
-  font-size: var(--type-size-12);
-  line-height: var(--type-line-height-ui-xs);
+  font-size: inherit;
+  line-height: inherit;
   text-transform: uppercase;
 }
 .product-card-external {
   color: var(--trend-up-icon);
   align-self: center;
-  width: var(--icon-size-xs);
-  height: var(--icon-size-xs);
+  width: 1em;
+  height: 1em;
   flex-shrink: 0;
   background-color: currentColor;
   mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
