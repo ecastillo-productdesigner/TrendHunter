@@ -266,6 +266,7 @@
 .ds-share-icon-hover { color: var(--color-text-primary); background: transparent; }
 .ds-share-icon-hover .share-menu-icon { background: currentColor; }
 .ds-story-share-hover .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
+.ds-story-bookmark-hover .bookmark-icon { background-color: var(--trend-card-primary-text); }
 .ds-icon-canvas .prediction-shortcut-icon { margin: 0; }
 .ds-icon-canvas .profile-reader-badge { padding-inline: var(--spacing-component-sm); }
 .ds-icon-canvas .prediction-result--comparison { width: 100%; }

@@ -1080,10 +1080,11 @@
     {
       "name": "Bookmark",
       "group": "Navigation and saved",
-      "note": "Outlined when inactive; filled lime when saved. Story and profile: 32px. Article: 20px. Photo-card icons stay light; article/profile follow the theme and use a separate outline layer in light mode.",
+      "note": "Outlined when inactive; filled lime when saved. Story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.",
       "states": [
         "Inactive \u00b7 not saved",
-        "Active \u00b7 saved"
+        "Active \u00b7 saved",
+        "Story hover / focus \u00b7 white"
       ]
     },
     {
@@ -1132,7 +1133,7 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "Crisp SVG on every card. Story slot: 30px with a 28\u00d722px arrow; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
         "Default \u00b7 bookmark color",
         "Hover / keyboard focus \u00b7 white",

@@ -27,7 +27,8 @@ def build_icon_reference(project, out):
 
     add('Bookmark · story card', 'Navigation and saved', '32px. Inactive is outlined; active is filled lime. Photo-card icons stay light in both themes.', [
         state('Inactive · not saved', '<button class="bookmark-button" aria-pressed="false">'+span('bookmark-icon')+'</button>', 'photo'),
-        state('Active · saved', '<button class="bookmark-button" aria-pressed="true">'+span('bookmark-icon')+'</button>', 'photo')])
+        state('Active · saved', '<button class="bookmark-button" aria-pressed="true">'+span('bookmark-icon')+'</button>', 'photo'),
+        state('Story hover / focus · white', '<button class="bookmark-button ds-story-bookmark-hover" aria-pressed="false">'+span('bookmark-icon')+'</button>', 'photo')])
     add('Bookmark · article', 'Navigation and saved', '20px. Uses the article-specific outline, fill and light-theme rim.', [
         state(label, f'<div class="article-actions"><button class="bookmark-button" aria-pressed="{pressed}">'+span('bookmark-icon')+'</button></div>')
         for label, pressed in [('Inactive · not saved','false'), ('Active · saved','true')]])
@@ -45,7 +46,7 @@ def build_icon_reference(project, out):
     add('Theme toggle', 'Navigation and saved', '24px. Sun switches to light theme; moon switches to dark theme.', [
         state('Dark · sun', image('feed/icon-theme.svg','nav-utility-icon'), 'dark'), state('Light · moon', image('feed/icon-theme-light.svg','nav-utility-icon'), 'light')])
     add('Back', 'Navigation and saved', '20px. Authentication navigation.', [state('Default', span('nav-back-icon'))])
-    add('Custom share', 'Sharing', 'SVG: 28×22px silhouette in the 30px story-card slot. Default matches the unsaved bookmark; hover and keyboard focus turn white without a background. While the share menu is open, the icon is #BEFC4F. Prediction cards use a 24px slot at top right.', [state('Default · bookmark color', '<span class="story-share">'+span('trend-card-share-icon')+'</span>', 'photo'), state('Hover / keyboard focus · white', '<span class="story-share ds-story-share-hover">'+span('trend-card-share-icon')+'</span>', 'photo'), state('Active · menu open · #BEFC4F', '<span class="story-share" aria-expanded="true">'+span('trend-card-share-icon')+'</span>', 'photo')])
+    add('Custom share', 'Sharing', 'SVG: 20px-wide arrow in the 30px story-card slot, aligned with Bookmark’s visible edges. Default matches the unsaved bookmark; hover and keyboard focus turn white without a background. While the share menu is open, the icon is #BEFC4F. Prediction cards use a 24px slot at top right.', [state('Default · bookmark color', '<span class="story-share">'+span('trend-card-share-icon')+'</span>', 'photo'), state('Hover / keyboard focus · white', '<span class="story-share ds-story-share-hover">'+span('trend-card-share-icon')+'</span>', 'photo'), state('Active · menu open · #BEFC4F', '<span class="story-share" aria-expanded="true">'+span('trend-card-share-icon')+'</span>', 'photo')])
     add('Article and Answers share', 'Sharing', 'Article uses its 20px asset. Answers uses the 16px feed SVG.', [state('Article · 20px', span('article-share-icon')), state('Answers · 16px', span('answer-share-icon'))])
     for name, klass in [('Copy link','link'), ('Email','email'), ('More','more')]:
         add(name, 'Sharing', '20px share-menu icon. Hover changes the label and icon to white in dark mode; no hover background.', [
@@ -93,9 +94,9 @@ def build_icon_reference(project, out):
         families.insert(first,merged)
 
     merge(['Bookmark · story card','Bookmark · article','Bookmark · profile'], 'Bookmark',
-          'Outlined when inactive; filled lime when saved. Story and profile: 32px. Article: 20px. Photo-card icons stay light; article/profile follow the theme and use a separate outline layer in light mode.', lambda fs:fs[0]['states'])
+          'Outlined when inactive; filled lime when saved. Story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.', lambda fs:fs[0]['states'])
     merge(['Custom share','Article and Answers share'], 'Share',
-          'Crisp SVG on every card. Story slot: 30px with a 28×22px arrow; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.', lambda fs:fs[0]['states'])
+          'Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.', lambda fs:fs[0]['states'])
     merge(['Copy link','Email','More'], 'Share-menu icons',
           '20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.',
           lambda fs:[dict(f['states'][0],label=f['name']) for f in fs]+[dict(fs[1]['states'][1],label='Shared hover · Email'),state('Copied · 5 seconds','<span class="share-menu-item is-copied">'+span('share-menu-icon share-menu-icon--link')+'</span>')])
