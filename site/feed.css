@@ -295,6 +295,7 @@
   --layout-prediction-clock-height: 16px;
   --layout-toast-gap: 48px;
   --layout-profile-width: 440px;
+  --layout-profile-call-width: 144px;
   --layout-filter-tab-gap: 20px;
   --layout-drawer-item-indent: 5px;
   --size-drawer-width: 340px;
@@ -3168,12 +3169,14 @@ body:has(.edit-profile-modal[open]) {
   align-items: flex-end;
   gap: var(--spacing-component-ms);
   min-width: 0;
+  width: var(--layout-profile-call-width);
 }
 .profile-call-column > .prediction-badge {
   align-self: stretch;
   justify-content: center;
   white-space: nowrap;
   line-height: var(--type-line-height-ui-xs);
+  padding-inline: var(--spacing-component-ms);
 }
 .profile-call-comparison {
   display: flex;
