@@ -324,6 +324,7 @@
 .ds-button-canvas:has(.trend-card-collection, .trend-card-action.bookmark-button) { background: #0F0F0F; --color-icon-default: var(--trend-card-icon); }
 .ds-collection-hover { color: var(--trend-card-primary-text); }
 .ds-article-collection-hover { color: var(--color-text-primary); }
+.ds-author-name-hover { color: var(--color-text-primary); }
 .ds-button-canvas:has(.share-menu-item) { background: var(--color-background-surface); }
 .ds-button-canvas .share-menu-item:not(.ds-share-icon-hover, .is-copied) { color: var(--color-text-secondary); }
 .ds-button-canvas:has(.settings-panel-item) { background: var(--settings-panel-bg); }

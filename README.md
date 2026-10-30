@@ -102,4 +102,8 @@ Channel and collection pages share the same divider above More Stories as articl
 
 The shopping carousel has no edge fades; its 24px next-card preview stays visible. Article-header Share and Bookmark icons turn primary text color on hover and keyboard focus, without a background. Share keeps its lime active state while open.
 
-Shopping card Shop Now labels match the 18px price, with 18px arrows. Labels and arrows use #BEFC4F in both themes and align at their vertical centers in the price row.
+Shopping card Shop Now labels match the 18px price, with 18px arrows. Labels and arrows use #BEFC4F in both themes and align at their vertical centers in the price row, with a 4px label-to-arrow gap and 8px between price and action.
+
+Shop Now and its arrow turn primary text color on hover (white in dark mode), without underlining or linking anywhere. Article bylines keep 8px after the avatar and use 4px between By and the author name; author names turn primary text color on hover.
+
+Collection arrows keep a consistent fictional sample direction across collection titles, collection pills, story-card labels and article links. Back-to-School Transitions, Clean Living Control, Tactile Home Design, Supplement Science, Wellness Maxxing and Solo Travel use red down arrows; the other collections use green up arrows. These are static prototype signals, not live popularity measurements.

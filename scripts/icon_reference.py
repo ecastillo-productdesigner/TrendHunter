@@ -75,7 +75,7 @@ def build_icon_reference(project, out):
             state('Creator chip · 12px', f'<span class="prediction-badge prediction-badge--{direction}">'+span('prediction-badge-icon')+'</span>'),
             state('Resolved · 12px', f'<span class="prediction-badge prediction-badge--{direction} prediction-badge--resolved">'+span('prediction-badge-icon')+'</span>'),
             state('Reader comparison', f'<span class="prediction-result--comparison"><span class="prediction-badge prediction-badge--{direction} profile-reader-badge">'+span('prediction-badge-icon')+'</span></span>')])
-    add('Trend arrows', 'Predictions and signals', 'Pills use the 12px up/down arrows. Collection mastheads use the larger up arrow and a light-theme outline layer.', [state('Up · pill',span('trend-icon trend-icon--up')),state('Down · pill',span('trend-icon trend-icon--down')),state('Up · masthead',span('sparkline-up'))])
+    add('Trend arrows', 'Predictions and signals', 'Pills use the 12px up/down arrows. Collection mastheads use larger up/down arrows; the green up arrow has a light-theme outline layer. Directions are consistent per collection across the prototype.', [state('Up · pill',span('trend-icon trend-icon--up')),state('Down · pill',span('trend-icon trend-icon--down')),state('Up · masthead',span('sparkline-up')),state('Down · masthead',span('sparkline-down'))])
     add('Prediction context and time', 'Predictions and signals', '16px flip icon for Get context / Back to call. Clock has its own 13×16px box.', [state('Get context / back',span('prediction-card-link-icon'),'prediction'),state('Time',span('prediction-clock-icon'),'prediction')])
     add('Forward and jump', 'Predictions and signals', 'The same forward SVG supports Read more, submit and Make your call. The downward jump is Material Symbols Outlined, FILL 0.', [state('Read more',span('prediction-card-more-icon')),state('Submit', '<span class="answers-submit">'+span('answers-submit-icon')+'</span>'),state('Make your call','<span class="ds-forward-topic">'+span('prediction-card-more-icon')+'</span>'),state('Jump down',span('prediction-shortcut-icon material-symbols-outlined','arrow_downward'))])
     add('Answers sparkles', 'Predictions and signals', 'The Answers symbol is reused for prompts, questions and source labels.', [state('Default',span('answers-sparkle'))])
@@ -114,7 +114,7 @@ def build_icon_reference(project, out):
             family['note']='Shared close action. Drawer/toast: 24px. Authentication: 20px. Share dialog uses the text ×. Source variants remain listed in the asset inventory.'
         if family['name']=='Trend arrows':
             family['states']=family['states'][:2]
-            family['note']='Up and down trend directions. Pills use 12px; mastheads use the larger up arrow. The up arrow has a supporting light-theme outline layer.'
+            family['note']='Green up and red down directions stay consistent per collection. Pills use 12px; mastheads use 24px up/down arrows. The up arrow has a supporting light-theme outline layer.'
         if family['name']=='Forward and jump':
             family['states']=[family['states'][0],family['states'][3]]
             family['note']='Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.'

@@ -1226,7 +1226,7 @@
     {
       "name": "Trend arrows",
       "group": "Predictions and signals",
-      "note": "Up and down trend directions. Pills use 12px; mastheads use the larger up arrow. The up arrow has a supporting light-theme outline layer.",
+      "note": "Green up and red down directions stay consistent per collection. Pills use 12px; mastheads use 24px up/down arrows. The up arrow has a supporting light-theme outline layer.",
       "states": [
         "Up \u00b7 pill",
         "Down \u00b7 pill"

@@ -1957,14 +1957,23 @@ a.drawer-heading:hover {
   font-weight: var(--type-weight-light);
   line-height: var(--type-line-height-ui-lg);
 }
-.product-card-price-label {
+.product-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-xs);
   color: var(--trend-up-icon);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.product-card-cta:hover { color: var(--color-text-primary); }
+.product-card-price-label {
+  color: inherit;
   font-size: inherit;
   line-height: inherit;
   text-transform: uppercase;
 }
 .product-card-external {
-  color: var(--trend-up-icon);
+  color: inherit;
   align-self: center;
   width: 1em;
   height: 1em;
@@ -3436,7 +3445,7 @@ body:has(.edit-profile-modal[open]) {
   gap: var(--spacing-component-sm);
   white-space: nowrap;
 }
-.masthead-title-tail .sparkline-up { flex-shrink: 0; }
+.masthead-title-tail :is(.sparkline-up, .sparkline-down) { flex-shrink: 0; }
 
 .sparkline-up {
   position: relative;
@@ -3462,6 +3471,15 @@ body:has(.edit-profile-modal[open]) {
   background-color: var(--trend-up-icon-outline);
   mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
   -webkit-mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
+}
+
+.sparkline-down {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  flex-shrink: 0;
+  background-color: var(--color-icon-signal-secondary);
+  mask: url("assets/feed/icon-trending-down.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-trending-down.svg") center / contain no-repeat;
 }
 
 .masthead-description {
@@ -3631,6 +3649,12 @@ body:has(.edit-profile-modal[open]) {
   text-transform: uppercase;
 }
 
+.contributor-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-xs);
+}
+
 .contributor-avatar {
   width: var(--icon-size-lg);
   height: var(--icon-size-lg);
@@ -3648,7 +3672,9 @@ body:has(.edit-profile-modal[open]) {
 .contributor-name {
   font-weight: var(--type-weight-bold);
   color: var(--color-text-tertiary);
+  transition: color 150ms ease;
 }
+.contributor-name:hover { color: var(--color-text-primary); }
 
 .article-timestamp {
   font-family: var(--type-font-display);

@@ -44,28 +44,28 @@
         <article class="product-card">
           <img class="product-card-image" src="assets/products/magnesium-mineral-butter.webp" width="887" height="1182" alt="Pantry Magnesium Mineral Butter jar and open tins" loading="lazy" decoding="async">
           <h3 class="product-card-title">Magnesium Mineral Butter | Deep Relaxation + Nourishment for Body + Mind</h3>
-          <p class="product-card-price"><span>$15.99</span><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></p>
+          <p class="product-card-price"><span>$15.99</span><span class="product-card-cta"><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></span></p>
         </article>
       </li>
       <li>
         <article class="product-card">
           <img class="product-card-image" src="assets/products/turkey-crumbles.webp" width="1000" height="1000" alt="Farm to Pet Turkey Crumbles cat treats in an orange resealable bag" loading="lazy" decoding="async">
           <h3 class="product-card-title">Farm To Pet Turkey Crumbles for Cats | Grain-Free Cat Treats</h3>
-          <p class="product-card-price"><span>$3.99</span><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></p>
+          <p class="product-card-price"><span>$3.99</span><span class="product-card-cta"><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></span></p>
         </article>
       </li>
       <li>
         <article class="product-card">
           <img class="product-card-image" src="assets/products/pantry-lip-balm.webp" width="825" height="1035" alt="Pantry natural lip balm tubes" loading="lazy" decoding="async">
           <h3 class="product-card-title">Pantry Handpoured Lip Balm | Natural Lip Care with SPF 15</h3>
-          <p class="product-card-price"><span>$9.00</span><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></p>
+          <p class="product-card-price"><span>$9.00</span><span class="product-card-cta"><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></span></p>
         </article>
       </li>
       <li>
         <article class="product-card">
           <img class="product-card-image" src="assets/products/chicken-crumbles.webp" width="1000" height="1000" alt="Farm to Pet Chicken Crumbles cat treats in a blue resealable bag" loading="lazy" decoding="async">
           <h3 class="product-card-title">Farm To Pet Chicken Crumbles | Single-Ingredient Cat Treats</h3>
-          <p class="product-card-price"><span>$11.95</span><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></p>
+          <p class="product-card-price"><span>$11.95</span><span class="product-card-cta"><span class="product-card-price-label">Shop Now</span><span class="product-card-external" aria-hidden="true"></span></span></p>
         </article>
       </li>
     </ul>`;
