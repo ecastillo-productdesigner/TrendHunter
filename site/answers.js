@@ -1,4 +1,5 @@
-// Articles keep shopping and Answers inline; the feed moves Answers between its rail and list.
+// Desktop articles use separate panels; mobile articles keep shopping and Answers inline.
+// Move the existing sections so carousel position and question input survive resizing.
 (() => {
   const answerPageUrl = new URL('answers.html', document.currentScript?.src || location.href);
   const openAnswer = question => {
@@ -123,7 +124,11 @@
 
     const placeModules = () => {
       liveAnswers.classList.toggle('trend-answers--inline', Boolean(article));
-      if (article) article.append(liveAnswers);
+      if (article) {
+        const separatePanels = desktop.matches && document.documentElement.dataset.view !== 'sheet';
+        if (separatePanels) article.after(liveAnswers);
+        else article.append(liveAnswers);
+      }
       else if (desktop.matches || !mobileSlot) rail.prepend(liveAnswers);
       else if (mobileSlot) mobileSlot.append(liveAnswers);
       if (mobileSlot) mobileSlot.hidden = desktop.matches;

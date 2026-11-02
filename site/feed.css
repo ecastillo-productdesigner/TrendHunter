@@ -4682,9 +4682,37 @@ body:has(.auth-prompt[open]) {
   }
 }
 
-/* Article pages (trend.html, trend-maximalism.html) keep Daily Predictions in the right rail
-   on desktop, same as the feed; predictions.js skips moving it into the "Recommended" list below
-   960px, so it's simply hidden there (the rail's own default) instead of showing mid-article. */
+/* Desktop Trend Detail: four content-sized panels scroll with the document.
+   The side rails keep their existing sticky behavior. Mobile and article sheets
+   retain their inline sections and dividers. */
+@media (min-width: 960px) {
+  :root:not([data-view="sheet"]) .page-trend .feed-column {
+    position: static;
+    top: auto;
+    height: auto;
+    min-width: 0;
+    overflow: visible;
+    overscroll-behavior: auto;
+    border: 0;
+    background: transparent;
+  }
+
+  :root:not([data-view="sheet"]) .page-trend .feed-column::before { display: none; }
+
+  :root:not([data-view="sheet"]) .page-trend .channel-content {
+    padding: 0;
+    gap: var(--spacing-layout-lg);
+  }
+
+  :root:not([data-view="sheet"]) .page-trend .channel-content > :is(.article, .product-recommendations, .trend-answers--inline, .trend-card-list) {
+    min-width: 0;
+    margin: 0;
+    padding: var(--spacing-layout-lg);
+    border: var(--stroke-default) solid var(--color-border-default);
+    border-radius: var(--radius-x-sm);
+    background-color: var(--color-background-surface-raised);
+  }
+}
 
 /* Shared inline validation for the email, code and consent flow. */
 .auth-error {
