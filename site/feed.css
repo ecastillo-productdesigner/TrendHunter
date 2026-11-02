@@ -4721,8 +4721,25 @@ body:has(.auth-prompt[open]) {
     margin: 0;
     padding: var(--spacing-layout-lg);
     border: var(--stroke-default) solid var(--color-border-default);
+    border-top-color: transparent;
     border-radius: var(--radius-x-sm);
     background-color: var(--color-background-surface-raised);
+  }
+
+  /* Each panel keeps its own top edge below the menu while its content moves.
+     The negative margin offsets this flex item's height and the extra 24px gap,
+     preserving the existing padding and content positions. */
+  :root:not([data-view="sheet"]) .page-trend .channel-content > :is(.article, .product-recommendations, .trend-answers--inline, .trend-card-list)::before {
+    content: "";
+    position: sticky;
+    top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+    z-index: 3;
+    flex-shrink: 0;
+    height: var(--stroke-default);
+    margin-top: calc(-1 * (var(--spacing-layout-lg) + var(--stroke-default)));
+    margin-inline: calc(-1 * (var(--spacing-layout-lg) + var(--stroke-default)));
+    background: linear-gradient(var(--color-border-default), var(--color-border-default)), var(--color-background-surface);
+    pointer-events: none;
   }
 }
 
