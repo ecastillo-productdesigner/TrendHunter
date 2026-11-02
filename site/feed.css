@@ -4698,6 +4698,19 @@ body:has(.auth-prompt[open]) {
     background-color: var(--color-background-surface);
   }
 
+  /* Only the scrolling middle column fades; pinned side panels stay crisp. */
+  :root:not([data-view="sheet"]) .page-trend.trend-detail-scrolled .site-header::before {
+    content: "";
+    position: absolute;
+    top: calc(100% + var(--spacing-layout-lg));
+    left: calc(50% - (var(--layout-desktop-left) + var(--spacing-layout-xl)) / 2);
+    width: var(--layout-feed-width);
+    height: var(--spacing-layout-md);
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, var(--color-background-surface), transparent);
+    pointer-events: none;
+  }
+
   :root:not([data-view="sheet"]) .page-trend .feed-column {
     position: static;
     top: auto;
@@ -4724,6 +4737,10 @@ body:has(.auth-prompt[open]) {
     border-radius: var(--radius-x-sm);
     background-color: var(--color-background-surface-raised);
   }
+}
+
+@media (min-width: 1344px) {
+  :root:not([data-view="sheet"]) .page-trend.trend-detail-scrolled .site-header::before { left: 50%; }
 }
 
 /* Shared inline validation for the email, code and consent flow. */
