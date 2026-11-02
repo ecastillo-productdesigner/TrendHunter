@@ -1133,7 +1133,7 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Opening the menu keeps the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
         "Default \u00b7 bookmark color",
         "Hover / keyboard focus \u00b7 white",
@@ -1143,7 +1143,7 @@
     {
       "name": "Share-menu icons",
       "group": "Sharing",
-      "note": "20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.",
+      "note": "Saved custom menu: 20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.",
       "states": [
         "Copy link",
         "Email",

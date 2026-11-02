@@ -1,7 +1,10 @@
-// One contextual share menu for feed stories, articles, collections and Answers.
+import { shareWithSystem } from './system-share.js';
+
+// Device sharing for stories, articles, collections, predictions and Answers.
+// The original custom menu remains available only through its archived DS example.
 (() => {
   const triggers = '.article-share, [data-video-share], [data-story-share], [data-answer-share], [data-share-menu]';
-  const appUrl = new URL('.', document.currentScript.src);
+  const appUrl = new URL('.', import.meta.url);
   const COPY_CONFIRMATION_DURATION = 5000; // Matches TOAST_DURATION in app.js.
   const menu = document.createElement('div');
   menu.id = 'story-share-menu';
@@ -20,6 +23,7 @@
   status.setAttribute('role', 'status');
   status.hidden = true;
   const sheet = document.createElement('dialog');
+  sheet.id = 'story-share-fallback';
   sheet.className = 'share-sheet';
   sheet.setAttribute('aria-labelledby', 'share-sheet-title');
   sheet.innerHTML = `
@@ -32,6 +36,7 @@
   const copySheetButton = sheet.querySelector('.share-sheet-copy');
   let activeTrigger = null;
   let lastTrigger = null;
+  let nativeTrigger = null;
   let data = null;
   let statusTimer;
   let copyTimer;
@@ -104,7 +109,7 @@
     menu.style.top = `${Math.max(inset, Math.min(top, innerHeight - box.height - inset))}px`;
   }
 
-  function open(trigger) {
+  function openMenu(trigger) {
     if (activeTrigger === trigger) { close(true); return; }
     close();
     activeTrigger = trigger;
@@ -122,10 +127,35 @@
 
   function moreOptions() {
     close();
+    lastTrigger?.setAttribute('aria-haspopup', 'dialog');
+    lastTrigger?.setAttribute('aria-expanded', 'true');
+    lastTrigger?.setAttribute('aria-controls', sheet.id);
     sheet.querySelector('.share-sheet-story').textContent = data.title;
     sheet.querySelector('input').value = data.url;
     sheet.querySelector('.share-sheet-email').href = emailHref();
     sheet.showModal();
+  }
+
+  async function openSystem(trigger) {
+    if (nativeTrigger) return;
+    close();
+    lastTrigger = trigger;
+    data = shareData(trigger);
+    nativeTrigger = trigger;
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.setAttribute('aria-busy', 'true');
+    trigger.removeAttribute('aria-controls');
+    // No awaited work precedes the native API call, preserving user activation.
+    const result = await shareWithSystem(data);
+    nativeTrigger = null;
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.removeAttribute('aria-busy');
+    if (result === 'unavailable') moreOptions();
+    else if (trigger.isConnected) {
+      trigger.setAttribute('aria-haspopup', trigger.hasAttribute('data-share-legacy') ? 'menu' : 'dialog');
+      trigger.focus({ preventScroll: true });
+    }
   }
 
   async function copyLink(button) {
@@ -145,30 +175,34 @@
     }
   }
 
-  document.querySelectorAll(triggers).forEach(trigger => {
-    trigger.setAttribute('aria-haspopup', 'menu');
+  function prepareTrigger(trigger) {
+    trigger.setAttribute('aria-haspopup', trigger.hasAttribute('data-share-legacy') ? 'menu' : 'dialog');
     trigger.setAttribute('aria-expanded', 'false');
-  });
+  }
+  document.querySelectorAll(triggers).forEach(prepareTrigger);
   document.addEventListener('click', event => {
     const trigger = event.target.closest(triggers);
-    if (trigger) { event.preventDefault(); open(trigger); return; }
+    if (trigger) {
+      event.preventDefault();
+      if (nativeTrigger) return;
+      if (trigger.hasAttribute('data-share-legacy')) openMenu(trigger);
+      else openSystem(trigger);
+      return;
+    }
     if (activeTrigger && !menu.contains(event.target)) close();
   });
   menu.addEventListener('click', async event => {
     if (event.target.closest('[data-share-copy]')) await copyLink(copyMenuItem);
     if (event.target.closest('[data-share-email]')) close(true);
     if (event.target.closest('[data-share-more]')) {
-      if (!navigator.share) { moreOptions(); return; }
-      close(true);
-      try { await navigator.share(data); }
-      catch (error) { if (error.name !== 'AbortError') moreOptions(); }
+      await openSystem(lastTrigger);
     }
   });
   document.addEventListener('keydown', event => {
     const trigger = event.target.closest(triggers);
-    if (trigger && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+    if (trigger?.hasAttribute('data-share-legacy') && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
       event.preventDefault();
-      if (activeTrigger !== trigger) open(trigger);
+      if (activeTrigger !== trigger) openMenu(trigger);
       if (event.key === 'ArrowUp') menu.querySelector('[data-share-more]').focus();
       return;
     }
@@ -189,6 +223,9 @@
   sheet.querySelector('.share-sheet-close').addEventListener('click', () => sheet.close());
   sheet.addEventListener('close', () => {
     resetCopyConfirmation();
+    lastTrigger?.setAttribute('aria-expanded', 'false');
+    lastTrigger?.removeAttribute('aria-controls');
+    if (lastTrigger) lastTrigger.setAttribute('aria-haspopup', lastTrigger.hasAttribute('data-share-legacy') ? 'menu' : 'dialog');
     if (lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true });
   });
   copySheetButton.addEventListener('click', () => copyLink(copySheetButton));
@@ -211,7 +248,7 @@
       button.className = 'prediction-share';
       button.dataset.storyShare = '';
       button.setAttribute('aria-label', 'Share prediction');
-      button.setAttribute('aria-haspopup', 'menu');
+      button.setAttribute('aria-haspopup', 'dialog');
       button.setAttribute('aria-expanded', 'false');
       button.innerHTML = '<span class="trend-card-share-icon" aria-hidden="true"></span>';
       target.append(button);
@@ -221,6 +258,8 @@
   new MutationObserver(records => {
     for (const record of records) for (const node of record.addedNodes) {
       if (!(node instanceof Element)) continue;
+      if (node.matches(triggers)) prepareTrigger(node);
+      node.querySelectorAll(triggers).forEach(prepareTrigger);
       const owner = node.closest('.prediction-card');
       if (owner) addPredictionShare(owner);
       node.querySelectorAll('.prediction-card').forEach(addPredictionShare);

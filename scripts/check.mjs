@@ -5,6 +5,9 @@ import { build, filesIn, outputRoot, projectRoot } from './build.mjs';
 
 await build();
 const failures = [];
+const shareAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/system-share.test.mjs')], { encoding: 'utf8' });
+if (shareAudit.status !== 0) failures.push(shareAudit.stdout + shareAudit.stderr);
+else console.log('Native sharing routing, cancellation and fallback passed');
 const inventoryAudit = spawnSync('python3', [path.join(projectRoot, 'scripts/audit-design-system.py')], { encoding: 'utf8' });
 if (inventoryAudit.status !== 0) failures.push(inventoryAudit.stderr || 'Design-system inventory audit failed');
 else console.log(inventoryAudit.stdout.trim());
