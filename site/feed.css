@@ -2053,8 +2053,8 @@ a.drawer-heading:hover {
 .predictions-page .prediction-stack:has(.prediction-results) { width: 100%; height: calc(var(--layout-predictions-stack-height) + var(--spacing-page-2xl) * 2); zoom: 1; }
 @media (min-width: 960px) {
   .nav-primary .nav-predictions { display: none; }
-  .page-trend .prediction-card--current-article [data-flip],
-  .page-trend .prediction-card--current-article .prediction-card-context { display: none; }
+  .page-trend:not(.has-prediction-arrival) .prediction-card--current-article [data-flip],
+  .page-trend:not(.has-prediction-arrival) .prediction-card--current-article .prediction-card-context { display: none; }
 }
 
 /* The results title takes the place of Daily Predictions at every screen size. */
@@ -2403,12 +2403,7 @@ a.drawer-heading:hover {
   zoom: var(--prediction-stack-zoom, 1);
 }
 .prediction-inline-section .prediction-card--onboarding { display: none; }
-@media (width < 960px) {
-  .prediction-inline-section .prediction-card--read-more-intro [data-flip="context"] {
-    visibility: hidden;
-    pointer-events: none;
-  }
-}
+.prediction-card[data-locked] .prediction-card-actions { justify-content: center; }
 
 .prediction-inline-section:has(> .prediction-stack .prediction-results) > .type-h4-caps { display: none; }
 .prediction-inline-section > .prediction-stack:has(.prediction-results) {

@@ -90,8 +90,15 @@ function profileComparisonExamples(authorId) {
   ].map(({ state, ...prediction }) => ({ ...prediction, id: `profile-example-${authorId}-${state}`, call: 'in', resolved: false, comparisonExample: true }));
 }
 
+// Historical examples are outside the active deck but can open their matching story.
+const PROFILE_RESOLVED_PREDICTIONS = [
+  { id: 'weekend-walking-history', text: 'Weekend-only walking will become a regular part of fitness plans', storyHref: 'trend-weekend-walking.html', sampleInPercent: 63, call: 'in', resolved: true },
+  { id: 'sleep-earbuds-history', text: 'Sleep earbuds will become a standard upgrade for side sleepers', storyHref: 'trend-sleep-earbuds.html', sampleInPercent: 42, call: 'out', resolved: true },
+  { id: 'seasonal-produce-history', text: 'Seasonal produce subscriptions will become a weekly shopping shortcut', storyHref: 'trend-seasonal-produce.html', sampleInPercent: 68, call: 'in', resolved: true },
+];
+
 function findPrediction(id) {
-  const standard = PREDICTIONS.find(prediction => prediction.id === id);
+  const standard = [...PREDICTIONS, ...PROFILE_RESOLVED_PREDICTIONS].find(prediction => prediction.id === id);
   if (standard) return standard;
   const example = /^profile-example-([a-z-]+)-(in|out|pending)$/.exec(id || '');
   return example ? profileComparisonExamples(example[1]).find(prediction => prediction.id === id) : undefined;
@@ -99,6 +106,15 @@ function findPrediction(id) {
 
 function predictionStoryPath(href) {
   return new URL(href, location.href).pathname.replace(/\.html$/, '').replace(/\/$/, '');
+}
+
+// Reading a story selects one exact prediction, including saved or skipped calls.
+// The daily deck behind it retains its pending order and its own context controls.
+function articleDeckQueue(calls, skippedIds, current) {
+  const skipped = PREDICTIONS.filter(prediction => !calls[prediction.id] && skippedIds.includes(prediction.id) && prediction.id !== current?.id);
+  let queue = PREDICTIONS.filter(prediction => !calls[prediction.id] && !skippedIds.includes(prediction.id));
+  if (current) queue = [current, ...queue.filter(prediction => prediction.id !== current.id)];
+  return { queue, skipped };
 }
 
 function resultVoteSplit(prediction) {
@@ -177,6 +193,7 @@ const articlePredictionArrival = (() => {
 // A reader opening a prediction's story is here to make that call.
 // The mobile article already uses this label; match it in the desktop rail too.
 if (articlePredictionArrival) {
+  document.body.classList.add('has-prediction-arrival');
   const heading = document.getElementById('predictions-heading');
   if (heading) {
     heading.textContent = 'Make your call';
@@ -184,10 +201,9 @@ if (articlePredictionArrival) {
   }
 }
 
-const profileStoryPrediction = articlePredictionArrival?.source === 'profile'
-  ? findPrediction(articlePredictionArrival.predictionId) : null;
-const profileStoryArrival = profileStoryPrediction && predictionStoryPath(profileStoryPrediction.storyHref) === predictionStoryPath(location.pathname)
-  ? profileStoryPrediction : null;
+const articleStoryPrediction = findPrediction(articlePredictionArrival?.predictionId);
+const articleStoryArrival = articleStoryPrediction && predictionStoryPath(articleStoryPrediction.storyHref) === predictionStoryPath(location.pathname)
+  ? articleStoryPrediction : null;
 
 const stack = document.querySelector('.prediction-stack');
 
@@ -203,6 +219,8 @@ if (stack) {
     if (!prediction) return null;
     try { return (JSON.parse(sessionStorage.getItem(callKey(prediction))) || {})[prediction.id]; } catch { return null; }
   };
+  const displayedCall = prediction => predictionCall(prediction)
+    || (prediction && prediction.id === articleStoryArrival?.id && ['in', 'out'].includes(articlePredictionArrival?.readerCall) ? articlePredictionArrival.readerCall : null);
   const saveCall = (id, call) => {
     const key = callKey(findPrediction(id));
     try {
@@ -228,10 +246,7 @@ if (stack) {
     return div.innerHTML;
   };
 
-  // A mobile Read more arrival has just supplied the first card's context.
-  // Keep that card on its voting face without offering the same context again.
-  let firstArrivalCardAssigned = false;
-  const readMoreArticleArrival = Boolean(articlePredictionArrival) && window.matchMedia('(max-width: 959px)').matches;
+  const readMoreArticleArrival = Boolean(articleStoryArrival);
 
   // Cards still to call; skipped ones go back in the queue for "Finish today's predictions"
   let queue = [];
@@ -253,12 +268,16 @@ if (stack) {
     const backId = `prediction-context-${prediction.id}`;
     card.className = 'prediction-card prediction-card--call';
     if (document.body.classList.contains('page-trend') && predictionStoryPath(prediction.storyHref) === predictionStoryPath(location.pathname)) card.classList.add('prediction-card--current-article');
-    const storyAlreadyOpen = prediction.id === profileStoryArrival?.id;
-    if (storyAlreadyOpen) card.classList.add('prediction-card--profile-story');
-    if (readMoreArticleArrival && !firstArrivalCardAssigned && (!articlePredictionArrival.predictionId || articlePredictionArrival.predictionId === prediction.id)) {
-      card.classList.add('prediction-card--read-more-intro');
-      firstArrivalCardAssigned = true;
-    }
+    const storyAlreadyOpen = prediction.id === articleStoryArrival?.id;
+    if (storyAlreadyOpen) card.classList.add('prediction-card--article-story');
+    const recordedCall = displayedCall(prediction);
+    const locked = Boolean(recordedCall || prediction.resolved);
+    if (locked) card.dataset.locked = 'true';
+    const actions = locked ? `
+          <div class="prediction-card-actions">
+            <p class="prediction-badge${recordedCall ? ` prediction-badge--${recordedCall}` : ''}${prediction.resolved ? ' prediction-badge--resolved' : ''}">${recordedCall ? `<span class="prediction-badge-icon" aria-hidden="true"></span>${prediction.resolved ? 'You were' : 'You’re'} ${recordedCall}` : 'Voting closed'}</p>
+          </div>
+          <button class="prediction-skip" type="button" data-vote="next">Next prediction</button>` : voteButtons;
     card.dataset.id = prediction.id;
     card.innerHTML = `
       <div class="prediction-card-flipper">
@@ -271,7 +290,7 @@ if (stack) {
             <div class="prediction-card-middle">
               <h3 class="prediction-card-headline">${escapeHTML(prediction.text)}</h3>
             </div>
-            ${voteButtons}
+            ${actions}
           </div>
         </div>
         ${storyAlreadyOpen ? '' : `<div class="prediction-card-face prediction-card-face--back" id="${backId}" inert>
@@ -283,7 +302,7 @@ if (stack) {
             <div class="prediction-card-middle">
               <p class="prediction-card-context">${escapeHTML(prediction.context)} <a class="prediction-card-more" href="${escapeHTML(prediction.storyHref)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a></p>
             </div>
-            ${voteButtons}
+            ${actions}
           </div>
         </div>`}
       </div>`;
@@ -320,7 +339,7 @@ if (stack) {
 
   // Turn the card over and move focus to the flip control on the side now showing
   function flipCard(card, toBack) {
-    if (card.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches) return;
+    if (card.classList.contains('prediction-card--article-story') || (!articlePredictionArrival && card.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches)) return;
     const flipper = card.querySelector('.prediction-card-flipper');
     unflatten(card);
     if (toBack) {
@@ -349,7 +368,7 @@ if (stack) {
   function restoreFlip(id) {
     const top = dealtCards()[0];
     if (!top || top.dataset.id !== id) return;
-    if (top.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches) {
+    if (top.classList.contains('prediction-card--article-story') || (!articlePredictionArrival && top.classList.contains('prediction-card--current-article') && window.matchMedia('(min-width: 960px)').matches)) {
       saveDeck({ flipped: null });
       return;
     }
@@ -380,12 +399,11 @@ if (stack) {
   function showResults() {
     const calls = getCalls();
     const called = PREDICTIONS.filter((p) => calls[p.id]);
-    const requested = findPrediction(articlePredictionArrival?.predictionId);
-    if (requested?.comparisonExample && predictionCall(requested)) called.push(requested);
-    const current = ['results', 'profile'].includes(articlePredictionArrival?.source)
-      ? called.find((p) => p.id === articlePredictionArrival.predictionId)
-      : null;
-    if (current?.comparisonExample) calls[current.id] = predictionCall(current);
+    const requested = articleStoryArrival;
+    const requestedCall = displayedCall(requested);
+    if (requested && requestedCall && !called.some(prediction => prediction.id === requested.id)) called.push(requested);
+    const current = requestedCall ? called.find(prediction => prediction.id === requested.id) : null;
+    if (current) calls[current.id] = requestedCall;
     const remaining = current ? PREDICTIONS.filter(prediction => !calls[prediction.id]) : skipped;
     const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
     if (current) {
@@ -434,27 +452,27 @@ if (stack) {
   // A call: In and Out nudge toward their side first, then the card flies off.
   // fromDrag skips the nudge, since the card is already out of place.
   function commit(card, call, fromDrag = false) {
-    if (card.classList.contains('is-flying')) return;
+    if (card.classList.contains('is-flying') || (card.dataset.locked && call !== 'next')) return;
     const prediction = findPrediction(card.dataset.id);
     // Skip This (the button) slides the card away without the dark overlay; dragging up keeps it
-    if (call === 'skip' && !fromDrag) delete card.dataset.call;
+    if (call === 'next' || (call === 'skip' && !fromDrag)) delete card.dataset.call;
     else card.dataset.call = call;
 
     if (call === 'skip') skipped.push(prediction);
-    else saveCall(prediction.id, call);
+    else if (call !== 'next') saveCall(prediction.id, call);
     saveDeck({ skipped: skipped.map((p) => p.id), flipped: null });
 
     const fly = () => {
       card.classList.remove('is-nudging', 'is-dragging');
       card.classList.add('is-flying');
-      card.style.transform = FLY_TO[call];
+      card.style.transform = FLY_TO[call === 'next' ? 'skip' : call];
       setTimeout(() => {
         card.remove();
         layoutDeck();
       }, FLY_MS);
     };
 
-    if (call !== 'skip' && !fromDrag) {
+    if (call !== 'skip' && call !== 'next' && !fromDrag) {
       card.classList.add('is-nudging');
       card.style.setProperty('--card-x', call === 'in' ? '60px' : '-60px');
       card.style.setProperty('--card-tilt', call === 'in' ? '2.4deg' : '-2.4deg');
@@ -542,7 +560,7 @@ if (stack) {
 
   stack.addEventListener('pointerdown', (event) => {
     const card = event.target.closest('.prediction-card--call[data-depth="0"]');
-    if (!card || event.target.closest('button, a')) return;
+    if (!card || card.dataset.locked || event.target.closest('button, a')) return;
     drag = { card, startX: event.clientX, startY: event.clientY, dx: 0, dy: 0 };
     card.setPointerCapture(event.pointerId);
     card.classList.add('is-dragging');
@@ -611,20 +629,12 @@ if (stack) {
   // and the top card shows the side it was on.
   const calls = getCalls();
   const deck = getDeck();
-  skipped = PREDICTIONS.filter((p) => !calls[p.id] && deck.skipped.includes(p.id));
-  queue = PREDICTIONS.filter((p) => !calls[p.id] && !deck.skipped.includes(p.id));
-  // A profile Read more chooses this exact unfinished call, ahead of the saved deck order.
-  // Keep two other pending cards behind it and bypass the onboarding cover.
-  if (profileStoryArrival && !predictionCall(profileStoryArrival)) {
-    queue = [profileStoryArrival, ...queue.filter(prediction => prediction.id !== profileStoryArrival.id)];
-    skipped = skipped.filter(prediction => prediction.id !== profileStoryArrival.id);
-  }
-  if (['results', 'profile'].includes(articlePredictionArrival?.source) && predictionCall(findPrediction(articlePredictionArrival.predictionId))) showResults();
-  else layoutDeck();
-  if (readMoreArticleArrival || profileStoryArrival) saveDeck({ flipped: null });
+  ({ queue, skipped } = articleDeckQueue(calls, deck.skipped, articleStoryArrival));
+  layoutDeck();
+  if (readMoreArticleArrival) saveDeck({ flipped: null });
   else if (deck.flipped) restoreFlip(deck.flipped);
 
-  if (cover && !profileStoryArrival && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
+  if (cover && !articleStoryArrival && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
     cover.remove();
     placeCover(cover);
   } else if (cover) {
@@ -632,7 +642,7 @@ if (stack) {
   }
   const desktopArticle = window.matchMedia('(min-width: 960px)');
   desktopArticle.addEventListener('change', () => {
-    if (!desktopArticle.matches) return;
+    if (!desktopArticle.matches || articlePredictionArrival) return;
     const current = stack.querySelector('.prediction-card--current-article[data-flipped]');
     if (!current) return;
     unflatten(current);
@@ -873,6 +883,17 @@ document.querySelectorAll('.prediction-inline-stack').forEach((inlineStack) => {
   }
 
   inlineStack.addEventListener('click', (event) => {
+    const more = event.target.closest('.prediction-result-more');
+    if (more) {
+      try {
+        sessionStorage.setItem(RETURN_KEY, JSON.stringify({
+          to: new URL(more.getAttribute('href'), location.href).pathname,
+          predictionId: more.closest('.prediction-result')?.dataset.id,
+          source: 'results',
+        }));
+      } catch { /* The story link still works without storage. */ }
+      return;
+    }
     const button = event.target.closest('[data-vote]');
     if (!button) return;
     commit(button.closest('.prediction-card--call'), button.dataset.vote);

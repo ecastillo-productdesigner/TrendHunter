@@ -62,11 +62,11 @@ The second home-feed card uses the supplied `gemini_generated_video_6f0b965f.mp4
 
 Reader choices on creator comparison screens use background-free “You’re in” / “You’re out” labels, with lime or orange-red text and icons. They retain the width of the creator badge above, the 33px height, and the 8px icon-to-label gap (`--spacing-component-sm`). Resolved reader labels retain past tense and muted colors.
 
-Read more on a creator prediction with Make your call carries that prediction to its related story. The unvoted prediction starts face-up at the front of the same three-card deck used by the feed, with no onboarding cover, Get context or Read more on the current card. Other pending cards remain behind it. This works for daily predictions and profile-only fictional examples, and recognizes both .html and extensionless Site routes. Sample votes made on the story use the separate example-call key and update the creator comparison without entering personal voting history. Reloading after a call shows the existing saved-call state.
+Every prediction Read More link (cards, creator comparisons, personal history and results) selects the exact matching prediction at the front of its related article’s three-card deck. There is no onboarding cover, Get context or duplicate Read more on the first card; the other pending cards keep Get context. This is shared across desktop, mobile and article sheets, including reload and resizing. Saved calls stay locked on that first card, with Next prediction to continue. Resolved examples retain their historic call or Voting closed. Profile-only example votes stay in their separate browser key. The daily catalogue and existing saved votes are preserved. scripts/prediction-arrival.test.mjs covers matching, queue order, saved calls and reload.
 
 Feed playback feedback uses filled lime (#BEFC4F) play_circle and pause_circle (FILL 1). Sound on uses filled volume_up in #BEFC4F; muted uses unfilled volume_off in the bookmark outline color.
 
-Articles opened through a prediction’s Read more use the Make your call section heading on desktop and mobile. The arrival context survives reload; saved-call results retain Your call is locked in. Feed and Daily Predictions pages keep their existing heading.
+Articles opened through prediction Read More use the Make your call deck heading on desktop and mobile. Arrival context survives reload. Completed decks retain their result heading and vote-history controls. Feed and Daily Predictions keep their existing heading.
 
 ## Answers prototype
 

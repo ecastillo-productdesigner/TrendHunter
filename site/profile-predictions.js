@@ -25,11 +25,7 @@
     predictionPanel.appendChild(callStatus);
   }
 
-  const resolvedExamples = [
-    { id: 'weekend-walking-history', text: 'Weekend-only walking will become a regular part of fitness plans', storyHref: 'trend-weekend-walking.html', sampleInPercent: 63, call: 'in', resolved: true },
-    { id: 'sleep-earbuds-history', text: 'Sleep earbuds will become a standard upgrade for side sleepers', storyHref: 'trend-sleep-earbuds.html', sampleInPercent: 42, call: 'out', resolved: true },
-    { id: 'seasonal-produce-history', text: 'Seasonal produce subscriptions will become a weekly shopping shortcut', storyHref: 'trend-seasonal-produce.html', sampleInPercent: 68, call: 'in', resolved: true },
-  ];
+  const resolvedExamples = PROFILE_RESOLVED_PREDICTIONS;
   // Fictional demonstration histories, not a claim about any writer's actual votes.
   const authorExamples = {
     'maya-chen': { 'ai-holidays': 'in', 'protein-coffee': 'in', 'sober-socials': 'out', 'seasonal-produce-history': 'in' },
@@ -246,13 +242,17 @@
     const calls = savedCalls();
     try {
       sessionStorage.removeItem(RETURN_KEY);
-      const prediction = isAuthor ? authorHistory().find(item => item.id === id) : null;
-      const readerCall = prediction?.comparisonExample
-        ? (isSignedIn() ? savedExampleCalls()[id] || prediction.exampleReaderCall : null)
-        : calls[id];
-      const source = calls[id] ? 'results' : prediction && !readerCall && !prediction.resolved ? 'profile' : null;
-      if (source) {
-        sessionStorage.setItem(RETURN_KEY, JSON.stringify({ to: new URL(link.getAttribute('href'), location.href).pathname, predictionId: id, source }));
+      const prediction = (isAuthor ? authorHistory() : personalHistory()).find(item => item.id === id);
+      const readerCall = !isSignedIn() ? null : prediction?.comparisonExample
+        ? savedExampleCalls()[id] || prediction.exampleReaderCall
+        : calls[id] || (!isAuthor && prediction?.resolved ? prediction.call : null);
+      if (prediction) {
+        sessionStorage.setItem(RETURN_KEY, JSON.stringify({
+          to: new URL(link.getAttribute('href'), location.href).pathname,
+          predictionId: id,
+          source: calls[id] ? 'results' : 'profile',
+          readerCall,
+        }));
       }
     } catch { /* The story link still works without storage. */ }
   });
