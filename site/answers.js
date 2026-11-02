@@ -144,13 +144,6 @@
     desktop.addEventListener('change', placeModules);
     wideDesktop.addEventListener('change', placeModules);
     placeModules();
-
-    if (article) {
-      const syncArticleFade = () => document.body.classList.toggle('trend-detail-scrolled', window.scrollY > 0);
-      window.addEventListener('scroll', syncArticleFade, { passive: true });
-      window.addEventListener('pageshow', syncArticleFade);
-      syncArticleFade();
-    }
   }
 
   document.querySelectorAll('.trend-answers').forEach((answers) => {
