@@ -88,7 +88,7 @@
       resolved: prediction.resolved,
       badgeLabel: `${firstName} ${prediction.resolved ? 'was' : 'is'} ${prediction.call}`,
     });
-    let comparison;
+    let comparison = '';
     let choices = '';
     if (readerCall) {
       comparison = `
@@ -99,7 +99,7 @@
         </div>`;
     } else if (prediction.resolved) {
       comparison = '<p class="profile-call-unavailable">No vote to compare</p>';
-    } else {
+    } else if (isSignedIn()) {
       comparison = `
         <div class="profile-call-comparison profile-call-comparison--pending">
           <button type="button" class="button-primary profile-call-start" data-profile-make-call aria-expanded="false" aria-controls="profile-call-${prediction.id}">Make your call</button>
