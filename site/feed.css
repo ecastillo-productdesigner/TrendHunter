@@ -4686,6 +4686,18 @@ body:has(.auth-prompt[open]) {
    The side rails keep their existing sticky behavior. Mobile and article sheets
    retain their inline sections and dividers. */
 @media (min-width: 960px) {
+  /* Keep a clear 24px space below the menu even as panels pass underneath.
+     The page surface is opaque in both themes and covers the full header width. */
+  :root:not([data-view="sheet"]) .page-trend .site-header::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: var(--spacing-layout-lg);
+    background-color: var(--color-background-surface);
+  }
+
   :root:not([data-view="sheet"]) .page-trend .feed-column {
     position: static;
     top: auto;
