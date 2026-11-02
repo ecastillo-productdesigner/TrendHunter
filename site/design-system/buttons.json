@@ -4047,7 +4047,8 @@
       "tag": "button",
       "name": "volume_off",
       "sources": [
-        "feed.html"
+        "feed.html",
+        "trend-retailtainment.html"
       ]
     },
     {
@@ -4305,7 +4306,8 @@
       "tag": "button",
       "name": "Pause story video",
       "sources": [
-        "feed.html"
+        "feed.html",
+        "trend-retailtainment.html"
       ]
     }
   ]

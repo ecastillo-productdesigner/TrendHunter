@@ -932,6 +932,17 @@ a.story-lockup:hover .story-lockup-headline {
 .trend-card-playback:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: calc(-1 * var(--spacing-component-xs)); }
 .trend-card--video .trend-card-content { pointer-events: none; }
 .trend-card--video .trend-card-content a { pointer-events: auto; }
+.trend-card-copy-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component-ms);
+  color: inherit;
+  text-decoration: none;
+}
+.trend-card-copy-link:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--spacing-component-xs);
+}
 .trend-card-video-symbol {
   display: block;
   font-family: 'Material Symbols Outlined';
@@ -3776,6 +3787,33 @@ body:has(.edit-profile-modal[open]) {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-x-sm);
+}
+
+.article-video {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius-x-sm);
+}
+.article-video-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.article-video .trend-card-sound {
+  position: absolute;
+  z-index: 2;
+  right: var(--spacing-component-xs);
+  bottom: var(--spacing-component-xs);
+  margin: 0;
+  filter: drop-shadow(0 1px 6px rgb(0 0 0 / 50%));
+}
+.article-video .trend-card-sound:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: calc(-1 * var(--spacing-component-xs));
 }
 
 .caption-credit {
