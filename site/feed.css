@@ -79,6 +79,7 @@
 
   /* Saved bookmark and signed-in Profile icon. They stay lime.500 in both themes */
   --bookmark-icon-active: #BEFC4F;
+  --share-focus-color: var(--color-border-focus);
   --article-bookmark-active: #BEFC4F; /* saved bookmark on the story page */
   --nav-profile-icon: #D1D5DB;
   --nav-profile-icon-active: #BEFC4F;
@@ -389,6 +390,7 @@
   --buttons-secondary-border-focus: #BEFC4F; /* channel button focus ring */
 
   --color-border-focus: #BEFC4F; /* terms checkbox focus ring */
+  --share-focus-color: var(--color-border-on-topic); /* purple stays visible on light surfaces */
   --color-text-body-link: #538100;
   /* Exception: the primary CTAs (Go Deeper, Make Your Call) keep lime.500 in light theme */
 
@@ -1050,7 +1052,6 @@ a.story-lockup:hover .story-lockup-headline {
   height: var(--icon-size-xl);
 }
 .story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
-.story-share:focus-visible, .prediction-share:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
 /* Share — vector arrow aligned to the story bookmark's visible edges.
    The SVG stays crisp at any scale and uses the unsaved bookmark's color. */
@@ -1065,10 +1066,27 @@ a.story-lockup:hover .story-lockup-headline {
 /* The arrow occupies 28 of its 32 SVG units. Match the bookmark's 20px visible width
    while keeping the 30px button centered on the shared action-rail axis. */
 .story-share .trend-card-share-icon { width: 100%; height: 100%; mask-size: calc(var(--icon-size-md) * 32 / 28) auto; -webkit-mask-size: calc(var(--icon-size-md) * 32 / 28) auto; }
-:is(.story-share, .prediction-share, [data-share-menu]):is(:hover, :focus-visible) .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
-:is(.story-share, .prediction-share, [data-share-menu])[aria-expanded="true"] .trend-card-share-icon,
-.article-share[aria-expanded="true"] .article-share-icon,
-[data-answer-share][aria-expanded="true"] .answer-share-icon { background-color: var(--bookmark-icon-active); }
+/* One state sequence for every Share trigger. Press and open override hover;
+   focus adds a ring without changing the control's size or position. */
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]) {
+  --share-hover: var(--color-text-primary);
+  --share-focus-ring: var(--share-focus-color);
+  background: transparent;
+}
+:is(.story-share, .prediction-share) {
+  --share-hover: var(--trend-card-primary-text);
+  --share-focus-ring: var(--color-border-focus); /* photo and purple cards keep a lime ring in both themes */
+}
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):focus-visible {
+  outline: var(--stroke-focus) solid var(--share-focus-ring);
+  outline-offset: var(--spacing-component-xs);
+}
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:hover, :focus-visible) { color: var(--share-hover); }
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:hover, :focus-visible)
+  :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--share-hover); }
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:active, [aria-expanded="true"]) { color: var(--color-icon-signal); }
+:is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:active, [aria-expanded="true"])
+  :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--color-icon-signal); }
 
 /* Contextual share menu — top layer prevents story-card clipping. */
 .share-menu {
@@ -3733,6 +3751,7 @@ body:has(.edit-profile-modal[open]) {
   width: var(--icon-size-md);
   height: var(--icon-size-md);
 }
+.article-share { display: inline-grid; place-items: center; }
 
 /* Share — color/icon/default, so it darkens on the light page in light mode */
 .article-share-icon {
@@ -3744,8 +3763,7 @@ body:has(.edit-profile-modal[open]) {
 
 /* Header actions share the same theme-aware hover as the collection label. */
 .article-actions .bookmark-button[aria-pressed="false"]:is(:hover, :focus-visible) .bookmark-icon,
-.article-actions .bookmark-button[aria-pressed="true"]:is(:hover, :focus-visible) .bookmark-icon::before,
-.article-share:not([aria-expanded="true"]):is(:hover, :focus-visible) .article-share-icon {
+.article-actions .bookmark-button[aria-pressed="true"]:is(:hover, :focus-visible) .bookmark-icon::before {
   background-color: var(--color-text-primary);
 }
 
@@ -4707,7 +4725,7 @@ body:has(.auth-prompt[open]) {
 .answer-feedback-row { display: flex; align-items: center; gap: var(--spacing-component-sm); margin: var(--spacing-layout-md) 0; }
 .answer-icon-button { display: inline-flex; align-items: center; justify-content: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); color: var(--color-text-tertiary); border-radius: var(--radius-full); }
 .answer-icon-button svg { width: var(--icon-size-lg); height: var(--icon-size-lg); fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.answer-icon-button:hover, .answer-outline-button:hover, .answer-related a:hover { background: var(--buttons-secondary-bg-hover); }
+.answer-icon-button:not([data-answer-share]):hover, .answer-outline-button:not([data-answer-share]):hover, .answer-related a:hover { background: var(--buttons-secondary-bg-hover); }
 .answer-icon-button[aria-pressed="true"] { color: var(--color-text-body-link); background: var(--buttons-secondary-bg); }
 .answer-outline-button { display: inline-flex; justify-content: center; align-items: center; gap: var(--spacing-component-sm); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-full); padding: var(--spacing-component-sm) var(--spacing-layout-md); color: var(--color-text-body); font: var(--type-weight-regular) var(--type-size-14)/var(--type-line-height-ui-lg) var(--type-font-body); }
 .answer-share { margin-left: auto; }
@@ -4733,7 +4751,7 @@ body:has(.auth-prompt[open]) {
 .answer-followup .answers-input::placeholder { color: var(--auth-prompt-secondary-label); }
 .answer-empty { padding: var(--spacing-page-2xl) 0; text-align: center; }
 .answer-empty p { margin-top: var(--spacing-layout-md); color: var(--color-text-dim); }
-.answer-page a:focus-visible, .answer-page button:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.answer-page a:focus-visible, .answer-page button:focus-visible { outline: var(--stroke-focus) solid var(--share-focus-ring, var(--color-border-focus)); outline-offset: var(--spacing-component-xs); }
 @media (width < 600px) {
   .answer-page { width: calc(100% - var(--spacing-layout-lg)); padding: var(--spacing-layout-md); margin-top: var(--spacing-layout-md); }
   .answer-question { font-size: var(--type-size-24); line-height: var(--type-line-height-display-md); }

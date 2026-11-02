@@ -19,7 +19,7 @@
 .ds-page code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--type-size-12); overflow-wrap: anywhere; }
 .ds-page p { color: var(--ds-muted); }
 .ds-page button, .ds-page a, .ds-page input, .ds-page select { -webkit-tap-highlight-color: transparent; }
-.ds-page :focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.ds-page :focus-visible { outline: var(--stroke-focus) solid var(--share-focus-ring, var(--color-border-focus)); outline-offset: var(--spacing-component-xs); }
 .ds-page [hidden] { display: none !important; }
 .ds-skip { position: fixed; z-index: 100; top: var(--spacing-component-sm); left: var(--spacing-component-sm); padding: var(--spacing-component-sm) var(--spacing-layout-md); background: var(--ds-accent); color: var(--color-text-inverse); transform: translateY(-200%); }
 .ds-skip:focus { transform: none; }
@@ -269,6 +269,14 @@
 .ds-share-icon-hover { color: var(--color-text-primary); background: transparent; }
 .ds-share-icon-hover .share-menu-icon { background: currentColor; }
 .ds-story-share-hover .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
+.ds-share-hover :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon),
+.ds-share-focus :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--share-hover); }
+:is(.ds-share-pressed, .ds-share-open) :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--color-icon-signal); }
+.ds-share-focus { outline: var(--stroke-focus) solid var(--share-focus-ring); outline-offset: var(--spacing-component-xs); }
+.ds-share-states { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: var(--spacing-layout-md); margin: var(--spacing-layout-lg) 0; }
+.ds-share-states figure { margin: 0; text-align: center; }
+.ds-share-states .ds-icon-canvas { background: var(--color-background-surface); border: var(--stroke-default) solid var(--color-border-default); }
+.ds-share-states figcaption { margin-top: var(--spacing-component-sm); font-size: var(--type-size-12); color: var(--ds-muted); }
 .ds-story-bookmark-hover .bookmark-icon { background-color: var(--trend-card-primary-text); }
 .ds-icon-canvas .prediction-shortcut-icon { margin: 0; }
 .ds-icon-canvas .profile-reader-badge { padding-inline: var(--spacing-component-sm); }

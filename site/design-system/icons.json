@@ -1133,11 +1133,13 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark, including its light-theme color. Hover and keyboard focus turn white without a background; the open share menu keeps its icon #BEFC4F, including while hovered. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark. Hover and keyboard focus turn white on photo cards and in dark mode, and dark on light page surfaces, with no background. Press turns the icon #BEFC4F immediately; it stays lime while sharing is open. Focus adds a 2px ring with a 4px offset: lime on dark/photo/prediction cards, purple on light page surfaces. Size and position stay fixed. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
         "Default \u00b7 bookmark color",
-        "Hover / keyboard focus \u00b7 white",
-        "Active \u00b7 menu open \u00b7 #BEFC4F"
+        "Hover \u00b7 white",
+        "Pressed \u00b7 #BEFC4F",
+        "Sharing open \u00b7 #BEFC4F",
+        "Keyboard focus \u00b7 2px ring / 4px offset"
       ]
     },
     {
