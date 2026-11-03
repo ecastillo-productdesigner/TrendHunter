@@ -1297,7 +1297,7 @@ a.story-lockup:hover .story-lockup-headline {
   outline-offset: var(--spacing-component-xs);
 }
 .trend-card--editorial .trend-card-actions {
-  gap: var(--spacing-component-ms);
+  gap: var(--spacing-layout-md);
   --trend-card-icon: var(--color-icon-default);
   position: static;
   align-self: stretch;
@@ -1316,8 +1316,11 @@ a.story-lockup:hover .story-lockup-headline {
   height: var(--icon-size-md);
 }
 .trend-card--editorial .trend-card-actions .trend-card-share-icon {
-  mask-size: calc(var(--icon-size-md) * 32 / 28) auto;
-  -webkit-mask-size: calc(var(--icon-size-md) * 32 / 28) auto;
+  /* Original share artwork is 28 × 22 within its 32px source canvas.
+     Size its visible height to the bookmark's 20px while preserving the shape. */
+  width: calc(var(--icon-size-md) * 28 / 22);
+  mask-size: calc(var(--icon-size-md) * 32 / 22) auto;
+  -webkit-mask-size: calc(var(--icon-size-md) * 32 / 22) auto;
 }
 .trend-card--editorial .trend-card-actions .bookmark-icon {
   mask-size: calc(var(--icon-size-md) * 32 / 24) auto;
@@ -5346,12 +5349,16 @@ body:has(.auth-prompt[open]) {
 .recommendation-trigger {
   align-self: flex-start;
   min-height: var(--spacing-page-2xl);
-  margin-block: calc(-1 * var(--spacing-component-ms)) calc(-1 * var(--spacing-layout-md));
+  margin-block: calc(var(--spacing-component-xs) - var(--spacing-layout-md)) calc(-1 * var(--spacing-component-ms));
   padding: 0;
   border: 0;
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+.recommendation-trigger > span:first-child { transform: translateY(calc(-1 * var(--stroke-default))); }
+@media (min-width: 600px) {
+  .recommendation-trigger { margin-top: calc(var(--spacing-component-xs) - var(--spacing-layout-lg)); }
 }
 .recommendation-trigger:hover { color: var(--color-text-primary); }
 .recommendation-trigger:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
@@ -5382,3 +5389,13 @@ body:has(.auth-prompt[open]) {
 .recommendation-feedback-button:hover { background: color-mix(in srgb, var(--toast-label) 15%, transparent); color: var(--edit-profile-heading); }
 .recommendation-feedback-button:active { color: var(--toast-icon-success); }
 .recommendation-feedback-button:focus-visible { outline: var(--stroke-focus) solid var(--toast-icon-success); outline-offset: var(--spacing-component-xs); }
+
+/* Voting-results frames own one 24px inset, including the fixed footer action. */
+.predictions-panel:has(.prediction-results),
+.feed-predictions-slot .predictions-panel:has(.prediction-results) { padding: var(--spacing-layout-lg); }
+.predictions-panel > .prediction-stack:has(.prediction-results) { width: 100%; zoom: 1; }
+.predictions-panel .prediction-results { padding: 0; }
+.predictions-panel .prediction-results-list { padding-right: 0; }
+.prediction-inline-section .prediction-results { padding: var(--spacing-layout-lg); }
+.prediction-results-finish:hover { background-color: var(--buttons-secondary-bg-hover); }
+.prediction-results-finish:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }

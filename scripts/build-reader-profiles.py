@@ -64,5 +64,6 @@ for reader in readers:
     page = re.sub(r'  <!-- Edit Profile modal.*?</dialog>\n', '', page, flags=re.S)
     page = re.sub(r'  <!-- Prototype settings.*?<script src="settings.js[^>]+></script>\n', '', page, flags=re.S)
     page = re.sub(r'  <script type="module" src="collections.js[^>]+></script>\n', '', page)
+    page = re.sub(r'  <footer class="site-footer site-footer--page">.*?</footer>\n', '', page, flags=re.S)
     (SITE / f"reader-{reader['id']}.html").write_text(page)
 print('Built 3 read-only reader profiles')

@@ -159,7 +159,7 @@ Signed-out Bookmark actions go straight to `login.html` and remember the origina
 The DS Colors section deduplicates resolved color values separately for dark and light themes. Brand, Neutrals, Signals and Topic colors show one compact swatch per value with shared uses grouped underneath. Copy returns the literal color value. All Tokens retains every semantic token and both theme values; no product color tokens are removed.
 
 
-The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 12px gap. Recommendation text and the info icon use #697182.
+The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 16px gap. Recommendation text and the info icon use #697182.
 
 
 All 39 Trend Detail pages end their article text with Members exploring this trend, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS dark overlay surface, 10px corners, 12px top/bottom padding on desktop and mobile, 16px phone / 24px desktop side padding, 14px bold condensed label and three linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Eight selected articles show an additional and 4 others variant, using fixed illustrative prototype data and 16px Inter; other articles retain the avatar-only version. Both variants are shown in the DS.
@@ -183,3 +183,7 @@ The two recommendation examples use a 20px info icon beside the 16px gray label.
 The recommendation overlay heading reuses the DS Card headline class: 28px / 28px Barlow Condensed, weight 800 and uppercase, retaining the overlay’s light text color.
 
 Recommendation feedback uses outlined Material Symbols thumb_up and thumb_down icons at 24px in 48px circular targets, with accessible labels/tooltips More like this and Not interested. The local preference and Undo behavior is unchanged.
+
+Voting-results frames use one 24px inset on every side across desktop and mobile; the panel owns that padding so nested content does not double it. Finish today’s predictions now has the shared secondary hover fill and a DS focus ring. The recommendation row balances visible top/bottom space and lifts the text optically by 1px. Feed Share/Bookmark target spacing is --spacing-layout-md (16px).
+
+Feed Share now matches the Bookmark’s 20px visible height. Its original artwork proportions produce a roughly 25.5px-wide arrow; both targets remain 48px. Public community-reader profiles omit the page footer.

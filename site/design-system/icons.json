@@ -1155,7 +1155,7 @@
     {
       "name": "Bookmark",
       "group": "Navigation and saved",
-      "note": "Outlined when inactive; filled lime when saved. Experimental feed: 20px graphic in a 48px target, with a 12px gap between action targets. Portrait story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.",
+      "note": "Outlined when inactive; filled lime when saved. Experimental feed: 20px graphic in a 48px target, with a 16px gap between action targets. Portrait story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.",
       "states": [
         "Inactive \u00b7 not saved",
         "Active \u00b7 saved",
@@ -1208,7 +1208,7 @@
     {
       "name": "Share",
       "group": "Sharing",
-      "note": "Crisp SVG on every card. Experimental feed: 20px graphic in a 48px target with a 12px action gap, matching Bookmark; author portraits remain 24px. Portrait story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark. Hover and keyboard focus turn white on photo cards and in dark mode, and dark on light page surfaces, with no background. Press turns the icon #BEFC4F immediately; it stays lime while sharing is open. Focus adds a 2px ring with a 4px offset: lime on dark/photo/prediction cards, purple on light page surfaces. Size and position stay fixed. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.",
+      "note": "Crisp SVG on every card. Experimental feed: 20px visible height, approximately 25.5px wide to preserve the original share shape, in a 48px target with a 16px action gap, matching Bookmark; author portraits remain 24px. Portrait story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark. Hover and keyboard focus turn white on photo cards and in dark mode, and dark on light page surfaces, with no background. Press turns the icon #BEFC4F immediately; it stays lime while sharing is open. Focus adds a 2px ring with a 4px offset: lime on dark/photo/prediction cards, purple on light page surfaces. Size and position stay fixed. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.",
       "states": [
         "Default \u00b7 bookmark color",
         "Hover \u00b7 white",
