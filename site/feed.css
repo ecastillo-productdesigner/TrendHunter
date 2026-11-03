@@ -546,7 +546,7 @@ button {
 }
 
 /* Collection interest: directional bar + percentage, replacing the trend arrows.
-   The 22% / 20% values are illustrative prototype changes. The bar is a
+   Values vary by collection and are illustrative prototype changes. The bar is a
    direction cue matching the supplied reference, not a percentage progress bar. */
 .collection-momentum {
   --collection-momentum-color: var(--color-interest-rising);
@@ -558,15 +558,15 @@ button {
   white-space: nowrap;
   color: var(--collection-momentum-label);
   font-family: var(--type-font-display);
-  font-size: var(--type-size-16);
+  font-size: var(--type-size-14);
   font-weight: var(--type-weight-bold);
-  line-height: var(--type-line-height-ui-sm);
+  line-height: var(--type-line-height-ui-xs);
   vertical-align: middle;
 }
 .collection-momentum--falling { --collection-momentum-color: var(--color-interest-falling); }
 .collection-momentum-track {
   display: flex;
-  width: calc(var(--spacing-layout-xl) * 2);
+  width: var(--spacing-page-2xl);
   height: calc(var(--stroke-thick) * 2);
   overflow: hidden;
   border-radius: var(--radius-x-sm);
