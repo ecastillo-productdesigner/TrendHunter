@@ -8,7 +8,8 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   const sound = card.querySelector('[data-video-sound]');
   const status = card.querySelector('[data-video-status]');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  let readerPaused = false;
+  const manualPlayback = card.hasAttribute('data-video-manual');
+  let readerPaused = manualPlayback;
   let readerStarted = false;
   let inView = false;
   let feedbackAnimation;
@@ -18,10 +19,12 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   if (reducedMotion.matches) video.pause();
 
   function syncLabel() {
+    card.dataset.videoPaused = String(video.paused);
     playback.setAttribute('aria-label', video.paused ? 'Play story video' : 'Pause story video');
   }
 
   function flash(symbol) {
+    if (manualPlayback) return;
     feedbackAnimation?.cancel();
     feedbackIcon.textContent = symbol;
     const duration = parseFloat(getComputedStyle(card).getPropertyValue('--motion-video-feedback')) || 900;
@@ -65,8 +68,17 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
     status.textContent = video.muted ? 'Video muted' : 'Video unmuted';
   });
 
-  video.addEventListener('play', syncLabel);
-  video.addEventListener('pause', syncLabel);
+  video.addEventListener('play', () => {
+    // A carousel plays one clip at a time. Each paused manual player stays paused.
+    card.closest('[data-video-carousel]')?.querySelectorAll('video').forEach(other => {
+      if (other !== video) other.pause();
+    });
+    syncLabel();
+  });
+  video.addEventListener('pause', () => {
+    if (manualPlayback) readerPaused = true;
+    syncLabel();
+  });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       inView = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.25;
@@ -80,4 +92,13 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   reducedMotion.addEventListener('change', autoplay);
   window.addEventListener('pageshow', autoplay);
   syncLabel();
+});
+
+document.querySelectorAll('[data-video-carousel]').forEach(track => {
+  track.addEventListener('keydown', event => {
+    if (event.target !== track || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    const step = track.firstElementChild.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
+    track.scrollBy({ left: event.key === 'ArrowRight' ? step : -step, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  });
 });

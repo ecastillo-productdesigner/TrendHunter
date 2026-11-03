@@ -107,7 +107,7 @@
       productRecommendations.hidden = true;
       article.append(productRecommendations);
     }
-    const feedAnchor = article ? null : document.querySelector('.feed-trending-slot') || document.querySelector('.feed-explore-slot');
+    const feedAnchor = article ? null : document.querySelector('.feed-videos-slot') || document.querySelector('.feed-trending-slot') || document.querySelector('.feed-explore-slot');
     if (feedAnchor) {
       liveAnswers.classList.add('trend-answers--feed');
       mobileSlot = document.createElement('li');

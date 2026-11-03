@@ -46,7 +46,7 @@ def build_icon_reference(project, out):
     add('Theme toggle', 'Navigation and saved', '24px. Sun switches to light theme; moon switches to dark theme.', [
         state('Dark · sun', image('feed/icon-theme.svg','nav-utility-icon'), 'dark'), state('Light · moon', image('feed/icon-theme-light.svg','nav-utility-icon'), 'light')])
     add('Back', 'Navigation and saved', '20px. Authentication navigation.', [state('Default', span('nav-back-icon'))])
-    add('Custom share', 'Sharing', 'SVG: 20px-wide arrow in the 30px story-card slot, aligned with Bookmark. Prediction slot: 24px. Press and open are lime; focus adds a 2px ring with a 4px offset. No background or size change.', [
+    add('Custom share', 'Sharing', 'Experimental feed: 16px icon box in a 32px action target, matching Bookmark and the 16px author image. Portrait cards retain the 20px-wide arrow in a 30px slot. Prediction slot: 24px. Press and open are lime; focus adds a 2px ring with a 4px offset. No background or size change.', [
         state('Default · bookmark color', '<span class="story-share">'+span('trend-card-share-icon')+'</span>', 'photo'),
         state('Hover · white', '<span class="story-share ds-share-hover">'+span('trend-card-share-icon')+'</span>', 'photo'),
         state('Pressed · #BEFC4F', '<span class="story-share ds-share-pressed">'+span('trend-card-share-icon')+'</span>', 'photo'),
