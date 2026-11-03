@@ -4779,16 +4779,22 @@ body:has(.auth-prompt[open]) {
   }
 }
 
-/* Bordered feed cards retain DS gutters and space between each story. */
+/* Feed cards fill the center column; phones retain their DS outer gutters. */
 .page-layout--feed .feed-column > .feed-list {
   gap: var(--spacing-layout-lg);
   padding: var(--spacing-layout-lg) var(--spacing-component-ms);
 }
 @media (min-width: 600px) {
-  .page-layout--feed .feed-column > .feed-list { padding-inline: var(--spacing-layout-lg); }
+  .page-layout--feed .feed-column {
+    border: 0;
+    background: transparent;
+  }
+  .page-layout--feed .feed-column > .feed-list {
+    padding: 0 0 var(--spacing-layout-lg);
+  }
 }
 @media (min-width: 960px) {
-  .page-layout--feed .feed-column > .feed-list { padding-top: 0; }
+  .page-layout--feed .feed-column::before { display: none; }
 }
 
 /* Desktop — three columns, matches the 1512px Figma frame */
