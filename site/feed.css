@@ -2113,15 +2113,16 @@ a.drawer-heading:hover {
   display: none;
 }
 
-/* Center the mobile heading and deck as one group, keeping their 24px gap. */
+/* The mobile voting panel hugs its heading and deck; results keep their scroll frame. */
 .feed-predictions-slot .predictions-panel {
   aspect-ratio: var(--layout-trend-card-ratio);
   padding-top: var(--spacing-layout-xl);
 }
 
 .feed-predictions-slot .predictions-panel:not(:has(.prediction-results)) {
-  justify-content: center;
-  padding-bottom: var(--spacing-layout-xl);
+  aspect-ratio: auto;
+  justify-content: flex-start;
+  padding-block: var(--spacing-layout-md);
 }
 
 /* Narrow phones: the stack shrinks to the panel's width (set by predictions.js) */
