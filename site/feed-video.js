@@ -1,4 +1,4 @@
-// The second feed card uses the supplied ten-second video, including its audio track.
+// Story articles and carousel previews use the supplied clips, including their audio tracks.
 // Playback intent belongs to the reader; scrolling never clears an explicit pause.
 document.querySelectorAll('[data-feed-video]').forEach(card => {
   const video = card.querySelector('video');
@@ -20,7 +20,10 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
 
   function syncLabel() {
     card.dataset.videoPaused = String(video.paused);
-    playback.setAttribute('aria-label', video.paused ? 'Play story video' : 'Pause story video');
+    const preview = Boolean(card.querySelector('.trending-video-article'));
+    playback.setAttribute('aria-label', video.paused ? (preview ? 'Play video preview' : 'Play story video') : (preview ? 'Pause video preview' : 'Pause story video'));
+    const control = playback.querySelector('[data-video-control-symbol]');
+    if (control) control.textContent = video.paused ? 'play_circle' : 'pause_circle';
   }
 
   function flash(symbol) {

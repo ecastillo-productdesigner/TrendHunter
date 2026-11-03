@@ -339,3 +339,16 @@
 .ds-button-canvas > .settings-panel-item { color: var(--settings-panel-text); }
 .ds-button-canvas > .share-sheet-actions { width: 100%; margin-top: 0; }
 .ds-button-canvas > .prediction-shortcut { display: inline-flex; position: static; transform: none; }
+
+/* Colors are deduplicated per theme; complete semantic mappings stay in All Tokens. */
+.ds-color-theme[data-palette-theme="light"] { display: none; }
+:root[data-theme="light"] .ds-color-theme[data-palette-theme="dark"] { display: none; }
+:root[data-theme="light"] .ds-color-theme[data-palette-theme="light"] { display: block; }
+.ds-color-count { color: var(--ds-muted); font-size: var(--type-size-14); margin-bottom: var(--spacing-layout-lg); }
+.ds-color-group + .ds-color-group { margin-top: var(--spacing-layout-xl); }
+.ds-color-group > h3 { display: flex; align-items: center; gap: var(--spacing-component-sm); font: var(--type-weight-medium) var(--type-size-24)/var(--type-line-height-display-md) var(--type-font-display); margin-bottom: var(--spacing-layout-md); }
+.ds-color-group > h3 > span { font: var(--type-weight-regular) var(--type-size-12)/var(--type-utility-helper-line-height) var(--type-font-body); color: var(--ds-muted); }
+.ds-color-group .ds-swatch-color { height: var(--spacing-page-2xl); }
+.ds-color-group .ds-swatch-value { margin-top: var(--spacing-component-xs); font-size: var(--type-size-12); }
+.ds-color-uses { margin-top: var(--spacing-component-ms); font-size: var(--type-size-12); line-height: var(--type-utility-helper-line-height); color: var(--ds-muted); }
+.ds-color-uses strong { font-weight: var(--type-weight-medium); }

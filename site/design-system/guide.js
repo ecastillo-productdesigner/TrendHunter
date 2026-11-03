@@ -81,18 +81,18 @@ themeButton.addEventListener('click', () => {
 });
 
 document.addEventListener('click', async event => {
-  const copy = event.target.closest('[data-copy]');
+  const copy = event.target.closest('[data-copy], [data-copy-value]');
   if (!copy) return;
   try {
-    await navigator.clipboard.writeText(`var(${copy.dataset.copy})`);
+    await navigator.clipboard.writeText(copy.dataset.copyValue || `var(${copy.dataset.copy})`);
     const status = document.getElementById('ds-copy-status');
-    status.textContent = `Copied ${copy.dataset.copy}`;
+    status.textContent = `Copied ${copy.dataset.copyValue || copy.dataset.copy}`;
     status.hidden = false;
     clearTimeout(copyTimeout);
     copyTimeout = setTimeout(() => { status.hidden = true; }, 2000);
   } catch {
     const status = document.getElementById('ds-copy-status');
-    status.textContent = `Copy this token: ${copy.dataset.copy}`;
+    status.textContent = copy.dataset.copyValue ? `Copy this color: ${copy.dataset.copyValue}` : `Copy this token: ${copy.dataset.copy}`;
     status.hidden = false;
   }
 });

@@ -1,0 +1,57 @@
+{
+  "note": "User-supplied AI-generated clips. Original audio and video streams are retained; MP4 metadata is moved to the start for web playback. Matching article copy and authors are fictional prototype examples.",
+  "videos": [
+    {
+      "source": "gemini_generated_video_bad846cd.mp4",
+      "video": "city-content-walk.mp4",
+      "poster": "city-content-walk.webp",
+      "durationSeconds": 10.027,
+      "width": 1280,
+      "height": 720,
+      "audio": true,
+      "article": "trend-city-content-walk.html",
+      "title": "Friend Groups Are Turning City Walks Into Shared Content Adventures",
+      "collection": "collection.html",
+      "author": "Maya Chen"
+    },
+    {
+      "source": "gemini_generated_video_a2b7e452.mp4",
+      "video": "led-skincare-lounge.mp4",
+      "poster": "led-skincare-lounge.webp",
+      "durationSeconds": 10.027,
+      "width": 1280,
+      "height": 720,
+      "audio": true,
+      "article": "trend-led-skincare-lounge.html",
+      "title": "LED Mask Lounges Are Turning Skincare Into a Social Ritual",
+      "collection": "collection-evidence-based-beauty.html",
+      "author": "Nadia Patel"
+    },
+    {
+      "source": "gemini_generated_video_6441298c.mp4",
+      "video": "sunday-meal-prep.mp4",
+      "poster": "sunday-meal-prep.webp",
+      "durationSeconds": 10.027,
+      "width": 1280,
+      "height": 720,
+      "audio": true,
+      "article": "trend-sunday-meal-prep.html",
+      "title": "Sunday Meal Prep Is Becoming a Small Ritual With a Weeknight Payoff",
+      "collection": "collection-protein-forward-eating.html",
+      "author": "Marcus Bennett"
+    },
+    {
+      "source": "gemini_generated_video_46dec890.mp4",
+      "video": "weekly-laundry-reset.mp4",
+      "poster": "weekly-laundry-reset.webp",
+      "durationSeconds": 10.027,
+      "width": 1280,
+      "height": 720,
+      "audio": true,
+      "article": "trend-weekly-laundry-reset.html",
+      "title": "The Laundry Reset Is Turning a Household Chore Into a Weekly Ritual",
+      "collection": "collection-everyday-living.html",
+      "author": "Owen Brooks"
+    }
+  ]
+}

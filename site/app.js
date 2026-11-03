@@ -152,7 +152,8 @@ document.querySelectorAll('.drawer-logout').forEach(button => button.addEventLis
 }));
 
 // ===========================
-// Auth Prompt — opens when a signed-out reader tries to bookmark.
+// Legacy Auth Prompt — retained for the archived design reference.
+// Signed-out Bookmark actions navigate directly to login.html.
 // Continue with Apple or Google signs them in, then finishes the bookmark they started.
 // ===========================
 const authPrompt = document.querySelector('.auth-prompt');
@@ -315,9 +316,12 @@ document.addEventListener('click', (event) => {
   if (!bookmark) return;
   const isSaved = bookmark.getAttribute('aria-pressed') === 'true';
 
-  if (!isSaved && !isSignedIn()) {
-    pendingBookmark = bookmark;
-    authPrompt.showModal();
+  if (!isSignedIn()) {
+    try {
+      const page = location.pathname.split('/').pop() || 'feed.html';
+      sessionStorage.setItem('return-to', `${page}${location.hash}`);
+    } catch {}
+    location.assign('login.html');
     return;
   }
 

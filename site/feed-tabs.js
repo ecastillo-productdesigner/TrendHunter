@@ -14,8 +14,10 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
   const main = panel.closest('main');
   const originalItems = [...list.children];
   const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
+  const fallingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--falling'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
   const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
+  const rankedFallingItems = [...fallingItems].sort((a, b) => percentage(a) - percentage(b));
   let preferences = readSelectedTopics();
   let currentOrder = '';
   const topicsFor = item => {
@@ -43,11 +45,12 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
     list.hidden = view === 'collections';
     directory.hidden = view !== 'collections';
 
-    const order = view === 'trending-up' ? 'rising' : view === 'for-you' ? `personalized:${preferences.join(',')}` : 'original';
+    const order = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : view === 'for-you' ? `personalized:${preferences.join(',')}` : 'original';
     if (order !== currentOrder) {
-      const ranked = new Set(rankedRisingItems);
-      const items = order === 'rising'
-        ? [...rankedRisingItems, ...originalItems.filter(item => !ranked.has(item))]
+      const rankedItems = order === 'falling' ? rankedFallingItems : rankedRisingItems;
+      const ranked = new Set(rankedItems);
+      const items = order === 'rising' || order === 'falling'
+        ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
         : view === 'for-you' ? personalizeStorySlots(originalItems, preferences, topicsFor) : originalItems;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
@@ -67,7 +70,7 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
     const followedCount = directory.querySelectorAll('[data-followed-list] > li').length;
     status.textContent = view === 'collections'
       ? `${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
+      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
 
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
     if (resetScroll) {

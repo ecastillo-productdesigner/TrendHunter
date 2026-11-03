@@ -39,7 +39,7 @@ def build_icon_reference(project, out):
     add('Profile', 'Navigation and saved', '24px slot with a 16px glyph. Outline off-page; filled lime on the personal profile page.', [
         state('Inactive', '<span class="nav-profile">'+span('nav-profile-icon')+'</span>'),
         state('Active · current page', '<span class="nav-profile" aria-current="page">'+span('nav-profile-icon')+'</span>')])
-    add('Daily Predictions shortcut', 'Navigation and saved', '24px Material Symbols Outlined bolt. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.', [
+    add('Daily Predictions shortcut', 'Navigation and saved', '20px Material Symbols Outlined bolt in a 48px tap target. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.', [
         state('Inactive', '<span class="nav-predictions">'+span('nav-predictions-icon material-symbols-outlined','bolt')+'</span>'),
         state('Active · current page', '<span class="nav-predictions" aria-current="page">'+span('nav-predictions-icon material-symbols-outlined','bolt')+'</span>')])
     add('Menu', 'Navigation and saved', '20px. The menu glyph has dark and light theme assets; opening the drawer does not change its shape.', [
@@ -47,7 +47,7 @@ def build_icon_reference(project, out):
     add('Theme toggle', 'Navigation and saved', '24px. Sun switches to light theme; moon switches to dark theme.', [
         state('Dark · sun', image('feed/icon-theme.svg','nav-utility-icon'), 'dark'), state('Light · moon', image('feed/icon-theme-light.svg','nav-utility-icon'), 'light')])
     add('Back', 'Navigation and saved', '20px. Authentication navigation.', [state('Default', span('nav-back-icon'))])
-    add('Custom share', 'Sharing', 'Experimental feed: 24px icon box in a 48px action target, matching Bookmark and the 24px author image. Portrait cards retain the 20px-wide arrow in a 30px slot. Prediction slot: 24px. Press and open are lime; focus adds a 2px ring with a 4px offset. No background or size change.', [
+    add('Custom share', 'Sharing', 'Experimental feed: 20px icon box in a 48px action target, matching Bookmark; author images remain 24px. Portrait cards retain the 20px-wide arrow in a 30px slot. Prediction slot: 24px. Press and open are lime; focus adds a 2px ring with a 4px offset. No background or size change.', [
         state('Default · bookmark color', '<span class="story-share">'+span('trend-card-share-icon')+'</span>', 'photo'),
         state('Hover · white', '<span class="story-share ds-share-hover">'+span('trend-card-share-icon')+'</span>', 'photo'),
         state('Pressed · #BEFC4F', '<span class="story-share ds-share-pressed">'+span('trend-card-share-icon')+'</span>', 'photo'),
@@ -93,6 +93,8 @@ def build_icon_reference(project, out):
 
     add('Topic interests', 'Navigation and saved', '20px filled Material Symbols. Unselected icons inherit the neutral tile label; selected icons use dark text on the supplied topic fill, with white on the deep purple Tech tile.', [state('Beauty', span('topic-icon','health_and_beauty')),state('Books', span('topic-icon','menu_book')),state('Food & Drink', span('topic-icon','local_bar')),state('Wellness', span('topic-icon','spa')),state('Style', span('topic-icon','checkroom')),state('Tech', span('topic-icon','head_mounted_device')),state('Fitness', span('topic-icon','directions_bike')),state('Culture', span('topic-icon','public')),state('Travel', span('topic-icon','flight'))])
 
+    add('Recommended for you', 'Predictions and signals', '24px filled wand_stars Material Symbol beside an 18px recommendation label, both #697182. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','wand_stars')+'</span>')])
+
     # Show a shared glyph once; keep context differences in its usage note.
     def merge(names, name, note, choose):
         originals = [f for f in families if f['name'] in names]
@@ -102,9 +104,9 @@ def build_icon_reference(project, out):
         families.insert(first,merged)
 
     merge(['Bookmark · story card','Bookmark · article','Bookmark · profile'], 'Bookmark',
-          'Outlined when inactive; filled lime when saved. Experimental feed: 24px graphic in a 48px target. Portrait story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.', lambda fs:fs[0]['states'])
+          'Outlined when inactive; filled lime when saved. Experimental feed: 20px graphic in a 48px target, with a 12px gap between action targets. Portrait story and profile: 32px. Article: 20px. Story hover and keyboard focus turn white, for both saved and unsaved states. The story glyph is 20px wide, aligned with Share. Article/profile follow the theme and use a separate outline layer in light mode.', lambda fs:fs[0]['states'])
     merge(['Custom share','Article and Answers share'], 'Share',
-          'Crisp SVG on every card. Experimental feed: 24px graphic in a 48px target, matching Bookmark and the 24px author portrait. Portrait story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark. Hover and keyboard focus turn white on photo cards and in dark mode, and dark on light page surfaces, with no background. Press turns the icon #BEFC4F immediately; it stays lime while sharing is open. Focus adds a 2px ring with a 4px offset: lime on dark/photo/prediction cards, purple on light page surfaces. Size and position stay fixed. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.', lambda fs:fs[0]['states'])
+          'Crisp SVG on every card. Experimental feed: 20px graphic in a 48px target with a 12px action gap, matching Bookmark; author portraits remain 24px. Portrait story slot: 30px with a 20px-wide arrow aligned to Bookmark; prediction: 24px at top right. Default matches the unsaved bookmark. Hover and keyboard focus turn white on photo cards and in dark mode, and dark on light page surfaces, with no background. Press turns the icon #BEFC4F immediately; it stays lime while sharing is open. Focus adds a 2px ring with a 4px offset: lime on dark/photo/prediction cards, purple on light page surfaces. Size and position stay fixed. Article: 20px; Answers: 16px. Share opens the device system menu, with a Copy link/Email dialog when native sharing is unavailable. Opening it keeps the glyph; on prediction cards it flips with the card face.', lambda fs:fs[0]['states'])
     merge(['Copy link','Email','More'], 'Share-menu icons',
           'Saved custom menu: 20px link, envelope and more icons. All menu items use the same hover: white label and icon in dark mode, with no background. After a successful copy, the link icon and Link Copied label stay lime for 5 seconds, with no toast.',
           lambda fs:[dict(f['states'][0],label=f['name']) for f in fs]+[dict(fs[1]['states'][1],label='Shared hover · Email'),state('Copied · 5 seconds','<span class="share-menu-item is-copied">'+span('share-menu-icon share-menu-icon--link')+'</span>')])
@@ -127,7 +129,7 @@ def build_icon_reference(project, out):
             family['states']=[family['states'][0],family['states'][3]]
             family['note']='Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.'
 
-    expected_fonts = {'arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight'}
+    expected_fonts = {'arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars'}
     if set(fonts) != expected_fonts:
         raise ValueError(f'Update icon states for Material Symbols: {set(fonts) ^ expected_fonts}')
     manifest_assets = []
