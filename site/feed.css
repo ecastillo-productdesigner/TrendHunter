@@ -1166,13 +1166,36 @@ a.story-lockup:hover .story-lockup-headline {
   overflow: visible;
   -webkit-line-clamp: unset;
 }
+.trend-card--editorial .trend-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-layout-md);
+  min-width: 0;
+  margin-top: var(--spacing-component-sm);
+}
+.trend-card--editorial .trend-card-author {
+  min-width: 0;
+  min-height: var(--icon-size-xl);
+}
+.trend-card--editorial .trend-card-author .avatar {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex-shrink: 0;
+}
+.trend-card--editorial .trend-card-author .contributor-name { min-width: 0; }
+.trend-card--editorial .trend-card-author:is(:hover, :focus-visible) .contributor-name { color: var(--color-text-primary); }
+.trend-card--editorial .trend-card-author:focus-visible {
+  outline: var(--stroke-focus) solid var(--share-focus-color);
+  outline-offset: var(--spacing-component-xs);
+}
 .trend-card--editorial .trend-card-actions {
   --trend-card-icon: var(--color-icon-default);
   position: static;
   align-self: stretch;
+  flex-shrink: 0;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: var(--spacing-component-sm);
 }
 .trend-card--editorial .trend-card-actions > .trend-card-action {
   display: grid;
@@ -1191,15 +1214,6 @@ a.story-lockup:hover .story-lockup-headline {
 .trend-card--editorial .trend-card-actions .bookmark-icon {
   mask-size: calc(var(--icon-size-sm) * 32 / 24) auto;
   -webkit-mask-size: calc(var(--icon-size-sm) * 32 / 24) auto;
-}
-.trend-card--editorial .trend-card-actions .avatar {
-  padding: var(--spacing-component-sm);
-  background-clip: content-box;
-}
-.trend-card--editorial .trend-card-actions .avatar img {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
-  border-radius: var(--radius-full);
 }
 .trend-card--editorial .trend-card-sound {
   position: absolute;
