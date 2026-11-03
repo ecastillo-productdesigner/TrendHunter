@@ -93,7 +93,7 @@ def build_icon_reference(project, out):
 
     add('Topic interests', 'Navigation and saved', '20px filled Material Symbols. Unselected icons inherit the neutral tile label; selected icons use dark text on the supplied topic fill, with white on the deep purple Tech tile.', [state('Beauty', span('topic-icon','health_and_beauty')),state('Books', span('topic-icon','menu_book')),state('Food & Drink', span('topic-icon','local_bar')),state('Wellness', span('topic-icon','spa')),state('Style', span('topic-icon','checkroom')),state('Tech', span('topic-icon','head_mounted_device')),state('Fitness', span('topic-icon','directions_bike')),state('Culture', span('topic-icon','public')),state('Travel', span('topic-icon','flight'))])
 
-    add('Recommended for you', 'Predictions and signals', '24px filled wand_stars Material Symbol beside an 18px recommendation label, both #697182. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','wand_stars')+'</span>')])
+    add('Recommended for you', 'Predictions and signals', '20px filled wand_stars Material Symbol beside a 16px recommendation label, both #697182. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','wand_stars')+'</span>')])
 
     # Show a shared glyph once; keep context differences in its usage note.
     def merge(names, name, note, choose):

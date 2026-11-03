@@ -134,9 +134,51 @@ function signOut() {
 
 if (isSignedIn()) document.documentElement.dataset.auth = 'signed-in';
 
+// Article community cue — illustrative readers have separate public, read-only profiles.
+// This is not live reader presence. Selected pages show an illustrative count variant.
+const articleMembersTemplate = `
+  <aside class="article-members" id="article-members" aria-labelledby="article-members-label">
+    <p class="article-members-label" id="article-members-label">Members exploring this trend</p>
+    <div class="article-members-people">
+    <div class="article-members-avatars" role="group" aria-label="Member profiles">
+      <a class="article-member-avatar" data-member-profile="reader-alex-rivera.html" role="img" tabindex="-1" aria-label="Alex Rivera" title="Alex Rivera"><img src="assets/feed/avatar-04.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+      <a class="article-member-avatar" data-member-profile="reader-jamie-park.html" role="img" tabindex="-1" aria-label="Jamie Park" title="Jamie Park"><img src="assets/feed/avatar-02.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+      <a class="article-member-avatar" data-member-profile="reader-morgan-lee.html" role="img" tabindex="-1" aria-label="Morgan Lee" title="Morgan Lee"><img src="assets/feed/avatar-06.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+    </div>
+    <span class="article-members-others" hidden>and 4 others</span>
+    </div>
+    <a class="article-members-join" href="login.html">Join them</a>
+  </aside>`;
+const articleBody = document.querySelector('article.article .article-body');
+if (articleBody && !articleBody.querySelector('.article-members')) {
+  articleBody.insertAdjacentHTML('beforeend', articleMembersTemplate);
+  if (document.body.dataset.membersOthers === '4') {
+    articleBody.querySelector('.article-members-others').hidden = false;
+  }
+}
+
+function syncArticleMemberLinks() {
+  document.querySelectorAll('.article-member-avatar[data-member-profile]').forEach(avatar => {
+    const signedIn = isSignedIn();
+    if (signedIn) {
+      avatar.href = avatar.dataset.memberProfile;
+      avatar.removeAttribute('role');
+      avatar.removeAttribute('tabindex');
+      avatar.setAttribute('aria-label', `View ${avatar.title}’s reader profile`);
+    } else {
+      avatar.removeAttribute('href');
+      avatar.tabIndex = -1;
+      avatar.setAttribute('role', 'img');
+      avatar.setAttribute('aria-label', avatar.title);
+    }
+  });
+}
+syncArticleMemberLinks();
+document.addEventListener('auth-change', syncArticleMemberLinks);
+
 // Login (in the nav) and "Send me a sign-in link" (in the Auth Prompt) — remember this page
 // so the Log In page can send the reader back here
-document.querySelectorAll('.nav-login, .auth-prompt-email').forEach((link) => {
+document.querySelectorAll('.nav-login, .auth-prompt-email, .article-members-join').forEach((link) => {
   link.addEventListener('click', () => {
     try {
       const page = window.location.pathname.split('/').pop() || 'feed.html';

@@ -155,10 +155,20 @@ The mobile For You feed adds Hunt What You Like after three story cards followin
 Signed-out Bookmark actions go straight to `login.html` and remember the originating page for the existing return flow. No bookmark authentication pop-up is shown. Collections shows only followed pills, without a frame or Following label. For You retains the feed footer; Collections, Trending Up, Trending Down and the standalone Daily Predictions page omit it. Trending Down orders declines from smallest to largest (7%, 12%, 20%, 20% in the current sample).
 
 
-Two illustrative For You story cards display Recommended for you above the image, using #697182 for the 18px label and 24px filled Material Symbols wand_stars icon. The icon-to-label gap is 8px; the label-to-image gap uses the shared 16px card spacing. Labels stay with their stories after interest ranking and are hidden in Trending views.
+Two illustrative For You story cards display Recommended for you above the image, using #697182 for the 16px label and 20px filled Material Symbols wand_stars icon. The icon-to-label gap is 8px; the label-to-image gap is 12px. Labels stay with their stories after interest ranking and are hidden in Trending views.
 
 
 The DS Colors section deduplicates resolved color values separately for dark and light themes. Brand, Neutrals, Signals and Topic colors show one compact swatch per value with shared uses grouped underneath. Copy returns the literal color value. All Tokens retains every semantic token and both theme values; no product color tokens are removed.
 
 
 The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 12px gap. Recommendation text and wand_stars use #697182.
+
+
+All 39 Trend Detail pages end their article text with Members exploring this trend, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS dark overlay surface, 10px corners, 16px phone / 24px desktop padding, 14px bold condensed label and three linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Eight selected articles show an additional and 4 others variant, using fixed illustrative prototype data and 16px Inter; other articles retain the avatar-only version. Both variants are shown in the DS.
+
+
+Public reader profiles (`reader-alex-rivera.html`, `reader-jamie-park.html`, `reader-morgan-lee.html`) use distinct existing prototype photos rather than contributor portraits. They reuse the personal-profile DS and have only Saved, Collections and Predictions. Their fictional sample libraries and calls are read-only, with story/collection navigation and no Posts, editing, bookmarking, following or voting controls. Visiting another reader never displays or modifies the visitor’s own libraries or calls. Regenerate these pages with `python3 scripts/build-reader-profiles.py`. Join them uses the same 16px light Barlow Condensed typography as Login, while retaining its lime underline.
+
+Signed-out article avatars have no href, keyboard focus stop or hover state. Signing in enables the profile links. Direct public-reader URLs use the existing browser-only login-and-return flow; read-only community profiles are available after signing in.
+
+All reader profiles and the personal profile show Member since 2026 beneath the name, reusing the 14px muted uppercase profile-role style and 4px identity gap.

@@ -1,11 +1,12 @@
 // Personal profiles use actual calls from the shared deck.
-// Only author histories contain illustrative sample calls.
+// Author and public reader profiles contain separate, illustrative sample calls.
 (() => {
   const profile = document.querySelector('.profile');
   const predictionPanel = document.getElementById('profile-predictions');
   if (!profile || !predictionPanel) return;
 
   const isAuthor = document.body.classList.contains('page-contributor');
+  const isReader = document.body.classList.contains('page-reader');
   const authorName = profile.querySelector('.profile-name')?.textContent.trim() || 'Author';
   const authorId = profile.dataset.authorId;
   const firstName = authorName.split(' ')[0];
@@ -66,6 +67,16 @@
     return [...examples, ...history];
   }
 
+  // A public reader's library never reads or updates the visiting user's votes.
+  function readerHistory() {
+    if (!isReader) return [];
+    const calls = JSON.parse(profile.dataset.readerCalls || '{}');
+    return PREDICTIONS.filter(prediction => ['in', 'out'].includes(calls[prediction.id]))
+      .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
+  }
+
+  const profileHistory = () => isAuthor ? authorHistory() : isReader ? readerHistory() : personalHistory();
+
   function renderPosts() {
     if (!postsPanel) return;
     const stories = postsPanel.querySelector('.story-list');
@@ -121,9 +132,9 @@
   }
 
   function renderHistory() {
-    if (!isAuthor && personalHistory().length === 0) selectedFilter = 'all';
-    let history = isAuthor ? authorHistory() : personalHistory();
-    if (!isAuthor && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
+    if (!isAuthor && !isReader && personalHistory().length === 0) selectedFilter = 'all';
+    let history = profileHistory();
+    if (!isAuthor && !isReader && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
     const readerCalls = new Map(isSignedIn() ? personalHistory().map(prediction => [prediction.id, prediction.call]) : []);
     const exampleCalls = savedExampleCalls();
     list.classList.toggle('prediction-results-list--comparison', isAuthor);
@@ -134,7 +145,10 @@
           : readerCalls.get(prediction.id);
         return comparisonRow(prediction, readerCall);
       }
-      return resultRow(prediction, prediction.call, true, { resolved: prediction.resolved });
+      return resultRow(prediction, prediction.call, true, {
+        resolved: prediction.resolved,
+        ...(isReader ? { badgeLabel: `${firstName} is ${prediction.call}` } : {}),
+      });
     }).join('');
     list.hidden = history.length === 0;
     empty.hidden = history.length !== 0;
@@ -142,7 +156,7 @@
     empty.querySelector('.profile-empty-copy').textContent = selectedFilter === 'resolved' ? 'Your resolved predictions will appear here' : 'Vote on prediction cards to track them here';
     empty.classList.toggle('profile-empty-state--author', isAuthor);
     if (isAuthor) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
-    if (!isAuthor) filters.hidden = personalHistory().length === 0;
+    if (!isAuthor) filters.hidden = isReader || personalHistory().length === 0;
     if (isAuthor && !predictionPanel.hidden && history.length && !entrancePlayed) {
       entrancePlayed = true;
       playComparisonEntrance(list);
@@ -157,9 +171,9 @@
 
   function renderFilters() {
     const noPersonalHistory = !isAuthor && personalHistory().length === 0;
-    filters.hidden = isAuthor || noPersonalHistory;
+    filters.hidden = isAuthor || isReader || noPersonalHistory;
     filters.replaceChildren();
-    if (isAuthor || noPersonalHistory) return;
+    if (isAuthor || isReader || noPersonalHistory) return;
 
     const filterOptions = [['all', 'All'], ['active', 'Active'], ['resolved', 'Resolved']];
     filters.setAttribute('aria-label', 'Prediction status');
@@ -242,7 +256,7 @@
     const calls = savedCalls();
     try {
       sessionStorage.removeItem(RETURN_KEY);
-      const prediction = (isAuthor ? authorHistory() : personalHistory()).find(item => item.id === id);
+      const prediction = profileHistory().find(item => item.id === id);
       const readerCall = !isSignedIn() ? null : prediction?.comparisonExample
         ? savedExampleCalls()[id] || prediction.exampleReaderCall
         : calls[id] || (!isAuthor && prediction?.resolved ? prediction.call : null);
