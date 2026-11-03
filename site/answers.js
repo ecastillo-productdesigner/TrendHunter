@@ -25,17 +25,6 @@
         <button class="answers-suggestion" type="button" data-question="What’s next for hydration?"><span class="answers-sparkle" aria-hidden="true"></span>What’s next for hydration?</button>
       </div>
     </div>
-    <div class="answers-mobile-suggestions" aria-label="Suggested questions">
-<button class="answers-suggestion" type="button" data-question="What’s Gatorade’s future?"><span class="answers-sparkle" aria-hidden="true"></span>What’s Gatorade’s future?</button>
-<button class="answers-suggestion" type="button" data-question="How is health tech evolving?"><span class="answers-sparkle" aria-hidden="true"></span>How is health tech evolving?</button>
-<button class="answers-suggestion" type="button" data-question="What are new wellness trends?"><span class="answers-sparkle" aria-hidden="true"></span>What are new wellness trends?</button>
-<button class="answers-suggestion" type="button" data-question="What’s next for hydration after 40?"><span class="answers-sparkle" aria-hidden="true"></span>What’s next for hydration after 40?</button>
-<button class="answers-suggestion" type="button" data-question="How will AI change shopping?"><span class="answers-sparkle" aria-hidden="true"></span>How will AI change shopping?</button>
-<button class="answers-suggestion" type="button" data-question="Why are run clubs growing?"><span class="answers-sparkle" aria-hidden="true"></span>Why are run clubs growing?</button>
-<button class="answers-suggestion" type="button" data-question="What’s next for sleep tech?"><span class="answers-sparkle" aria-hidden="true"></span>What’s next for sleep tech?</button>
-<button class="answers-suggestion" type="button" data-question="How are homes getting smarter?"><span class="answers-sparkle" aria-hidden="true"></span>How are homes getting smarter?</button>
-<button class="answers-suggestion" type="button" data-question="Where is beauty heading next?"><span class="answers-sparkle" aria-hidden="true"></span>Where is beauty heading next?</button>
-</div>
     <p class="answers-status" role="status" hidden></p>`;
 
   const productRecommendationsTemplate = `

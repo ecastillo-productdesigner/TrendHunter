@@ -3,8 +3,28 @@
   <p>Collection detail pages use the existing Follow button. Following changes it to Following with the primary lime fill, confirms the collection name in the existing five-second toast, and offers View Collections linking to the feed’s Collections tab. Clicking Following unfollows and confirms the change. Long collection names wrap inside the toast, which stays above the prototype settings button so its link and close control remain tappable. Follows persist in this prototype browser across pages and reloads, and appear in both feed and personal-profile Collections. No account service or live analytics is connected.</p>
   <div class="ds-button-examples"><div><button class="follow-button" type="button" aria-pressed="false">Follow</button><span>Default</span></div><div><button class="follow-button" type="button" aria-pressed="true">Following</button><span>Following · click again to unfollow</span></div></div>
   <h4>Collections with no follows</h4>
-  <p>Reuse the exact profile Predictions empty-state classes: 12px uppercase Barlow Condensed title, 14px Inter helper copy, 8px internal gap and the existing 144px minimum height. The title starts 32px below the menu divider. Recommended Collections uses the existing framed feed collection module with four linked pills, DS 24px section gaps and no already-followed items. Following appears above recommendations once a collection is followed.</p>
-  <div class="profile-empty-state"><h4 class="profile-empty-title">No collections yet</h4><p class="profile-empty-copy">Follow collections to see them here</p></div>
+  <p>Reuse the profile Predictions empty-state typography: 12px uppercase Barlow Condensed title, 14px Inter helper copy and an 8px internal gap. In the feed only, remove the empty state’s minimum height and bottom padding so the helper message sits exactly 32px above Recommended Collections. The title still starts 32px below the menu divider. Recommended Collections has a centered heading and no outer frame, with the same four linked pills and no already-followed items. Keep 16px side insets on phones and 24px from 600px. Following appears above recommendations once a collection is followed.</p>
+  <div aria-hidden="true" inert>
+        <section class="feed-collection-directory" aria-label="Your collections">
+          <div class="profile-empty-state" data-followed-empty role="status">
+            <h2 class="profile-empty-title">No collections yet</h2>
+            <p class="profile-empty-copy">Follow collections to see them here</p>
+          </div>
+          <section class="feed-explore feed-followed-collections" data-followed-section aria-labelledby="ds-followed-heading" hidden>
+            <h2 id="ds-followed-heading" class="type-h4-caps">Following</h2>
+            <ul class="collection-list" data-followed-list></ul>
+          </section>
+          <section class="feed-explore" data-recommended-section aria-labelledby="ds-recommended-heading">
+            <h2 id="ds-recommended-heading" class="type-h4-caps">Recommended Collections</h2>
+            <ul class="collection-list" data-recommended-list>
+              <li><a class="pill-button" href="../collection-evidence-based-beauty.html">Evidence-Based Beauty <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 22%" title="Interest rising 22%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">22%</span></span></a></li>
+              <li><a class="pill-button" href="../collection-back-to-school-transitions.html">Back-to-School Transitions <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a></li>
+              <li><a class="pill-button" href="../collection-longevity.html">Longevity <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a></li>
+              <li><a class="pill-button" href="../collection-peptides.html">Peptides <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 9%" title="Interest rising 9%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">9%</span></span></a></li>
+            </ul>
+          </section>
+        </section>
+  </div>
   <h4>Collection badges over photos</h4>
   <p>Photo-overlay collection pills use their full available width instead of shrinking to half the image. Keep them on one line, truncate only a long label, and retain the 48 × 6px bar and 14px percentage. Full collection names remain available to screen readers. Editorial feed labels keep their complete text and may wrap normally.</p>
 </article>
