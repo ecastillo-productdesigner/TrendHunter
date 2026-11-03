@@ -757,6 +757,78 @@ button {
   height: var(--layout-wordmark-height);
 }
 
+/* Feed view navigation — DS display type, 32px tab gaps and selected underline. */
+.page-feed {
+  --layout-feed-tabs-height: calc(var(--spacing-layout-xl) * 2 + var(--stroke-default));
+}
+.feed-navigation {
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-layout-xl);
+  max-width: var(--layout-page-max);
+  margin: 0 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: var(--stroke-default) solid var(--color-border-default);
+  background: var(--color-background-surface);
+}
+.feed-navigation::-webkit-scrollbar { display: none; }
+.feed-navigation-tab {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--spacing-layout-xl) * 2);
+  padding: var(--spacing-layout-md) 0;
+  border-bottom: var(--stroke-thick) solid transparent;
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-light);
+  line-height: var(--type-line-height-ui-sm);
+  white-space: nowrap;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.feed-navigation-tab:hover,
+.feed-navigation-tab[aria-selected="true"] { color: var(--color-text-primary); }
+.feed-navigation-tab[aria-selected="true"] { border-bottom-color: var(--filter-tab-active); }
+.feed-navigation-tab:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: calc(-1 * var(--spacing-component-xs));
+}
+.feed-tab-panel { min-width: 0; }
+.feed-tab-panel:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: calc(-1 * var(--spacing-component-xs));
+}
+.feed-tab-panel > [hidden],
+.feed-tab-panel > .feed-list > [hidden],
+.page-feed[data-feed-view^="trending-"] .feed-tab-panel > .feed-list > li:not(:has(> .trend-card)) { display: none; }
+.feed-collection-directory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  margin: var(--spacing-layout-lg) var(--spacing-component-ms);
+  padding: var(--spacing-layout-md);
+  background: var(--color-background-surface-raised);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+}
+@media (min-width: 600px) {
+  .feed-collection-directory {
+    margin: 0 0 var(--spacing-layout-lg);
+    padding: var(--spacing-layout-lg);
+  }
+}
+@media (min-width: 960px) {
+  .feed-navigation { justify-content: center; }
+  .page-feed .rail-left,
+  .page-feed .rail-right {
+    top: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height));
+    max-height: calc(100vh - var(--layout-nav-height) - var(--layout-feed-tabs-height));
+  }
+}
+
 /* ===========================
    Page Layout
 =========================== */
@@ -4854,7 +4926,7 @@ body:has(.auth-prompt[open]) {
 }
 
 /* Feed cards fill the center column; phones retain their DS outer gutters. */
-.page-layout--feed .feed-column > .feed-list {
+.page-layout--feed .feed-tab-panel > .feed-list {
   gap: var(--spacing-layout-lg);
   padding: var(--spacing-layout-lg) var(--spacing-component-ms);
 }
@@ -4863,12 +4935,19 @@ body:has(.auth-prompt[open]) {
     border: 0;
     background: transparent;
   }
-  .page-layout--feed .feed-column > .feed-list {
+  .page-layout--feed .feed-tab-panel > .feed-list {
     padding: 0 0 var(--spacing-layout-lg);
   }
 }
 @media (min-width: 960px) {
   .page-layout--feed .feed-column::before { display: none; }
+}
+
+@media (min-width: 960px) {
+  .page-feed .page-layout--feed .feed-column {
+    top: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height) + var(--spacing-layout-lg));
+    height: calc(100vh - var(--layout-nav-height) - var(--layout-feed-tabs-height) - var(--spacing-layout-lg) * 2);
+  }
 }
 
 /* Desktop — three columns, matches the 1512px Figma frame */

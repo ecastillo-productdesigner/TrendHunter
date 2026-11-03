@@ -1,0 +1,13 @@
+<article class="ds-panel ds-component" id="feed-navigation">
+  <h3>Feed navigation</h3>
+  <p>The home feed adds For You, Collections, Trending Up and Trending Down beneath the main header. The row uses 16px / 18px light Barlow Condensed, 32px gaps, 16px vertical padding, a 64px tab height and a 3px selected underline. The row’s 1px bottom border brings its total height to 65px. The active underline follows the DS filter color: lime in dark mode and purple in light mode. The tab group is centered from 960px. On narrow screens the row starts at the left and scrolls horizontally. It stays with the main header.</p>
+  <div aria-hidden="true" inert>
+    <nav class="feed-navigation" role="tablist" aria-label="Feed views">
+      <button class="feed-navigation-tab" type="button" role="tab" id="ds-feed-tab-for-you" aria-controls="ds-feed-tab-panel" aria-selected="true" tabindex="0" data-feed-view="for-you">For You</button>
+      <button class="feed-navigation-tab" type="button" role="tab" id="ds-feed-tab-collections" aria-controls="ds-feed-tab-panel" aria-selected="false" tabindex="-1" data-feed-view="collections">Collections</button>
+      <button class="feed-navigation-tab" type="button" role="tab" id="ds-feed-tab-trending-up" aria-controls="ds-feed-tab-panel" aria-selected="false" tabindex="-1" data-feed-view="trending-up">Trending Up</button>
+      <button class="feed-navigation-tab" type="button" role="tab" id="ds-feed-tab-trending-down" aria-controls="ds-feed-tab-panel" aria-selected="false" tabindex="-1" data-feed-view="trending-down">Trending Down</button>
+    </nav>
+  </div>
+  <p>For You restores the original 19 stories and inline modules. Collections shows all 36 linked collections with their assigned interest values. Trending Up and Trending Down filter existing stories by their collection direction, retaining the original story order. Inline modules are hidden in these filtered views; their state is preserved. Selected views survive reload and browser history through the URL hash. Left / Right, Home and End move between tabs. The selected tab and panel are labelled for assistive technology, with a live result count.</p>
+</article>

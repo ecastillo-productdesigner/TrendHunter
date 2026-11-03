@@ -28,7 +28,7 @@ def button_inventory(project):
                 body = re.sub(r'\$\{.*?\}', '', body)
                 body = body.replace('src="assets/', 'src="../assets/')
                 # Only presentation attributes survive; previews are inert and cannot sign in or vote.
-                kept = ''.join(' '+m[0] for m in re.finditer(r'(?:aria-pressed|aria-expanded|aria-current|data-muted)="[^"]*"', attrs))
+                kept = ''.join(' '+m[0] for m in re.finditer(r'(?:aria-pressed|aria-expanded|aria-current|aria-selected|data-muted)="[^"]*"', attrs))
                 markup = f'<{tag} class="{classes}"'+ (' type="button"' if tag=='button' else ' href="#"') + kept+'>'+body+f'</{tag}>'
                 if classes=='bookmark-button': markup='<div class="article-actions">'+markup+'</div>'
                 if classes in {'share-sheet-copy','share-sheet-email'}: markup='<div class="share-sheet-actions">'+markup+'</div>'
