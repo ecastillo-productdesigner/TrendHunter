@@ -276,6 +276,7 @@
   --layout-page-max: 1464px;
   --layout-page-gutter: 12px; /* side padding on mobile; 16px from 600px up */
   --layout-nav-height: 61px;
+  --layout-header-height: var(--layout-nav-height);
   --layout-wordmark-width: calc(var(--layout-wordmark-height) * 4);
   --layout-wordmark-height: 26px;
   --layout-trend-card-ratio: 434 / 772;
@@ -758,9 +759,11 @@ button {
 }
 
 /* Feed view navigation — DS display type, 32px tab gaps and selected underline. */
-.page-feed {
-  --layout-feed-tabs-height: calc(var(--spacing-layout-xl) * 2 + var(--stroke-default));
+.has-feed-navigation {
+  --layout-feed-tabs-height: calc(var(--spacing-layout-lg) + var(--type-line-height-ui-sm) + var(--spacing-component-ms) + var(--stroke-thick) + var(--stroke-default));
+  --layout-header-height: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height));
 }
+:root[data-view="sheet"] .has-feed-navigation { --layout-header-height: var(--layout-nav-height); }
 .feed-navigation {
   display: flex;
   align-items: stretch;
@@ -776,9 +779,9 @@ button {
 .feed-navigation-tab {
   flex: 0 0 auto;
   display: flex;
-  align-items: center;
-  min-height: calc(var(--spacing-layout-xl) * 2);
-  padding: var(--spacing-layout-md) 0;
+  align-items: flex-end;
+  min-height: var(--icon-size-2xl);
+  padding: var(--spacing-layout-lg) 0 var(--spacing-component-ms);
   border-bottom: var(--stroke-thick) solid transparent;
   font-family: var(--type-font-display);
   font-size: var(--type-size-16);
@@ -786,12 +789,14 @@ button {
   line-height: var(--type-line-height-ui-sm);
   white-space: nowrap;
   color: var(--color-text-tertiary);
+  text-decoration: none;
   cursor: pointer;
   transition: color 150ms ease, border-color 150ms ease;
 }
 .feed-navigation-tab:hover,
-.feed-navigation-tab[aria-selected="true"] { color: var(--color-text-primary); }
-.feed-navigation-tab[aria-selected="true"] { border-bottom-color: var(--filter-tab-active); }
+.feed-navigation-tab[aria-selected="true"],
+.feed-navigation-tab[aria-current="location"] { color: var(--color-text-primary); text-decoration: none; }
+.feed-navigation-tab:is([aria-selected="true"], [aria-current="location"]) { border-bottom-color: var(--filter-tab-active); }
 .feed-navigation-tab:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: calc(-1 * var(--spacing-component-xs));
@@ -822,11 +827,6 @@ button {
 }
 @media (min-width: 960px) {
   .feed-navigation { justify-content: center; }
-  .page-feed .rail-left,
-  .page-feed .rail-right {
-    top: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height));
-    max-height: calc(100vh - var(--layout-nav-height) - var(--layout-feed-tabs-height));
-  }
 }
 
 /* ===========================
@@ -851,9 +851,9 @@ button {
 .rail-left,
 .rail-right {
   position: sticky;
-  top: var(--layout-nav-height);
+  top: var(--layout-header-height);
   align-self: start;
-  max-height: calc(100vh - var(--layout-nav-height));
+  max-height: calc(100vh - var(--layout-header-height));
   overflow-y: auto;
   scrollbar-width: none;
   padding-bottom: var(--spacing-layout-lg);
@@ -2169,7 +2169,7 @@ a.drawer-heading:hover {
   flex-direction: column;
   gap: var(--spacing-layout-lg);
   min-width: 0;
-  scroll-margin-top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+  scroll-margin-top: calc(var(--layout-header-height) + var(--spacing-layout-lg));
   margin-top: calc(var(--spacing-layout-xl) - var(--spacing-layout-lg));
   padding-top: var(--spacing-layout-xl);
   border-top: var(--stroke-default) solid var(--color-border-default);
@@ -2655,7 +2655,7 @@ a.drawer-heading:hover {
 }
 @media (width < 960px) {
   .prediction-inline-section {
-    scroll-margin-top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+    scroll-margin-top: calc(var(--layout-header-height) + var(--spacing-layout-lg));
   }
   .prediction-shortcut:not([hidden]) {
     position: fixed;
@@ -4896,9 +4896,9 @@ body:has(.auth-prompt[open]) {
   /* Feed frame stays put; the cards scroll inside it */
   .feed-column {
     position: sticky;
-    top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+    top: calc(var(--layout-header-height) + var(--spacing-layout-lg));
     align-self: start;
-    height: calc(100vh - var(--layout-nav-height) - var(--spacing-layout-lg) * 2);
+    height: calc(100vh - var(--layout-header-height) - var(--spacing-layout-lg) * 2);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: none;
@@ -4941,13 +4941,6 @@ body:has(.auth-prompt[open]) {
 }
 @media (min-width: 960px) {
   .page-layout--feed .feed-column::before { display: none; }
-}
-
-@media (min-width: 960px) {
-  .page-feed .page-layout--feed .feed-column {
-    top: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height) + var(--spacing-layout-lg));
-    height: calc(100vh - var(--layout-nav-height) - var(--layout-feed-tabs-height) - var(--spacing-layout-lg) * 2);
-  }
 }
 
 /* Desktop — three columns, matches the 1512px Figma frame */
@@ -5013,7 +5006,7 @@ body:has(.auth-prompt[open]) {
   :root:not([data-view="sheet"]) .page-trend .channel-content > :is(.article, .product-recommendations, .trend-answers--inline, .trend-card-list)::before {
     content: "";
     position: sticky;
-    top: calc(var(--layout-nav-height) + var(--spacing-layout-lg));
+    top: calc(var(--layout-header-height) + var(--spacing-layout-lg));
     z-index: 3;
     flex-shrink: 0;
     height: var(--stroke-default);

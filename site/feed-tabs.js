@@ -10,6 +10,11 @@
   const heading = panel.querySelector('#feed-view-heading');
   const status = panel.querySelector('#feed-view-status');
   const main = panel.closest('main');
+  const originalItems = [...list.children];
+  const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
+  const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
+  const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
+  let currentOrder = 'original';
   const names = {
     'for-you': 'For You',
     collections: 'Collections',
@@ -31,6 +36,19 @@
     list.hidden = view === 'collections';
     directory.hidden = view !== 'collections';
 
+    const order = view === 'trending-up' ? 'rising' : 'original';
+    if (order !== currentOrder) {
+      const ranked = new Set(rankedRisingItems);
+      const items = order === 'rising'
+        ? [...rankedRisingItems, ...originalItems.filter(item => !ranked.has(item))]
+        : originalItems;
+      // Move the existing nodes so saved controls and the single deck keep their state.
+      items.forEach((item, index) => {
+        if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
+      });
+      currentOrder = order;
+    }
+
     const direction = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : null;
     let count = 0;
     for (const item of list.children) {
@@ -41,7 +59,7 @@
     }
     status.textContent = view === 'collections'
       ? `${directory.querySelectorAll('.collection-list > li').length} collections`
-      : `${count} stories in ${names[view]}`;
+      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : ''}`;
 
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
     if (resetScroll) {

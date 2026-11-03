@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt,pause_circle,play_circle,volume_off,volume_up">
-  <link rel="stylesheet" href="feed.css?v=collection-momentum-48-1">
+  <link rel="stylesheet" href="feed.css?v=browse-navigation-1">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -22,7 +22,7 @@
     } catch (e) {}
   </script>
 </head>
-<body class="page-trend">
+<body class="page-trend has-feed-navigation">
 
   <header class="site-header">
     <nav class="nav-primary" aria-label="Primary">
@@ -44,6 +44,12 @@
         <a href="login.html" class="nav-text-button nav-login">Login</a>
         <button class="nav-profile" aria-label="Account menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="account-drawer"><span class="nav-profile-icon" aria-hidden="true"></span></button>
       </div>
+    </nav>
+    <nav class="feed-navigation" aria-label="Feed navigation">
+      <a class="feed-navigation-tab" href="feed.html#for-you" aria-current="location">For You</a>
+      <a class="feed-navigation-tab" href="feed.html#collections">Collections</a>
+      <a class="feed-navigation-tab" href="feed.html#trending-up">Trending Up</a>
+      <a class="feed-navigation-tab" href="feed.html#trending-down">Trending Down</a>
     </nav>
   </header>
 
