@@ -1208,7 +1208,7 @@
       "key": "button:button-primary topic-picker-submit",
       "classes": "button-primary topic-picker-submit",
       "tag": "button",
-      "name": "Select Topic",
+      "name": "Update My Feed",
       "sources": [
         "feed-topics.js"
       ]
@@ -2534,10 +2534,6 @@
         "collection.html",
         "collection.html",
         "collection.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
         "feed.html",
         "feed.html",
         "feed.html",
@@ -4042,7 +4038,6 @@
         "feed.html",
         "feed.html",
         "feed.html",
-        "feed.html",
         "trend-retailtainment.html"
       ]
     },
@@ -4299,9 +4294,8 @@
       "key": "button:trend-card-playback",
       "classes": "trend-card-playback",
       "tag": "button",
-      "name": "Pause story video",
+      "name": "Play story video",
       "sources": [
-        "feed.html",
         "feed.html",
         "feed.html",
         "feed.html",

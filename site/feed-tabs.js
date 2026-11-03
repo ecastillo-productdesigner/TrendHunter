@@ -1,3 +1,5 @@
+import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './feed-personalization.js';
+
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
   const navigation = document.querySelector('[data-feed-tabs]');
@@ -14,7 +16,12 @@
   const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
   const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
-  let currentOrder = 'original';
+  let preferences = readSelectedTopics();
+  let currentOrder = '';
+  const topicsFor = item => {
+    const story = item.querySelector(':scope > .trend-card');
+    return story ? (story.dataset.topics || '').split(' ').filter(Boolean) : null;
+  };
   const names = {
     'for-you': 'For You',
     collections: 'Collections',
@@ -36,12 +43,12 @@
     list.hidden = view === 'collections';
     directory.hidden = view !== 'collections';
 
-    const order = view === 'trending-up' ? 'rising' : 'original';
+    const order = view === 'trending-up' ? 'rising' : view === 'for-you' ? `personalized:${preferences.join(',')}` : 'original';
     if (order !== currentOrder) {
       const ranked = new Set(rankedRisingItems);
       const items = order === 'rising'
         ? [...rankedRisingItems, ...originalItems.filter(item => !ranked.has(item))]
-        : originalItems;
+        : view === 'for-you' ? personalizeStorySlots(originalItems, preferences, topicsFor) : originalItems;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
         if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
@@ -60,7 +67,7 @@
     const followedCount = directory.querySelectorAll('[data-followed-list] > li').length;
     status.textContent = view === 'collections'
       ? `${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : ''}`;
+      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
 
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
     if (resetScroll) {
@@ -85,6 +92,20 @@
       select(tabs[next].dataset.feedView, { updateUrl: true });
     });
   }
+  document.addEventListener('feed-topics-updated', () => {
+    preferences = readSelectedTopics();
+    select('for-you', { updateUrl: true });
+    tabs[0].focus({ preventScroll: true });
+  });
+  window.addEventListener('storage', event => {
+    if (event.key !== TOPIC_STORAGE_KEY) return;
+    preferences = readSelectedTopics();
+    select(viewFromUrl(), { resetScroll: false });
+  });
+  window.addEventListener('pageshow', () => {
+    preferences = readSelectedTopics();
+    select(viewFromUrl(), { resetScroll: false });
+  });
   window.addEventListener('hashchange', () => select(viewFromUrl()));
   select(viewFromUrl(), { resetScroll: false });
 })();

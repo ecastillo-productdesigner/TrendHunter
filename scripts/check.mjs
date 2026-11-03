@@ -14,6 +14,9 @@ else console.log('Read More arrival matching, deck order and reload coverage pas
 const followAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/collection-follow.test.mjs')], { encoding: 'utf8' });
 if (followAudit.status !== 0) failures.push(followAudit.stdout + followAudit.stderr);
 else console.log('Collection follow persistence, empty state data and recommendations passed');
+const personalizationAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/feed-personalization.test.mjs')], { encoding: 'utf8' });
+if (personalizationAudit.status !== 0) failures.push(personalizationAudit.stdout + personalizationAudit.stderr);
+else console.log('Feed interest ranking, module cadence and preference persistence passed');
 const inventoryAudit = spawnSync('python3', [path.join(projectRoot, 'scripts/audit-design-system.py')], { encoding: 'utf8' });
 if (inventoryAudit.status !== 0) failures.push(inventoryAudit.stderr || 'Design-system inventory audit failed');
 else console.log(inventoryAudit.stdout.trim());

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=topic-picker-1">
+  <link rel="stylesheet" href="feed.css?v=personalized-feed-2">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -133,7 +133,7 @@
       <p class="visually-hidden" id="feed-view-status" role="status" aria-live="polite"></p>
       <ol class="feed-list">
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend.html" aria-label="Read: Men Are Challenging the Midlife 'Just Aging' Narrative"><img class="trend-card-image" src="assets/feed/trend-01.png" alt="" loading="lazy"></a>
               <a href="collection-andropause-hormonal-midlife.html" class="trend-card-collection"><span class="trend-card-collection-label">Andropause &amp; Hormonal Midlife</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 28%" title="Interest rising 28%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">28%</span></span></a>
               <div class="trend-card-content">
@@ -150,14 +150,8 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial trend-card--video" id="feed-video-story">
-              <div class="trend-card-media" data-feed-video>
-                <video class="trend-card-image trend-card-video" src="assets/feed/trend-02-loop.mp4?v=uploaded-1" poster="assets/feed/trend-02-poster.webp" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
-                <button class="trend-card-playback" type="button" data-video-playback aria-label="Pause story video"></button>
-                <span class="trend-card-video-feedback" aria-hidden="true"><span class="trend-card-video-symbol">pause_circle</span></span>
-                <button class="trend-card-action trend-card-sound" type="button" data-video-sound data-muted="true" aria-label="Unmute story video"><span class="trend-card-video-symbol" aria-hidden="true">volume_off</span></button>
-                <span class="visually-hidden" data-video-status role="status"></span>
-              </div>
+            <article class="trend-card trend-card--editorial" id="feed-video-story" data-topics="style culture">
+              <a class="trend-card-media trend-card-media-link" href="trend-retailtainment.html" aria-label="Read: How Gen Z Brands Like Edikted Are Converting TikTok Followers"><img class="trend-card-image trend-card-image--retailtainment-still" src="assets/feed/trend-02-still.png" alt="" loading="lazy"></a>
               <a href="collection-retailtainment-hubs.html" class="trend-card-collection"><span class="trend-card-collection-label">Retailtainment Hubs</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 34%" title="Interest rising 34%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">34%</span></span></a>
               <div class="trend-card-content">
                 <h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-retailtainment.html">How Gen Z Brands Like Edikted Are Converting TikTok Followers</a></h2>
@@ -165,7 +159,7 @@
               <footer class="trend-card-footer">
                 <a href="contributor-daniel-reed.html" class="contributor-byline trend-card-author" aria-label="View Daniel Reed’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></span><span class="contributor-name">Daniel Reed</span></a>
                 <div class="trend-card-actions">
-                  <button class="trend-card-action story-share" type="button" data-video-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
+                  <button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
                 
                 <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
                 </div>
@@ -173,7 +167,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-school-routines.html" aria-label="Read: Morning Meltdowns Fatigue May Mean Child’s Routine Is Still Shape"><img class="trend-card-image" src="assets/feed/trend-03.png" alt="" loading="lazy"></a>
               <a href="collection-back-to-school-transitions.html" class="trend-card-collection"><span class="trend-card-collection-label">Back-to-School Transitions</span> <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a>
               <div class="trend-card-content">
@@ -190,7 +184,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="tech wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-teen-phone-sleep.html" aria-label="Read: Teens’ Phone Habits Are Costing Them Major Sleep. The Fallout Beginning"><img class="trend-card-image" src="assets/feed/trend-04.png" alt="" loading="lazy"></a>
               <a href="collection-mind-body-for-families.html" class="trend-card-collection"><span class="trend-card-collection-label">Mind &amp; Body for Families</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a>
               <div class="trend-card-content">
@@ -207,7 +201,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="tech wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-sleep-earbuds.html" aria-label="Read: Your Bedroom Is Getting Louder. Sleep Earbuds Are Evolving to Keep Up"><img class="trend-card-image" src="assets/feed/trend-05.png" alt="" loading="lazy"></a>
               <a href="collection-regulated-living.html" class="trend-card-collection"><span class="trend-card-collection-label">Regulated Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 8%" title="Interest rising 8%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">8%</span></span></a>
               <div class="trend-card-content">
@@ -224,7 +218,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-whole-house-water.html" aria-label="Read: Whole-House Water Filters Are Gaining Ground as Homeowners"><img class="trend-card-image" src="assets/feed/trend-06.png" alt="" loading="lazy"></a>
               <a href="collection-clean-living-control.html" class="trend-card-collection"><span class="trend-card-collection-label">Clean Living Control</span> <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 12%" title="Interest falling 12%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">12%</span></span></a>
               <div class="trend-card-content">
@@ -252,7 +246,7 @@
             </section>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-preventive-health-conversations.html" aria-label="Read: Prostate Cancer Symptoms Are Easy to Miss. Here’s What Men"><img class="trend-card-image" src="assets/feed/trend-07.png" alt="" loading="lazy"></a>
               <a href="collection-preventive-health.html" class="trend-card-collection"><span class="trend-card-collection-label">Preventive Health</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 14%" title="Interest rising 14%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">14%</span></span></a>
               <div class="trend-card-content">
@@ -269,7 +263,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="tech">
               <a class="trend-card-media trend-card-media-link" href="trend-garden-lighting.html" aria-label="Read: How Garden Lighting Delivers Maximum Curb Appeal for Homeowners"><img class="trend-card-image" src="assets/feed/trend-08.png" alt="" loading="lazy"></a>
               <a href="collection-smart-home-energy.html" class="trend-card-collection"><span class="trend-card-collection-label">Smart Home &amp; Energy</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 16%" title="Interest rising 16%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">16%</span></span></a>
               <div class="trend-card-content">
@@ -286,7 +280,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="culture">
               <a class="trend-card-media trend-card-media-link" href="trend-dollar-store-shoppers.html" aria-label="Read: Why Are Dollar Stores Seeing an Unexpected New Wave of Shoppers?"><img class="trend-card-image" src="assets/feed/trend-09.png" alt="" loading="lazy"></a>
               <a href="collection-budgeted-living.html" class="trend-card-collection"><span class="trend-card-collection-label">Budgeted Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 15%" title="Interest rising 15%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">15%</span></span></a>
               <div class="trend-card-content">
@@ -313,7 +307,7 @@
             </section>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="food-drink wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-everyday-protein.html" aria-label="Read: Protein Is Showing up in More Everyday Foods as Shoppers Rethink"><img class="trend-card-image" src="assets/feed/trend-10.png" alt="" loading="lazy"></a>
               <a href="collection-protein-forward-eating.html" class="trend-card-collection"><span class="trend-card-collection-label">Protein-Forward Eating</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 25%" title="Interest rising 25%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">25%</span></span></a>
               <div class="trend-card-content">
@@ -330,7 +324,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="tech">
               <a class="trend-card-media trend-card-media-link" href="trend-home-energy.html" aria-label="Read: Home Energy Upgrades Explained: The Popular Renovations That Consist"><img class="trend-card-image" src="assets/feed/trend-11.png" alt="" loading="lazy"></a>
               <a href="collection-budgeted-living.html" class="trend-card-collection"><span class="trend-card-collection-label">Budgeted Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 15%" title="Interest rising 15%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">15%</span></span></a>
               <div class="trend-card-content">
@@ -347,7 +341,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="style culture">
               <a class="trend-card-media trend-card-media-link" href="trend-gen-z-stores.html" aria-label="Read: Gen Z Drives ‘Retailtainment’ Boom, Reshaping the In-Store"><img class="trend-card-image" src="assets/feed/trend-12.png" alt="" loading="lazy"></a>
               <a href="collection-retailtainment-hubs.html" class="trend-card-collection"><span class="trend-card-collection-label">Retailtainment Hubs</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 34%" title="Interest rising 34%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">34%</span></span></a>
               <div class="trend-card-content">
@@ -412,7 +406,7 @@
             </section>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-health-storytelling.html" aria-label="Read: What 1 Writer’s Face-Plant Revealed About a Rare Brain-Pressure"><img class="trend-card-image" src="assets/feed/trend-13.png" alt="" loading="lazy"></a>
               <a href="collection-preventive-health.html" class="trend-card-collection"><span class="trend-card-collection-label">Preventive Health</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 14%" title="Interest rising 14%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">14%</span></span></a>
               <div class="trend-card-content">
@@ -429,7 +423,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-somatic-sleep.html" aria-label="Read: Somatic Sleep Protocols Might Be Pulling Wellness Buyers Away From Melato"><img class="trend-card-image" src="assets/feed/trend-14.png" alt="" loading="lazy"></a>
               <a href="collection-sleep-medicine.html" class="trend-card-collection"><span class="trend-card-collection-label">Sleep Medicine</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 27%" title="Interest rising 27%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">27%</span></span></a>
               <div class="trend-card-content">
@@ -446,7 +440,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="fitness wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-weekend-walking.html" aria-label="Read: Weekend-Only Walking Beats None, Study Finds. Here’s What’s Next"><img class="trend-card-image" src="assets/feed/trend-15.png" alt="" loading="lazy"></a>
               <a href="collection-longevity.html" class="trend-card-collection"><span class="trend-card-collection-label">Longevity Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a>
               <div class="trend-card-content">
@@ -463,7 +457,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-kindergarten-dropoff.html" aria-label="Read: How Emotional Mirroring at Drop-Off Can Affect Kindergarten Separation"><img class="trend-card-image" src="assets/feed/trend-16.png" alt="" loading="lazy"></a>
               <a href="collection-back-to-school-transitions.html" class="trend-card-collection"><span class="trend-card-collection-label">Back-to-School Transitions</span> <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a>
               <div class="trend-card-content">
@@ -480,7 +474,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="travel">
               <a class="trend-card-media trend-card-media-link" href="trend-travel-advisors.html" aria-label="Read: Finding Travel Agent Candidates the Right Way: BBB’s Reviews"><img class="trend-card-image" src="assets/feed/trend-17.png" alt="" loading="lazy"></a>
               <a href="collection-solo-travel.html" class="trend-card-collection"><span class="trend-card-collection-label">Solo Travel</span> <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 7%" title="Interest falling 7%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">7%</span></span></a>
               <div class="trend-card-content">
@@ -497,7 +491,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="fitness wellness">
               <a class="trend-card-media trend-card-media-link" href="trend-weighted-walking.html" aria-label="Read: Guy Fieri’s Weighted Vest Rucking and Transformation Points"><img class="trend-card-image" src="assets/feed/trend-18.png" alt="" loading="lazy"></a>
               <a href="collection-longevity.html" class="trend-card-collection"><span class="trend-card-collection-label">Longevity Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a>
               <div class="trend-card-content">
@@ -514,7 +508,7 @@
             </article>
           </li>
           <li>
-            <article class="trend-card trend-card--editorial">
+            <article class="trend-card trend-card--editorial" data-topics="style culture">
               <a class="trend-card-media trend-card-media-link" href="trend-dollar-store-decor.html" aria-label="Read: Inside Dollar Store Decorating Finds That Transform Any Home"><img class="trend-card-image" src="assets/feed/trend-09.png" alt="" loading="lazy"></a>
               <a href="collection-budgeted-living.html" class="trend-card-collection"><span class="trend-card-collection-label">Budgeted Living</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 15%" title="Interest rising 15%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">15%</span></span></a>
               <div class="trend-card-content">
@@ -553,20 +547,11 @@
         <section class="feed-collection-directory" aria-label="Your collections" hidden>
           <div class="profile-empty-state" data-followed-empty role="status">
             <h2 class="profile-empty-title">No collections yet</h2>
-            <p class="profile-empty-copy">Follow collections to see them here</p>
+            <p class="profile-empty-copy">Follow <a class="profile-empty-link" href="collection-evidence-based-beauty.html">collections</a> to see them here</p>
           </div>
           <section class="feed-explore feed-followed-collections" data-followed-section aria-labelledby="feed-followed-heading" hidden>
             <h2 id="feed-followed-heading" class="type-h4-caps">Following</h2>
             <ul class="collection-list" data-followed-list></ul>
-          </section>
-          <section class="feed-explore" data-recommended-section aria-labelledby="feed-recommended-heading">
-            <h2 id="feed-recommended-heading" class="type-h4-caps">Recommended Collections</h2>
-            <ul class="collection-list" data-recommended-list>
-              <li><a class="pill-button" href="collection-evidence-based-beauty.html">Evidence-Based Beauty <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 22%" title="Interest rising 22%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">22%</span></span></a></li>
-              <li><a class="pill-button" href="collection-back-to-school-transitions.html">Back-to-School Transitions <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a></li>
-              <li><a class="pill-button" href="collection-longevity.html">Longevity <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a></li>
-              <li><a class="pill-button" href="collection-peptides.html">Peptides <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 9%" title="Interest rising 9%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">9%</span></span></a></li>
-            </ul>
           </section>
         </section>
       </div>
@@ -617,8 +602,8 @@
   <script src="predictions.js?v=read-more-unified-1"></script>
   <script src="answers.js?v=compact-mobile-1"></script>
   <script src="feed-video.js?v=carousel-1"></script>
-  <script src="feed-topics.js?v=2"></script>
-  <script src="feed-tabs.js?v=followed-collections-1"></script>
+  <script type="module" src="feed-topics.js?v=personalized-1"></script>
+  <script type="module" src="feed-tabs.js?v=personalized-1"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>

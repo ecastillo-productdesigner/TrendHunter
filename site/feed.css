@@ -844,18 +844,14 @@ button {
   min-height: 0;
   padding-bottom: 0;
 }
-.feed-collection-directory:has(> [data-followed-empty]:not([hidden])) {
-  gap: var(--spacing-layout-xl);
+.feed-collection-directory .profile-empty-link {
+  color: var(--color-text-body-link);
+  text-decoration: underline;
+  text-underline-offset: var(--spacing-component-xs);
 }
-.feed-collection-directory > [data-recommended-section] {
-  padding: 0 var(--spacing-layout-md);
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
-.feed-collection-directory [data-recommended-section] > .type-h4-caps { text-align: center; }
-@media (min-width: 600px) {
-  .feed-collection-directory > [data-recommended-section] { padding-inline: var(--spacing-layout-lg); }
+.feed-collection-directory .profile-empty-link:focus-visible {
+  outline: var(--stroke-focus) solid var(--share-focus-color);
+  outline-offset: var(--spacing-component-xs);
 }
 .feed-collection-directory [hidden],
 #profile-collections [data-followed-list][hidden] { display: none; }
@@ -1033,7 +1029,7 @@ a.story-lockup:hover .story-lockup-headline {
   aspect-ratio: 9 / 16;
   overflow: hidden;
   isolation: isolate;
-  border-radius: var(--radius-x-sm);
+  border-radius: var(--radius-md);
 }
 .trending-video-play {
   position: absolute;
@@ -1358,6 +1354,8 @@ a.story-lockup:hover .story-lockup-headline {
   .trend-card--editorial { padding: var(--spacing-layout-lg); }
 }
 .story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
+
+.trend-card-image--retailtainment-still { object-position: center 25%; }
 
 /* Share — vector arrow aligned to the story bookmark's visible edges.
    The SVG stays crisp at any scale and uses the unsaved bookmark's color. */

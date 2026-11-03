@@ -1,3 +1,5 @@
+import { readSelectedTopics, saveSelectedTopics } from './feed-personalization.js';
+
 // Mobile feed interests. Choices are browser-local prototype preferences, not collection follows.
 (() => {
   const anchor = document.querySelector('.page-feed .feed-answers-slot');
@@ -16,7 +18,7 @@
         <button class="topic-tile" type="button" data-topic="culture" aria-pressed="false"><span class="topic-icon" aria-hidden="true">public</span><span class="topic-label">Culture</span></button>
         <button class="topic-tile" type="button" data-topic="travel" aria-pressed="false"><span class="topic-icon" aria-hidden="true">flight</span><span class="topic-label">Travel</span></button>
       </div>
-      <button class="button-primary topic-picker-submit" type="submit" disabled>Select Topic</button>
+      <button class="button-primary topic-picker-submit" type="submit" disabled>Update My Feed</button>
       <p class="visually-hidden" data-topic-status role="status">No topics selected</p>
     </form>`;
   const slot = document.createElement('li');
@@ -31,17 +33,10 @@
     .filter(item => item.querySelector(':scope > .trend-card'));
   (followingStories[2] || anchor).after(slot);
 
-  const storageKey = 'trendhunter.selected-topics.v1';
   const buttons = [...picker.querySelectorAll('[data-topic]')];
   const submit = picker.querySelector('.topic-picker-submit');
   const status = picker.querySelector('[data-topic-status]');
-  const selected = new Set();
-  try {
-    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    if (Array.isArray(saved)) buttons.forEach(button => {
-      if (saved.includes(button.dataset.topic)) selected.add(button.dataset.topic);
-    });
-  } catch { /* Unavailable or invalid storage leaves all topics unselected. */ }
+  const selected = new Set(readSelectedTopics());
 
   function sync() {
     buttons.forEach(button => button.setAttribute('aria-pressed', String(selected.has(button.dataset.topic))));
@@ -57,12 +52,12 @@
   picker.querySelector('form').addEventListener('submit', event => {
     event.preventDefault();
     if (!selected.size) return;
-    try { localStorage.setItem(storageKey, JSON.stringify([...selected])); }
-    catch {
+    if (saveSelectedTopics([...selected]) === null) {
       window.showToast('Your topics could not be saved. Please try again.');
       return;
     }
-    window.showToast(`${selected.size === 1 ? 'Topic' : 'Topics'} saved`);
+    document.dispatchEvent(new Event('feed-topics-updated'));
+    window.showToast('Your feed has been updated.');
   });
   sync();
 })();
