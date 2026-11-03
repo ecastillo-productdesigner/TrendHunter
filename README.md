@@ -122,7 +122,7 @@ Spacing uses existing DS tokens: 12px phone gutters, 16px phone card padding, 24
 
 Mobile Daily Predictions stays after the first three home-feed stories below 960px. Its voting panel uses 16px top and bottom padding, matching phone story cards, and content-driven height with a 24px heading-to-deck gap. Desktop placement and the completed-results scroll frame are retained.
 
-Experimental discovery modules use bordered panels matching the feed: 16px phone padding, 24px from 600px, 24px heading and row gaps, 1px default border and 2px radius. More to Explore shows four collections; Now Trending shows three stories in both mobile and sidebar versions. Feed Share and Bookmark graphics and author images are 16 × 16px. Share and Bookmark retain 32 × 32px action targets; the author profile link is at least 32px tall.
+Experimental discovery modules use bordered panels matching the feed: 16px phone padding, 24px from 600px, 24px heading and row gaps, 1px default border and 2px radius. More to Explore shows four collections; Now Trending shows three stories in both mobile and sidebar versions. Feed Share and Bookmark graphics and author images are 24 × 24px. Share and Bookmark have 48 × 48px action targets; the author profile link is at least 48px tall.
 
 Trending Videos follows story twelve on mobile and desktop, with four intentional copies of the existing retailtainment clip. Portrait 9:16 slides occupy 75% of the row with 16px gaps and a next-video peek. Clips begin paused, have play/pause and mute controls, and only one carousel clip plays at a time. Offscreen/background playback pauses. Swipe or focus the carousel and use Left / Right to browse. The mobile Answers module follows three stories after Trending Videos.
 

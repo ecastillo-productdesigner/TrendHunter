@@ -1187,11 +1187,11 @@ a.story-lockup:hover .story-lockup-headline {
 }
 .trend-card--editorial .trend-card-author {
   min-width: 0;
-  min-height: var(--icon-size-xl);
+  min-height: var(--icon-size-2xl);
 }
 .trend-card--editorial .trend-card-author .avatar {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
   flex-shrink: 0;
 }
 .trend-card--editorial .trend-card-author .contributor-name { min-width: 0; }
@@ -1211,20 +1211,20 @@ a.story-lockup:hover .story-lockup-headline {
 .trend-card--editorial .trend-card-actions > .trend-card-action {
   display: grid;
   place-items: center;
-  width: var(--icon-size-xl);
-  height: var(--icon-size-xl);
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
 }
 .trend-card--editorial .trend-card-actions :is(.trend-card-share-icon, .bookmark-icon) {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
 }
 .trend-card--editorial .trend-card-actions .trend-card-share-icon {
-  mask-size: calc(var(--icon-size-sm) * 32 / 28) auto;
-  -webkit-mask-size: calc(var(--icon-size-sm) * 32 / 28) auto;
+  mask-size: calc(var(--icon-size-lg) * 32 / 28) auto;
+  -webkit-mask-size: calc(var(--icon-size-lg) * 32 / 28) auto;
 }
 .trend-card--editorial .trend-card-actions .bookmark-icon {
-  mask-size: calc(var(--icon-size-sm) * 32 / 24) auto;
-  -webkit-mask-size: calc(var(--icon-size-sm) * 32 / 24) auto;
+  mask-size: calc(var(--icon-size-lg) * 32 / 24) auto;
+  -webkit-mask-size: calc(var(--icon-size-lg) * 32 / 24) auto;
 }
 .trend-card--editorial .trend-card-sound {
   position: absolute;
