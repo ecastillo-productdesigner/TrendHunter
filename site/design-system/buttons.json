@@ -1205,6 +1205,15 @@
       ]
     },
     {
+      "key": "button:button-primary topic-picker-submit",
+      "classes": "button-primary topic-picker-submit",
+      "tag": "button",
+      "name": "Select Topic",
+      "sources": [
+        "feed-topics.js"
+      ]
+    },
+    {
       "key": "a:channel-button",
       "classes": "channel-button",
       "tag": "a",
@@ -3505,6 +3514,23 @@
         "trend-whole-house-water.html",
         "trend.html",
         "userprofile.html"
+      ]
+    },
+    {
+      "key": "button:topic-tile",
+      "classes": "topic-tile",
+      "tag": "button",
+      "name": "health_and_beautyBeauty",
+      "sources": [
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js",
+        "feed-topics.js"
       ]
     },
     {

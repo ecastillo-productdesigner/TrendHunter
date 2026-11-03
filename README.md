@@ -147,3 +147,6 @@ Photo-overlay collection pills now use their full available width and truncate o
 
 
 The mobile feed Answers module reuses the desktop’s compact framed panel: 24px padding, a 1px default border, 2px radius, the existing input and two horizontally scrolling question rows. It replaces the nine-pill vertical list. The 22-second ticker, 24px edge fades, keyboard focus behavior and reduced-motion scrolling remain shared. Mobile article Answers retains its existing inline layout.
+
+
+The mobile For You feed adds Hunt What You Like after three story cards following Answers. Its nine square, independently selectable topic tiles use the supplied colors in reading order. Select Topic is disabled with no selection, becomes enabled after selection, saves browser-local prototype interests and shows the existing confirmation toast. Saved choices restore on reload. It does not alter collection follows or feed ranking. The picker is hidden at 960px and above and in Collections/Trending views.

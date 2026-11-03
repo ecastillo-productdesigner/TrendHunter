@@ -1,0 +1,68 @@
+// Mobile feed interests. Choices are browser-local prototype preferences, not collection follows.
+(() => {
+  const anchor = document.querySelector('.page-feed .feed-answers-slot');
+  if (!anchor) return;
+  const topicPickerTemplate = `
+    <h2 class="type-h4-caps" id="feed-topics-heading">Hunt What You Like</h2>
+    <form class="topic-picker-form">
+      <div class="topic-grid" role="group" aria-label="Choose topics">
+        <button class="topic-tile" type="button" data-topic="beauty" aria-pressed="false"><span class="topic-icon" aria-hidden="true">health_and_beauty</span><span class="topic-label">Beauty</span></button>
+        <button class="topic-tile" type="button" data-topic="books" aria-pressed="false"><span class="topic-icon" aria-hidden="true">menu_book</span><span class="topic-label">Books</span></button>
+        <button class="topic-tile" type="button" data-topic="food-drink" aria-pressed="false"><span class="topic-icon" aria-hidden="true">local_bar</span><span class="topic-label">Food &amp; Drink</span></button>
+        <button class="topic-tile" type="button" data-topic="wellness" aria-pressed="false"><span class="topic-icon" aria-hidden="true">spa</span><span class="topic-label">Wellness</span></button>
+        <button class="topic-tile" type="button" data-topic="style" aria-pressed="false"><span class="topic-icon" aria-hidden="true">checkroom</span><span class="topic-label">Style</span></button>
+        <button class="topic-tile" type="button" data-topic="tech" aria-pressed="false"><span class="topic-icon" aria-hidden="true">head_mounted_device</span><span class="topic-label">Tech</span></button>
+        <button class="topic-tile" type="button" data-topic="fitness" aria-pressed="false"><span class="topic-icon" aria-hidden="true">directions_bike</span><span class="topic-label">Fitness</span></button>
+        <button class="topic-tile" type="button" data-topic="culture" aria-pressed="false"><span class="topic-icon" aria-hidden="true">public</span><span class="topic-label">Culture</span></button>
+        <button class="topic-tile" type="button" data-topic="travel" aria-pressed="false"><span class="topic-icon" aria-hidden="true">flight</span><span class="topic-label">Travel</span></button>
+      </div>
+      <button class="button-primary topic-picker-submit" type="submit" disabled>Select Topic</button>
+      <p class="visually-hidden" data-topic-status role="status">No topics selected</p>
+    </form>`;
+  const slot = document.createElement('li');
+  slot.className = 'feed-topics-slot';
+  const picker = document.createElement('section');
+  picker.className = 'feed-topic-picker';
+  picker.setAttribute('aria-labelledby', 'feed-topics-heading');
+  picker.innerHTML = topicPickerTemplate;
+  slot.append(picker);
+  const siblings = [...anchor.parentElement.children];
+  const followingStories = siblings.slice(siblings.indexOf(anchor) + 1)
+    .filter(item => item.querySelector(':scope > .trend-card'));
+  (followingStories[2] || anchor).after(slot);
+
+  const storageKey = 'trendhunter.selected-topics.v1';
+  const buttons = [...picker.querySelectorAll('[data-topic]')];
+  const submit = picker.querySelector('.topic-picker-submit');
+  const status = picker.querySelector('[data-topic-status]');
+  const selected = new Set();
+  try {
+    const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    if (Array.isArray(saved)) buttons.forEach(button => {
+      if (saved.includes(button.dataset.topic)) selected.add(button.dataset.topic);
+    });
+  } catch { /* Unavailable or invalid storage leaves all topics unselected. */ }
+
+  function sync() {
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(selected.has(button.dataset.topic))));
+    submit.disabled = selected.size === 0;
+    status.textContent = selected.size === 0 ? 'No topics selected' : `${selected.size} topic${selected.size === 1 ? '' : 's'} selected`;
+  }
+  buttons.forEach(button => button.addEventListener('click', () => {
+    const id = button.dataset.topic;
+    if (selected.has(id)) selected.delete(id);
+    else selected.add(id);
+    sync();
+  }));
+  picker.querySelector('form').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!selected.size) return;
+    try { localStorage.setItem(storageKey, JSON.stringify([...selected])); }
+    catch {
+      window.showToast('Your topics could not be saved. Please try again.');
+      return;
+    }
+    window.showToast(`${selected.size === 1 ? 'Topic' : 'Topics'} saved`);
+  });
+  sync();
+})();

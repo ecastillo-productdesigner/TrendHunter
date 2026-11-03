@@ -1061,8 +1061,17 @@
     "arrow_downward",
     "bolt",
     "cancel",
+    "checkroom",
+    "directions_bike",
+    "flight",
+    "head_mounted_device",
+    "health_and_beauty",
+    "local_bar",
+    "menu_book",
     "pause_circle",
     "play_circle",
+    "public",
+    "spa",
     "volume_off",
     "volume_up"
   ],
@@ -1279,6 +1288,22 @@
         "Next",
         "Citation",
         "New thread"
+      ]
+    },
+    {
+      "name": "Topic interests",
+      "group": "Navigation and saved",
+      "note": "20px filled Material Symbols. Unselected icons inherit the neutral tile label; selected icons use dark text on the supplied topic fill, with white on the deep purple Tech tile.",
+      "states": [
+        "Beauty",
+        "Books",
+        "Food & Drink",
+        "Wellness",
+        "Style",
+        "Tech",
+        "Fitness",
+        "Culture",
+        "Travel"
       ]
     }
   ]

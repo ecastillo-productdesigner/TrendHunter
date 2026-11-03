@@ -15,6 +15,15 @@
 .ds-swatch-color[data-token="--color-text-accent"] { background: var(--color-text-accent); }
 .ds-swatch-color[data-token="--color-text-on-topic"] { background: var(--color-text-on-topic); }
 .ds-swatch-color[data-token="--color-text-body-link"] { background: var(--color-text-body-link); }
+.ds-swatch-color[data-token="--color-topic-beauty"] { background: var(--color-topic-beauty); }
+.ds-swatch-color[data-token="--color-topic-books"] { background: var(--color-topic-books); }
+.ds-swatch-color[data-token="--color-topic-food-drink"] { background: var(--color-topic-food-drink); }
+.ds-swatch-color[data-token="--color-topic-wellness"] { background: var(--color-topic-wellness); }
+.ds-swatch-color[data-token="--color-topic-style"] { background: var(--color-topic-style); }
+.ds-swatch-color[data-token="--color-topic-tech"] { background: var(--color-topic-tech); }
+.ds-swatch-color[data-token="--color-topic-fitness"] { background: var(--color-topic-fitness); }
+.ds-swatch-color[data-token="--color-topic-culture"] { background: var(--color-topic-culture); }
+.ds-swatch-color[data-token="--color-topic-travel"] { background: var(--color-topic-travel); }
 .ds-swatch-color[data-token="--color-scrim"] { background: var(--color-scrim); }
 .ds-swatch-color[data-token="--color-icon-avatar"] { background: var(--color-icon-avatar); }
 .ds-swatch-color[data-token="--color-icon-default"] { background: var(--color-icon-default); }
