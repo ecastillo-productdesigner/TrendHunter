@@ -65,6 +65,7 @@ def build_button_reference(project, out):
         icon='<span class="auth-apple-icon"></span>' if provider=='Apple' else '<span class="auth-button-icon"><img src="../assets/auth/icon-google.png" alt=""></span>'
         pair('Continue with '+provider,f'<button class="auth-button auth-button--provider">{icon}Continue with {provider}</button>',f'<button class="auth-button auth-button--provider ds-provider-hover">{icon}Continue with {provider}</button>')
     pair('Continue with Email','<span class="auth-button auth-button--email"><span class="auth-email-icon"></span>Continue with Email</span>','<span class="auth-button auth-button--email ds-email-hover"><span class="auth-email-icon"></span>Continue with Email</span>')
+    pair('Follow collection', '<button class="follow-button" aria-pressed="false">Follow</button>', '<button class="follow-button" aria-pressed="true">Following</button>', 'Following')
     pair('Collection pill','<span class="pill-button">Collection__MOMENTUM_RISING__</span>','<span class="pill-button ds-pill-hover">Collection__MOMENTUM_RISING__</span>')
     pair('Story collection label','<span class="trend-card-collection">Collection__MOMENTUM_RISING__</span>','<span class="trend-card-collection ds-collection-hover">Collection__MOMENTUM_RISING__</span>')
     shortcut='<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>'

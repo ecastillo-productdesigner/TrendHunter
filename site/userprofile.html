@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=read-more-unified-1">
+  <link rel="stylesheet" href="feed.css?v=collection-follow-1">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -120,7 +120,8 @@
       </div>
     </section>
     <section id="profile-collections" class="profile-panel" role="tabpanel" aria-labelledby="profile-collections-tab" data-profile-panel="collections" hidden>
-      <div class="profile-empty-state" role="status">
+      <ul class="collection-list" data-followed-list hidden></ul>
+      <div class="profile-empty-state" data-followed-empty role="status">
         <h2 class="profile-empty-title">No collections yet</h2>
         <p class="profile-empty-copy">Follow collections from their detail pages to track them here</p>
       </div>
@@ -198,5 +199,6 @@
   </button>
   <script src="settings.js?v=2"></script>
 
+  <script type="module" src="collections.js?v=1"></script>
 </body>
 </html>

@@ -57,8 +57,9 @@
       item.hidden = Boolean(direction && !story.querySelector(`.collection-momentum--${direction}`));
       if (!item.hidden) count += 1;
     }
+    const followedCount = directory.querySelectorAll('[data-followed-list] > li').length;
     status.textContent = view === 'collections'
-      ? `${directory.querySelectorAll('.collection-list > li').length} collections`
+      ? `${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
       : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : ''}`;
 
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);

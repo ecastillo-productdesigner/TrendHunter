@@ -603,6 +603,17 @@ button {
   text-align: left;
 }
 .article-collection:has(.collection-momentum) { flex-wrap: wrap; }
+.trend-card:not(.trend-card--editorial) .trend-card-collection:has(.collection-momentum) {
+  width: max-content;
+  flex-wrap: nowrap;
+}
+.trend-card:not(.trend-card--editorial) .trend-card-collection-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
 /* ===========================
    Shared — Primary button
@@ -812,16 +823,12 @@ button {
   flex-direction: column;
   gap: var(--spacing-layout-lg);
   margin: var(--spacing-layout-lg) var(--spacing-component-ms);
-  padding: var(--spacing-layout-md);
-  background: var(--color-background-surface-raised);
-  border: var(--stroke-default) solid var(--color-border-default);
-  border-radius: var(--radius-x-sm);
+  padding: 0;
 }
+.feed-collection-directory [hidden],
+#profile-collections [data-followed-list][hidden] { display: none; }
 @media (min-width: 600px) {
-  .feed-collection-directory {
-    margin: 0 0 var(--spacing-layout-lg);
-    padding: var(--spacing-layout-lg);
-  }
+  .feed-collection-directory { margin: 0 0 var(--spacing-layout-lg); }
 }
 @media (min-width: 960px) {
   .feed-navigation { justify-content: center; }
@@ -1576,7 +1583,7 @@ a.story-lockup:hover .story-lockup-headline {
 =========================== */
 .toast {
   position: fixed;
-  z-index: 20;
+  z-index: 60; /* Above the prototype settings button, so toast actions remain tappable. */
   left: 50%;
   /* Clears the iPhone home indicator (needs viewport-fit=cover) */
   bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom, 0px));
@@ -1586,6 +1593,7 @@ a.story-lockup:hover .story-lockup-headline {
   justify-content: space-between;
   gap: var(--spacing-layout-md);
   width: calc(100% - var(--layout-page-gutter) * 2);
+  max-width: calc(100vw - var(--layout-page-gutter) * 2);
   padding: var(--spacing-layout-md);
   background-color: var(--toast-bg);
   /* Inside stroke, as in Figma, so the border doesn't add to the 56px height */
@@ -1599,6 +1607,7 @@ a.story-lockup:hover .story-lockup-headline {
 
 .toast-content {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: var(--spacing-component-sm);
 }
@@ -1620,7 +1629,7 @@ a.story-lockup:hover .story-lockup-headline {
   }
 
   .toast-message {
-    white-space: nowrap;
+    white-space: normal;
   }
 }
 
@@ -4173,6 +4182,18 @@ body:has(.edit-profile-modal[open]) {
   letter-spacing: var(--type-letter-spacing-button);
   text-transform: uppercase;
   color: var(--color-text-tertiary);
+}
+
+/* Following reuses the primary DS colors and retains the Follow control's dimensions. */
+.follow-button { cursor: pointer; }
+.follow-button[aria-pressed="true"] {
+  background-color: var(--buttons-primary-bg-default);
+  border-color: var(--buttons-primary-bg-default);
+  color: var(--buttons-primary-text-default);
+}
+.follow-button:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--spacing-component-xs);
 }
 
 /* ===========================
