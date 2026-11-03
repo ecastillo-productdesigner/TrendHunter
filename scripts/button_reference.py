@@ -2,6 +2,7 @@
 import html
 import json
 import re
+from collection_momentum import momentum_markup
 
 ANCHOR_CLASSES = {'button-primary', 'pill-button', 'auth-button', 'nav-login', 'nav-predictions', 'drawer-link', 'answer-outline-button', 'prediction-card-more', 'nav-back', 'channel-button', 'trend-card-collection', 'share-sheet-email', 'avatar'}
 
@@ -64,8 +65,8 @@ def build_button_reference(project, out):
         icon='<span class="auth-apple-icon"></span>' if provider=='Apple' else '<span class="auth-button-icon"><img src="../assets/auth/icon-google.png" alt=""></span>'
         pair('Continue with '+provider,f'<button class="auth-button auth-button--provider">{icon}Continue with {provider}</button>',f'<button class="auth-button auth-button--provider ds-provider-hover">{icon}Continue with {provider}</button>')
     pair('Continue with Email','<span class="auth-button auth-button--email"><span class="auth-email-icon"></span>Continue with Email</span>','<span class="auth-button auth-button--email ds-email-hover"><span class="auth-email-icon"></span>Continue with Email</span>')
-    pair('Collection pill','<span class="pill-button">Collection<span class="trend-icon trend-icon--up"></span></span>','<span class="pill-button ds-pill-hover">Collection<span class="trend-icon trend-icon--up"></span></span>')
-    pair('Story collection label','<span class="trend-card-collection">Collection<span class="trend-icon trend-icon--up"></span></span>','<span class="trend-card-collection ds-collection-hover">Collection<span class="trend-icon trend-icon--up"></span></span>')
+    pair('Collection pill','<span class="pill-button">Collection__MOMENTUM_RISING__</span>','<span class="pill-button ds-pill-hover">Collection__MOMENTUM_RISING__</span>')
+    pair('Story collection label','<span class="trend-card-collection">Collection__MOMENTUM_RISING__</span>','<span class="trend-card-collection ds-collection-hover">Collection__MOMENTUM_RISING__</span>')
     shortcut='<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>'
     pair('Make your call · sticky pill',f'<button class="button-primary prediction-shortcut ds-shortcut-example">Make your call{shortcut}</button>',f'<button class="button-primary prediction-shortcut ds-shortcut-example ds-shortcut-hover">Make your call{shortcut}</button>')
     pair('Make your call · comparison','<button class="button-primary profile-call-start">Make your call</button>','<button class="button-primary profile-call-start ds-call-start-hover">Make your call</button>')
@@ -80,4 +81,5 @@ def build_button_reference(project, out):
     pair('Share · keyboard focus','<span class="article-share"><span class="article-share-icon"></span></span>','<span class="article-share ds-share-focus"><span class="article-share-icon"></span></span>','Keyboard focus · 2px ring / 4px offset')
     pair('Story Bookmark','<span class="trend-card-action bookmark-button" aria-pressed="false"><span class="bookmark-icon"></span></span>','<span class="trend-card-action bookmark-button ds-story-bookmark-hover" aria-pressed="false"><span class="bookmark-icon"></span></span>')
     pair('Copy link confirmation','<span class="share-menu-item"><span class="share-menu-icon share-menu-icon--link"></span>Copy link</span>','<span class="share-menu-item is-copied"><span class="share-menu-icon share-menu-icon--link"></span>Link Copied</span>','Copied · 5 seconds')
+    states = [s.replace('__MOMENTUM_RISING__', momentum_markup()).replace('__MOMENTUM_FALLING__', momentum_markup('falling')) for s in states]
     return f'''<section id="buttons" class="ds-section"><div class="ds-section-heading"><p class="ds-eyebrow">Button reference</p><h2>Buttons and states</h2><p>All button markup variants found in the app source, including links styled as buttons and controls generated at runtime. Static previews cannot sign in, vote, share or change your account.</p></div><p class="ds-note">{len(inventory)} source variants. The state comparisons below show only states implemented in the product. Icon-only states are also documented in <a class="ds-text-link" href="#icons">Icons</a>.</p><div class="ds-button-state-families">{''.join(states)}</div><details class="ds-inventory" id="button-source-inventory"><summary>All source variants ({len(inventory)})</summary><label class="ds-icon-search">Find a button<input id="ds-button-search" type="search" placeholder="Try share, auth, vote, filter…"></label><div class="ds-button-inventory-grid">{''.join(cards)}</div><p id="ds-button-empty" hidden>No matching buttons.</p></details><p class="ds-note">The inventory is generated from site HTML and JavaScript. Hosting password-gate controls and controls belonging only to this design reference are outside the app inventory. <a class="ds-text-link" href="buttons.json" download>Download the button inventory</a>.</p></section>''',len(inventory)

@@ -20,6 +20,8 @@
 .ds-swatch-color[data-token="--color-icon-default"] { background: var(--color-icon-default); }
 .ds-swatch-color[data-token="--color-icon-signal"] { background: var(--color-icon-signal); }
 .ds-swatch-color[data-token="--color-icon-signal-secondary"] { background: var(--color-icon-signal-secondary); }
+.ds-swatch-color[data-token="--color-interest-rising"] { background: var(--color-interest-rising); }
+.ds-swatch-color[data-token="--color-interest-falling"] { background: var(--color-interest-falling); }
 .ds-swatch-color[data-token="--color-icon-inverse"] { background: var(--color-icon-inverse); }
 .ds-swatch-color[data-token="--color-icon-dim"] { background: var(--color-icon-dim); }
 .ds-swatch-color[data-token="--color-text-inverse"] { background: var(--color-text-inverse); }

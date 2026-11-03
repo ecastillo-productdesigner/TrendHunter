@@ -74,7 +74,9 @@
   --color-icon-default: #D1D5DB;
   --color-icon-signal: #BEFC4F;
   --color-icon-signal-secondary: #FD4D13;
-  --trend-up-icon: #BEFC4F; /* every up arrow: lime.500 in both themes */
+  --trend-up-icon: #BEFC4F; /* lime.500 retained for existing action accents */
+  --color-interest-rising: var(--color-icon-signal);
+  --color-interest-falling: var(--prediction-vote-out);
   --trend-up-icon-outline: transparent; /* light theme rims up arrows on light backgrounds */
 
   /* Saved bookmark and signed-in Profile icon. They stay lime.500 in both themes */
@@ -543,54 +545,63 @@ button {
   background-color: var(--buttons-tertiary-bg-hover);
 }
 
-/* Mono icons are drawn with a mask so their color follows the theme tokens */
-.trend-icon {
-  width: var(--icon-size-trend);
-  height: var(--icon-size-trend);
-  flex-shrink: 0;
-  mask: var(--icon-mask) center / contain no-repeat;
-  -webkit-mask: var(--icon-mask) center / contain no-repeat;
+/* Collection interest: directional bar + percentage, replacing the trend arrows.
+   The 22% / 20% values are illustrative prototype changes. The bar is a
+   direction cue matching the supplied reference, not a percentage progress bar. */
+.collection-momentum {
+  --collection-momentum-color: var(--color-interest-rising);
+  --collection-momentum-label: var(--collection-momentum-color);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-component-ms);
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--collection-momentum-label);
+  font-family: var(--type-font-display);
+  font-size: var(--type-size-16);
+  font-weight: var(--type-weight-bold);
+  line-height: var(--type-line-height-ui-sm);
+  vertical-align: middle;
 }
-
-.trend-icon--up {
-  position: relative;
-  mask: none;
-  -webkit-mask: none;
+.collection-momentum--falling { --collection-momentum-color: var(--color-interest-falling); }
+.collection-momentum-track {
+  display: flex;
+  width: calc(var(--spacing-layout-xl) * 2);
+  height: calc(var(--stroke-thick) * 2);
+  overflow: hidden;
+  border-radius: var(--radius-x-sm);
+  background: color-mix(in srgb, var(--collection-momentum-color) 20%, transparent);
 }
-
-/* Up arrow: lime fill (::before) with a 0.5px rim (::after), shown in light theme */
-.trend-icon--up::before,
-.trend-icon--up::after {
-  content: "";
-  position: absolute;
-  inset: 0;
+.collection-momentum-fill {
+  width: 72%;
+  height: 100%;
+  background: var(--collection-momentum-color);
 }
-
-.trend-icon--up::before {
-  background-color: var(--trend-up-icon);
-  mask: url("assets/feed/icon-trending-up.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-trending-up.svg") center / contain no-repeat;
+.collection-momentum--falling .collection-momentum-track { justify-content: flex-end; }
+:root[data-theme="light"] .collection-momentum {
+  --collection-momentum-label: color-mix(in srgb, var(--collection-momentum-color) 30%, var(--color-text-primary));
 }
-
-.trend-icon--up::after {
-  background-color: var(--trend-up-icon-outline);
-  mask: url("assets/feed/icon-trending-up-stroke.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-trending-up-stroke.svg") center / contain no-repeat;
+:root[data-theme="light"] .trend-card:not(.trend-card--editorial) .collection-momentum {
+  --collection-momentum-label: var(--collection-momentum-color);
 }
-
-.trend-icon--down {
-  --icon-mask: url("assets/feed/icon-trending-down.svg");
-  background-color: var(--color-icon-signal-secondary);
+.pill-button:has(.collection-momentum) {
+  flex-wrap: wrap;
+  padding-inline: var(--spacing-layout-md);
+  text-align: center;
 }
-
-.trend-card-collection .trend-icon--up::before {
-  background-color: var(--trend-card-signal);
+.trend-card-collection:has(.collection-momentum) {
+  max-width: calc(100% - var(--spacing-layout-xl));
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  white-space: normal;
 }
-
-/* On the card photos the arrow needs no rim */
-.trend-card-collection .trend-icon--up::after {
-  content: none;
+.trend-card--editorial .trend-card-collection:has(.collection-momentum) {
+  max-width: 100%;
+  justify-content: flex-start;
+  text-align: left;
 }
+.article-collection:has(.collection-momentum) { flex-wrap: wrap; }
 
 /* ===========================
    Shared — Primary button
@@ -3638,48 +3649,12 @@ body:has(.edit-profile-modal[open]) {
   color: var(--color-text-primary);
 }
 
-/* Keep the last word and trend arrow together when a heading wraps. */
+/* Keep the final collection word and interest indicator together when possible. */
 .masthead-title-tail {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--spacing-component-sm);
-  white-space: nowrap;
-}
-.masthead-title-tail :is(.sparkline-up, .sparkline-down) { flex-shrink: 0; }
-
-.sparkline-up {
-  position: relative;
-  width: var(--icon-size-lg);
-  height: var(--icon-size-lg);
-}
-
-/* Lime fill (::before) with a 0.5px rim (::after), shown in light theme like the small up arrows */
-.sparkline-up::before,
-.sparkline-up::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-.sparkline-up::before {
-  background-color: var(--trend-up-icon);
-  mask: url("assets/feed/icon-sparkline-up.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-sparkline-up.svg") center / contain no-repeat;
-}
-
-.sparkline-up::after {
-  background-color: var(--trend-up-icon-outline);
-  mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-sparkline-up-stroke.svg") center / contain no-repeat;
-}
-
-.sparkline-down {
-  width: var(--icon-size-lg);
-  height: var(--icon-size-lg);
-  flex-shrink: 0;
-  background-color: var(--color-icon-signal-secondary);
-  mask: url("assets/feed/icon-trending-down.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-trending-down.svg") center / contain no-repeat;
 }
 
 .masthead-description {

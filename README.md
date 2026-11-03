@@ -116,7 +116,7 @@ Desktop Trend Detail pages (960px and above) use four separate content-sized pan
 
 ## Experimental feed cards
 
-The Experimental branch applies the image-first reference layout to all 19 home-feed story cards: bordered surface, 2:1 media, collection and trend arrow, full headline and an Editorial footer: original author portrait and full name on the left, with Share and Bookmark on the right. Image and headline links open the matching story; the video frame toggles playback. The feed replaces summaries and Go Deeper with these direct article links. Other pages retain their portrait story cards.
+The Experimental branch applies the image-first reference layout to all 19 home-feed story cards: bordered surface, 2:1 media, collection and interest indicator, full headline and an Editorial footer: original author portrait and full name on the left, with Share and Bookmark on the right. Image and headline links open the matching story; the video frame toggles playback. The feed replaces summaries and Go Deeper with these direct article links. Other pages retain their portrait story cards.
 
 Spacing uses existing DS tokens: 12px phone gutters, 16px phone card padding, 24px card padding from 600px, 16px between media / collection / headline, 24px before actions, 24px between actions and 24px between cards. From 600px, cards fill the 482px center column: its surrounding border, background, list inset and sticky top band are removed. The 24px gap below navigation and between cards remains. The DS reference includes the live component at #experimental-feed-cards.
 
@@ -127,3 +127,8 @@ Experimental discovery modules use bordered panels matching the feed: 16px phone
 Trending Videos follows story twelve on mobile and desktop, with four intentional copies of the existing retailtainment clip. Portrait 9:16 slides occupy 75% of the row with 16px gaps and a next-video peek. Clips begin paused, have play/pause and mute controls, and only one carousel clip plays at a time. Offscreen/background playback pauses. Swipe or focus the carousel and use Left / Right to browse. The mobile Answers module follows three stories after Trending Videos.
 
 The selected Editorial layout uses the original Share and Bookmark SVG masks and existing author portraits. The left author credit reuses the DS contributor byline (14px Barlow Condensed, 8px portrait-to-name gap), and right-side actions retain their 24px spacing and existing states. All 19 story destinations, author links and bookmark metadata are preserved.
+
+
+## Experimental collection interest
+
+Collection trend arrows are replaced throughout the prototype by the supplied bar-and-percentage treatment: DS lime for rising and DS red for falling, with a tinted track and opposite fill alignment. Values are illustrative examples (22% rising / 20% falling), not live internet-popularity analytics. The 64 × 6px bar is a direction cue, not progress toward 100%; its 72% colored segment matches the reference. Labels and tooltips identify direction and percentage. The DS uses 8px from collection name to indicator, 12px between bar and percentage, 16px pill side padding, 2px corners, and 16px bold Barlow Condensed. Indicators stay together and wrap on narrow layouts. Existing collection destinations and sample directions are preserved. Share, Bookmark, Shop Now and navigation arrows are unchanged.

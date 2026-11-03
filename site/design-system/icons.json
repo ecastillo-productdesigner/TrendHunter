@@ -545,18 +545,14 @@
     },
     {
       "path": "assets/feed/icon-sparkline-up-stroke.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
       "path": "assets/feed/icon-sparkline-up.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
@@ -763,26 +759,20 @@
     },
     {
       "path": "assets/feed/icon-trending-down.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
       "path": "assets/feed/icon-trending-up-stroke.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
       "path": "assets/feed/icon-trending-up.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
+      "references": [],
+      "used": false,
       "brand": false
     },
     {
@@ -1226,12 +1216,12 @@
       ]
     },
     {
-      "name": "Trend arrows",
+      "name": "Collection interest",
       "group": "Predictions and signals",
-      "note": "Green up and red down directions stay consistent per collection. Pills use 12px; mastheads use 24px up/down arrows. The up arrow has a supporting light-theme outline layer.",
+      "note": "Directional 64 \u00d7 6px bar with a 12px gap to a 16px Barlow Condensed percentage. Rising uses DS lime; falling uses DS red. The bar fills from opposite ends. 22% and 20% are illustrative changes, not live analytics. Screen readers and tooltips identify rising or falling. Replaces collection arrows everywhere.",
       "states": [
-        "Up \u00b7 pill",
-        "Down \u00b7 pill"
+        "Interest rising \u00b7 sample 22%",
+        "Interest falling \u00b7 sample 20%"
       ]
     },
     {

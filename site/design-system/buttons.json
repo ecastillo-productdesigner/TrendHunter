@@ -2342,7 +2342,7 @@
       "key": "a:pill-button",
       "classes": "pill-button",
       "tag": "a",
-      "name": "Everyday Living",
+      "name": "Everyday Living 22%",
       "sources": [
         "channel-everyday-living.html",
         "channel-everyday-living.html",
@@ -4017,7 +4017,7 @@
       "key": "a:trend-card-collection",
       "classes": "trend-card-collection",
       "tag": "a",
-      "name": "Budgeted Living",
+      "name": "Budgeted Living 22%",
       "sources": [
         "channel-everyday-living.html",
         "channel-everyday-living.html",
