@@ -62,3 +62,30 @@ test('card, result and profile arrivals all select the matching story, including
   const read = load({ arrival: { to: '/TrendHunter/trend.html', predictionId: 'skin-longevity', source: 'profile' } });
   assert.equal(read('articleStoryArrival || null'), null);
 });
+
+test('open directory includes earlier predictions, sorts deadlines and excludes resolved history', () => {
+  const read = load();
+  const items = read('openPredictionList()');
+  assert.equal(items.length, 14);
+  assert.equal(new Set(items.map(item => item.id)).size, 14);
+  assert.equal(items.filter(item => item.publishedOn < '2026-11-03').length, 4);
+  assert.ok(items.every(item => !item.resolved && item.closesOn >= '2026-11-03'));
+  assert.deepEqual(items.map(item => item.closesOn), items.map(item => item.closesOn).sort());
+});
+
+test('not-yet-voted directory excludes only valid saved calls and can reach an empty state', () => {
+  const read = load();
+  assert.equal(read("openPredictionList({'telehealth-trt':'in','smart-ring-wind-down':'out','ai-holidays':'skip'}, 'unvoted').length"), 12);
+  assert.equal(read("openPredictionList(Object.fromEntries(ALL_OPEN_PREDICTIONS.map(p => [p.id,'in'])), 'unvoted').length"), 0);
+  assert.equal(read("openPredictionList({'telehealth-trt':'in'}, 'all').length"), 14);
+});
+
+test('an earlier open prediction arrives first without joining the daily catalogue', () => {
+  const arrival = { to: '/TrendHunter/trend-smart-ring-sleep.html', predictionId: 'smart-ring-wind-down', source: 'open' };
+  const read = load({ arrival, pathname: arrival.to });
+  assert.equal(read('articleStoryArrival.id'), 'smart-ring-wind-down');
+  const ids = read('articleDeckQueue({}, [], articleStoryArrival).queue.map(p => p.id)');
+  assert.equal(ids[0], 'smart-ring-wind-down');
+  assert.equal(ids.length, 11);
+  assert.equal(read('PREDICTIONS.length'), 10);
+});

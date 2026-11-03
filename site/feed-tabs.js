@@ -1,5 +1,7 @@
 import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './feed-personalization.js';
 
+import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots } from './recommendation-feedback.js';
+
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
   const navigation = document.querySelector('[data-feed-tabs]');
@@ -19,6 +21,7 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
   const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
   const rankedFallingItems = [...fallingItems].sort((a, b) => percentage(a) - percentage(b));
   let preferences = readSelectedTopics();
+  let feedback = readRecommendationFeedback();
   let currentOrder = '';
   const topicsFor = item => {
     const story = item.querySelector(':scope > .trend-card');
@@ -45,13 +48,13 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
     list.hidden = view === 'collections';
     directory.hidden = view !== 'collections';
 
-    const order = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : view === 'for-you' ? `personalized:${preferences.join(',')}` : 'original';
+    const order = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
       const rankedItems = order === 'falling' ? rankedFallingItems : rankedRisingItems;
       const ranked = new Set(rankedItems);
       const items = order === 'rising' || order === 'falling'
         ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
-        : view === 'for-you' ? personalizeStorySlots(originalItems, preferences, topicsFor) : originalItems;
+        : view === 'for-you' ? rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null) : originalItems;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
         if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
@@ -64,7 +67,7 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
     for (const item of list.children) {
       const story = item.querySelector(':scope > .trend-card');
       if (!story) continue;
-      item.hidden = Boolean(direction && !story.querySelector(`.collection-momentum--${direction}`));
+      item.hidden = Boolean(direction && !story.querySelector(`.collection-momentum--${direction}`)) || (view === 'for-you' && feedback.hiddenStories.includes(story.querySelector('.bookmark-button')?.dataset.href));
       if (!item.hidden) count += 1;
     }
     const followedCount = directory.querySelectorAll('[data-followed-list] > li').length;
@@ -100,12 +103,18 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
     select('for-you', { updateUrl: true });
     tabs[0].focus({ preventScroll: true });
   });
+  document.addEventListener('feed-recommendations-updated', () => {
+    feedback = readRecommendationFeedback();
+    select('for-you', { updateUrl: true, resetScroll: false });
+  });
   window.addEventListener('storage', event => {
-    if (event.key !== TOPIC_STORAGE_KEY) return;
+    if (![TOPIC_STORAGE_KEY, RECOMMENDATION_FEEDBACK_KEY].includes(event.key)) return;
+    feedback = readRecommendationFeedback();
     preferences = readSelectedTopics();
     select(viewFromUrl(), { resetScroll: false });
   });
   window.addEventListener('pageshow', () => {
+    feedback = readRecommendationFeedback();
     preferences = readSelectedTopics();
     select(viewFromUrl(), { resetScroll: false });
   });

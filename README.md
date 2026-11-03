@@ -131,7 +131,6 @@ The selected Editorial layout uses the original Share and Bookmark SVG masks and
 
 ## Experimental collection interest
 
-Collection trend arrows are replaced throughout the prototype by the supplied bar-and-percentage treatment: DS lime for rising and DS red for falling, with a tinted track and opposite fill alignment. Each collection has a stable, varied sample percentage, not live internet-popularity analytics. Values come from scripts/collection_momentum.py and stay consistent across links and mastheads. The 48 × 6px bar is a direction cue, not progress toward 100%; its 72% colored segment matches the reference. Labels and tooltips identify direction and percentage. The DS uses 8px from collection name to indicator, 12px between bar and percentage, 16px pill side padding, 2px corners, and 14px bold Barlow Condensed percentages. Indicators stay together and wrap on narrow layouts. Existing collection destinations and sample directions are preserved. Share, Bookmark, Shop Now and navigation arrows are unchanged.
 
 
 ## Experimental feed navigation
@@ -155,20 +154,32 @@ The mobile For You feed adds Hunt What You Like after three story cards followin
 Signed-out Bookmark actions go straight to `login.html` and remember the originating page for the existing return flow. No bookmark authentication pop-up is shown. Collections shows only followed pills, without a frame or Following label. For You retains the feed footer; Collections, Trending Up, Trending Down and the standalone Daily Predictions page omit it. Trending Down orders declines from smallest to largest (7%, 12%, 20%, 20% in the current sample).
 
 
-Two illustrative For You story cards display Recommended for you above the image, using #697182 for the 16px label and 20px filled Material Symbols wand_stars icon. The icon-to-label gap is 8px; the label-to-image gap is 12px. Labels stay with their stories after interest ranking and are hidden in Trending views.
 
 
 The DS Colors section deduplicates resolved color values separately for dark and light themes. Brand, Neutrals, Signals and Topic colors show one compact swatch per value with shared uses grouped underneath. Copy returns the literal color value. All Tokens retains every semantic token and both theme values; no product color tokens are removed.
 
 
-The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 12px gap. Recommendation text and wand_stars use #697182.
+The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 12px gap. Recommendation text and the info icon use #697182.
 
 
-All 39 Trend Detail pages end their article text with Members exploring this trend, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS dark overlay surface, 10px corners, 16px phone / 24px desktop padding, 14px bold condensed label and three linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Eight selected articles show an additional and 4 others variant, using fixed illustrative prototype data and 16px Inter; other articles retain the avatar-only version. Both variants are shown in the DS.
+All 39 Trend Detail pages end their article text with Members exploring this trend, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS dark overlay surface, 10px corners, 12px top/bottom padding on desktop and mobile, 16px phone / 24px desktop side padding, 14px bold condensed label and three linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Eight selected articles show an additional and 4 others variant, using fixed illustrative prototype data and 16px Inter; other articles retain the avatar-only version. Both variants are shown in the DS.
 
 
-Public reader profiles (`reader-alex-rivera.html`, `reader-jamie-park.html`, `reader-morgan-lee.html`) use distinct existing prototype photos rather than contributor portraits. They reuse the personal-profile DS and have only Saved, Collections and Predictions. Their fictional sample libraries and calls are read-only, with story/collection navigation and no Posts, editing, bookmarking, following or voting controls. Visiting another reader never displays or modifies the visitor’s own libraries or calls. Regenerate these pages with `python3 scripts/build-reader-profiles.py`. Join them uses the same 16px light Barlow Condensed typography as Login, while retaining its lime underline.
+Public reader profiles (`reader-alex-rivera.html`, `reader-jamie-park.html`, `reader-morgan-lee.html`) use three of the supplied 160px circular community avatars rather than contributor portraits. The unchanged PNGs and their source mapping are in site/assets/readers/. They reuse the personal-profile DS and have only Saved, Collections and Predictions. Their fictional sample libraries and calls are read-only, with story/collection navigation and no Posts, editing, bookmarking, following or voting controls. Visiting another reader keeps their library separate. When the visitor has already voted on the same prediction, their actual saved call appears beneath the member’s badge, using the contributor comparison layout. No new voting controls are added to community profiles. Regenerate these pages with `python3 scripts/build-reader-profiles.py`. Join them uses the same 16px light Barlow Condensed typography as Login, while retaining its lime underline.
 
 Signed-out article avatars have no href, keyboard focus stop or hover state. Signing in enables the profile links. Direct public-reader URLs use the existing browser-only login-and-return flow; read-only community profiles are available after signing in.
 
 All reader profiles and the personal profile show Member since 2026 beneath the name, reusing the 14px muted uppercase profile-role style and 4px identity gap.
+
+
+## Open predictions and recommendation feedback
+
+Daily Predictions has a secondary View all open predictions action with the total, 24px below the stack and still visible after completion. The directory includes the ten daily picks plus four earlier open examples. All / Not yet voted filters, closing-soonest sorting, collection links, published/closing dates and actual saved-vote status are shared across reloads and Back. Each action opens the matching article with the exact selected prediction first. Earlier calls enter personal history without adding the older catalogue to the daily stack. Dates and community percentages are illustrative as of November 3, 2026.
+
+Collection popularity now uses four logo-inspired chevrons, 20 × 14px: lime to the right for rising and red to the left for falling, with progressive opacity. Percentages are hidden visually but retained for accessible labels/tooltips and Trending sorting.
+
+The two recommendation examples use a 20px info icon beside the 16px gray label. The complete label is a 48px target opening Why this recommendation. Reasons mention selected interests only when the story actually matches, otherwise describe the suggested collection. More like this saves a preferred collection and prioritizes its stories in For You; Not interested hides that story from For You with an Undo toast. Feedback is browser-local, restores on reload, and leaves Trending views, topic choices and collection follows separate. Discovery modules keep their slots.
+
+The recommendation overlay heading reuses the DS Card headline class: 28px / 28px Barlow Condensed, weight 800 and uppercase, retaining the overlay’s light text color.
+
+Recommendation feedback uses outlined Material Symbols thumb_up and thumb_down icons at 24px in 48px circular targets, with accessible labels/tooltips More like this and Not interested. The local preference and Undo behavior is unchanged.

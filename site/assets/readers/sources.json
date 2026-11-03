@@ -1,0 +1,20 @@
+{
+  "note": "User-supplied community avatars. Names, libraries and votes are fictional prototype examples; names do not identify the supplied portraits.",
+  "avatars": [
+    {
+      "profile": "reader-alex-rivera.html",
+      "asset": "alex-rivera.png",
+      "source": "circular_avatars_160x160/avatar_02.png"
+    },
+    {
+      "profile": "reader-jamie-park.html",
+      "asset": "jamie-park.png",
+      "source": "circular_avatars_160x160/avatar_01.png"
+    },
+    {
+      "profile": "reader-morgan-lee.html",
+      "asset": "morgan-lee.png",
+      "source": "circular_avatars_160x160/avatar_03.png"
+    }
+  ]
+}

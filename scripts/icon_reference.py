@@ -81,7 +81,7 @@ def build_icon_reference(project, out):
             state('Creator chip · 12px', f'<span class="prediction-badge prediction-badge--{direction}">'+span('prediction-badge-icon')+'</span>'),
             state('Resolved · 12px', f'<span class="prediction-badge prediction-badge--{direction} prediction-badge--resolved">'+span('prediction-badge-icon')+'</span>'),
             state('Reader comparison', f'<span class="prediction-result--comparison"><span class="prediction-badge prediction-badge--{direction} profile-reader-badge">'+span('prediction-badge-icon')+'</span></span>')])
-    add('Collection interest', 'Predictions and signals', 'Directional 48 × 6px bar with a 12px gap to a 14px Barlow Condensed percentage. Rising uses DS lime; falling uses DS red. The bar fills from opposite ends. Values vary by collection and are illustrative changes, not live analytics. Screen readers and tooltips identify rising or falling. Replaces collection arrows everywhere.', [state('Interest rising · sample 22%', momentum_markup()), state('Interest falling · sample 20%', momentum_markup('falling'))])
+    add('Collection interest', 'Predictions and signals', 'Logo-inspired four-chevron indicator in a 20 × 14px box. Rising points right in DS lime; falling points left in DS red, with progressively fading chevrons. Percentages stay in accessible labels and tooltips, and keep the existing Trending sorting; they are hidden visually. Values are illustrative prototype data, not live analytics. Replaces the collection bars everywhere.', [state('Interest rising · sample 22%', momentum_markup()), state('Interest falling · sample 20%', momentum_markup('falling'))])
     add('Prediction context and time', 'Predictions and signals', '16px flip icon for Get context / Back to call. Clock has its own 13×16px box.', [state('Get context / back',span('prediction-card-link-icon'),'prediction'),state('Time',span('prediction-clock-icon'),'prediction')])
     add('Forward and jump', 'Predictions and signals', 'The same forward SVG supports Read more, submit and Make your call. The downward jump is Material Symbols Outlined, FILL 0.', [state('Read more',span('prediction-card-more-icon')),state('Submit', '<span class="answers-submit">'+span('answers-submit-icon')+'</span>'),state('Make your call','<span class="ds-forward-topic">'+span('prediction-card-more-icon')+'</span>'),state('Jump down',span('prediction-shortcut-icon material-symbols-outlined','arrow_downward'))])
     add('Answers sparkles', 'Predictions and signals', 'The Answers symbol is reused for prompts, questions and source labels.', [state('Default',span('answers-sparkle'))])
@@ -93,7 +93,9 @@ def build_icon_reference(project, out):
 
     add('Topic interests', 'Navigation and saved', '20px filled Material Symbols. Unselected icons inherit the neutral tile label; selected icons use dark text on the supplied topic fill, with white on the deep purple Tech tile.', [state('Beauty', span('topic-icon','health_and_beauty')),state('Books', span('topic-icon','menu_book')),state('Food & Drink', span('topic-icon','local_bar')),state('Wellness', span('topic-icon','spa')),state('Style', span('topic-icon','checkroom')),state('Tech', span('topic-icon','head_mounted_device')),state('Fitness', span('topic-icon','directions_bike')),state('Culture', span('topic-icon','public')),state('Travel', span('topic-icon','flight'))])
 
-    add('Recommended for you', 'Predictions and signals', '20px filled wand_stars Material Symbol beside a 16px recommendation label, both #697182. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','wand_stars')+'</span>')])
+    add('Recommended for you', 'Predictions and signals', '20px filled info Material Symbol beside a 16px recommendation label, both #697182. The 48px label-and-icon target opens Why this recommendation, with a reason and More like this / Not interested feedback. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','info')+'</span>')])
+
+    add('Recommendation feedback', 'Answers feedback', '24px outlined Material Symbols thumb_up and thumb_down in 48px circular targets. Labels and tooltips remain More like this and Not interested. Feedback behavior is unchanged.', [state('More like this', '<span class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_up')+'</span>'), state('Not interested', '<span class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_down')+'</span>')])
 
     # Show a shared glyph once; keep context differences in its usage note.
     def merge(names, name, note, choose):
@@ -129,7 +131,7 @@ def build_icon_reference(project, out):
             family['states']=[family['states'][0],family['states'][3]]
             family['note']='Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.'
 
-    expected_fonts = {'arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars'}
+    expected_fonts = {'arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars','info','thumb_up','thumb_down'}
     if set(fonts) != expected_fonts:
         raise ValueError(f'Update icon states for Material Symbols: {set(fonts) ^ expected_fonts}')
     manifest_assets = []

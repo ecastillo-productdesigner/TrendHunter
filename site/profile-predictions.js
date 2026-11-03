@@ -50,7 +50,7 @@
 
   function personalHistory() {
     const calls = savedCalls();
-    const active = PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
+    const active = ALL_OPEN_PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
     // Illustrative past votes make the resolved state reviewable after a first call.
     return active.length ? [...active, ...resolvedExamples] : [];
@@ -67,11 +67,11 @@
     return [...examples, ...history];
   }
 
-  // A public reader's library never reads or updates the visiting user's votes.
+  // Member history stays separate from the visitor's calls used for comparison.
   function readerHistory() {
     if (!isReader) return [];
     const calls = JSON.parse(profile.dataset.readerCalls || '{}');
-    return PREDICTIONS.filter(prediction => ['in', 'out'].includes(calls[prediction.id]))
+    return ALL_OPEN_PREDICTIONS.filter(prediction => ['in', 'out'].includes(calls[prediction.id]))
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
   }
 
@@ -88,7 +88,7 @@
     postsEmpty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't posted yet. Check back soon, or browse the feed for more from our contributors.`;
   }
 
-  // Author profiles combine the creator's call and the reader's call in one row.
+  // Contributor and community profiles share the same saved-call comparison.
   // Personal status filters continue to use the existing shared result row.
   function comparisonRow(prediction, readerCall) {
     const row = resultRow(prediction, prediction.call, true, {
@@ -106,7 +106,7 @@
         </div>`;
     } else if (prediction.resolved) {
       comparison = '<p class="profile-call-unavailable">No vote to compare</p>';
-    } else if (isSignedIn()) {
+    } else if (isAuthor && isSignedIn()) {
       comparison = `
         <div class="profile-call-comparison profile-call-comparison--pending">
           <button type="button" class="button-primary profile-call-start" data-profile-make-call aria-expanded="false" aria-controls="profile-call-${prediction.id}">Make your call</button>
@@ -137,9 +137,9 @@
     if (!isAuthor && !isReader && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
     const readerCalls = new Map(isSignedIn() ? personalHistory().map(prediction => [prediction.id, prediction.call]) : []);
     const exampleCalls = savedExampleCalls();
-    list.classList.toggle('prediction-results-list--comparison', isAuthor);
+    list.classList.toggle('prediction-results-list--comparison', isAuthor || isReader);
     list.innerHTML = history.map(prediction => {
-      if (isAuthor) {
+      if (isAuthor || isReader) {
         const readerCall = prediction.comparisonExample
           ? (isSignedIn() ? exampleCalls[prediction.id] || prediction.exampleReaderCall : null)
           : readerCalls.get(prediction.id);
@@ -147,7 +147,6 @@
       }
       return resultRow(prediction, prediction.call, true, {
         resolved: prediction.resolved,
-        ...(isReader ? { badgeLabel: `${firstName} is ${prediction.call}` } : {}),
       });
     }).join('');
     list.hidden = history.length === 0;
@@ -157,7 +156,7 @@
     empty.classList.toggle('profile-empty-state--author', isAuthor);
     if (isAuthor) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
     if (!isAuthor) filters.hidden = isReader || personalHistory().length === 0;
-    if (isAuthor && !predictionPanel.hidden && history.length && !entrancePlayed) {
+    if ((isAuthor || isReader) && !predictionPanel.hidden && history.length && !entrancePlayed) {
       entrancePlayed = true;
       playComparisonEntrance(list);
     }

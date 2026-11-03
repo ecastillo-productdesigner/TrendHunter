@@ -141,9 +141,9 @@ const articleMembersTemplate = `
     <p class="article-members-label" id="article-members-label">Members exploring this trend</p>
     <div class="article-members-people">
     <div class="article-members-avatars" role="group" aria-label="Member profiles">
-      <a class="article-member-avatar" data-member-profile="reader-alex-rivera.html" role="img" tabindex="-1" aria-label="Alex Rivera" title="Alex Rivera"><img src="assets/feed/avatar-04.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
-      <a class="article-member-avatar" data-member-profile="reader-jamie-park.html" role="img" tabindex="-1" aria-label="Jamie Park" title="Jamie Park"><img src="assets/feed/avatar-02.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
-      <a class="article-member-avatar" data-member-profile="reader-morgan-lee.html" role="img" tabindex="-1" aria-label="Morgan Lee" title="Morgan Lee"><img src="assets/feed/avatar-06.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+      <a class="article-member-avatar" data-member-profile="reader-alex-rivera.html" role="img" tabindex="-1" aria-label="Alex Rivera" title="Alex Rivera"><img src="assets/readers/alex-rivera.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+      <a class="article-member-avatar" data-member-profile="reader-jamie-park.html" role="img" tabindex="-1" aria-label="Jamie Park" title="Jamie Park"><img src="assets/readers/jamie-park.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
+      <a class="article-member-avatar" data-member-profile="reader-morgan-lee.html" role="img" tabindex="-1" aria-label="Morgan Lee" title="Morgan Lee"><img src="assets/readers/morgan-lee.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
     </div>
     <span class="article-members-others" hidden>and 4 others</span>
     </div>

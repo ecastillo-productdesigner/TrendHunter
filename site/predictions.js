@@ -80,6 +80,68 @@ const PREDICTIONS = [
   },
 ];
 
+// Illustrative catalogue as of November 3, 2026. These dates and vote splits are
+// prototype examples, not live prediction deadlines or community analytics.
+const PREDICTION_DEMO_DATE = '2026-11-03';
+const DAILY_PREDICTION_DETAILS = [
+  ['2026-11-03', 'Andropause & Hormonal Midlife', 'collection-andropause-hormonal-midlife.html'],
+  ['2026-11-04', 'AI & Everyday Life', 'collection-ai-everyday-life.html'],
+  ['2026-11-08', 'Budgeted Living', 'collection-budgeted-living.html'],
+  ['2026-11-10', 'Retailtainment Hubs', 'collection-retailtainment-hubs.html'],
+  ['2026-11-12', 'Protein-Forward Eating', 'collection-protein-forward-eating.html'],
+  ['2026-11-13', 'Evidence-Based Beauty', 'collection-evidence-based-beauty.html'],
+  ['2026-11-15', 'Sleep Medicine', 'collection-sleep-medicine.html'],
+  ['2026-11-17', 'Group & Friend Events', 'collection.html'],
+  ['2026-11-19', 'Group & Friend Events', 'collection.html'],
+  ['2026-11-22', 'Smart Home Energy', 'collection-smart-home-energy.html'],
+];
+const EARLIER_OPEN_PREDICTIONS = [
+  {
+    id: 'smart-ring-wind-down', publishedOn: '2026-10-20', closesOn: '2026-11-05',
+    text: 'Smart rings will become the default way to plan a nightly wind-down routine',
+    context: 'A bedtime reminder adapts to a changing week. This story explores how smart rings could help people plan a wind-down routine that fits their actual evenings.',
+    storyHref: 'trend-smart-ring-sleep.html', sampleInPercent: 64,
+    collection: 'Health Technology', collectionHref: 'collection-health-technology.html',
+  },
+  {
+    id: 'sleep-earbuds-routine', publishedOn: '2026-10-27', closesOn: '2026-11-06',
+    text: 'Sleep earbuds will become a regular part of the bedtime routine',
+    context: 'Comfort, fit and a predictable sound environment matter when a device becomes part of bedtime. The article explores what could turn sleep earbuds into a repeat habit.',
+    storyHref: 'trend-sleep-earbuds.html', sampleInPercent: 42,
+    collection: 'Sleep Medicine', collectionHref: 'collection-sleep-medicine.html',
+  },
+  {
+    id: 'seasonal-produce-box', publishedOn: '2026-10-13', closesOn: '2026-11-09',
+    text: 'Seasonal produce boxes will become a weekly planning shortcut',
+    context: 'A produce delivery gives a household a starting point for meals. This story explores how flexible subscriptions could make seasonal cooking easier to fit into a normal week.',
+    storyHref: 'trend-seasonal-produce.html', sampleInPercent: 68,
+    collection: 'Food as an Experience', collectionHref: 'collection-food-as-an-experience.html',
+  },
+  {
+    id: 'weekend-walking-plans', publishedOn: '2026-10-06', closesOn: '2026-11-14',
+    text: 'Weekend walking groups will become a regular fixture in busy social calendars',
+    context: 'Friends reserve a walking route and time together before the week starts. The story explores how a simple recurring outing could become easier to maintain than a perfect daily plan.',
+    storyHref: 'trend-weekend-walking.html', sampleInPercent: 63,
+    collection: 'Fitness Reset', collectionHref: 'collection-fitness-reset.html',
+  },
+];
+const ALL_OPEN_PREDICTIONS = [
+  ...PREDICTIONS.map((prediction, index) => ({
+    ...prediction, publishedOn: PREDICTION_DEMO_DATE,
+    closesOn: DAILY_PREDICTION_DETAILS[index][0],
+    collection: DAILY_PREDICTION_DETAILS[index][1],
+    collectionHref: DAILY_PREDICTION_DETAILS[index][2],
+  })),
+  ...EARLIER_OPEN_PREDICTIONS,
+];
+
+function openPredictionList(calls = {}, filter = 'all') {
+  return ALL_OPEN_PREDICTIONS
+    .filter(prediction => prediction.closesOn >= PREDICTION_DEMO_DATE)
+    .filter(prediction => filter !== 'unvoted' || !['in', 'out'].includes(calls[prediction.id]))
+    .sort((a, b) => a.closesOn.localeCompare(b.closesOn));
+}
+
 // Fictional profile-only examples also resolve on their related story pages.
 // They stay outside the daily catalogue and keep votes in a separate browser key.
 function profileComparisonExamples(authorId) {
@@ -98,7 +160,7 @@ const PROFILE_RESOLVED_PREDICTIONS = [
 ];
 
 function findPrediction(id) {
-  const standard = [...PREDICTIONS, ...PROFILE_RESOLVED_PREDICTIONS].find(prediction => prediction.id === id);
+  const standard = [...ALL_OPEN_PREDICTIONS, ...PROFILE_RESOLVED_PREDICTIONS].find(prediction => prediction.id === id);
   if (standard) return standard;
   const example = /^profile-example-([a-z-]+)-(in|out|pending)$/.exec(id || '');
   return example ? profileComparisonExamples(example[1]).find(prediction => prediction.id === id) : undefined;

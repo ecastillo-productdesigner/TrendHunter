@@ -40,3 +40,26 @@ test('saved preferences round-trip and ignore duplicates, unknown values and mal
 test('a blocked preference write reports failure so the UI can avoid a false success', () => {
   assert.equal(saveSelectedTopics(['travel'], { setItem() { throw new Error('Blocked'); } }), null);
 });
+
+const { readRecommendationFeedback, saveRecommendationFeedback, rankRecommendationSlots } = await import('../site/recommendation-feedback.js');
+
+test('recommendation feedback persists independently and hiding a story can be undone', () => {
+  let value = '{}';
+  const storage = { getItem: () => value, setItem: (_, next) => { value = next; } };
+  saveRecommendationFeedback('trend.html', 'collection-longevity.html', 'more', storage);
+  saveRecommendationFeedback('trend.html', 'collection-longevity.html', 'less', storage);
+  assert.deepEqual(readRecommendationFeedback(storage), { hiddenStories: ['trend.html'], preferredCollections: ['collection-longevity.html'] });
+  saveRecommendationFeedback('trend.html', 'collection-longevity.html', 'undo', storage);
+  assert.deepEqual(readRecommendationFeedback(storage).hiddenStories, []);
+  assert.equal(saveRecommendationFeedback('https://example.com', 'collection.html', 'more', storage), null);
+  assert.equal(saveRecommendationFeedback('trend.html', 'collection.html', 'more', { getItem: () => '{}', setItem() { throw Error('Blocked'); } }), null);
+});
+
+test('more-like-this prioritizes the selected collection while preserving discovery slots and ties', () => {
+  const items = [{ id: 'a', collection: 'one.html' }, { module: 'answers' }, { id: 'b', collection: 'two.html' }, { id: 'c', collection: 'two.html' }];
+  const ranked = rankRecommendationSlots(items, { preferredCollections: ['two.html'] }, item => item.collection ?? null);
+  assert.deepEqual(ranked.map(item => item.id || item.module), ['b', 'answers', 'c', 'a']);
+  assert.equal(ranked[1], items[1]);
+  assert.equal(new Set(ranked).size, items.length);
+  assert.deepEqual(items.map(item => item.id || item.module), ['a', 'answers', 'b', 'c']);
+});

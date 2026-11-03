@@ -7,20 +7,20 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'site'
 readers = [
-    {'id': 'alex-rivera', 'name': 'Alex Rivera', 'image': 'assets/feed/avatar-04.png',
+    {'id': 'alex-rivera', 'name': 'Alex Rivera', 'image': 'assets/readers/alex-rivera.png',
      'saved': ['trend-retailtainment.html', 'trend-run-club-connections.html'],
      'collections': ['collection-retailtainment-hubs.html', 'collection-fitness-reset.html'],
      'calls': {'retail-events': 'in', 'run-club-connections': 'in', 'sober-socials': 'out'}},
-    {'id': 'jamie-park', 'name': 'Jamie Park', 'image': 'assets/feed/avatar-02.png',
+    {'id': 'jamie-park', 'name': 'Jamie Park', 'image': 'assets/readers/jamie-park.png',
      'saved': ['trend-skin-longevity.html', 'trend-somatic-sleep.html'],
      'collections': ['collection-evidence-based-beauty.html', 'collection-longevity.html'],
      'calls': {'skin-longevity': 'in', 'sleep-routines': 'in', 'protein-coffee': 'out'}},
-    {'id': 'morgan-lee', 'name': 'Morgan Lee', 'image': 'assets/feed/avatar-06.png',
+    {'id': 'morgan-lee', 'name': 'Morgan Lee', 'image': 'assets/readers/morgan-lee.png',
      'saved': ['trend-home-energy.html', 'trend-everyday-protein.html'],
      'collections': ['collection-clean-living-control.html', 'collection-protein-forward-eating.html'],
      'calls': {'home-energy': 'in', 'dollar-stores': 'out', 'protein-coffee': 'in'}},
 ]
-# Existing prototype photos receive fictional reader identities here. These are
+# User-supplied community photos receive fictional reader identities here. These are
 # illustrative public libraries, not real people, saved items, votes or live readers.
 catalog_source = (SITE / 'collection-data.js').read_text()
 catalog = {c['href']: c for c in json.loads(re.search(r'Object.freeze\((\[.*?\])\.map', catalog_source, re.S)[1])}
@@ -64,6 +64,5 @@ for reader in readers:
     page = re.sub(r'  <!-- Edit Profile modal.*?</dialog>\n', '', page, flags=re.S)
     page = re.sub(r'  <!-- Prototype settings.*?<script src="settings.js[^>]+></script>\n', '', page, flags=re.S)
     page = re.sub(r'  <script type="module" src="collections.js[^>]+></script>\n', '', page)
-    page = page.replace('profile-predictions.js?v=read-more-unified-1', 'profile-predictions.js?v=reader-profiles-1')
     (SITE / f"reader-{reader['id']}.html").write_text(page)
 print('Built 3 read-only reader profiles')

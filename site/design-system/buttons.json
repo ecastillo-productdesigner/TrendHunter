@@ -224,6 +224,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -385,6 +386,8 @@
         "feed.html",
         "login.html",
         "login.html",
+        "open-predictions.html",
+        "open-predictions.html",
         "predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
@@ -529,6 +532,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -582,6 +586,15 @@
       "name": "Close",
       "sources": [
         "userprofile.html"
+      ]
+    },
+    {
+      "key": "button:auth-close recommendation-close",
+      "classes": "auth-close recommendation-close",
+      "tag": "button",
+      "name": "Close recommendation information",
+      "sources": [
+        "recommendations.js"
       ]
     },
     {
@@ -1350,6 +1363,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -1691,6 +1705,12 @@
         "feed.html",
         "feed.html",
         "feed.html",
+        "open-predictions.html",
+        "open-predictions.html",
+        "open-predictions.html",
+        "open-predictions.html",
+        "open-predictions.html",
+        "open-predictions.html",
         "predictions.html",
         "predictions.html",
         "predictions.html",
@@ -2145,6 +2165,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -2258,6 +2279,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -2358,6 +2380,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -2458,6 +2481,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -2887,6 +2911,24 @@
       ]
     },
     {
+      "key": "a:prediction-card-more open-prediction-more",
+      "classes": "prediction-card-more open-prediction-more",
+      "tag": "a",
+      "name": "${call ? ",
+      "sources": [
+        "open-predictions.js"
+      ]
+    },
+    {
+      "key": "a:prediction-card-more open-predictions-back",
+      "classes": "prediction-card-more open-predictions-back",
+      "tag": "a",
+      "name": "Daily predictions",
+      "sources": [
+        "open-predictions.html"
+      ]
+    },
+    {
       "key": "a:prediction-card-more prediction-result-more",
       "classes": "prediction-card-more prediction-result-more",
       "tag": "a",
@@ -2983,7 +3025,18 @@
       "tag": "button",
       "name": "All",
       "sources": [
-        "profile-predictions.js"
+        "open-predictions.html",
+        "open-predictions.html"
+      ]
+    },
+    {
+      "key": "button:recommendation-feedback-button",
+      "classes": "recommendation-feedback-button",
+      "tag": "button",
+      "name": "thumb_up",
+      "sources": [
+        "recommendations.js",
+        "recommendations.js"
       ]
     },
     {
@@ -3045,6 +3098,7 @@
         "login-password.html",
         "login-terms.html",
         "login.html",
+        "open-predictions.html",
         "predictions.html",
         "trend-ai-gift-ideas.html",
         "trend-ai-shopping-assistant.html",
@@ -3253,6 +3307,9 @@
         "login.html",
         "login.html",
         "login.html",
+        "open-predictions.html",
+        "open-predictions.html",
+        "open-predictions.html",
         "predictions.html",
         "predictions.html",
         "predictions.html",
@@ -3437,6 +3494,7 @@
         "login-password.html",
         "login-terms.html",
         "login.html",
+        "open-predictions.html",
         "predictions.html",
         "trend-ai-gift-ideas.html",
         "trend-ai-shopping-assistant.html",
@@ -3576,6 +3634,7 @@
         "login-password.html",
         "login-terms.html",
         "login.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -3676,6 +3735,7 @@
         "contributor-sofia-morales.html",
         "contributor.html",
         "feed.html",
+        "open-predictions.html",
         "predictions.html",
         "reader-alex-rivera.html",
         "reader-jamie-park.html",
@@ -3720,6 +3780,15 @@
         "trend-whole-house-water.html",
         "trend.html",
         "userprofile.html"
+      ]
+    },
+    {
+      "key": "button:toast-link",
+      "classes": "toast-link",
+      "tag": "button",
+      "name": "Undo",
+      "sources": [
+        "recommendations.js"
       ]
     },
     {
@@ -4555,6 +4624,16 @@
         "trend-retailtainment.html",
         "trend-sunday-meal-prep.html",
         "trend-weekly-laundry-reset.html"
+      ]
+    },
+    {
+      "key": "button:trend-card-recommendation recommendation-trigger",
+      "classes": "trend-card-recommendation recommendation-trigger",
+      "tag": "button",
+      "name": "Recommended for youinfo",
+      "sources": [
+        "feed.html",
+        "feed.html"
       ]
     }
   ]

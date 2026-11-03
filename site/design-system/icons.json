@@ -106,6 +106,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -205,6 +206,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -312,6 +314,14 @@
       "brand": false
     },
     {
+      "path": "assets/feed/icon-interest-chevrons.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
       "path": "assets/feed/icon-link.svg",
       "references": [
         "feed.css"
@@ -368,6 +378,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -467,6 +478,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -636,6 +648,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -740,6 +753,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -870,6 +884,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -975,6 +990,7 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
+        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -1122,12 +1138,15 @@
     "flight",
     "head_mounted_device",
     "health_and_beauty",
+    "info",
     "local_bar",
     "menu_book",
     "pause_circle",
     "play_circle",
     "public",
     "spa",
+    "thumb_down",
+    "thumb_up",
     "volume_off",
     "volume_up",
     "wand_stars"
@@ -1284,7 +1303,7 @@
     {
       "name": "Collection interest",
       "group": "Predictions and signals",
-      "note": "Directional 48 \u00d7 6px bar with a 12px gap to a 14px Barlow Condensed percentage. Rising uses DS lime; falling uses DS red. The bar fills from opposite ends. Values vary by collection and are illustrative changes, not live analytics. Screen readers and tooltips identify rising or falling. Replaces collection arrows everywhere.",
+      "note": "Logo-inspired four-chevron indicator in a 20 \u00d7 14px box. Rising points right in DS lime; falling points left in DS red, with progressively fading chevrons. Percentages stay in accessible labels and tooltips, and keep the existing Trending sorting; they are hidden visually. Values are illustrative prototype data, not live analytics. Replaces the collection bars everywhere.",
       "states": [
         "Interest rising \u00b7 sample 22%",
         "Interest falling \u00b7 sample 20%"
@@ -1366,9 +1385,18 @@
     {
       "name": "Recommended for you",
       "group": "Predictions and signals",
-      "note": "20px filled wand_stars Material Symbol beside a 16px recommendation label, both #697182. Shown above the image on two illustrative For You cards.",
+      "note": "20px filled info Material Symbol beside a 16px recommendation label, both #697182. The 48px label-and-icon target opens Why this recommendation, with a reason and More like this / Not interested feedback. Shown above the image on two illustrative For You cards.",
       "states": [
         "Default"
+      ]
+    },
+    {
+      "name": "Recommendation feedback",
+      "group": "Answers feedback",
+      "note": "24px outlined Material Symbols thumb_up and thumb_down in 48px circular targets. Labels and tooltips remain More like this and Not interested. Feedback behavior is unchanged.",
+      "states": [
+        "More like this",
+        "Not interested"
       ]
     }
   ]

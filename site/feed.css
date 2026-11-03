@@ -563,45 +563,27 @@ button {
   background-color: var(--buttons-tertiary-bg-hover);
 }
 
-/* Collection interest: directional bar + percentage, replacing the trend arrows.
-   Values vary by collection and are illustrative prototype changes. The bar is a
-   direction cue matching the supplied reference, not a percentage progress bar. */
+/* Logo-inspired collection chevrons; sample percentages remain accessible and
+   available to the existing sort logic while the visual cue shows direction. */
 .collection-momentum {
   --collection-momentum-color: var(--color-interest-rising);
-  --collection-momentum-label: var(--collection-momentum-color);
   display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-component-ms);
   flex: 0 0 auto;
-  white-space: nowrap;
-  color: var(--collection-momentum-label);
-  font-family: var(--type-font-display);
-  font-size: var(--type-size-14);
-  font-weight: var(--type-weight-bold);
-  line-height: var(--type-line-height-ui-xs);
+  align-items: center;
+  color: var(--collection-momentum-color);
   vertical-align: middle;
 }
 .collection-momentum--falling { --collection-momentum-color: var(--color-interest-falling); }
 .collection-momentum-track {
-  display: flex;
-  width: var(--spacing-page-2xl);
-  height: calc(var(--stroke-thick) * 2);
-  overflow: hidden;
-  border-radius: var(--radius-x-sm);
-  background: color-mix(in srgb, var(--collection-momentum-color) 20%, transparent);
-}
-.collection-momentum-fill {
-  width: 72%;
-  height: 100%;
+  display: block;
+  width: var(--icon-size-md);
+  height: var(--type-size-14);
   background: var(--collection-momentum-color);
+  mask: url("assets/feed/icon-interest-chevrons.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-interest-chevrons.svg") center / contain no-repeat;
 }
-.collection-momentum--falling .collection-momentum-track { justify-content: flex-end; }
-:root[data-theme="light"] .collection-momentum {
-  --collection-momentum-label: color-mix(in srgb, var(--collection-momentum-color) 30%, var(--color-text-primary));
-}
-:root[data-theme="light"] .trend-card:not(.trend-card--editorial) .collection-momentum {
-  --collection-momentum-label: var(--collection-momentum-color);
-}
+.collection-momentum--falling .collection-momentum-track { transform: rotate(180deg); }
+.collection-momentum-fill, .collection-momentum-value { display: none; }
 .pill-button:has(.collection-momentum) {
   flex-wrap: wrap;
   padding-inline: var(--spacing-layout-md);
@@ -5283,7 +5265,7 @@ body:has(.auth-prompt[open]) {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-layout-md);
-  padding: var(--spacing-layout-md);
+  padding: var(--spacing-component-ms) var(--spacing-layout-md);
   border-radius: var(--radius-md);
   background: var(--color-background-bg-overlay);
   color: var(--toast-label);
@@ -5332,4 +5314,71 @@ body:has(.auth-prompt[open]) {
 .article-body > .article-members + .prediction-inline-section {
   margin-top: calc(var(--spacing-layout-lg) - var(--spacing-layout-xl));
 }
-@media (min-width: 600px) { .article-members { padding: var(--spacing-layout-lg); } }
+@media (min-width: 600px) { .article-members { padding-inline: var(--spacing-layout-lg); } }
+
+/* All-open-predictions uses the existing secondary action, filters and result type. */
+.predictions-open-link { gap: var(--spacing-component-sm); text-decoration: none; }
+.predictions-open-link .prediction-card-more-icon { flex: 0 0 var(--icon-size-xs); }
+.open-predictions-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-layout-lg);
+  width: 100%;
+  max-width: var(--layout-feed-width);
+  margin: var(--spacing-layout-xl) auto;
+  padding-inline: var(--spacing-layout-md);
+  color: var(--color-text-body);
+  font: var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body);
+}
+.open-predictions-heading { display: flex; flex-direction: column; gap: var(--spacing-component-sm); text-align: center; }
+.open-predictions-back { align-self: flex-start; }
+.open-predictions-back, .open-prediction-more { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); }
+.open-predictions-back .prediction-card-more-icon { transform: rotate(180deg); }
+.open-predictions-summary, .open-prediction-published { color: var(--color-text-dim); font-size: var(--type-size-14); }
+.open-predictions-list { list-style: none; }
+.open-prediction-collection { align-self: flex-start; color: var(--color-text-body-link); font: var(--type-weight-bold) var(--type-size-14)/var(--type-line-height-ui-xs) var(--type-font-display); text-transform: uppercase; text-decoration: underline; text-underline-offset: var(--spacing-component-xs); }
+.open-prediction-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-component-sm); }
+.open-prediction-unvoted { color: var(--color-text-dim); font-size: var(--type-size-14); }
+.open-prediction-more { align-self: flex-start; }
+.open-prediction-more:focus-visible, .open-predictions-back:focus-visible, .open-prediction-collection:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+
+/* The entire recommendation label is a 48px information target; the icon is 20px. */
+.recommendation-trigger {
+  align-self: flex-start;
+  min-height: var(--spacing-page-2xl);
+  margin-block: calc(-1 * var(--spacing-component-ms)) calc(-1 * var(--spacing-layout-md));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.recommendation-trigger:hover { color: var(--color-text-primary); }
+.recommendation-trigger:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.recommendation-dialog {
+  width: min(calc(100% - var(--spacing-layout-xl)), var(--layout-profile-width));
+  max-height: calc(100dvh - var(--spacing-layout-xl));
+  margin: auto;
+  padding: var(--spacing-layout-lg);
+  padding-top: var(--spacing-page-2xl);
+  overflow: auto;
+  border: var(--stroke-default) solid var(--toast-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background-bg-overlay);
+  color: var(--toast-label);
+}
+.recommendation-dialog[open] { display: flex; flex-direction: column; gap: var(--spacing-layout-md); }
+.recommendation-dialog::backdrop { background: rgba(0,0,0,.6); }
+.recommendation-dialog .trend-card-headline { color: inherit; }
+.recommendation-dialog p { font: var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body); }
+.recommendation-close { display: grid; place-items: center; top: var(--spacing-component-xs); right: var(--spacing-component-xs); width: var(--spacing-page-2xl); height: var(--spacing-page-2xl); padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; }
+.recommendation-close .auth-close-icon { width: var(--icon-size-md); height: var(--icon-size-md); background-color: var(--toast-label); }
+.recommendation-close:hover .auth-close-icon { background-color: var(--edit-profile-heading); }
+.recommendation-close:focus-visible { outline: var(--stroke-focus) solid var(--toast-icon-success); outline-offset: calc(-1 * var(--spacing-component-xs)); }
+.recommendation-dialog h2:focus { outline: none; }
+.recommendation-feedback-actions { display: flex; flex-wrap: wrap; gap: var(--spacing-component-ms); }
+.recommendation-feedback-button { display: grid; place-items: center; width: var(--spacing-page-2xl); height: var(--spacing-page-2xl); padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; color: var(--toast-label); cursor: pointer; }
+.recommendation-feedback-button .material-symbols-outlined { font-size: var(--icon-size-lg); line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.recommendation-feedback-button:hover { background: color-mix(in srgb, var(--toast-label) 15%, transparent); color: var(--edit-profile-heading); }
+.recommendation-feedback-button:active { color: var(--toast-icon-success); }
+.recommendation-feedback-button:focus-visible { outline: var(--stroke-focus) solid var(--toast-icon-success); outline-offset: var(--spacing-component-xs); }
