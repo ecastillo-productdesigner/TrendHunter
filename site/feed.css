@@ -759,11 +759,10 @@ button {
 }
 
 /* Feed view navigation — DS display type, 32px tab gaps and selected underline. */
-.has-feed-navigation {
+.page-feed {
   --layout-feed-tabs-height: calc(var(--spacing-layout-lg) + var(--type-line-height-ui-sm) + var(--spacing-component-ms) + var(--stroke-thick) + var(--stroke-default));
   --layout-header-height: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height));
 }
-:root[data-view="sheet"] .has-feed-navigation { --layout-header-height: var(--layout-nav-height); }
 .feed-navigation {
   display: flex;
   align-items: stretch;
@@ -794,9 +793,8 @@ button {
   transition: color 150ms ease, border-color 150ms ease;
 }
 .feed-navigation-tab:hover,
-.feed-navigation-tab[aria-selected="true"],
-.feed-navigation-tab[aria-current="location"] { color: var(--color-text-primary); text-decoration: none; }
-.feed-navigation-tab:is([aria-selected="true"], [aria-current="location"]) { border-bottom-color: var(--filter-tab-active); }
+.feed-navigation-tab[aria-selected="true"] { color: var(--color-text-primary); }
+.feed-navigation-tab[aria-selected="true"] { border-bottom-color: var(--filter-tab-active); }
 .feed-navigation-tab:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: calc(-1 * var(--spacing-component-xs));
