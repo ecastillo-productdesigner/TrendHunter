@@ -17,7 +17,7 @@ else console.log('Collection follow persistence, empty state data and recommenda
 const personalizationAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/feed-personalization.test.mjs')], { encoding: 'utf8' });
 if (personalizationAudit.status !== 0) failures.push(personalizationAudit.stdout + personalizationAudit.stderr);
 else console.log('Feed interest ranking, module cadence and preference persistence passed');
-for (const test of ['people-follow', 'badges']) {
+for (const test of ['people-follow', 'badges', 'comments']) {
   const audit = spawnSync(process.execPath, ['--test', path.join(projectRoot, `scripts/${test}.test.mjs`)], { encoding: 'utf8' });
   if (audit.status !== 0) failures.push(audit.stdout + audit.stderr);
   else console.log(`${test} behavior passed`);

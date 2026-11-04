@@ -15,17 +15,16 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   const status = panel.querySelector('#feed-view-status');
   const main = panel.closest('main');
   const sortFilters = panel.querySelector('[data-trend-sort-filters]');
-  const sorts = ['all','ascending','descending'];
   const sortFromUrl = () => {
     const value = new URLSearchParams(location.search).get('sort');
-    return sorts.includes(value) ? value : 'all';
+    return ['smallest','ascending'].includes(value) ? 'smallest' : 'biggest';
   };
   const originalItems = [...list.children];
   const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
   const fallingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--falling'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
   const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
-  const rankedFallingItems = [...fallingItems].sort((a, b) => percentage(a) - percentage(b));
+  const rankedFallingItems = [...fallingItems].sort((a, b) => percentage(b) - percentage(a));
   let preferences = readSelectedTopics();
   let feedback = readRecommendationFeedback();
   let currentOrder = '';
@@ -62,12 +61,16 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const trending = view === 'trending-up' || view === 'trending-down';
     const sort = sortFromUrl();
     sortFilters.hidden = !trending;
-    for (const button of sortFilters.querySelectorAll('[data-trend-sort]')) button.setAttribute('aria-pressed',String(button.dataset.trendSort === sort));
+    const sortControl = sortFilters.querySelector('select');
+    const movement = view === 'trending-down' ? 'drop' : 'rise';
+    sortControl.options[0].textContent = `Biggest ${movement}`;
+    sortControl.options[1].textContent = `Smallest ${movement}`;
+    sortControl.value = sort;
 
     const order = trending ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
       const defaultItems = view === 'trending-down' ? rankedFallingItems : rankedRisingItems;
-      const rankedItems = sort === 'all' ? defaultItems : [...defaultItems].sort((a,b) => sort === 'ascending' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
+      const rankedItems = [...defaultItems].sort((a,b) => sort === 'smallest' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
       const ranked = new Set(rankedItems);
       const items = trending
         ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
@@ -91,7 +94,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const followedStoryCount = directory.querySelectorAll('[data-followed-stories] > li').length;
     status.textContent = view === 'collections'
       ? `${followedStoryCount} stories from ${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${trending && sort !== 'all' ? `, percentage ${sort}` : view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
+      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${trending ? `, ${sort} percentage ${movement} first` : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
 
     document.dispatchEvent(new CustomEvent('feed-view-selected', { detail: view }));
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
@@ -102,15 +105,15 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     if (resetScroll) selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   }
 
-  sortFilters.addEventListener('click', event => {
-    const button = event.target.closest('[data-trend-sort]');
-    if (!button) return;
+  sortFilters.addEventListener('change', event => {
+    const control = event.target.closest('select[data-trend-sort]');
+    if (!control) return;
     const url = new URL(location.href);
-    if (button.dataset.trendSort === 'all') url.searchParams.delete('sort');
-    else url.searchParams.set('sort',button.dataset.trendSort);
+    if (control.value === 'biggest') url.searchParams.delete('sort');
+    else url.searchParams.set('sort',control.value);
     history.replaceState(history.state,'',url);
     select(viewFromUrl(), { resetScroll:false });
-    button.focus({ preventScroll:true });
+    control.focus({ preventScroll:true });
   });
 
   for (const tab of tabs) {

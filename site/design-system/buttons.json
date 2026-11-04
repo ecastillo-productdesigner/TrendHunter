@@ -671,10 +671,17 @@
       "key": "button:badge-popup-close",
       "classes": "badge-popup-close",
       "tag": "button",
-      "name": "Close",
+      "name": "Show other badges",
       "sources": [
-        "badges.js",
-        "badges.js",
+        "badges.js"
+      ]
+    },
+    {
+      "key": "button:badge-popup-dismiss",
+      "classes": "badge-popup-dismiss",
+      "tag": "button",
+      "name": "Close badge details",
+      "sources": [
         "badges.js"
       ]
     },
@@ -723,6 +730,24 @@
         "trend-wellness-first-dating.html",
         "trend-whole-house-water.html",
         "trend.html"
+      ]
+    },
+    {
+      "key": "button:button-primary comment-submit",
+      "classes": "button-primary comment-submit",
+      "tag": "button",
+      "name": "button-primary comment-submit",
+      "sources": [
+        "comments.js"
+      ]
+    },
+    {
+      "key": "a:button-primary comments-login",
+      "classes": "button-primary comments-login",
+      "tag": "a",
+      "name": "Sign in to comment",
+      "sources": [
+        "comments.js"
       ]
     },
     {
@@ -849,6 +874,7 @@
         "feed.html",
         "feed.html",
         "feed.html",
+        "feed.html",
         "feed.html"
       ]
     },
@@ -864,6 +890,34 @@
         "channel-experiences.html",
         "channel.html",
         "channel.html"
+      ]
+    },
+    {
+      "key": "button:comments-more comments-text-button",
+      "classes": "comments-more comments-text-button",
+      "tag": "button",
+      "name": "View all comments",
+      "sources": [
+        "comments.js"
+      ]
+    },
+    {
+      "key": "button:comments-text-button",
+      "classes": "comments-text-button",
+      "tag": "button",
+      "name": "Cancel",
+      "sources": [
+        "comments.js",
+        "comments.js"
+      ]
+    },
+    {
+      "key": "button:comments-text-button comment-like",
+      "classes": "comments-text-button comment-like",
+      "tag": "button",
+      "name": "Like comment by ${esc(author)}",
+      "sources": [
+        "comments.js"
       ]
     },
     {
@@ -2684,11 +2738,8 @@
       "key": "button:profile-prediction-filter",
       "classes": "profile-prediction-filter",
       "tag": "button",
-      "name": "All",
+      "name": "profile-prediction-filter",
       "sources": [
-        "feed.html",
-        "feed.html",
-        "feed.html",
         "people.js"
       ]
     },
@@ -3744,9 +3795,8 @@
       "key": "button:toast-link",
       "classes": "toast-link",
       "tag": "button",
-      "name": "View badge",
+      "name": "Undo",
       "sources": [
-        "badges.js",
         "people.js"
       ]
     },
@@ -3891,6 +3941,7 @@
         "collection.html",
         "collection.html",
         "collection.html",
+        "feed.html",
         "feed.html",
         "feed.html",
         "feed.html",
@@ -4180,6 +4231,7 @@
         "feed.html",
         "feed.html",
         "feed.html",
+        "feed.html",
         "story-card.js",
         "trend-ai-gift-ideas.html",
         "trend-ai-gift-ideas.html",
@@ -4310,8 +4362,8 @@
         "feed.html",
         "feed.html",
         "feed.html",
+        "feed.html",
         "trend-city-content-walk.html",
-        "trend-led-skincare-lounge.html",
         "trend-sunday-meal-prep.html",
         "trend-weekly-laundry-reset.html"
       ]
@@ -4592,8 +4644,8 @@
         "feed.html",
         "feed.html",
         "feed.html",
+        "feed.html",
         "trend-city-content-walk.html",
-        "trend-led-skincare-lounge.html",
         "trend-sunday-meal-prep.html",
         "trend-weekly-laundry-reset.html"
       ]

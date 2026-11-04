@@ -768,7 +768,7 @@ if (document.body.classList.contains('page-predictions')) {
 
 // ===========================
 // Below 960px the right rail is hidden, so on the main feed the predictions panel moves into
-// it, right after the 3rd trend card (same panel, moved not copied, so the deck keeps its place).
+// it, after the featured video following the 3rd trend card (same panel, moved not copied).
 // Article pages move the same tall deck beneath MAKE YOUR CALL on mobile, below.
 // ===========================
 const predictionsPanel = document.querySelector('.predictions-panel');
@@ -780,7 +780,7 @@ if (predictionsPanel && thirdTrendCard) {
   const rail = predictionsPanel.parentElement;
   const slot = document.createElement('li');
   slot.className = 'feed-predictions-slot';
-  thirdTrendCard.closest('li').after(slot);
+  (document.querySelector('.feed-featured-video-slot') || thirdTrendCard.closest('li')).after(slot);
 
   const inFeed = window.matchMedia('(max-width: 959px)');
   const stackWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-predictions-stack-width'));

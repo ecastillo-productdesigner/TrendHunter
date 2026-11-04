@@ -1,5 +1,5 @@
 import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=3';
-import { BADGE_STATE_KEY, readBadgeState, badgeProgress, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
+import { BADGE_STATE_KEY, readBadgeState, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
 import { escapeText } from './story-card.js';
 
 const day = () => new Intl.DateTimeFormat('en-CA',{ timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit' }).format(new Date());
@@ -54,23 +54,35 @@ function showBadges(id) {
       renderProfileBadges();
     });
   }
-  const saved = state(), progress = badgeProgress(saved);
+  const saved = state();
   const earned = own || !example ? saved.earned : example;
-  const current = currentMemberBadge(earned,own ? saved.hidden : []);
-  const actions = content => `<div class="badge-popup-actions"><button class="badge-popup-close" type="button" data-badge-close>Close</button>${content}</div>`;
+  const actions = content => `<button class="badge-popup-dismiss" type="button" data-badge-close aria-label="Close badge details"><span class="drawer-close-icon" aria-hidden="true"></span></button>${content ? `<div class="badge-popup-actions">${content}</div>` : ''}`;
   let content;
   if (id === 'all') {
-    content = `<h2 class="trend-card-headline" id="member-badge-heading">Member badges</h2><div class="badge-coin-grid">${MEMBER_BADGES.map(badge => `<button class="badge-coin-choice" type="button" data-badge-view="${badge.id}" data-earned="${Boolean(earned[badge.id])}" aria-label="${badge.name}. ${earned[badge.id] ? 'Earned' : 'Not yet collected'}. View how to collect"><span class="material-symbols-outlined" aria-hidden="true">${badge.icon}</span><span class="badge-coin-name">${badge.name}</span><span class="badge-coin-state">${earned[badge.id] ? 'Earned' : 'To collect'}</span></button>`).join('')}</div>${actions(current ? `<button class="badge-popup-close" type="button" data-badge-view="${current.id}">Show recent</button>` : '')}`;
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">Member badges</h2><div class="badge-coin-grid">${MEMBER_BADGES.map(badge => `<button class="badge-coin-choice" type="button" data-badge-view="${badge.id}" data-earned="${Boolean(earned[badge.id])}" aria-label="${badge.name}. ${earned[badge.id] ? 'Earned' : 'Not yet collected'}. View how to collect"><span class="material-symbols-outlined" aria-hidden="true">${badge.icon}</span><span class="badge-coin-name">${badge.name}</span>${earned[badge.id] ? '<span class="badge-coin-state">Earned</span>' : ''}</button>`).join('')}</div>${actions('')}`;
   } else {
     const badge = MEMBER_BADGES.find(badge => badge.id === id);
     if (!badge) return;
     const date = earned[badge.id];
-    const progressLabel = date ? `Earned ${new Intl.DateTimeFormat('en-US',{dateStyle:'long',timeZone:'UTC'}).format(new Date(`${date}T12:00:00Z`))}` : badge.id === 'sharp-eye' ? 'Requires verified outcomes' : own || !example ? `${Math.min(progress[badge.metric],badge.goal)} of ${badge.goal} · Not yet collected` : 'Not yet collected';
-    content = `<h2 class="trend-card-headline" id="member-badge-heading">${badge.name}</h2><span class="badge-popup-symbol material-symbols-outlined" aria-hidden="true">${badge.icon}</span><p class="badge-popup-criterion">${badge.criterion}</p><p class="badge-popup-date">${progressLabel}</p>${actions(own || !example ? '<button class="badge-popup-close" type="button" data-badge-view="all">Show all</button>' : '')}`;
+    const earnedDate = date ? `Earned ${new Intl.DateTimeFormat('en-US',{dateStyle:'long',timeZone:'UTC'}).format(new Date(`${date}T12:00:00Z`))}` : '';
+    const instructions = {
+      'first-call': 'voting on your first prediction.',
+      'regular-hunter': 'making calls on 5 different days.',
+      'deep-diver': 'reading 3 signals to the end.',
+      'field-notes': 'saving 5 signals.',
+      'sharp-eye': 'correctly calling 3 verified predictions.',
+    };
+    const memberName = escapeText(profile?.querySelector('.profile-name')?.textContent.trim() || 'This member');
+    const criterion = !date ? `Earn this badge by ${instructions[badge.id]}`
+      : !own && example ? `${memberName} earned this badge by ${instructions[badge.id]}`
+      : badge.id === 'first-call' ? 'You earned this badge because<br>you voted on your first prediction.'
+      : `You earned this badge by ${instructions[badge.id]}`;
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">${badge.name}</h2><span class="badge-popup-symbol material-symbols-outlined" aria-hidden="true">${badge.icon}</span><p class="badge-popup-criterion">${criterion}</p>${date ? `<p class="badge-popup-date">${earnedDate}</p>` : ''}${actions(own || !example ? '<button class="badge-popup-close" type="button" data-badge-view="all">Show other badges</button>' : '')}`;
   }
   const render = () => {
     modal.classList.add('member-badge-dialog--medal');
     modal.classList.toggle('member-badge-dialog--collection',id === 'all');
+    modal.dataset.earned = String(id === 'all' || Boolean(earned[id]));
     modal.innerHTML = content;
     modal.querySelector('h2').tabIndex = -1;
     modal.querySelector('h2').focus({preventScroll:true});
@@ -92,24 +104,18 @@ function showBadges(id) {
 }
 
 function celebrateBadge(badge) {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   requestAnimationFrame(() => {
-    const toast = document.querySelector('.toast');
-    if (!toast || toast.hidden) return;
-    const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('aria-hidden','true');
+    const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('role','status');
     document.querySelectorAll('.badge-confetti').forEach(previous=>previous.remove());
-    const styles = getComputedStyle(toast);
-    const size = parseFloat(styles.getPropertyValue('--size-badge-award-preview')) || 144;
-    const gap = parseFloat(styles.getPropertyValue('--spacing-layout-md')) || 16;
-    // Anchor to the settled toast layout while its entrance translate/scale animates.
-    const toastTop = innerHeight - parseFloat(styles.bottom) - toast.offsetHeight;
-    burst.style.left = styles.left;
-    burst.style.top = `${Math.max(size / 2 + gap,toastTop - size / 2 - gap)}px`;
+    const message = document.createElement('span'); message.className = 'visually-hidden'; message.textContent = `You earned ${badge.name}.`;
+    burst.append(message);
     const award = document.createElement('div'); award.className = 'badge-confetti-medal';
+    award.setAttribute('aria-hidden','true');
     award.innerHTML = `<span class="badge-medal badge-medal--award" data-badge="${badge.id}"><span class="material-symbols-outlined">${badge.icon}</span><span class="badge-award-name">${escapeText(badge.name)}</span></span>`;
     burst.append(award);
     for (let i=0;i<24;i++) {
       const particle = document.createElement('span'); particle.className = 'badge-confetti-particle';
+      particle.setAttribute('aria-hidden','true');
       const angle = i / 24 * Math.PI * 2, reach = 110 + i%4 * 18;
       const x = Math.cos(angle)*reach, y = Math.sin(angle)*reach;
       particle.style.setProperty('--particle-x',`${x}px`);
@@ -132,7 +138,6 @@ function record(activity, announce = true) {
   renderProfileBadges();
   if (announce && result.newlyEarned.length) {
     const badge = MEMBER_BADGES.find(badge => badge.id === result.newlyEarned[0]);
-    window.showToast(`You earned ${badge.name}. <button type="button" class="toast-link" data-badge-view="${badge.id}">View badge</button>`);
     celebrateBadge(badge);
   }
 }

@@ -322,6 +322,22 @@
       "brand": false
     },
     {
+      "path": "assets/feed/icon-comment-heart-outline.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
+      "path": "assets/feed/icon-comment-heart.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
       "path": "assets/feed/icon-interest-chevrons.svg",
       "references": [
         "feed.css"
@@ -1165,6 +1181,7 @@
     "arrow_downward",
     "bolt",
     "cancel",
+    "chat",
     "checkroom",
     "directions_bike",
     "eye_tracking",
@@ -1473,6 +1490,23 @@
       "note": "The selected Material Symbols Outlined achievement icon.",
       "states": [
         "Badge symbol"
+      ]
+    },
+    {
+      "name": "Article comments",
+      "group": "Community",
+      "note": "20px Material Symbols Outlined chat icon beside the collapsed Comments heading.",
+      "states": [
+        "Comments"
+      ]
+    },
+    {
+      "name": "Comment heart",
+      "group": "Community",
+      "note": "Supplied heart at --spacing-layout-md (16px). Unselected outline and count match Reply and Report. Selected heart is filled and uses the primary text color.",
+      "states": [
+        "Unselected",
+        "Selected"
       ]
     }
   ]

@@ -134,7 +134,9 @@ def build_icon_reference(project, out):
 
     for badge_name, symbol in [('Regular Hunter','my_location'),('Deep Diver','scuba_diving'),('Field Notes','menu_book'),('Sharp Eye','eye_tracking')]:
         add(badge_name + ' badge', 'Predictions and signals', 'The selected Material Symbols Outlined achievement icon.', [state('Badge symbol', span('material-symbols-outlined',symbol))])
-    expected_fonts = {'scuba_diving','my_location','eye_tracking','visibility','arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars','info','thumb_up','thumb_down'}
+    add('Article comments', 'Community', '20px Material Symbols Outlined chat icon beside the collapsed Comments heading.', [state('Comments', span('material-symbols-outlined comments-chat-icon','chat'))])
+    add('Comment heart', 'Community', 'Supplied heart at --spacing-layout-md (16px). Unselected outline and count match Reply and Report. Selected heart is filled and uses the primary text color.', [state('Unselected', '<span class="comment-like" aria-pressed="false">'+span('comment-heart-icon')+'</span>'), state('Selected', '<span class="comment-like" aria-pressed="true">'+span('comment-heart-icon')+'</span>')])
+    expected_fonts = {'chat','scuba_diving','my_location','eye_tracking','visibility','arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars','info','thumb_up','thumb_down'}
     if set(fonts) != expected_fonts:
         raise ValueError(f'Update icon states for Material Symbols: {set(fonts) ^ expected_fonts}')
     manifest_assets = []
