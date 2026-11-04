@@ -1,4 +1,4 @@
-import { MEMBER_BADGES, VERIFIED_PREDICTION_OUTCOMES } from './badge-catalog.js?v=3';
+import { MEMBER_BADGES, VERIFIED_PREDICTION_OUTCOMES } from './badge-catalog.js?v=4';
 export const BADGE_STATE_KEY = 'trendhunter.member-achievements.v1';
 const clean = values => Array.isArray(values) ? [...new Set(values.filter(value => typeof value === 'string'))] : [];
 export function readBadgeState(storage) {

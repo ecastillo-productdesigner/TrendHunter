@@ -1,8 +1,9 @@
 import { saveSelectedTopics } from './feed-personalization.js';
 
-// Mobile feed interests. Choices are browser-local prototype preferences, not collection follows.
+// Feed and collection interests. Choices are browser-local prototype preferences, not collection follows.
 (() => {
-  const anchor = document.querySelector('.page-feed .feed-answers-slot');
+  const compact = document.body.classList.contains('page-collection');
+  const anchor = document.querySelector(compact ? '.trend-card-list' : '.page-feed .feed-answers-slot');
   if (!anchor) return;
   const topicPickerTemplate = `
     <h2 class="type-h4-caps" id="feed-topics-heading">Hunt What You Like</h2>
@@ -21,17 +22,18 @@ import { saveSelectedTopics } from './feed-personalization.js';
       <button class="button-primary topic-picker-submit" type="submit" disabled>Update My Feed</button>
       <p class="visually-hidden" data-topic-status role="status">No topics selected</p>
     </form>`;
-  const slot = document.createElement('li');
+  const slot = document.createElement(compact ? 'div' : 'li');
   slot.className = 'feed-topics-slot';
   const picker = document.createElement('section');
-  picker.className = 'feed-topic-picker';
+  picker.className = 'feed-topic-picker' + (compact ? ' feed-topic-picker--compact' : '');
   picker.setAttribute('aria-labelledby', 'feed-topics-heading');
   picker.innerHTML = topicPickerTemplate;
   slot.append(picker);
+  if (compact) anchor.before(slot);
   const siblings = [...anchor.parentElement.children];
   const followingStories = siblings.slice(siblings.indexOf(anchor) + 1)
     .filter(item => item.querySelector(':scope > .trend-card'));
-  (followingStories[2] || anchor).after(slot);
+  if (!compact) (followingStories[2] || anchor).after(slot);
 
   const buttons = [...picker.querySelectorAll('[data-topic]')];
   const submit = picker.querySelector('.topic-picker-submit');
@@ -59,6 +61,7 @@ import { saveSelectedTopics } from './feed-personalization.js';
     }
     selected.clear();
     sync();
+    if (compact) { location.href = 'feed.html#for-you'; return; }
     document.dispatchEvent(new Event('feed-topics-updated'));
     window.showToast('Your feed has been updated.');
   });

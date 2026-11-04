@@ -147,7 +147,7 @@ const articleMembersTemplate = `
       <a class="article-member-avatar" data-member-profile="reader-morgan-lee.html" role="img" tabindex="-1" aria-label="Morgan Lee" title="Morgan Lee"><img src="assets/readers/morgan-lee.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
     </div>
     </div>
-    <a class="article-members-join" href="login.html">Join them</a>
+
   </aside>`;
 const articleBody = document.querySelector('article.article .article-body');
 if (articleBody && !articleBody.querySelector('.article-members')) {

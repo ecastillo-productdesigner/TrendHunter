@@ -27,6 +27,17 @@
     predictionPanel.appendChild(callStatus);
   }
 
+  if (!isPublicProfile) {
+    const preferences=document.createElement('label'); preferences.className='prediction-email-preference';
+    preferences.innerHTML='<input type="checkbox"> <span>Email me when prediction results are in</span>';
+    try { preferences.querySelector('input').checked=localStorage.getItem('trendhunter.prediction-email-alerts')==='true'; }catch{}
+    preferences.querySelector('input').addEventListener('change',event=>{
+      try {localStorage.setItem('trendhunter.prediction-email-alerts',String(event.target.checked));}
+      catch {event.target.checked=!event.target.checked;}
+    });
+    predictionPanel.append(preferences);
+  }
+
   const resolvedExamples = PROFILE_RESOLVED_PREDICTIONS;
   // Fictional demonstration histories, not a claim about any writer's actual votes.
   const authorExamples = {
@@ -54,7 +65,10 @@
     const active = ALL_OPEN_PREDICTIONS.filter(prediction => calls[prediction.id] === 'in' || calls[prediction.id] === 'out')
       .map(prediction => ({ ...prediction, call: calls[prediction.id], resolved: false }));
     // Illustrative past votes make the resolved state reviewable after a first call.
-    return active.length ? [...active, ...resolvedExamples] : [];
+    const outcomes = window.predictionResultHistory?.() || [];
+    const resolvedIds = new Set(outcomes.map(item=>item.id));
+    const open = active.filter(item=>!resolvedIds.has(item.id));
+    return [...open, ...outcomes, ...(active.length ? resolvedExamples : [])];
   }
 
   function authorHistory() {
@@ -145,6 +159,7 @@
           : readerCalls.get(prediction.id);
         return comparisonRow(prediction, readerCall);
       }
+      if (prediction.demoOutcome) return window.predictionOutcomeRow(prediction);
       return resultRow(prediction, prediction.call, true, {
         resolved: prediction.resolved,
       });
@@ -156,12 +171,14 @@
     empty.classList.toggle('profile-empty-state--author', isAuthor);
     if (isAuthor) empty.querySelector('.profile-empty-copy').textContent = `${firstName} hasn't voted on a prediction yet. Check back soon, or you can vote on today's predictions in your feed.`;
     if (!isAuthor) filters.hidden = isReader || personalHistory().length === 0;
+    document.dispatchEvent(new Event('profile-results-rendered'));
     if ((isAuthor || isReader) && !predictionPanel.hidden && history.length && !entrancePlayed) {
       entrancePlayed = true;
       playComparisonEntrance(list);
     }
   }
 
+  document.addEventListener('prediction-results-ready',()=>{ renderFilters(); renderHistory(); });
   function selectFilter(button) {
     selectedFilter = button.dataset.predictionFilter;
     if (!isAuthor && !isReader) {

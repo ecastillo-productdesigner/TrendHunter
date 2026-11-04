@@ -77,3 +77,8 @@ export function showCollectionUpdatesPreview(storage) {
 export function dismissCollectionUpdatesPreview(storage) {
   try { storage.removeItem(COLLECTION_UPDATES_PREVIEW_KEY); return true; } catch { return false; }
 }
+
+// Explicit reset only restores seen-card and tab indicators; article read history stays intact.
+export function resetCollectionUpdateMarkers(storage) {
+  try {storage.setItem(COLLECTION_CARDS_SEEN_KEY,'[]');storage.setItem(COLLECTION_UPDATES_SEEN_KEY,'[]');return true;}catch{return false;}
+}

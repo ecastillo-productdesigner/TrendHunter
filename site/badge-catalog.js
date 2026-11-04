@@ -2,8 +2,8 @@
 export const MEMBER_BADGES = [
   { id:'first-call', name:'First Call', icon:'bolt', goal:1, metric:'calls', color:'--color-icon-signal', criterion:'Vote on your first prediction.' },
   { id:'regular-hunter', name:'Regular Hunter', icon:'my_location', goal:5, metric:'callDays', color:'--color-topic-style', criterion:'Make calls on 5 different days.' },
-  { id:'deep-diver', name:'Deep Diver', icon:'scuba_diving', goal:3, metric:'completedReads', color:'--color-topic-culture', criterion:'Read 3 signals to the end.' },
-  { id:'field-notes', name:'Field Notes', icon:'menu_book', goal:5, metric:'savedSignals', color:'--color-topic-beauty', criterion:'Save 5 signals.' },
+  { id:'deep-diver', name:'Deep Diver', icon:'scuba_diving', goal:3, metric:'completedReads', color:'--color-topic-culture', criterion:'Read 3 stories to the end.' },
+  { id:'field-notes', name:'Field Notes', icon:'menu_book', goal:5, metric:'savedSignals', color:'--color-topic-beauty', criterion:'Save 5 stories.' },
   { id:'sharp-eye', name:'Sharp Eye', icon:'eye_tracking', goal:3, metric:'correctCalls', color:'--color-topic-fitness', criterion:'Correctly call 3 verified predictions.' },
 ];
 export function currentMemberBadge(earned, hidden = []) {

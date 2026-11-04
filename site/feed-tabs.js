@@ -40,13 +40,14 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     'for-you': 'For You',
     collections: 'Collections',
     following: 'Following',
-    'trending-up': 'Trending Up',
-    'trending-down': 'Trending Down',
+    moving: 'Moving',
   };
-  const viewFromUrl = () => Object.hasOwn(names, location.hash.slice(1)) ? location.hash.slice(1) : 'for-you';
+  const viewFromUrl = () => ['trending-up','trending-down'].includes(location.hash.slice(1)) ? 'moving' : Object.hasOwn(names, location.hash.slice(1)) ? location.hash.slice(1) : 'for-you';
+  const directionFromUrl = () => location.hash === '#trending-up' ? 'up' : location.hash === '#trending-down' ? 'down' : ['up','down'].includes(new URLSearchParams(location.search).get('direction')) ? new URLSearchParams(location.search).get('direction') : 'all';
 
   function select(view, { updateUrl = false, resetScroll = true } = {}) {
-    if (!Object.hasOwn(names, view)) view = 'for-you';
+    if (!Object.hasOwn(names, view) || ['collections','following'].includes(view) && !window.isSignedIn?.()) view = 'for-you';
+    tabs.forEach(tab => { tab.hidden = ['collections','following'].includes(tab.dataset.feedView) && !window.isSignedIn?.(); });
     document.body.dataset.feedView = view;
     const selected = tabs.find(tab => tab.dataset.feedView === view);
     for (const tab of tabs) {
@@ -58,19 +59,21 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     list.hidden = view === 'collections' || view === 'following';
     panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
-    const trending = view === 'trending-up' || view === 'trending-down';
+    const trending = view === 'moving';
+    const movingDirection = directionFromUrl();
+    sortFilters.querySelectorAll('[data-moving-direction]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.movingDirection === movingDirection)));
     const sort = sortFromUrl();
     sortFilters.hidden = !trending;
     const sortControl = sortFilters.querySelector('[data-trend-sort]');
-    const movement = view === 'trending-down' ? 'drop' : 'rise';
+    const movement = movingDirection === 'down' ? 'drop' : movingDirection === 'up' ? 'rise' : 'change';
     const sortLabel = `${sort === 'biggest' ? 'Biggest' : 'Smallest'} ${movement}`;
     const nextSortLabel = `${sort === 'biggest' ? 'Smallest' : 'Biggest'} ${movement}`;
     sortControl.textContent = sortLabel;
     sortControl.setAttribute('aria-label', `${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
 
-    const order = trending ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
+    const order = trending ? `${view}:${movingDirection}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
-      const defaultItems = view === 'trending-down' ? rankedFallingItems : rankedRisingItems;
+      const defaultItems = movingDirection === 'down' ? rankedFallingItems : movingDirection === 'up' ? rankedRisingItems : [...rankedRisingItems,...rankedFallingItems];
       const rankedItems = [...defaultItems].sort((a,b) => sort === 'smallest' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
       const ranked = new Set(rankedItems);
       const items = trending
@@ -83,7 +86,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
       currentOrder = order;
     }
 
-    const direction = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : null;
+    const direction = trending && movingDirection !== 'all' ? (movingDirection === 'up' ? 'rising' : 'falling') : null;
     let count = 0;
     for (const item of list.children) {
       const story = item.querySelector(':scope > .trend-card');
@@ -107,6 +110,14 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   }
 
   sortFilters.addEventListener('click', event => {
+    const directionControl = event.target.closest('[data-moving-direction]');
+    if (directionControl) {
+      const url = new URL(location.href); url.hash = 'moving';
+      if (directionControl.dataset.movingDirection === 'all') url.searchParams.delete('direction');
+      else url.searchParams.set('direction',directionControl.dataset.movingDirection);
+      history.replaceState(history.state,'',url); select('moving',{resetScroll:false});
+      directionControl.focus({preventScroll:true}); return;
+    }
     const control = event.target.closest('button[data-trend-sort]');
     if (!control) return;
     const url = new URL(location.href);
@@ -120,16 +131,17 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   for (const tab of tabs) {
     tab.addEventListener('click', () => select(tab.dataset.feedView, { updateUrl: true }));
     tab.addEventListener('keydown', event => {
-      const index = tabs.indexOf(tab);
+      const available = tabs.filter(option => !option.hidden);
+      const index = available.indexOf(tab);
       let next;
-      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-      if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+      if (event.key === 'ArrowRight') next = (index + 1) % available.length;
+      if (event.key === 'ArrowLeft') next = (index - 1 + available.length) % available.length;
       if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = tabs.length - 1;
+      if (event.key === 'End') next = available.length - 1;
       if (next === undefined) return;
       event.preventDefault();
-      tabs[next].focus();
-      select(tabs[next].dataset.feedView, { updateUrl: true });
+      available[next].focus();
+      select(available[next].dataset.feedView, { updateUrl: true });
     });
   }
   document.addEventListener('feed-topics-updated', () => {
@@ -156,6 +168,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     preferences = readSelectedTopics();
     select(viewFromUrl(), { resetScroll: false });
   });
+  document.addEventListener('auth-change', () => select(viewFromUrl(), {resetScroll:false}));
   window.addEventListener('hashchange', () => select(viewFromUrl()));
   select(viewFromUrl(), { resetScroll: false });
 })();

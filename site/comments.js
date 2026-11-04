@@ -12,7 +12,7 @@ function setupComments(article) {
   const section = document.createElement('details');
   section.className = 'article-comments'; section.id = 'comments';
   section.setAttribute('aria-labelledby', 'comments-heading');
-  section.innerHTML = `<summary class="comments-toggle"><h2 id="comments-heading" tabindex="-1"><span class="material-symbols-outlined comments-chat-icon" aria-hidden="true">chat</span><span>Comments <span class="comments-count"></span></span></h2><span class="comments-toggle-label">Show comments</span></summary><div class="comments-content"><header class="comments-header"><label class="comments-order" for="comments-sort">Sort by</label><select class="feed-trend-sort" id="comments-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="liked">Most liked</option></select></header>
+  section.innerHTML = `<summary class="comments-toggle"><h2 id="comments-heading" tabindex="-1"><span class="material-symbols-outlined comments-chat-icon" aria-hidden="true">chat</span><span>Comments <span class="comments-count"></span></span></h2><span class="comments-toggle-label">Show comments</span></summary><div class="comments-content"><header class="comments-header"><p class="comments-posting-as" hidden></p><button class="feed-trend-sort-toggle" id="comments-sort" type="button" aria-label="Newest first. Switch to oldest first">Newest first</button></header>
     <div class="comments-composer"></div><p class="comments-status" role="status"></p><ol class="comments-list"></ol>
     <button class="comments-more comments-text-button" type="button" hidden>View all comments</button></div>`;
   const readingEnd = article.querySelector('.article-members');
@@ -23,6 +23,12 @@ function setupComments(article) {
   const status = section.querySelector('.comments-status');
   const more = section.querySelector('.comments-more');
   const sortControl = section.querySelector('#comments-sort');
+  const sortModes = [
+    { value: 'newest', label: 'Newest first' },
+    { value: 'oldest', label: 'Oldest first' },
+    { value: 'liked', label: 'Most liked' },
+  ];
+  let sortIndex = 0;
   let expanded = false;
   let formTarget = null;
   let formMode = null;
@@ -74,8 +80,8 @@ function setupComments(article) {
     try { comments = store.read(story); }
     catch { status.textContent = 'Couldn’t load the discussion. Please reload to try again.'; more.hidden = true; return; }
     const roots = comments.filter(item => !item.parentId).sort((a, b) => {
-      if (sortControl.value === 'oldest') return a.createdAt.localeCompare(b.createdAt);
-      if (sortControl.value === 'liked') {
+      if (sortModes[sortIndex].value === 'oldest') return a.createdAt.localeCompare(b.createdAt);
+      if (sortModes[sortIndex].value === 'liked') {
         const difference = (b.likes + Number(b.liked)) - (a.likes + Number(a.liked));
         if (difference) return difference;
       }
@@ -88,11 +94,22 @@ function setupComments(article) {
     if (!roots.length) list.innerHTML = '<li class="comments-empty">Start the conversation. What stood out to you?</li>';
   }
   function renderComposer() {
+    const identity = section.querySelector('.comments-posting-as');
+    identity.hidden = !signedIn();
+    identity.textContent = signedIn() ? `Commenting as ${readerName()}` : '';
     section.querySelector('.comments-composer').innerHTML = signedIn()
-      ? `<p class="comments-posting-as">Commenting as ${esc(readerName())}</p>${formMarkup('post', '', draft(''))}`
-      : '<div class="comments-sign-in"><p>Join the conversation</p><p>Sign in to share your take or reply to the community.</p><a class="button-primary comments-login" href="login.html">Sign in to comment</a></div>';
+      ? formMarkup('post', '', draft(''))
+      : '<div class="comments-sign-in"><p>Join the conversation</p><p>Share your take or reply to the community.</p><a class="comments-login" href="login.html">Sign in or create an account</a></div>';
   }
-  sortControl.addEventListener('change', () => { renderList(); sortControl.focus({ preventScroll: true }); });
+  sortControl.addEventListener('click', () => {
+    sortIndex = (sortIndex + 1) % sortModes.length;
+    const current = sortModes[sortIndex], next = sortModes[(sortIndex + 1) % sortModes.length];
+    sortControl.textContent = current.label;
+    sortControl.setAttribute('aria-label', `${current.label}. Switch to ${next.label.toLowerCase()}`);
+    renderList();
+    status.textContent = `Comments sorted by ${current.label.toLowerCase()}.`;
+    sortControl.focus({ preventScroll: true });
+  });
   section.addEventListener('input', event => {
     if (!event.target.matches('textarea')) return;
     const field = event.target; const form = field.closest('form');

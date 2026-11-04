@@ -77,6 +77,25 @@ if (settingsButton && settingsPanel) {
     if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('collection-updates-preview'));
     else location.assign('feed.html');
   });
+  settingsPanel.querySelector('[data-setting="reset-collection-updates"]')?.addEventListener('click', async () => {
+    const { resetCollectionUpdateMarkers } = await import('./collection-update-state.js');
+    if(resetCollectionUpdateMarkers(localStorage)){setOpen(false);document.dispatchEvent(new Event('collection-updates-preview'));}
+  });
+  settingsPanel.querySelector('[data-setting="show-new-following"]')?.addEventListener('click', async () => {
+    const { showPeopleUpdatesPreview } = await import('./people-update-state.js');
+    if (!showPeopleUpdatesPreview(localStorage)) { window.showToast?.('New activity could not be shown. Please try again.'); return; }
+    setOpen(false);
+    if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('people-updates-preview'));
+    else location.assign('feed.html');
+  });
+  settingsPanel.querySelector('[data-setting="show-prediction-results"]')?.addEventListener('click', async () => {
+    const { previewPredictionResults } = await import('./prediction-result-state.js');
+    let calls={};try{calls=JSON.parse(sessionStorage.getItem('prediction-calls')||'{}');}catch{}
+    if(!previewPredictionResults(localStorage,calls)){window.showToast?.('Results could not be shown.');return;}
+    setOpen(false);
+    if(document.body.classList.contains('page-feed')){location.hash='for-you';document.dispatchEvent(new Event('prediction-results-preview'));}
+    else location.assign('feed.html#for-you');
+  });
   settingsPanel.querySelector('[data-setting="reset-badges"]')?.addEventListener('click', async () => {
     const { resetBadgeProgress } = await import('./badge-state.js?v=3');
     let calls = {}; try { calls = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}'); } catch {}

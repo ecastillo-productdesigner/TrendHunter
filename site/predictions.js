@@ -211,6 +211,10 @@ function resultRow(prediction, call, includeReadMore = true, { resolved = false,
     </li>`;
 }
 
+function predictionAccountPrompt(hasCalls) {
+  return `<section class="prediction-results prediction-account-prompt"><header class="prediction-results-header"><h3 class="prediction-results-title">${hasCalls ? 'Your calls are in' : 'You’re all caught up'}</h3><p class="prediction-results-subtitle">Sign in or create an account so we can update you when predictions are called.</p></header><div class="prediction-account-actions"><a class="auth-button auth-button--provider" data-prediction-account href="login.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</a><a class="auth-button auth-button--provider" data-prediction-account href="login.html"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</a><p class="prediction-results-subtitle">Or</p><a class="auth-button auth-button--email" data-prediction-account href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Use your email</a></div><p class="visually-hidden">Browser-only prototype: no email alerts are sent.</p></section>`;
+}
+
 const CALLS_KEY = 'prediction-calls';
 const DECK_KEY = 'prediction-deck';
 const PROFILE_EXAMPLE_CALLS_KEY = 'profile-comparison-example-calls';
@@ -226,6 +230,11 @@ const VISIBLE_CARDS = 3;
 const NUDGE_MS = 150;
 const FLY_MS = 500;
 const FLIP_MS = 600; // --motion-card-flip
+document.addEventListener('click', event => {
+  if (!event.target.closest('[data-prediction-account]')) return;
+  try {sessionStorage.setItem('return-to','userprofile.html?prediction-filter=active#predictions');}catch{}
+});
+
 
 // Drag: the overlay shows past 30px; a call commits past 40% of the card's width
 const PREVIEW_DISTANCE = 30;
@@ -495,6 +504,7 @@ if (stack) {
     const remaining = current ? PREDICTIONS.filter(prediction => !calls[prediction.id]) : skipped;
     const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
     const desktop = matchMedia('(min-width: 960px)').matches;
+    if (!current && !window.isSignedIn?.()) { stack.innerHTML = predictionAccountPrompt(called.length > 0); return; }
     if (!current && getDeck().resultsDismissed && desktop) {
       showPredictionSummary();
       return;
@@ -534,6 +544,7 @@ if (stack) {
         <div class="prediction-results">
           <header class="prediction-results-header">
             <h3 class="prediction-results-title">Your calls are locked in</h3>
+            <p class="prediction-results-subtitle">We will alert you when the results drop.</p>
             ${skipped.length ? `<p class="prediction-results-remaining">${skipped.length} More predictions left today.</p>` : ''}
           </header>
           <ul class="prediction-results-list">${called.map((p) => resultRow(p, calls[p.id])).join('')}</ul>
@@ -937,10 +948,12 @@ document.querySelectorAll('.prediction-inline-stack').forEach((inlineStack) => {
     const calls = getCalls();
     const called = predictionsFor().filter((p) => calls[p.id]);
     inlineStack.classList.add('is-done');
+    if (!window.isSignedIn?.()) { inlineStack.innerHTML = predictionAccountPrompt(called.length > 0); return; }
     inlineStack.innerHTML = `
       <div class="prediction-results">
         <header class="prediction-results-header">
           <h3 class="prediction-results-title">Your calls are locked in</h3>
+            <p class="prediction-results-subtitle">We will alert you when the results drop.</p>
         </header>
         <ul class="prediction-results-list">
           ${called.map((p) => `

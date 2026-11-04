@@ -1,4 +1,4 @@
-import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=3';
+import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=4';
 import { BADGE_STATE_KEY, readBadgeState, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
 import { escapeText } from './story-card.js';
 
@@ -8,8 +8,18 @@ const profile = document.querySelector('.profile');
 const own = Boolean(document.querySelector('[data-people-manage]'));
 const example = READER_BADGE_EXAMPLES[location.pathname.split('/').pop()];
 let modal;
+let recentBadgeId;
 function state() { try { return readBadgeState(localStorage); } catch { return readBadgeState({ getItem:()=>null }); } }
 const medal = badge => `<span class="badge-medal" data-badge="${badge.id}" aria-hidden="true"><span class="material-symbols-outlined">${badge.icon}</span></span>`;
+function badgeCopy(text) {
+  const lines = [];
+  for (const word of text.split(/\s+/)) {
+    const last = lines.length - 1;
+    if (last >= 0 && `${lines[last]} ${word}`.length <= 35) lines[last] += ` ${word}`;
+    else lines.push(word);
+  }
+  return lines.map(escapeText).join('<br>');
+}
 function renderProfileBadges() {
   if (!profile || (!own && !example)) return;
   profile.querySelector('.member-badges')?.remove();
@@ -56,10 +66,11 @@ function showBadges(id) {
   }
   const saved = state();
   const earned = own || !example ? saved.earned : example;
+  if (id !== 'all') recentBadgeId = id;
   const actions = content => `<button class="badge-popup-dismiss" type="button" data-badge-close aria-label="Close badge details"><span class="drawer-close-icon" aria-hidden="true"></span></button>${content ? `<div class="badge-popup-actions">${content}</div>` : ''}`;
   let content;
   if (id === 'all') {
-    content = `<h2 class="trend-card-headline" id="member-badge-heading">Member badges</h2><div class="badge-coin-grid">${MEMBER_BADGES.map(badge => `<button class="badge-coin-choice" type="button" data-badge-view="${badge.id}" data-earned="${Boolean(earned[badge.id])}" aria-label="${badge.name}. ${earned[badge.id] ? 'Earned' : 'Not yet collected'}. View how to collect"><span class="material-symbols-outlined" aria-hidden="true">${badge.icon}</span><span class="badge-coin-name">${badge.name}</span>${earned[badge.id] ? '<span class="badge-coin-state">Earned</span>' : ''}</button>`).join('')}</div>${actions('')}`;
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">Member badges</h2><div class="badge-coin-grid">${MEMBER_BADGES.map(badge => `<button class="badge-coin-choice" type="button" data-badge-view="${badge.id}" data-earned="${Boolean(earned[badge.id])}" aria-label="${badge.name}. ${earned[badge.id] ? 'Earned' : 'Not yet collected'}. View how to collect"><span class="material-symbols-outlined" aria-hidden="true">${badge.icon}</span><span class="badge-coin-name">${badge.name}</span>${earned[badge.id] ? '<span class="badge-coin-state">Earned</span>' : ''}</button>`).join('')}</div>${actions('<button class="badge-popup-close" type="button" data-badge-view="' + (recentBadgeId || MEMBER_BADGES[0].id) + '">Flip back</button>')}`;
   } else {
     const badge = MEMBER_BADGES.find(badge => badge.id === id);
     if (!badge) return;
@@ -68,16 +79,16 @@ function showBadges(id) {
     const instructions = {
       'first-call': 'voting on your first prediction.',
       'regular-hunter': 'making calls on 5 different days.',
-      'deep-diver': 'reading 3 signals to the end.',
-      'field-notes': 'saving 5 signals.',
+      'deep-diver': 'reading 3 stories to the end.',
+      'field-notes': 'saving 5 stories.',
       'sharp-eye': 'correctly calling 3 verified predictions.',
     };
-    const memberName = escapeText(profile?.querySelector('.profile-name')?.textContent.trim() || 'This member');
+    const memberName = profile?.querySelector('.profile-name')?.textContent.trim() || 'This member';
     const criterion = !date ? `Earn this badge by ${instructions[badge.id]}`
       : !own && example ? `${memberName} earned this badge by ${instructions[badge.id]}`
-      : badge.id === 'first-call' ? 'You earned this badge because<br>you voted on your first prediction.'
+      : badge.id === 'first-call' ? 'You earned this badge because you voted on your first prediction.'
       : `You earned this badge by ${instructions[badge.id]}`;
-    content = `<h2 class="trend-card-headline" id="member-badge-heading">${badge.name}</h2><span class="badge-popup-symbol material-symbols-outlined" aria-hidden="true">${badge.icon}</span><p class="badge-popup-criterion">${criterion}</p>${date ? `<p class="badge-popup-date">${earnedDate}</p>` : ''}${actions(own || !example ? '<button class="badge-popup-close" type="button" data-badge-view="all">Show other badges</button>' : '')}`;
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">${badge.name}</h2><span class="badge-popup-symbol material-symbols-outlined" aria-hidden="true">${badge.icon}</span><p class="badge-popup-criterion">${badgeCopy(criterion)}</p>${date ? `<p class="badge-popup-date">${earnedDate}</p>` : ''}${actions((own || !example ? '<button class="badge-popup-close" type="button" data-badge-view="all">Show other badges</button>' : '') + (date ? `<button class="badge-popup-share" type="button" data-share-menu data-share-title="${escapeText(memberName)} earned ${escapeText(badge.name)}" data-share-url="${own ? 'badge-designs.html#' + badge.id : escapeText(location.pathname.split('/').pop()) + '?badge=' + badge.id}" aria-label="Share ${escapeText(badge.name)} badge"><span class="trend-card-share-icon" aria-hidden="true"></span></button>` : ''))}`;
   }
   const render = () => {
     modal.classList.add('member-badge-dialog--medal');
@@ -127,7 +138,7 @@ function celebrateBadge(badge) {
       burst.append(particle);
     }
     document.body.append(burst);
-    const duration = parseFloat(getComputedStyle(burst).getPropertyValue('--motion-badge-celebration')) || 1200;
+    const duration = parseFloat(getComputedStyle(burst).getPropertyValue('--motion-badge-celebration')) || 2500;
     setTimeout(()=>burst.remove(),duration + 100);
   });
 }
@@ -178,3 +189,5 @@ document.addEventListener('auth-change',() => { recordCalls(); recordSaves(false
 document.addEventListener('member-badges-reset',() => { renderProfileBadges(); document.querySelectorAll('.badge-confetti').forEach(burst=>burst.remove()); });
 window.addEventListener('storage',event => { if (event.key === BADGE_STATE_KEY) renderProfileBadges(); });
 recordCalls(); recordSaves(false); record({ type:'refresh' },false); renderProfileBadges();
+const sharedBadge = new URLSearchParams(location.search).get('badge');
+if (profile && sharedBadge && (example || own && signedIn())) showBadges(sharedBadge);

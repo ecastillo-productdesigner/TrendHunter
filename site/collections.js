@@ -25,6 +25,11 @@ function collectionCard(collection, showUpdates = false) {
   const link = document.createElement('a');
   link.className = 'pill-button';
   link.href = collection.href;
+  if (showUpdates) link.addEventListener('click', () => {
+    unreadStories(collection.href).forEach(href => markCollectionCardSeen(localStorage,href));
+    link.querySelector('.collection-new-badge')?.remove();
+    link.classList.remove('pill-button--has-updates');
+  });
   link.append(document.createTextNode(`${collection.name} `));
   const momentum = document.createElement('span');
   momentum.className = `collection-momentum collection-momentum--${collection.direction}`;
@@ -45,7 +50,7 @@ function collectionCard(collection, showUpdates = false) {
   value.textContent = `${collection.percentage}%`;
   momentum.append(track, value);
   link.append(momentum);
-  const unread = showUpdates ? unreadStories(collection.href) : [];
+  const unread = showUpdates ? newCards(unreadStories(collection.href)) : [];
   if (unread.length) {
     link.classList.add('pill-button--has-updates');
     const badge = document.createElement('span');

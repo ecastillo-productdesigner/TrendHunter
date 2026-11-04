@@ -15,7 +15,7 @@ function load({ arrival = null, pathname = '/TrendHunter/trend.html', previous =
     history: { state: previous ? { predictionArrival: previous } : {}, replaceState(state) { this.state = state; } },
     document: {
       body: { classList: { contains: name => name === 'page-trend', add() {} } },
-      querySelector: () => null, querySelectorAll: () => [], getElementById: () => null,
+      querySelector: () => null, querySelectorAll: () => [], getElementById: () => null, addEventListener() {},
     },
   });
   vm.runInContext(source, context);

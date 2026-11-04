@@ -1,3 +1,4 @@
+import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpdates, peoplePreviewPending, acknowledgePeopleUpdates } from './people-update-state.js';
 import { PEOPLE } from './people-data.js';
 import { COLLECTIONS } from './collection-data.js';
 import { COLLECTION_STORIES } from './collection-story-data.js';
@@ -55,6 +56,18 @@ function activities(people) {
   // Stable illustrative activity order alternates followed people without inventing publication times.
   return Array.from({ length: Math.max(0, ...groups.map(group => group.length)) }, (_, i) => groups.map(group => group[i] || '').join('')).join('');
 }
+function updatePeopleSignals(acknowledge = false) {
+  const ids = signedIn() ? follows() : [];
+  if (acknowledge && signedIn()) acknowledgePeopleUpdates(localStorage,ids);
+  const count = unnoticedPeopleUpdates(localStorage,ids).length;
+  const pending = signedIn() && (count > 0 || peoplePreviewPending(localStorage));
+  document.querySelectorAll('[data-feed-view="following"][role="tab"], [data-profile-section="following"]').forEach(tab => {
+    let dot=tab.querySelector('.collection-updates-dot');
+    if (!dot) { dot=document.createElement('span'); dot.className='collection-updates-dot'; dot.setAttribute('aria-hidden','true');tab.append(dot); }
+    dot.hidden=!pending;
+    if(pending) tab.setAttribute('aria-label','Following, new updates'); else tab.removeAttribute('aria-label');
+  });
+}
 function render() {
   const ids = signedIn() ? follows() : [];
   const people = followingPeople(ids, kind);
@@ -72,6 +85,7 @@ function render() {
     if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = `${people.length} followed people in ${{all:'All',creators:'Creators',members:'Community'}[kind]}`;
   }
   if (management) management.innerHTML = filters() + (people.length ? `<ul class="people-list">${people.map(person => personRow(person,true)).join('')}</ul>` : emptyState(ids.length > 0));
+  updatePeopleSignals();
   document.dispatchEvent(new Event('collection-stories-rendered'));
 }
 function loginFor(person) {
@@ -150,13 +164,17 @@ try {
     setFollowing(person,true);
   }
 } catch {}
-document.addEventListener('feed-view-selected', event => { if (event.detail === 'following') render(); });
+document.addEventListener('feed-view-selected', event => { if (event.detail === 'following') { updatePeopleSignals(true); render(); } });
+document.addEventListener('people-updates-preview',()=>updatePeopleSignals());
+document.addEventListener('click',event => { if(event.target.closest('[data-profile-section="following"]')) updatePeopleSignals(true); });
 document.addEventListener('auth-change', render);
 document.addEventListener('prediction-call', render);
-window.addEventListener('storage', event => { if (event.key === PEOPLE_FOLLOW_KEY || event.key === null) render(); });
+window.addEventListener('storage', event => { if ([PEOPLE_FOLLOW_KEY,PEOPLE_UPDATES_SEEN_KEY,PEOPLE_UPDATES_PREVIEW_KEY,null].includes(event.key)) render(); });
 window.addEventListener('pageshow', () => {
   kind = new URLSearchParams(location.search).get('people') || 'all';
   if (!['all','creators','members'].includes(kind)) kind = 'all';
+  if (location.hash === '#following') updatePeopleSignals(true);
   render();
 });
+if (location.hash === '#following') updatePeopleSignals(true);
 render();
