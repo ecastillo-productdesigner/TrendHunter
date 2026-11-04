@@ -1,10 +1,11 @@
 import test from 'node:test';
+import { collectionUpdatePreviewPending, showCollectionUpdatesPreview, dismissCollectionUpdatesPreview } from '../site/collection-update-state.js';
 import assert from 'node:assert/strict';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed, recommendedCollections } from '../site/collection-follow-state.js';
 
 const memoryStorage = () => {
   const values = new Map();
-  return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
+  return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
 };
 const beauty = 'collection-evidence-based-beauty.html';
 const longevity = 'collection-longevity.html';
@@ -129,4 +130,20 @@ test('All deduplicates stories and the followed collection filter excludes unrel
   const ranked = followedStoryList(COLLECTION_STORIES, followed, 'all', [school[3].href]);
   assert.equal(ranked[0].href, school[3].href);
   assert.equal(COLLECTIONS.every(collection => COLLECTION_STORIES.some(story => story.collections.includes(collection.href))), true);
+});
+
+test('manual Collections dot preview can be dismissed without changing real update history or follows', () => {
+  const storage = memoryStorage();
+  setCollectionFollowed(storage,beauty,true);
+  const unread = unreadCollectionStories(storage,beauty);
+  acknowledgeCollectionUpdates(storage,unread);
+  const followed = readFollowedCollections(storage);
+  assert.equal(collectionUpdatePreviewPending(storage),false);
+  assert.equal(showCollectionUpdatesPreview(storage),true);
+  assert.equal(collectionUpdatePreviewPending(storage),true);
+  assert.deepEqual(unnoticedCollectionStories(storage,unread),[]);
+  assert.deepEqual(readFollowedCollections(storage),followed);
+  assert.equal(dismissCollectionUpdatesPreview(storage),true);
+  assert.equal(collectionUpdatePreviewPending(storage),false);
+  assert.deepEqual(unreadCollectionStories(storage,beauty),unread);
 });

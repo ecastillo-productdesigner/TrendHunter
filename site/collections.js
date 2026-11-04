@@ -1,7 +1,7 @@
 import { COLLECTIONS } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed, recommendedCollections } from './collection-follow-state.js';
 
-import { COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, unreadCollectionStories, unseenCollectionCards, unnoticedCollectionStories, acknowledgeCollectionUpdates, markCollectionCardSeen } from './collection-update-state.js';
+import { COLLECTION_READ_KEY, COLLECTION_UPDATES_PREVIEW_KEY, collectionUpdatePreviewPending, dismissCollectionUpdatesPreview, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, unreadCollectionStories, unseenCollectionCards, unnoticedCollectionStories, acknowledgeCollectionUpdates, markCollectionCardSeen } from './collection-update-state.js';
 import { interestLevel } from './collection-data.js';
 
 import { editorialStoryCard } from './story-card.js';
@@ -103,9 +103,10 @@ document.addEventListener('visibilitychange', () => {
 function renderUpdateSignals(followed) {
   if (!document.body.classList.contains('page-feed')) return;
   const unread = new Set(newCards(followed.flatMap(unreadStories)));
+  const preview = collectionUpdatePreviewPending(localStorage);
   let unnoticed = [...unread];
   try {
-    if (document.body.dataset.feedView === 'collections') acknowledgeCollectionUpdates(localStorage, [...unread]);
+    if (document.body.dataset.feedView === 'collections' && !preview) acknowledgeCollectionUpdates(localStorage, [...unread]);
     unnoticed = unnoticedCollectionStories(localStorage, [...unread]);
   } catch {}
   const tab = document.querySelector('[data-feed-view="collections"][role="tab"]');
@@ -117,8 +118,9 @@ function renderUpdateSignals(followed) {
       dot.setAttribute('aria-hidden', 'true');
       tab.append(dot);
     }
-    dot.hidden = unnoticed.length === 0;
+    dot.hidden = unnoticed.length === 0 && !preview;
     if (unnoticed.length) tab.setAttribute('aria-label', `Collections, ${unnoticed.length} new ${unnoticed.length === 1 ? 'story' : 'stories'}`);
+    else if (preview) tab.setAttribute('aria-label','Collections, new content');
     else tab.removeAttribute('aria-label');
   }
   document.querySelectorAll('.feed-list > li > .trend-card--editorial').forEach(card => {
@@ -226,8 +228,9 @@ for (const button of followButtons) {
     notify(collection, following);
   });
 }
-window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, null].includes(event.key)) renderCollections(); });
-document.addEventListener('feed-view-selected', event => { if (event.detail === 'collections') renderCollections(); });
+window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, COLLECTION_UPDATES_PREVIEW_KEY, COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, null].includes(event.key)) renderCollections(); });
+document.addEventListener('feed-view-selected', event => { if (event.detail === 'collections') { dismissCollectionUpdatesPreview(localStorage); renderCollections(); } });
+document.addEventListener('collection-updates-preview',renderCollections);
 window.addEventListener('pageshow', () => {
   selectedCollection = new URLSearchParams(location.search).get('collection') || 'all';
   renderCollections();

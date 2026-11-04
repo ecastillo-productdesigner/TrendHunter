@@ -70,6 +70,13 @@ if (settingsButton && settingsPanel) {
     document.dispatchEvent(new CustomEvent('feed-recommendations-updated', { detail: { reset:true } }));
     window.showToast?.('Recommendations reset.');
   });
+  settingsPanel.querySelector('[data-setting="show-new-collections"]')?.addEventListener('click', async () => {
+    const { showCollectionUpdatesPreview } = await import('./collection-update-state.js');
+    if (!showCollectionUpdatesPreview(localStorage)) { window.showToast?.('New content preview could not be shown. Please try again.'); return; }
+    setOpen(false);
+    if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('collection-updates-preview'));
+    else location.assign('feed.html');
+  });
   settingsPanel.querySelector('[data-setting="reset-badges"]')?.addEventListener('click', async () => {
     const { resetBadgeProgress } = await import('./badge-state.js');
     let calls = {}; try { calls = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}'); } catch {}

@@ -65,3 +65,15 @@ export function acknowledgeCollectionUpdates(storage, stories) {
     return true;
   } catch { return false; }
 }
+
+// Manual prototype preview is separate from the occasional sample releases and read history.
+export const COLLECTION_UPDATES_PREVIEW_KEY = 'trendhunter.collection-updates-preview.v1';
+export function collectionUpdatePreviewPending(storage) {
+  try { return storage.getItem(COLLECTION_UPDATES_PREVIEW_KEY) === 'true'; } catch { return false; }
+}
+export function showCollectionUpdatesPreview(storage) {
+  try { storage.setItem(COLLECTION_UPDATES_PREVIEW_KEY,'true'); return true; } catch { return false; }
+}
+export function dismissCollectionUpdatesPreview(storage) {
+  try { storage.removeItem(COLLECTION_UPDATES_PREVIEW_KEY); return true; } catch { return false; }
+}
