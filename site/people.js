@@ -29,7 +29,24 @@ function predictionActivity(person, id, call) {
   const prediction = window.findPrediction?.(id);
   if (!prediction) return '';
   const first = person.name.split(' ')[0];
-  return `<li class="people-prediction"><p class="people-activity-label"><a href="${person.href}#predictions">${escapeText(first)} made a prediction</a></p><ul class="prediction-results-list" data-following-prediction>${window.resultRow(prediction, call, true, { badgeLabel: `${first} is ${call}` })}</ul></li>`;
+  const template = document.createElement('template');
+  template.innerHTML = window.resultRow(prediction, call, true, { badgeLabel: `${first} is ${call}` });
+  const row = template.content.firstElementChild;
+  row.classList.add('prediction-result--comparison');
+  let readerCall;
+  try { readerCall = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}')[id]; } catch {}
+  const top = row.querySelector('.prediction-result-top');
+  const memberBadge = top.querySelector('.prediction-badge');
+  const column = document.createElement('div'); column.className = 'profile-call-column';
+  memberBadge.replaceWith(column); column.append(memberBadge);
+  if (['in','out'].includes(readerCall)) {
+    column.insertAdjacentHTML('beforeend',`<span class="prediction-badge prediction-badge--${readerCall} profile-reader-badge"><span class="prediction-badge-icon" aria-hidden="true"></span>You’re ${readerCall}</span>`);
+  } else if (signedIn() && !prediction.resolved) {
+    const choiceId = `following-call-${person.id}-${id}`;
+    column.insertAdjacentHTML('beforeend',`<button class="button-primary profile-call-start" type="button" data-following-make-call aria-expanded="false" aria-controls="${choiceId}">Make Your Call</button>`);
+    top.insertAdjacentHTML('afterend',`<div class="profile-call-choices" id="${choiceId}" role="group" aria-label="Your call on ${escapeText(prediction.text)}" hidden><button class="prediction-vote prediction-vote--out" type="button" data-following-call="out"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m out</button><button class="prediction-vote prediction-vote--in" type="button" data-following-call="in"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m in</button></div>`);
+  }
+  return `<li class="people-prediction"><p class="people-activity-label"><a href="${person.href}#predictions">${escapeText(first)} made a prediction</a></p><ul class="prediction-results-list" data-following-prediction>${row.outerHTML}</ul></li>`;
 }
 function activities(people) {
   const groups = people.map(person => person.kind === 'creators'
@@ -74,6 +91,26 @@ function setFollowing(person, following) {
   else window.showToast(`You’re no longer following ${escapeText(person.name)}. <button type="button" class="toast-link" data-person-undo="${person.id}">Undo</button>`);
 }
 document.addEventListener('click', event => {
+  const startCall = event.target.closest('[data-following-make-call]');
+  if (startCall && signedIn()) {
+    const choices = document.getElementById(startCall.getAttribute('aria-controls'));
+    const expanded = startCall.getAttribute('aria-expanded') === 'true';
+    choices.hidden = expanded;
+    startCall.setAttribute('aria-expanded',String(!expanded));
+    startCall.textContent = expanded ? 'Make Your Call' : 'Cancel';
+    if (!expanded) choices.querySelector('button').focus({ preventScroll:true });
+    return;
+  }
+  const vote = event.target.closest('[data-following-call]');
+  if (vote && signedIn()) {
+    const row = vote.closest('.prediction-result'), id = row.dataset.id, call = vote.dataset.followingCall;
+    if (!['in','out'].includes(call) || !window.findPrediction?.(id) || window.findPrediction(id).resolved) return;
+    try { const calls = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}'); sessionStorage.setItem('prediction-calls',JSON.stringify({...calls,[id]:call})); }
+    catch { window.showToast('Your call could not be saved. Please try again.'); return; }
+    document.dispatchEvent(new CustomEvent('prediction-call',{detail:{id,call}}));
+    if (!document.querySelector('.toast-message')?.textContent.startsWith('You earned ')) window.showToast(`Your call is locked in. You’re ${call}.`);
+    return;
+  }
   const control = event.target.closest('[data-person-follow]');
   if (control) {
     const person = catalog.get(control.dataset.personFollow);
@@ -115,6 +152,7 @@ try {
 } catch {}
 document.addEventListener('feed-view-selected', event => { if (event.detail === 'following') render(); });
 document.addEventListener('auth-change', render);
+document.addEventListener('prediction-call', render);
 window.addEventListener('storage', event => { if (event.key === PEOPLE_FOLLOW_KEY || event.key === null) render(); });
 window.addEventListener('pageshow', () => {
   kind = new URLSearchParams(location.search).get('people') || 'all';

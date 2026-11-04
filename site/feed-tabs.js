@@ -1,6 +1,6 @@
 import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './feed-personalization.js';
 
-import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots } from './recommendation-feedback.js';
+import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
@@ -14,6 +14,12 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   const heading = panel.querySelector('#feed-view-heading');
   const status = panel.querySelector('#feed-view-status');
   const main = panel.closest('main');
+  const sortFilters = panel.querySelector('[data-trend-sort-filters]');
+  const sorts = ['all','ascending','descending'];
+  const sortFromUrl = () => {
+    const value = new URLSearchParams(location.search).get('sort');
+    return sorts.includes(value) ? value : 'all';
+  };
   const originalItems = [...list.children];
   const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
   const fallingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--falling'));
@@ -26,6 +32,10 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   const topicsFor = item => {
     const story = item.querySelector(':scope > .trend-card');
     return story ? (story.dataset.topics || '').split(' ').filter(Boolean) : null;
+  };
+  const recommendationFor = item => {
+    const story = item.querySelector(':scope > .trend-card');
+    return story ? { recommended: Boolean(story.querySelector('.recommendation-inline')), story:story.querySelector('.bookmark-button')?.dataset.href, collection:story.querySelector('.trend-card-collection')?.getAttribute('href') } : null;
   };
   const names = {
     'for-you': 'For You',
@@ -49,14 +59,19 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     list.hidden = view === 'collections' || view === 'following';
     panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
+    const trending = view === 'trending-up' || view === 'trending-down';
+    const sort = sortFromUrl();
+    sortFilters.hidden = !trending;
+    for (const button of sortFilters.querySelectorAll('[data-trend-sort]')) button.setAttribute('aria-pressed',String(button.dataset.trendSort === sort));
 
-    const order = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
+    const order = trending ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
-      const rankedItems = order === 'falling' ? rankedFallingItems : rankedRisingItems;
+      const defaultItems = view === 'trending-down' ? rankedFallingItems : rankedRisingItems;
+      const rankedItems = sort === 'all' ? defaultItems : [...defaultItems].sort((a,b) => sort === 'ascending' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
       const ranked = new Set(rankedItems);
-      const items = order === 'rising' || order === 'falling'
+      const items = trending
         ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
-        : view === 'for-you' ? rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null) : originalItems;
+        : view === 'for-you' ? placeRecommendations(rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null), recommendationFor) : originalItems;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
         if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
@@ -76,7 +91,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const followedStoryCount = directory.querySelectorAll('[data-followed-stories] > li').length;
     status.textContent = view === 'collections'
       ? `${followedStoryCount} stories from ${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
+      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${trending && sort !== 'all' ? `, percentage ${sort}` : view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
 
     document.dispatchEvent(new CustomEvent('feed-view-selected', { detail: view }));
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
@@ -84,8 +99,19 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
       main.scrollTo({ top: 0, behavior: 'auto' });
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
-    selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+    if (resetScroll) selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   }
+
+  sortFilters.addEventListener('click', event => {
+    const button = event.target.closest('[data-trend-sort]');
+    if (!button) return;
+    const url = new URL(location.href);
+    if (button.dataset.trendSort === 'all') url.searchParams.delete('sort');
+    else url.searchParams.set('sort',button.dataset.trendSort);
+    history.replaceState(history.state,'',url);
+    select(viewFromUrl(), { resetScroll:false });
+    button.focus({ preventScroll:true });
+  });
 
   for (const tab of tabs) {
     tab.addEventListener('click', () => select(tab.dataset.feedView, { updateUrl: true }));
@@ -107,9 +133,13 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     select('for-you', { updateUrl: true });
     tabs[0].focus({ preventScroll: true });
   });
-  document.addEventListener('feed-recommendations-updated', () => {
+  document.addEventListener('feed-recommendations-updated', event => {
     feedback = readRecommendationFeedback();
-    select('for-you', { updateUrl: true, resetScroll: false });
+    // Keep the current card and scroll position while feedback is reversible.
+    // Apply ranking/hiding when the visitor next opens For You or resets it.
+    if (event.detail?.reset) {
+      select('for-you', { updateUrl:true });
+    } else if (!event.detail?.deferReorder) select(viewFromUrl(), { resetScroll: false });
   });
   window.addEventListener('storage', event => {
     if (![TOPIC_STORAGE_KEY, RECOMMENDATION_FEEDBACK_KEY].includes(event.key)) return;

@@ -1,7 +1,7 @@
 import { COLLECTIONS } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed, recommendedCollections } from './collection-follow-state.js';
 
-import { COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, unreadCollectionStories, unnoticedCollectionStories, acknowledgeCollectionUpdates } from './collection-update-state.js';
+import { COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, unreadCollectionStories, unseenCollectionCards, unnoticedCollectionStories, acknowledgeCollectionUpdates, markCollectionCardSeen } from './collection-update-state.js';
 import { interestLevel } from './collection-data.js';
 
 import { editorialStoryCard } from './story-card.js';
@@ -50,7 +50,9 @@ function collectionCard(collection, showUpdates = false) {
     link.classList.add('pill-button--has-updates');
     const badge = document.createElement('span');
     badge.className = 'collection-new-badge';
-    badge.textContent = `${unread.length} new ${unread.length === 1 ? 'story' : 'stories'}`;
+    badge.textContent = String(unread.length);
+    badge.setAttribute('role','img');
+    badge.setAttribute('aria-label',`${unread.length} new ${unread.length === 1 ? 'story' : 'stories'}`);
     link.append(badge);
   }
   item.append(link);
@@ -61,9 +63,46 @@ function unreadStories(href) {
   try { return unreadCollectionStories(localStorage, href); } catch { return []; }
 }
 
+function newCards(stories) {
+  try { return unseenCollectionCards(localStorage, stories); } catch { return stories; }
+}
+
+// Observe media instead of the entire card, which may be taller than a phone.
+// A short dwell avoids clearing markers on cards flashed past while scrolling.
+const seenTimers = new Map();
+const seenObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    clearTimeout(seenTimers.get(entry.target));
+    seenTimers.delete(entry.target);
+    if (!entry.isIntersecting || entry.intersectionRatio < .5 || document.hidden) continue;
+    seenTimers.set(entry.target, setTimeout(() => {
+      seenTimers.delete(entry.target);
+      if (document.hidden || !entry.target.isConnected) return;
+      const card = entry.target.closest('.trend-card');
+      const href = card?.querySelector('.bookmark-button')?.dataset.href;
+      let saved = false;
+      try { saved = markCollectionCardSeen(localStorage, href); } catch {}
+      if (!saved) return;
+      document.querySelectorAll('.trend-card').forEach(other => {
+        if (other.querySelector('.bookmark-button')?.dataset.href === href) other.querySelector('.followed-story-update')?.remove();
+      });
+      seenObserver.unobserve(entry.target);
+    }, 600));
+  }
+}, { threshold: .5 }) : null;
+
+function observeNewCards() {
+  document.querySelectorAll('.trend-card:has(.followed-story-update) .trend-card-media').forEach(media => seenObserver?.observe(media));
+}
+document.addEventListener('visibilitychange', () => {
+  for (const timer of seenTimers.values()) clearTimeout(timer);
+  seenTimers.clear();
+  if (!document.hidden) { seenObserver?.disconnect(); observeNewCards(); }
+});
+
 function renderUpdateSignals(followed) {
   if (!document.body.classList.contains('page-feed')) return;
-  const unread = new Set(followed.flatMap(unreadStories));
+  const unread = new Set(newCards(followed.flatMap(unreadStories)));
   let unnoticed = [...unread];
   try {
     if (document.body.dataset.feedView === 'collections') acknowledgeCollectionUpdates(localStorage, [...unread]);
@@ -117,7 +156,7 @@ function renderFollowedStories(followed) {
     });
     collectionFilters.append(filter);
   }
-  const unread = followed.flatMap(unreadStories);
+  const unread = newCards(followed.flatMap(unreadStories));
   const stories = followedStoryList(COLLECTION_STORIES, followed, selectedCollection, unread);
   followedStories.innerHTML = stories.map(story => editorialStoryCard(story, catalog.get(story.collectionHref), { isNew: unread.includes(story.href) })).join('');
   collectionFilters.hidden = followed.length === 0;
@@ -131,6 +170,7 @@ function renderFollowedStories(followed) {
     document.getElementById('feed-view-status').textContent = `${stories.length} stories from ${selectedCollection === 'all' ? `${followed.length} followed collections` : catalog.get(selectedCollection).name}`;
   }
   document.dispatchEvent(new Event('collection-stories-rendered'));
+  observeNewCards();
 }
 
 function renderCollections() {
@@ -157,6 +197,7 @@ function renderCollections() {
   }
   renderUpdateSignals(followed);
   renderFollowedStories(followed);
+  observeNewCards();
 
 }
 
@@ -185,7 +226,7 @@ for (const button of followButtons) {
     notify(collection, following);
   });
 }
-window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, null].includes(event.key)) renderCollections(); });
+window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, null].includes(event.key)) renderCollections(); });
 document.addEventListener('feed-view-selected', event => { if (event.detail === 'collections') renderCollections(); });
 window.addEventListener('pageshow', () => {
   selectedCollection = new URLSearchParams(location.search).get('collection') || 'all';

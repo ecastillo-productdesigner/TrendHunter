@@ -58,4 +58,24 @@ if (settingsButton && settingsPanel) {
 
   // Open Osano — the cookie consent tool isn't part of the prototype yet
   settingsPanel.querySelector('[data-setting="osano"]').addEventListener('click', () => setOpen(false));
+
+  // Reset only recommendation feedback; explicit topics and follows are retained.
+  settingsPanel.querySelector('[data-setting="reset-recommendations"]')?.addEventListener('click', async () => {
+    const { resetRecommendationFeedback } = await import('./recommendation-feedback.js');
+    if (!resetRecommendationFeedback()) {
+      window.showToast?.('Recommendations could not be reset. Please try again.');
+      return;
+    }
+    setOpen(false);
+    document.dispatchEvent(new CustomEvent('feed-recommendations-updated', { detail: { reset:true } }));
+    window.showToast?.('Recommendations reset.');
+  });
+  settingsPanel.querySelector('[data-setting="reset-badges"]')?.addEventListener('click', async () => {
+    const { resetBadgeProgress } = await import('./badge-state.js');
+    let calls = {}; try { calls = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}'); } catch {}
+    if (!resetBadgeProgress(localStorage,calls)) { window.showToast?.('Badges could not be reset. Please try again.'); return; }
+    setOpen(false);
+    document.dispatchEvent(new Event('member-badges-reset'));
+    window.showToast?.('Badges reset. Your saved calls are unchanged.');
+  });
 }

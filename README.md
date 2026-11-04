@@ -162,10 +162,10 @@ The DS Colors section deduplicates resolved color values separately for dark and
 The navigation bolt uses a 20px graphic in a 48px target; negative outer margins preserve its existing header alignment. The feed’s Share and Bookmark graphics are also 20px, with 48px targets and a 16px gap. Recommendation text and the info icon use #697182.
 
 
-All 39 Trend Detail pages end their article text with Members exploring this trend, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS dark overlay surface, 10px corners, 12px top/bottom padding on desktop and mobile, 16px phone / 24px desktop side padding, 14px bold condensed label and three linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Eight selected articles show an additional and 4 others variant, using fixed illustrative prototype data and 16px Inter; other articles retain the avatar-only version. Both variants are shown in the DS.
+All 39 Trend Detail pages end their article text with Members exploring this collection, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS black surface (--color-black, #000000), 10px corners, 12px top/bottom padding on desktop and mobile, 16px phone / 24px desktop side padding, 14px bold condensed label and matching linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Fixed illustrative totals of 3, 4, 5 or 7 are shown with exactly that many distinct supplied portraits, with no and others suffix.
 
 
-Public reader profiles (`reader-alex-rivera.html`, `reader-jamie-park.html`, `reader-morgan-lee.html`) use three of the supplied 160px circular community avatars rather than contributor portraits. The unchanged PNGs and their source mapping are in site/assets/readers/. They reuse the personal-profile DS and have only Saved, Collections and Predictions. Their fictional sample libraries and calls are read-only, with story/collection navigation and no Posts, editing, bookmarking, following or voting controls. Visiting another reader keeps their library separate. When the visitor has already voted on the same prediction, their actual saved call appears beneath the member’s badge, using the contributor comparison layout. No new voting controls are added to community profiles. Regenerate these pages with `python3 scripts/build-reader-profiles.py`. Join them uses the same 16px light Barlow Condensed typography as Login, while retaining its lime underline.
+Seven public reader profiles use distinct supplied 160px circular community photos rather than contributor portraits. The unchanged PNGs and fictional-name mapping are in site/assets/readers/. They reuse the personal-profile DS with Collections and Predictions only; Saved is private. Their sample libraries and calls are read-only. Follow / Following is a separate relationship control; signed-out visits redirect to login. When a signed-in visitor has already voted on the same prediction, their actual call appears beneath the member’s sample call. No unanswered-vote controls appear on public reader profiles. The Following feed offers Make Your Call for pending member activities. User names and histories are illustrative and do not identify the people in the supplied photographs.
 
 Signed-out article avatars have no href, keyboard focus stop or hover state. Signing in enables the profile links. Direct public-reader URLs use the existing browser-only login-and-return flow; read-only community profiles are available after signing in.
 
@@ -178,7 +178,7 @@ Daily Predictions has a secondary View all open predictions action with the tota
 
 Collection popularity now uses four logo-inspired chevrons, 20 × 14px: lime to the right for rising and red to the left for falling, with progressive opacity. Percentages are hidden visually but retained for accessible labels/tooltips and Trending sorting.
 
-The two recommendation examples use a 20px info icon beside the 16px gray label. The complete label is a 48px target opening Why this recommendation. Reasons mention selected interests only when the story actually matches, otherwise describe the suggested collection. More like this saves a preferred collection and prioritizes its stories in For You; Not interested hides that story from For You with an Undo toast. Feedback is browser-local, restores on reload, and leaves Trending views, topic choices and collection follows separate. Discovery modules keep their slots.
+The two recommendation examples use direct 20px thumbs beside the 16px muted label, in 48px targets. Both match the label color, toggle on and off, and save feedback without moving the current card. Future For You visits apply ranking and hiding; Reset Recommendations restores the cards. Discovery modules keep their slots.
 
 The recommendation overlay heading reuses the DS Card headline class: 28px / 28px Barlow Condensed, weight 800 and uppercase, retaining the overlay’s light text color.
 
@@ -187,3 +187,36 @@ Recommendation feedback uses outlined Material Symbols thumb_up and thumb_down i
 Voting-results frames use one 24px inset on every side across desktop and mobile; the panel owns that padding so nested content does not double it. Finish today’s predictions now has the shared secondary hover fill and a DS focus ring. The recommendation row balances visible top/bottom space and lifts the text optically by 1px. Feed Share/Bookmark target spacing is --spacing-layout-md (16px).
 
 Feed Share now matches the Bookmark’s 20px visible height. Its original artwork proportions produce a roughly 25.5px-wide arrow; both targets remain 48px. Public community-reader profiles omit the page footer.
+
+
+### Collection panels and recommendation feedback
+
+Desktop collection and channel pages keep their overview and complete story list in a 1px bordered panel with 24px padding. More Stories starts 24px below, with no outer frame or inset; its editorial cards fill the middle-column width like the feed. The collection detail list is generated from the same full membership catalogue as the followed feed, including article-primary assignments. It has no four-story cap.
+
+New story markers clear after half of a card’s media has been visible for 600ms. Seen-card state is browser-local and separate from article-read state; merely seeing a card does not earn reading badges. Offscreen cards retain their markers.
+
+Recommendation thumbs match the muted label color, show selection with a filled icon, and toggle off on a second click. Feedback saves without moving or hiding the current card or scrolling to the tabs; ranking changes apply on the next visit to For You. Reset Recommendations in prototype settings removes thumb feedback and restores hidden recommendations immediately, opens For You and reveals an unanswered recommended card first, retaining selected topic interests and follows.
+
+Achievement badges use rounded-square tiles with --radius-md corners: 72px full badges, 32px symbols, lime #BEFC4F inset borders and forest #1C2410 fill. Only the most recently earned visible badge appears as a 48px tile on the lower-right of the 140px avatar. The old chip row is removed.
+
+Both Trending views provide sticky All / Ascending / Descending controls. Ascending sorts visible percentages low to high; Descending sorts high to low; All restores the existing direction-specific default. Following uses the same sticky filter treatment, with an opaque 24px gap beneath the pills.
+
+Desktop More Stories on articles, collections and channels is unframed; cards fill the available middle-column width. The retailtainment article uses the supplied escalator still photo again. The city content-walk article video is 9:16. Signed-in Following activity offers an inline Make Your Call control for unanswered member predictions and displays the visitor’s saved call after submission.
+
+The current avatar badge opens a square detail popup with 100px --radius-full corners, a 3px --stroke-thick lime border and the shared panel scrim. It uses Card headline, a 144px symbol (80px on phones), Body criteria (16/22 Inter), Helper progress/date (12/20), and Close / Show all actions with 24px above the row. Own-badge Show all flips to five earned/to-collect badges; gray unearned icons remain clickable for criteria and progress. Show recent returns to the latest earned badge. Other members’ badge details offer Close only. Outside clicks, including transparent rounded corners, and Escape dismiss the popup. Personal awards trigger a short 900ms confetti burst near the toast; reduced motion omits it. Reset Badges clears personal progress while treating existing saved calls as a baseline.
+
+The daily feed-completion section now fits its content with 24px padding on all sides; the old 9:16 aspect ratio and vertical centering are removed.
+
+Editorial card controls now have 16px bottom padding in desktop and mobile layouts. The account drawer separates Profile and Log Out with the existing DS divider.
+
+Community presence labels now emphasize collections: fixed illustrative totals of 3, 4, 5 or 7 members exploring this collection, consistent across a collection’s stories, with no and others suffix. Public reader profiles expose only Collections and Predictions and default to Collections; Saved remains private to the owner profile.
+
+Recommendation cards are always placed after the first three stories, with discovery module slots retained. Reset restores them in those later positions. Recommendation thumb hover turns the glyph white without a background fill. Following context labels are centered and match recommendation typography.
+
+Badge detail opens with a continuous horizontal rotateY reveal, 300ms ease-out (half of --motion-card-flip), matching the incoming Show all / Show recent transition. There are no intermediate stops or overshoot. Reduced motion is immediate.
+
+Recommendation thumbs retain separate 48px tap targets, abutting without overlap; inward icon alignment leaves a 16px visible gap.
+
+Trending Video overlays show article headings across at least three lines without truncation. The primary Go deeper and sound row is followed by the linked story author avatar, Share and Bookmark. Both story actions use 48px targets and matching 20px visible glyph heights; saved metadata and share URLs identify the article, never the MP4.
+
+Collection unread badges are 24px red circles with only a numeric count visible and the full new-story count in their accessible label. The badge collection grid aligns name and state rows and centers its final two items.

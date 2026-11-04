@@ -9,3 +9,4 @@
 .ds-radius > div[data-token="--radius-sm"] { border-radius: var(--radius-sm); }
 .ds-radius > div[data-token="--radius-md"] { border-radius: var(--radius-md); }
 .ds-radius > div[data-token="--radius-full"] { border-radius: var(--radius-full); }
+.ds-radius > div[data-token="--radius-circle"] { border-radius: var(--radius-circle); }

@@ -1,4 +1,4 @@
-import { MEMBER_BADGES, READER_BADGE_EXAMPLES } from './badge-catalog.js';
+import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js';
 import { BADGE_STATE_KEY, readBadgeState, badgeProgress, recordBadgeActivity, setBadgeVisible } from './badge-state.js';
 import { readFollowedCollections } from './collection-follow-state.js';
 import { unreadCollectionStories } from './collection-update-state.js';
@@ -14,12 +14,18 @@ function state() { try { return readBadgeState(localStorage); } catch { return r
 const medal = badge => `<span class="badge-medal" data-badge="${badge.id}" aria-hidden="true"><span class="material-symbols-outlined">${badge.icon}</span></span>`;
 function renderProfileBadges() {
   if (!profile || (!own && !example)) return;
-  let row = profile.querySelector('.member-badges');
-  if (!row) { row = document.createElement('div'); row.className = 'member-badges'; row.setAttribute('aria-label','Member badges'); profile.querySelector('.profile-identity').append(row); }
+  profile.querySelector('.member-badges')?.remove();
+  const avatar = profile.querySelector('.profile-avatar');
+  let portrait = avatar.closest('.profile-portrait');
+  if (!portrait) { portrait = document.createElement('div'); portrait.className = 'profile-portrait'; avatar.replaceWith(portrait); portrait.append(avatar); }
   const saved = state();
   const earned = own ? signedIn() ? saved.earned : {} : example;
-  const visible = MEMBER_BADGES.filter(badge => earned[badge.id] && (!own || !saved.hidden.includes(badge.id))).slice(0,3);
-  row.innerHTML = visible.map(badge => `<button class="member-badge" type="button" data-badge-view="${badge.id}">${medal(badge)}<span>${badge.name}</span></button>`).join('') + (own || visible.length ? '<button class="member-badges-all" type="button" data-badge-view="all">View all badges</button>' : '');
+  const current = currentMemberBadge(earned,own ? saved.hidden : []);
+  portrait.querySelector('.profile-current-badge')?.remove();
+  if (current) portrait.insertAdjacentHTML('beforeend',`<button class="profile-current-badge" type="button" data-badge-view="${current.id}" aria-label="${current.name} badge. View badge details" title="${current.name}">${medal(current)}</button>`);
+  // Keep visibility and unearned criteria reachable without a profile chip row.
+  const editForm = document.querySelector('.edit-profile-form');
+  if (own && editForm && !editForm.querySelector('[data-badge-view]')) editForm.insertAdjacentHTML('beforeend','<button class="member-badges-all" type="button" data-badge-view="all">View all badges</button>');
 }
 function showBadges(id) {
   if (own && !signedIn()) {
@@ -30,7 +36,21 @@ function showBadges(id) {
   if (!modal) {
     modal = document.createElement('dialog'); modal.className = 'member-badge-dialog'; modal.setAttribute('aria-labelledby','member-badge-heading');
     document.body.append(modal);
-    modal.addEventListener('click',event => { if (event.target.closest('[data-badge-close]')) modal.close(); });
+    // Treat the transparent rounded corners as outside too.
+    const outside = event => {
+      const rect = modal.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) return true;
+      const radius = Math.min(parseFloat(getComputedStyle(modal).borderTopLeftRadius) || 0,rect.width/2,rect.height/2);
+      const x = Math.max(rect.left + radius - event.clientX,event.clientX - (rect.right - radius),0);
+      const y = Math.max(rect.top + radius - event.clientY,event.clientY - (rect.bottom - radius),0);
+      return x > 0 && y > 0 && x*x + y*y > radius*radius;
+    };
+    let startedOutside = false;
+    modal.addEventListener('pointerdown',event => { startedOutside = outside(event); });
+    modal.addEventListener('click',event => {
+      if (event.target.closest('[data-badge-close]') || startedOutside && outside(event)) modal.close();
+      startedOutside = false;
+    });
     modal.addEventListener('change',event => {
       const toggle = event.target.closest('[data-badge-visibility]');
       if (!toggle) return;
@@ -41,9 +61,59 @@ function showBadges(id) {
   }
   const saved = state(), progress = badgeProgress(saved);
   const earned = own || !example ? saved.earned : example;
-  const badges = MEMBER_BADGES.filter(badge => id === 'all' ? own || !example || earned[badge.id] : badge.id === id);
-  modal.innerHTML = `<button class="auth-close" type="button" data-badge-close aria-label="Close badges"><span class="auth-close-icon" aria-hidden="true"></span></button><h2 class="trend-card-headline" id="member-badge-heading">${id === 'all' ? 'Member badges' : badges[0]?.name || 'Member badge'}</h2><div class="badge-detail-grid">${badges.map(badge => `<section class="badge-detail" data-earned="${Boolean(earned[badge.id])}">${medal(badge)}<h3>${badge.name}</h3><p>${badge.criterion}</p><p class="badge-progress">${earned[badge.id] ? `Earned ${earned[badge.id]}` : badge.id === 'sharp-eye' ? 'Locked · requires verified outcomes' : `${Math.min(progress[badge.metric],badge.goal)} of ${badge.goal}`}</p>${own && signedIn() && earned[badge.id] ? `<label class="badge-visibility"><input type="checkbox" data-badge-visibility="${badge.id}" ${saved.hidden.includes(badge.id) ? '' : 'checked'}> Show on my profile</label>` : ''}</section>`).join('')}</div>`;
-  modal.showModal(); modal.querySelector('[data-badge-close]').focus({ preventScroll:true });
+  const current = currentMemberBadge(earned,own ? saved.hidden : []);
+  const actions = content => `<div class="badge-popup-actions"><button class="badge-popup-close" type="button" data-badge-close>Close</button>${content}</div>`;
+  let content;
+  if (id === 'all') {
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">Member badges</h2><div class="badge-coin-grid">${MEMBER_BADGES.map(badge => `<button class="badge-coin-choice" type="button" data-badge-view="${badge.id}" data-earned="${Boolean(earned[badge.id])}" aria-label="${badge.name}. ${earned[badge.id] ? 'Earned' : 'Not yet collected'}. View how to collect"><span class="material-symbols-outlined" aria-hidden="true">${badge.icon}</span><span class="badge-coin-name">${badge.name}</span><span class="badge-coin-state">${earned[badge.id] ? 'Earned' : 'To collect'}</span></button>`).join('')}</div>${actions(current ? `<button class="badge-popup-close" type="button" data-badge-view="${current.id}">Show recent</button>` : '')}`;
+  } else {
+    const badge = MEMBER_BADGES.find(badge => badge.id === id);
+    if (!badge) return;
+    const date = earned[badge.id];
+    const progressLabel = date ? `Earned ${new Intl.DateTimeFormat('en-US',{dateStyle:'long',timeZone:'UTC'}).format(new Date(`${date}T12:00:00Z`))}` : badge.id === 'sharp-eye' ? 'Requires verified outcomes' : own || !example ? `${Math.min(progress[badge.metric],badge.goal)} of ${badge.goal} · Not yet collected` : 'Not yet collected';
+    content = `<h2 class="trend-card-headline" id="member-badge-heading">${badge.name}</h2><span class="badge-popup-symbol material-symbols-outlined" aria-hidden="true">${badge.icon}</span><p class="badge-popup-criterion">${badge.criterion}</p><p class="badge-popup-date">${progressLabel}</p>${actions(own || !example ? '<button class="badge-popup-close" type="button" data-badge-view="all">Show all</button>' : '')}`;
+  }
+  const render = () => {
+    modal.classList.add('member-badge-dialog--medal');
+    modal.classList.toggle('member-badge-dialog--collection',id === 'all');
+    modal.innerHTML = content;
+    modal.querySelector('h2').tabIndex = -1;
+    modal.querySelector('h2').focus({preventScroll:true});
+  };
+  if (modal.open) {
+    // Flip in place so the shared scrim and the reader's page position remain steady.
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { render(); return; }
+    const duration = (parseFloat(getComputedStyle(modal).getPropertyValue('--motion-card-flip')) || 600) / 2;
+    const turn = modal.animate([{transform:'perspective(960px) rotateY(0)'},{transform:'perspective(960px) rotateY(90deg)'}],{duration,easing:'ease-in',fill:'forwards'});
+    turn.finished.then(() => {
+      if (!modal.open) { turn.cancel(); return; }
+      render();
+      modal.animate([{transform:'perspective(960px) rotateY(-90deg)'},{transform:'perspective(960px) rotateY(0)'}],{duration,easing:'ease-out'});
+      turn.cancel();
+    }).catch(()=>{});
+  } else {
+    render(); modal.showModal(); modal.querySelector('h2').focus({preventScroll:true});
+  }
+}
+
+function celebrateBadge() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  requestAnimationFrame(() => {
+    const toast = document.querySelector('.toast');
+    if (!toast || toast.hidden) return;
+    const rect = toast.getBoundingClientRect();
+    const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('aria-hidden','true');
+    burst.style.left = `${rect.left + rect.width / 2}px`; burst.style.top = `${rect.top}px`;
+    for (let i=0;i<12;i++) {
+      const particle = document.createElement('span');
+      particle.style.setProperty('--particle-x',`${Math.cos(i*Math.PI/11)*(64+i%3*16)}px`);
+      particle.style.setProperty('--particle-y',`${-48-Math.sin(i*Math.PI/11)*64}px`);
+      particle.style.setProperty('--particle-turn',`${i%2 ? 300 : -300}deg`);
+      burst.append(particle);
+    }
+    document.body.append(burst);
+    setTimeout(()=>burst.remove(),1200);
+  });
 }
 function record(activity, announce = true) {
   if (!signedIn()) return;
@@ -53,13 +123,14 @@ function record(activity, announce = true) {
   if (announce && result.newlyEarned.length) {
     const badge = MEMBER_BADGES.find(badge => badge.id === result.newlyEarned[0]);
     window.showToast(`You earned ${badge.name}. <button type="button" class="toast-link" data-badge-view="${badge.id}">View badge</button>`);
+    celebrateBadge();
   }
 }
 function recordCalls() {
   if (!signedIn()) return;
   let calls = {}; try { calls = JSON.parse(sessionStorage.getItem('prediction-calls')) || {}; } catch {}
-  const recorded = state().calls;
-  for (const [id,call] of Object.entries(calls)) if (['in','out'].includes(call) && recorded[id] !== call) record({ type:'call',id,call },false);
+  const saved = state(), recorded = saved.calls;
+  for (const [id,call] of Object.entries(calls)) if (['in','out'].includes(call) && recorded[id] !== call && saved.baselineCalls[id] !== call) record({ type:'call',id,call },false);
 }
 document.addEventListener('prediction-call',event => {
   if (event.detail?.id && ['in','out'].includes(event.detail.call)) record({ type:'call',id:event.detail.id,call:event.detail.call });
@@ -86,5 +157,6 @@ if (readingEnd && collection && 'IntersectionObserver' in window) {
   observer.observe(readingEnd);
 }
 document.addEventListener('auth-change',() => { recordCalls(); renderProfileBadges(); });
+document.addEventListener('member-badges-reset',() => { renderProfileBadges(); document.querySelectorAll('.badge-confetti').forEach(burst=>burst.remove()); });
 window.addEventListener('storage',event => { if (event.key === BADGE_STATE_KEY) renderProfileBadges(); });
 recordCalls(); record({ type:'refresh' },false); renderProfileBadges();

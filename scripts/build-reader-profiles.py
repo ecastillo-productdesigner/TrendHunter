@@ -1,4 +1,4 @@
-"""Build the three public, read-only fictional reader profiles from the personal-profile shell."""
+"""Build the public, read-only fictional reader profiles from the personal-profile shell."""
 from pathlib import Path
 import html
 import json
@@ -19,6 +19,10 @@ readers = [
      'saved': ['trend-home-energy.html', 'trend-everyday-protein.html'],
      'collections': ['collection-clean-living-control.html', 'collection-protein-forward-eating.html'],
      'calls': {'home-energy': 'in', 'dollar-stores': 'out', 'protein-coffee': 'in'}},
+    {'id': 'taylor-brooks', 'name': 'Taylor Brooks', 'image': 'assets/readers/taylor-brooks.png', 'saved': [], 'collections': ['collection-evidence-based-beauty.html', 'collection-longevity.html'], 'calls': {'skin-longevity': 'in', 'sleep-routines': 'in', 'protein-coffee': 'out'}},
+    {'id': 'quinn-ellis', 'name': 'Quinn Ellis', 'image': 'assets/readers/quinn-ellis.png', 'saved': [], 'collections': ['collection-evidence-based-beauty.html', 'collection-longevity.html'], 'calls': {'skin-longevity': 'in', 'sleep-routines': 'in', 'protein-coffee': 'out'}},
+    {'id': 'casey-reed', 'name': 'Casey Reed', 'image': 'assets/readers/casey-reed.png', 'saved': [], 'collections': ['collection-evidence-based-beauty.html', 'collection-longevity.html'], 'calls': {'skin-longevity': 'in', 'sleep-routines': 'in', 'protein-coffee': 'out'}},
+    {'id': 'riley-chen', 'name': 'Riley Chen', 'image': 'assets/readers/riley-chen.png', 'saved': [], 'collections': ['collection-evidence-based-beauty.html', 'collection-longevity.html'], 'calls': {'skin-longevity': 'in', 'sleep-routines': 'in', 'protein-coffee': 'out'}},
 ]
 # User-supplied community photos receive fictional reader identities here. These are
 # illustrative public libraries, not real people, saved items, votes or live readers.
@@ -65,5 +69,9 @@ for reader in readers:
     page = re.sub(r'  <!-- Prototype settings.*?<script src="settings.js[^>]+></script>\n', '', page, flags=re.S)
     page = re.sub(r'  <script type="module" src="collections.js[^>]+></script>\n', '', page)
     page = re.sub(r'  <footer class="site-footer site-footer--page">.*?</footer>\n', '', page, flags=re.S)
+    page = re.sub(r'<button\b[^>]*id="profile-saved-tab"[^>]*>.*?</button>\s*', '', page, flags=re.S)
+    page = re.sub(r'<section id="profile-saved".*?</section>\s*', '', page, flags=re.S)
+    page = re.sub(r'(<button id="profile-collections-tab"[^>]*class=")filter-tab("[^>]*aria-selected=")false', r'\1filter-tab filter-tab--active\2true', page)
+    page = re.sub(r'(<section id="profile-collections"[^>]*?) hidden', r'\1', page)
     (SITE / f"reader-{reader['id']}.html").write_text(page)
-print('Built 3 read-only reader profiles')
+print(f'Built {len(readers)} read-only reader profiles')

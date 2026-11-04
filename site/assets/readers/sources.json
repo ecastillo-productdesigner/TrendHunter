@@ -15,6 +15,26 @@
       "profile": "reader-morgan-lee.html",
       "asset": "morgan-lee.png",
       "source": "circular_avatars_160x160/avatar_03.png"
+    },
+    {
+      "profile": "reader-taylor-brooks.html",
+      "asset": "taylor-brooks.png",
+      "source": "circular_avatars_160x160/avatar_04.png"
+    },
+    {
+      "profile": "reader-quinn-ellis.html",
+      "asset": "quinn-ellis.png",
+      "source": "circular_avatars_160x160/avatar_05.png"
+    },
+    {
+      "profile": "reader-casey-reed.html",
+      "asset": "casey-reed.png",
+      "source": "circular_avatars_160x160/avatar_06.png"
+    },
+    {
+      "profile": "reader-riley-chen.html",
+      "asset": "riley-chen.png",
+      "source": "circular_avatars_160x160/avatar_07.png"
     }
   ]
 }

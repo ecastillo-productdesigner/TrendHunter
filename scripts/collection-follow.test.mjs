@@ -76,6 +76,38 @@ import { unnoticedCollectionStories, acknowledgeCollectionUpdates } from '../sit
 import { COLLECTION_STORIES } from '../site/collection-story-data.js';
 import { COLLECTIONS } from '../site/collection-data.js';
 import { followedStoryList } from '../site/followed-story-filter.js';
+import { COLLECTION_CARDS_SEEN_KEY, unseenCollectionCards, markCollectionCardSeen } from '../site/collection-update-state.js';
+import { readFile } from 'node:fs/promises';
+
+test('seeing a card persists without claiming the article was read or clearing offscreen stories', () => {
+  const storage = memoryStorage();
+  const fresh = unreadCollectionStories(storage, beauty);
+  assert.equal(markCollectionCardSeen(storage, fresh[0]), true);
+  assert.deepEqual(unseenCollectionCards(storage, fresh), fresh.slice(1));
+  assert.deepEqual(unreadCollectionStories(storage, beauty), fresh);
+  assert.equal(markCollectionCardSeen(storage, 'unknown.html'), false);
+  storage.setItem(COLLECTION_CARDS_SEEN_KEY, '{bad json');
+  assert.equal(markCollectionCardSeen(storage, fresh[1]), true);
+  assert.deepEqual(unseenCollectionCards(storage, fresh), [fresh[0],fresh[2]]);
+  const blocked = { getItem:()=>null, setItem() { throw Error('Blocked'); } };
+  assert.equal(markCollectionCardSeen(blocked, fresh[0]), false);
+});
+
+test('each collection detail lists its complete story membership, including article-primary assignments', async () => {
+  for (const collection of COLLECTIONS) {
+    const page = await readFile(new URL(`../site/${collection.href}`,import.meta.url),'utf8');
+    const section = page.match(/<section class="collection-trends"[\s\S]*?<\/section>/)[0];
+    const listed = [...section.matchAll(/href="(trend[^"]*\.html)"/g)].map(match => match[1]);
+    const expected = COLLECTION_STORIES.filter(story => story.collections.includes(collection.href)).map(story => story.href);
+    assert.deepEqual(listed.sort(), expected.sort(), collection.name);
+    assert.equal(new Set(listed).size, listed.length);
+  }
+  for (const story of COLLECTION_STORIES) {
+    const page = await readFile(new URL(`../site/${story.href}`,import.meta.url),'utf8');
+    const primary = page.match(/<a href="([^"]+)" class="article-collection"/);
+    if (primary) assert.ok(story.collections.includes(primary[1]), story.href);
+  }
+});
 test('opening Collections clears the dot without clearing unread stories, and later releases can signal again', () => {
   const storage = memoryStorage();
   const unread = unreadCollectionStories(storage, beauty);

@@ -55,6 +55,7 @@ if (accountTrigger) {
     <nav class="drawer-nav" aria-label="Account">
       <ul class="drawer-links">
         <li><a class="drawer-link" href="userprofile.html">Profile</a></li>
+        <li aria-hidden="true"><hr class="drawer-divider"></li>
         <li><button class="drawer-link drawer-logout" type="button">Log Out</button></li>
       </ul>
     </nav>`;
@@ -135,26 +136,38 @@ function signOut() {
 if (isSignedIn()) document.documentElement.dataset.auth = 'signed-in';
 
 // Article community cue — illustrative readers have separate public, read-only profiles.
-// This is not live reader presence. Selected pages show an illustrative count variant.
+// Fixed collection-level sample totals; these are not live presence measurements.
 const articleMembersTemplate = `
   <aside class="article-members" id="article-members" aria-labelledby="article-members-label">
-    <p class="article-members-label" id="article-members-label">Members exploring this trend</p>
+    <p class="article-members-label" id="article-members-label">3 members exploring this collection</p>
     <div class="article-members-people">
     <div class="article-members-avatars" role="group" aria-label="Member profiles">
       <a class="article-member-avatar" data-member-profile="reader-alex-rivera.html" role="img" tabindex="-1" aria-label="Alex Rivera" title="Alex Rivera"><img src="assets/readers/alex-rivera.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
       <a class="article-member-avatar" data-member-profile="reader-jamie-park.html" role="img" tabindex="-1" aria-label="Jamie Park" title="Jamie Park"><img src="assets/readers/jamie-park.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
       <a class="article-member-avatar" data-member-profile="reader-morgan-lee.html" role="img" tabindex="-1" aria-label="Morgan Lee" title="Morgan Lee"><img src="assets/readers/morgan-lee.png" alt="" width="24" height="24" loading="lazy" decoding="async"></a>
     </div>
-    <span class="article-members-others" hidden>and 4 others</span>
     </div>
     <a class="article-members-join" href="login.html">Join them</a>
   </aside>`;
 const articleBody = document.querySelector('article.article .article-body');
 if (articleBody && !articleBody.querySelector('.article-members')) {
   articleBody.insertAdjacentHTML('beforeend', articleMembersTemplate);
-  if (document.body.dataset.membersOthers === '4') {
-    articleBody.querySelector('.article-members-others').hidden = false;
-  }
+  const collection = document.querySelector('.article-collection')?.getAttribute('href') || '';
+  const sampleCount = [3,4,5,7][[...collection].reduce((total,letter)=>total+letter.charCodeAt(0),0)%4];
+  articleBody.querySelector('.article-members-label').textContent = `${sampleCount} members exploring this collection`;
+  const moreMembers = [
+    ['taylor-brooks','Taylor Brooks'],['quinn-ellis','Quinn Ellis'],
+    ['casey-reed','Casey Reed'],['riley-chen','Riley Chen'],
+  ];
+  const avatars = articleBody.querySelector('.article-members-avatars');
+  moreMembers.slice(0,sampleCount - 3).forEach(([id,name]) => {
+    const avatar = document.createElement('a');
+    avatar.className = 'article-member-avatar'; avatar.dataset.memberProfile = `reader-${id}.html`;
+    avatar.title = name; avatar.setAttribute('aria-label',name);
+    const image = document.createElement('img'); image.src = `assets/readers/${id}.png`;
+    image.alt = ''; image.width = 24; image.height = 24; image.loading = 'lazy'; image.decoding = 'async';
+    avatar.append(image); avatars.append(avatar);
+  });
 }
 
 function syncArticleMemberLinks() {

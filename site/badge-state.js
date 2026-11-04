@@ -4,8 +4,14 @@ const clean = values => Array.isArray(values) ? [...new Set(values.filter(value 
 export function readBadgeState(storage) {
   try {
     const value = JSON.parse(storage.getItem(BADGE_STATE_KEY) || '{}');
-    return { calls: value.calls && typeof value.calls === 'object' ? value.calls : {}, callDays:clean(value.callDays), collections:clean(value.collections), updateDays:clean(value.updateDays), earned:value.earned && typeof value.earned === 'object' ? value.earned : {}, hidden:clean(value.hidden) };
-  } catch { return { calls:{}, callDays:[], collections:[], updateDays:[], earned:{}, hidden:[] }; }
+    return { calls: value.calls && typeof value.calls === 'object' ? value.calls : {}, baselineCalls:value.baselineCalls && typeof value.baselineCalls === 'object' ? value.baselineCalls : {}, callDays:clean(value.callDays), collections:clean(value.collections), updateDays:clean(value.updateDays), earned:value.earned && typeof value.earned === 'object' ? value.earned : {}, hidden:clean(value.hidden) };
+  } catch { return { calls:{}, baselineCalls:{}, callDays:[], collections:[], updateDays:[], earned:{}, hidden:[] }; }
+}
+export function resetBadgeProgress(storage, previousCalls = {}) {
+  const previous = readBadgeState(storage);
+  const baselineCalls = Object.fromEntries(Object.entries({...previous.baselineCalls,...previous.calls,...previousCalls}).filter(([,call])=>['in','out'].includes(call)));
+  try { storage.setItem(BADGE_STATE_KEY,JSON.stringify({calls:{},baselineCalls,callDays:[],collections:[],updateDays:[],earned:{},hidden:[]})); return true; }
+  catch { return false; }
 }
 export function badgeProgress(state, outcomes = VERIFIED_PREDICTION_OUTCOMES) {
   return { calls:Object.values(state.calls).filter(call => ['in','out'].includes(call)).length, callDays:state.callDays.length, collections:state.collections.length, updateDays:state.updateDays.length, correctCalls:Object.entries(state.calls).filter(([id,call]) => outcomes[id]?.verified === true && outcomes[id].result === call).length };

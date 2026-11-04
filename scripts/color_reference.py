@@ -5,6 +5,7 @@ import re
 GROUPS = ['Brand', 'Neutrals', 'Signals', 'Topic colors']
 PRIORITY = {'Brand': 0, 'Signals': 1, 'Topic colors': 2, 'Neutrals': 3}
 ROLES = {
+    '--color-black': 'Community member panel',
     '--color-background-surface': 'Page surface', '--color-background-surface-raised': 'Raised surface',
     '--color-background-callout': 'Callouts', '--color-background-bg-overlay': 'Overlays',
     '--color-border-default': 'Borders', '--color-border-glass': 'Subtle borders', '--color-border-focus': 'Focus',

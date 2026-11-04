@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trend Hunter — Riley Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="feed.css?v=community-10">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+    } catch (e) {}
+  </script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt,menu_book,public,visibility,wand_stars&display=block">
+<script>
+    try {
+      if (sessionStorage.getItem('signed-in') !== 'true') {
+        sessionStorage.setItem('return-to', location.pathname.split('/').pop() + location.hash);
+        location.replace('login.html');
+      }
+    } catch { location.replace('login.html'); }
+  </script>
+</head>
+<body class="page-profile page-reader">
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <button class="nav-menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false">
+        <img class="nav-menu-icon theme-dark-only" src="assets/feed/icon-menu.svg" alt="">
+        <img class="nav-menu-icon theme-light-only" src="assets/feed/icon-menu-light.svg" alt="">
+        <span class="nav-text-button">Menu</span>
+      </button>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <a class="nav-predictions" href="predictions.html" aria-label="Predict the Next Trend"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+        <a href="login.html" class="nav-text-button nav-login">Login</a>
+        <button class="nav-profile" aria-label="Account menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="account-drawer"><span class="nav-profile-icon" aria-hidden="true"></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Drawer — opened by the Menu button -->
+  <dialog class="drawer" id="site-drawer" aria-label="Menu">
+    <button class="drawer-close" aria-label="Close menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Site">
+      <section class="drawer-group" aria-labelledby="drawer-channels">
+        <h2 class="drawer-heading" id="drawer-channels">Explore Channels</h2>
+        <ul class="drawer-links">
+          <li><a href="channel.html" class="drawer-link">Mind-Body</a></li>
+          <li><a href="channel-everyday-living.html" class="drawer-link">Everyday Living</a></li>
+          <li><a href="channel-experiences.html" class="drawer-link">Experiences</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <section class="drawer-group" aria-labelledby="drawer-business">
+        <h2 class="drawer-heading" id="drawer-business">Trend Hunter for Business</h2>
+        <ul class="drawer-links">
+          <li><a href="#" class="drawer-link">Trends &amp; Insights</a></li>
+          <li><a href="#" class="drawer-link">Solutions</a></li>
+          <li><a href="#" class="drawer-link">Events</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <div class="drawer-group">
+        <a href="#" class="drawer-heading">Trend Hunter Shop</a>
+      </div>
+    </nav>
+  </dialog>
+
+  <!-- Legacy authentication prompt; Bookmark now navigates directly to login. -->
+  <dialog class="auth-prompt" aria-labelledby="auth-title">
+    <button class="auth-close" aria-label="Close"><span class="auth-close-icon" aria-hidden="true"></span></button>
+    <div class="auth-main">
+      <header class="auth-header">
+        <img src="assets/auth/logo-mark.svg" alt="" width="16" height="30">
+        <h2 class="auth-title" id="auth-title">Stay ahead</h2>
+        <p class="auth-subtitle">Create a free account to follow topics, save stories, and get updates on the trends that matter to you</p>
+      </header>
+      <div class="auth-providers">
+        <button class="auth-button auth-button--provider" data-auth="apple"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</button>
+        <button class="auth-button auth-button--provider" data-auth="google"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</button>
+      </div>
+      <a class="auth-button auth-button--email auth-prompt-email" href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Send me a sign-in link</a>
+    </div>
+    <footer class="auth-footer">
+      <ul class="footer-links">
+        <li><a href="#">Copyright</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </footer>
+  </dialog>
+
+  <!-- Fictional public reader profile. All libraries and calls are illustrative and read-only. -->
+  <main class="profile" data-reader-calls="{&quot;skin-longevity&quot;: &quot;in&quot;, &quot;sleep-routines&quot;: &quot;in&quot;, &quot;protein-coffee&quot;: &quot;out&quot;}">
+    <h1 class="profile-title">Profile</h1>
+
+    <!-- Public reader: no authored posts or owner controls -->
+    <section class="profile-header" aria-label="Reader profile">
+      <img class="profile-avatar" src="assets/readers/riley-chen.png" alt="">
+      <div class="profile-identity">
+        <p class="profile-name">Riley Chen</p>
+        <p class="profile-member-since">Member since 2026</p>
+      </div>
+
+      <button class="edit-profile-button person-follow-button" type="button" data-person-follow="riley-chen" aria-pressed="false" aria-label="Follow Riley Chen">Follow</button>
+</section>
+
+    <!-- Profile sections -->
+    <nav class="filter-tabs" role="tablist" aria-label="Profile sections">
+      <button id="profile-collections-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="profile-collections" data-profile-section="collections">Collections</button>
+      <button id="profile-predictions-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-predictions" tabindex="-1" data-profile-section="predictions">Predictions</button>
+    </nav>
+
+<section id="profile-collections" class="profile-panel" role="tabpanel" aria-labelledby="profile-collections-tab" data-profile-panel="collections"><ul class="collection-list"><li><a class="pill-button" href="collection-evidence-based-beauty.html">Evidence-Based Beauty <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 22%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">22%</span></span></a></li><li><a class="pill-button" href="collection-longevity.html">Longevity <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a></li></ul></section>
+    <section id="profile-predictions" class="profile-predictions profile-panel" role="tabpanel" aria-labelledby="profile-predictions-tab" data-profile-panel="predictions" hidden>
+      <div class="profile-prediction-filters" role="group"></div>
+      <div class="prediction-results prediction-results--profile">
+        <ul class="prediction-results-list"></ul>
+        <div class="profile-predictions-empty profile-empty-state" role="status" hidden>
+          <h2 class="profile-empty-title">No predictions yet</h2>
+          <p class="profile-empty-copy">Vote on prediction cards to track them here</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <!-- Toast — stays until dismissed -->
+  <div class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true"></span>
+      <p class="toast-message"></p>
+    </div>
+    <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
+  </div>
+
+
+  <script type="module" src="share.js?v=system-sharing-1"></script>
+  <script src="app.js?v=collection-cards-5"></script>
+  <script src="predictions.js?v=badges-5"></script>
+  <script src="comparison-motion.js?v=entrance-1"></script>
+  <script src="profile-predictions.js?v=active-2-reader-comparison-2"></script>
+
+
+  <script type="module" src="people.js?v=2"></script>
+  <script type="module" src="badges.js?v=5"></script>
+</body>
+</html>

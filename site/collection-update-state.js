@@ -27,6 +27,27 @@ export function markCollectionStoryViewed(storage, href) {
   } catch { return false; }
 }
 
+// Seeing a card clears its "new" marker without claiming its article was read.
+export const COLLECTION_CARDS_SEEN_KEY = 'trendhunter.collection-cards-seen.v1';
+export function unseenCollectionCards(storage, stories) {
+  let seen = [];
+  try {
+    const saved = JSON.parse(storage.getItem(COLLECTION_CARDS_SEEN_KEY) || '[]');
+    if (Array.isArray(saved)) seen = saved;
+  } catch {}
+  return [...new Set(stories)].filter(href => !seen.includes(href));
+}
+export function markCollectionCardSeen(storage, href) {
+  if (!knownStories.has(href)) return false;
+  try {
+    let previous = [];
+    try { previous = JSON.parse(storage.getItem(COLLECTION_CARDS_SEEN_KEY) || '[]'); } catch {}
+    const next = [...new Set([...(Array.isArray(previous) ? previous : []), href])].filter(story => knownStories.has(story));
+    storage.setItem(COLLECTION_CARDS_SEEN_KEY, JSON.stringify(next));
+    return true;
+  } catch { return false; }
+}
+
 export const COLLECTION_UPDATES_SEEN_KEY = 'trendhunter.collection-updates-noticed.v1';
 export function unnoticedCollectionStories(storage, unreadStories) {
   let seen = [];

@@ -102,5 +102,57 @@ export const PEOPLE = [
     "href": "contributor-ryan-brennan.html",
     "image": "assets/trend/byline-ryan-brennan.png",
     "role": "Content creator"
+  },
+  {
+    "id": "taylor-brooks",
+    "name": "Taylor Brooks",
+    "kind": "members",
+    "href": "reader-taylor-brooks.html",
+    "image": "assets/readers/taylor-brooks.png",
+    "role": "Community member",
+    "calls": {
+      "skin-longevity": "in",
+      "sleep-routines": "in",
+      "protein-coffee": "out"
+    }
+  },
+  {
+    "id": "quinn-ellis",
+    "name": "Quinn Ellis",
+    "kind": "members",
+    "href": "reader-quinn-ellis.html",
+    "image": "assets/readers/quinn-ellis.png",
+    "role": "Community member",
+    "calls": {
+      "skin-longevity": "in",
+      "sleep-routines": "in",
+      "protein-coffee": "out"
+    }
+  },
+  {
+    "id": "casey-reed",
+    "name": "Casey Reed",
+    "kind": "members",
+    "href": "reader-casey-reed.html",
+    "image": "assets/readers/casey-reed.png",
+    "role": "Community member",
+    "calls": {
+      "skin-longevity": "in",
+      "sleep-routines": "in",
+      "protein-coffee": "out"
+    }
+  },
+  {
+    "id": "riley-chen",
+    "name": "Riley Chen",
+    "kind": "members",
+    "href": "reader-riley-chen.html",
+    "image": "assets/readers/riley-chen.png",
+    "role": "Community member",
+    "calls": {
+      "skin-longevity": "in",
+      "sleep-routines": "in",
+      "protein-coffee": "out"
+    }
   }
 ];

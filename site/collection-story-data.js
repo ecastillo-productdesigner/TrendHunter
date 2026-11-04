@@ -417,6 +417,28 @@ export const COLLECTION_STORIES = [
     ]
   },
   {
+    "href": "trend-weekly-laundry-reset.html",
+    "id": "weekly-laundry-reset",
+    "title": "The Laundry Reset Is Turning a Household Chore Into a Weekly Ritual",
+    "image": "assets/videos/weekly-laundry-reset.webp",
+    "authorId": "owen-brooks",
+    "author": "Owen Brooks",
+    "collections": [
+      "collection-everyday-living.html"
+    ]
+  },
+  {
+    "href": "trend-led-skincare-lounge.html",
+    "id": "led-skincare-lounge",
+    "title": "LED Mask Lounges Are Turning Skincare Into a Social Ritual",
+    "image": "assets/videos/led-skincare-lounge.webp",
+    "authorId": "nadia-patel",
+    "author": "Nadia Patel",
+    "collections": [
+      "collection-evidence-based-beauty.html"
+    ]
+  },
+  {
     "href": "trend-seasonal-produce.html",
     "id": "seasonal-produce",
     "title": "Seasonal Fruits and Vegetables by Month, Mapped: Here's Your Seasonal Produce Guide to What Peaks Where and When",
@@ -461,6 +483,17 @@ export const COLLECTION_STORIES = [
     ]
   },
   {
+    "href": "trend-city-content-walk.html",
+    "id": "city-content-walk",
+    "title": "Friend Groups Are Turning City Walks Into Shared Content Adventures",
+    "image": "assets/videos/city-content-walk.webp",
+    "authorId": "maya-chen",
+    "author": "Maya Chen",
+    "collections": [
+      "collection.html"
+    ]
+  },
+  {
     "href": "trend-somatic-sleep.html",
     "id": "somatic-sleep-protocols-might-be-pulling-wellness-buyers-away-from-melato",
     "title": "Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape",
@@ -472,6 +505,17 @@ export const COLLECTION_STORIES = [
       "collection-nervous-system-gym.html",
       "collection-regulated-living.html",
       "collection-sleep-medicine.html"
+    ]
+  },
+  {
+    "href": "trend-sunday-meal-prep.html",
+    "id": "sunday-meal-prep",
+    "title": "Sunday Meal Prep Is Becoming a Small Ritual With a Weeknight Payoff",
+    "image": "assets/videos/sunday-meal-prep.webp",
+    "authorId": "marcus-bennett",
+    "author": "Marcus Bennett",
+    "collections": [
+      "collection-protein-forward-eating.html"
     ]
   },
   {
@@ -496,49 +540,5 @@ export const COLLECTION_STORIES = [
       "collection-tactile-home-design.html"
     ],
     "authorImage": "assets/trend/byline-ryan-brennan.png"
-  },
-  {
-    "href": "trend-sunday-meal-prep.html",
-    "id": "sunday-meal-prep",
-    "title": "Sunday Meal Prep Is Becoming a Small Ritual With a Weeknight Payoff",
-    "image": "assets/videos/sunday-meal-prep.webp",
-    "authorId": "marcus-bennett",
-    "author": "Marcus Bennett",
-    "collections": [
-      "collection-protein-forward-eating.html"
-    ]
-  },
-  {
-    "href": "trend-led-skincare-lounge.html",
-    "id": "led-skincare-lounge",
-    "title": "LED Mask Lounges Are Turning Skincare Into a Social Ritual",
-    "image": "assets/videos/led-skincare-lounge.webp",
-    "authorId": "nadia-patel",
-    "author": "Nadia Patel",
-    "collections": [
-      "collection-evidence-based-beauty.html"
-    ]
-  },
-  {
-    "href": "trend-weekly-laundry-reset.html",
-    "id": "weekly-laundry-reset",
-    "title": "The Laundry Reset Is Turning a Household Chore Into a Weekly Ritual",
-    "image": "assets/videos/weekly-laundry-reset.webp",
-    "authorId": "owen-brooks",
-    "author": "Owen Brooks",
-    "collections": [
-      "collection-everyday-living.html"
-    ]
-  },
-  {
-    "href": "trend-city-content-walk.html",
-    "id": "city-content-walk",
-    "title": "Friend Groups Are Turning City Walks Into Shared Content Adventures",
-    "image": "assets/videos/city-content-walk.webp",
-    "authorId": "maya-chen",
-    "author": "Maya Chen",
-    "collections": [
-      "collection.html"
-    ]
   }
 ];
