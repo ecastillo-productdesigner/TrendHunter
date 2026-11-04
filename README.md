@@ -217,8 +217,12 @@ Badge detail opens with a continuous horizontal rotateY reveal, 300ms ease-out (
 
 Recommendation thumbs retain separate 48px tap targets, abutting without overlap; inward icon alignment leaves a 16px visible gap.
 
-Trending Video overlays show article headings across at least three lines without truncation. The primary Go deeper and sound row is followed by the linked story author avatar, Share and Bookmark. Both story actions use 48px targets and matching 20px visible glyph heights; saved metadata and share URLs identify the article, never the MP4.
+Trending Video overlays show article headings across at least three lines without truncation. The headline and primary Go deeper link sit left of a vertical right-hand rail: Volume, Share, Bookmark and the linked story author avatar. Both story actions use 48px targets and matching 20px visible glyph heights; saved metadata and share URLs identify the article, never the MP4.
 
 Collection unread badges are 24px red circles with only a numeric count visible and the full new-story count in their accessible label. The badge collection grid aligns name and state rows and centers its final two items.
 
 Show new in Collections in prototype settings sets a separate manual red-dot preview. Opening Collections dismisses it. It does not alter follows, read/seen history or the normal sample-release schedule. Unearned badge names and symbols are gray; badge rows use 24px desktop and 16px mobile spacing.
+
+Following activity labels align left with card content, using the same typography and color as Recommended for you. Medal burst is the selected award treatment: a temporary earned-badge preview above the toast with 24 radial DS-color particles over 1200ms. Reduced motion keeps only the confirmation toast. Desktop badge-detail typography uses 40px names, 18px descriptions and actions, and 14px dates.
+
+The Following and personal-profile filters are labelled All / Creators / Community. Community retains the same member activity and follow state. Account-menu divider list items stretch across the drawer so the existing DS rule is visible between Profile and Log Out.

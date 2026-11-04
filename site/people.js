@@ -15,7 +15,7 @@ const signedIn = () => window.isSignedIn?.() === true;
 const follows = () => { try { return readFollowing(localStorage); } catch { return []; } };
 
 function filters() {
-  return `<div class="people-filters" role="group" aria-label="Filter followed people">${[['all','All'],['creators','Creators'],['members','Members']].map(([value,label]) => `<button class="profile-prediction-filter" type="button" data-people-filter="${value}" aria-pressed="${kind === value}">${label}</button>`).join('')}</div>`;
+  return `<div class="people-filters" role="group" aria-label="Filter followed people">${[['all','All'],['creators','Creators'],['members','Community']].map(([value,label]) => `<button class="profile-prediction-filter" type="button" data-people-filter="${value}" aria-pressed="${kind === value}">${label}</button>`).join('')}</div>`;
 }
 function personRow(person, following) {
   return `<li><a class="people-profile" href="${person.href}"><img class="people-avatar" src="${person.image}" alt="" width="48" height="48"><span><span class="people-name">${escapeText(person.name)}</span><span class="people-role">${person.kind === 'creators' ? 'Content creator' : 'Community member'}</span></span></a><button class="edit-profile-button person-follow-button" type="button" data-person-follow="${person.id}" aria-label="${following ? 'Unfollow' : 'Follow'} ${escapeText(person.name)}" aria-pressed="${following}">${following ? 'Following' : 'Follow'}</button></li>`;
@@ -69,7 +69,7 @@ function render() {
   if (feed) {
     const activity = signedIn() && people.length ? activities(people) : '';
     feed.innerHTML = filters() + (activity ? `<ol class="people-activity-list">${activity}</ol>` : emptyState(ids.length > 0));
-    if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = `${people.length} followed people in ${kind === 'all' ? 'All' : kind}`;
+    if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = `${people.length} followed people in ${{all:'All',creators:'Creators',members:'Community'}[kind]}`;
   }
   if (management) management.innerHTML = filters() + (people.length ? `<ul class="people-list">${people.map(person => personRow(person,true)).join('')}</ul>` : emptyState(ids.length > 0));
   document.dispatchEvent(new Event('collection-stories-rendered'));

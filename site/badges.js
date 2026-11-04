@@ -96,23 +96,32 @@ function showBadges(id) {
   }
 }
 
-function celebrateBadge() {
+function celebrateBadge(badge) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   requestAnimationFrame(() => {
     const toast = document.querySelector('.toast');
     if (!toast || toast.hidden) return;
     const rect = toast.getBoundingClientRect();
     const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('aria-hidden','true');
-    burst.style.left = `${rect.left + rect.width / 2}px`; burst.style.top = `${rect.top}px`;
-    for (let i=0;i<12;i++) {
-      const particle = document.createElement('span');
-      particle.style.setProperty('--particle-x',`${Math.cos(i*Math.PI/11)*(64+i%3*16)}px`);
-      particle.style.setProperty('--particle-y',`${-48-Math.sin(i*Math.PI/11)*64}px`);
-      particle.style.setProperty('--particle-turn',`${i%2 ? 300 : -300}deg`);
+    document.querySelectorAll('.badge-confetti').forEach(previous=>previous.remove());
+    burst.style.left = `${rect.left + rect.width / 2}px`;
+    burst.style.top = `${Math.max(48,rect.top - 48)}px`;
+    const award = document.createElement('div'); award.className = 'badge-confetti-medal'; award.innerHTML = medal(badge); burst.append(award);
+    for (let i=0;i<24;i++) {
+      const particle = document.createElement('span'); particle.className = 'badge-confetti-particle';
+      const angle = i / 24 * Math.PI * 2, reach = 110 + i%4 * 18;
+      const x = Math.cos(angle)*reach, y = Math.sin(angle)*reach;
+      particle.style.setProperty('--particle-x',`${x}px`);
+      particle.style.setProperty('--particle-mid-x',`${x*.75}px`);
+      particle.style.setProperty('--particle-y',`${y}px`);
+      particle.style.setProperty('--particle-end-y',`${y+55}px`);
+      particle.style.setProperty('--particle-mid-turn',`${i*23}deg`);
+      particle.style.setProperty('--particle-turn',`${i*37}deg`);
       burst.append(particle);
     }
     document.body.append(burst);
-    setTimeout(()=>burst.remove(),1200);
+    const duration = parseFloat(getComputedStyle(burst).getPropertyValue('--motion-badge-celebration')) || 1200;
+    setTimeout(()=>burst.remove(),duration + 100);
   });
 }
 function record(activity, announce = true) {
@@ -123,7 +132,7 @@ function record(activity, announce = true) {
   if (announce && result.newlyEarned.length) {
     const badge = MEMBER_BADGES.find(badge => badge.id === result.newlyEarned[0]);
     window.showToast(`You earned ${badge.name}. <button type="button" class="toast-link" data-badge-view="${badge.id}">View badge</button>`);
-    celebrateBadge();
+    celebrateBadge(badge);
   }
 }
 function recordCalls() {
