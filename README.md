@@ -238,3 +238,5 @@ Public community prediction profiles share the creator comparison flow. Signed-i
 Trending Videos use 20 × 20px visuals for volume, share, bookmark and the author avatar, centered in 48px targets with --spacing-component-sm (8px) between targets. Video headings use --type-button-label.
 
 Badge icon mapping uses Material Symbols Outlined: First Call → bolt; Regular Hunter → my_location; Deep Diver → scuba_diving; Field Notes → menu_book; Sharp Eye → eye_tracking.
+
+Medal Burst award celebrations show a 144px rounded-square badge, with a 48px icon and the badge name in --type-button-label. It sits 16px above the existing toast, uses the current #343841 badge surface and lime inset border, and bursts 24 DS-colored particles once per new award. The 1200ms animation and reduced-motion toast fallback are preserved. Preview Replay/Selected controls are not part of the product flow.

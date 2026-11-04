@@ -96,12 +96,18 @@ function celebrateBadge(badge) {
   requestAnimationFrame(() => {
     const toast = document.querySelector('.toast');
     if (!toast || toast.hidden) return;
-    const rect = toast.getBoundingClientRect();
     const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('aria-hidden','true');
     document.querySelectorAll('.badge-confetti').forEach(previous=>previous.remove());
-    burst.style.left = `${rect.left + rect.width / 2}px`;
-    burst.style.top = `${Math.max(48,rect.top - 48)}px`;
-    const award = document.createElement('div'); award.className = 'badge-confetti-medal'; award.innerHTML = medal(badge); burst.append(award);
+    const styles = getComputedStyle(toast);
+    const size = parseFloat(styles.getPropertyValue('--size-badge-award-preview')) || 144;
+    const gap = parseFloat(styles.getPropertyValue('--spacing-layout-md')) || 16;
+    // Anchor to the settled toast layout while its entrance translate/scale animates.
+    const toastTop = innerHeight - parseFloat(styles.bottom) - toast.offsetHeight;
+    burst.style.left = styles.left;
+    burst.style.top = `${Math.max(size / 2 + gap,toastTop - size / 2 - gap)}px`;
+    const award = document.createElement('div'); award.className = 'badge-confetti-medal';
+    award.innerHTML = `<span class="badge-medal badge-medal--award" data-badge="${badge.id}"><span class="material-symbols-outlined">${badge.icon}</span><span class="badge-award-name">${escapeText(badge.name)}</span></span>`;
+    burst.append(award);
     for (let i=0;i<24;i++) {
       const particle = document.createElement('span'); particle.className = 'badge-confetti-particle';
       const angle = i / 24 * Math.PI * 2, reach = 110 + i%4 * 18;

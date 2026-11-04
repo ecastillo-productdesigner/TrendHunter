@@ -14,6 +14,7 @@
   --badge-medal-surface: #343841;
   --size-badge-popup-icon: 144px;
   --size-badge-popup-icon-compact: 80px;
+  --size-badge-award-preview: 144px;
 
   /* AuthPrompt — the overlay stays dark in both themes, so its text keeps the dark values.
      Not Figma variables: they pin color/text/primary, color/text/dim and color/icon/default
@@ -5769,6 +5770,10 @@ body:has(.auth-prompt[open]) {
 .badge-confetti-particle:nth-child(3n) { background: var(--color-topic-style); }
 .badge-confetti-particle:nth-child(3n + 1) { background: var(--color-topic-beauty); }
 .badge-confetti-medal { position: absolute; left: 0; top: 0; transform: translate(-50%,-50%); animation: badge-award-medal var(--motion-badge-celebration) ease-out both; }
+.badge-medal--award { width: var(--size-badge-award-preview); height: var(--size-badge-award-preview); border-radius: calc(var(--radius-md) * 2); display: flex; flex-direction: column; justify-content: center; gap: var(--spacing-component-ms); padding: var(--spacing-layout-lg); }
+.badge-medal--award::before { inset: var(--spacing-component-sm); border-width: var(--stroke-thick); }
+.badge-medal--award .material-symbols-outlined { font-size: var(--icon-size-2xl); }
+.badge-award-name { font: var(--type-button-label); color: var(--auth-prompt-heading); text-transform: uppercase; text-align: center; }
 @keyframes badge-award-medal { 0% { opacity: 0; scale: .8; } 15%, 75% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: 1; } }
 @keyframes badge-celebration { from { opacity: 1; transform: translate(0,0) rotate(0); } 60% { opacity: 1; transform: translate(var(--particle-mid-x),var(--particle-y)) rotate(var(--particle-mid-turn)); } to { opacity: 0; transform: translate(var(--particle-x),var(--particle-end-y)) rotate(var(--particle-turn)); } }
 @media (prefers-reduced-motion: reduce) { .badge-confetti { display: none; } .member-badge-dialog--medal[open] { animation: none; } }
