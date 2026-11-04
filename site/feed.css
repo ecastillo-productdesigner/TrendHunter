@@ -11,7 +11,7 @@
   --color-black: #000000;
   /* Member medals retain the same lime/forest treatment in both themes. */
   --badge-medal-accent: #BEFC4F;
-  --badge-medal-surface: #1C2410;
+  --badge-medal-surface: #343841;
   --size-badge-popup-icon: 144px;
   --size-badge-popup-icon-compact: 80px;
 
@@ -252,6 +252,16 @@
 
   /* Typography — Letter spacing (Button / Button.Small styles: 1.8%) */
   --type-letter-spacing-button: 0.018em;
+
+  /* Typography — Copyable semantic roles (CSS font shorthand) */
+  --type-page-masthead: var(--type-weight-extrabold) var(--type-size-40)/var(--type-line-height-display-lg) var(--type-font-display);
+  --type-card-headline: var(--type-weight-extrabold) var(--type-size-28)/var(--type-line-height-display-md) var(--type-font-display);
+  --type-section-heading: var(--type-weight-light) var(--type-size-18)/var(--type-line-height-ui-lg) var(--type-font-display);
+  --type-mobile-prediction-heading: var(--type-section-heading);
+  --type-body: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body);
+  --type-button-label: var(--type-weight-bold) var(--type-size-16)/var(--type-line-height-ui-sm) var(--type-font-display);
+  --type-collection-label: var(--type-weight-bold) var(--type-size-14)/var(--type-line-height-ui-xs) var(--type-font-display);
+  --type-helper: var(--type-weight-regular) var(--type-size-12)/var(--type-utility-helper-line-height) var(--type-font-body);
 
   /* Spacing */
   --spacing-component-xs: 4px;
@@ -1201,10 +1211,7 @@ a.story-lockup:hover .story-lockup-headline {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  font-family: var(--type-font-display);
-  font-size: var(--type-size-28);
-  font-weight: var(--type-weight-extrabold);
-  line-height: var(--type-line-height-display-md);
+  font: var(--type-card-headline);
   text-transform: uppercase;
   color: var(--trend-card-primary-text);
 }
@@ -5277,18 +5284,24 @@ body:has(.auth-prompt[open]) {
   display: block;
   -webkit-line-clamp: unset;
   overflow: visible;
-  min-height: calc(var(--type-line-height-display-md) * 3);
-  font: var(--type-weight-extrabold) var(--type-size-28)/var(--type-line-height-display-md) var(--type-font-display);
+  min-height: calc(var(--type-line-height-ui-sm) * 3);
+  font: var(--type-button-label);
   text-transform: uppercase;
   color: #FFFFFF;
 }
 .trending-video-title > span { display: block; }
-.trending-video-story-actions { position: absolute; z-index: 3; right: var(--spacing-component-sm); bottom: var(--spacing-layout-md); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-ms); width: var(--icon-size-2xl); pointer-events: auto; }
-.trending-video-story-actions .trend-card-actions { --trend-card-icon: #D1D5DB; position: static; flex-direction: column; gap: var(--spacing-component-ms); }
+.trending-video-story-actions { position: absolute; z-index: 3; right: var(--spacing-component-sm); bottom: var(--spacing-layout-md); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-sm); width: var(--icon-size-2xl); pointer-events: auto; }
+.trending-video-story-actions .trend-card-actions { --trend-card-icon: #D1D5DB; position: static; flex-direction: column; gap: var(--spacing-component-sm); }
 .trending-video-story-actions .trend-card-sound { position: static; flex: 0 0 auto; display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); margin: 0; }
-.trending-video-story-actions .trend-card-video-symbol { font-size: var(--icon-size-md); }
+.trending-video-story-actions .trend-card-video-symbol { width: var(--icon-size-md); height: var(--icon-size-md); font-size: var(--icon-size-md); }
+.trending-video-story-actions .trend-card-actions .trend-card-share-icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  mask-size: calc(var(--icon-size-md) * 32 / 28) calc(var(--icon-size-md) * 32 / 22);
+  -webkit-mask-size: calc(var(--icon-size-md) * 32 / 28) calc(var(--icon-size-md) * 32 / 22);
+}
 .trending-video-author { display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); }
-.trending-video-author .avatar { width: var(--icon-size-lg); height: var(--icon-size-lg); }
+.trending-video-author .avatar { width: var(--icon-size-md); height: var(--icon-size-md); }
 .trending-video-author:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); border-radius: var(--radius-circle); }
 .trending-video-deeper { pointer-events: auto; }
 .trending-video-card .trend-card-playback {
@@ -5512,8 +5525,6 @@ body:has(.auth-prompt[open]) {
   font: var(--type-weight-regular) var(--type-size-12)/var(--type-line-height-ui-lg) var(--type-font-body);
   color: var(--color-text-secondary);
 }
-.trend-card--mover .trend-card-footer { margin-top: auto; justify-content: flex-end; padding-top: var(--spacing-component-sm); }
-.trend-card--mover .mover-author .avatar { width: var(--icon-size-lg); height: var(--icon-size-lg); }
 @media (min-width: 600px) { .feed-movers { padding: var(--spacing-layout-lg); } }
 
 /* Four quarter-range segments communicate strength on the 0–100 scale. */
@@ -5661,7 +5672,7 @@ body:has(.auth-prompt[open]) {
 .recommendation-inline-actions .recommendation-feedback-button:is(:hover, :focus-visible) { color: var(--auth-prompt-heading); background: transparent; }
 @media (min-width:600px) { .recommendation-inline { margin-top: calc(var(--spacing-component-xs) - var(--spacing-layout-lg)); } }
 
-/* Rounded-square achievement badges use the reference's lime ring and forest fill. */
+/* Rounded-square achievement badges use the reference's lime ring and DS slate fill. */
 .badge-medal { --badge-color: var(--badge-medal-accent); display: grid; place-items: center; width: 72px; height: 72px; flex: 0 0 auto; background: var(--badge-medal-surface); border-radius: var(--radius-md); position: relative; overflow: hidden; }
 .badge-medal::before { content: ''; position: absolute; inset: var(--spacing-component-xs); border: var(--stroke-focus) solid var(--badge-color); border-radius: inherit; pointer-events: none; }
 .badge-medal .material-symbols-outlined { display: block; width: 1em; height: 1em; overflow: hidden; white-space: nowrap; text-transform: none; letter-spacing: normal; font: 400 var(--icon-size-xl)/1 'Material Symbols Outlined'; font-feature-settings: 'liga'; color: var(--badge-color); font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 32; }
@@ -5716,7 +5727,8 @@ body:has(.auth-prompt[open]) {
 .badge-coin-choice[data-earned="false"] > .material-symbols-outlined, .badge-coin-choice[data-earned="false"] > .badge-coin-name { color: var(--auth-prompt-footer-text); }
 .badge-coin-choice:hover > .material-symbols-outlined { color: var(--auth-prompt-heading); }
 .badge-coin-choice:focus-visible { outline: var(--stroke-focus) solid var(--badge-medal-accent); outline-offset: var(--spacing-component-xs); border-radius: var(--radius-md); }
-.member-badge-dialog--collection[open] { padding-top: var(--spacing-page-2xl); justify-content: flex-start; gap: var(--spacing-layout-lg); }
+.member-badge-dialog--collection[open] { padding-top: var(--spacing-page-2xl); justify-content: flex-start; gap: 0; }
+.member-badge-dialog--collection .badge-coin-grid { margin-top: var(--spacing-layout-xl); }
 .member-badge-dialog--collection .badge-popup-actions { margin-top: auto; }
 
 .badge-popup-close { min-height: var(--icon-size-2xl); padding-inline: var(--spacing-component-sm); font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body); color: var(--auth-prompt-footer-text); }
@@ -5741,7 +5753,7 @@ body:has(.auth-prompt[open]) {
   .badge-coin-choice > .material-symbols-outlined { font-size: var(--icon-size-xl); }
   .badge-coin-name { font-size: var(--type-size-14); }
   .badge-coin-state { font-size: var(--type-size-12); }
-  .member-badge-dialog--collection[open] { padding-top: var(--spacing-layout-xl); gap: var(--spacing-component-ms); }
+  .member-badge-dialog--collection[open] { padding-top: var(--spacing-layout-xl); gap: 0; }
   .member-badge-dialog--medal:not(.member-badge-dialog--collection)[open] { --badge-detail-symbol-size: var(--size-badge-popup-icon-compact); }
   .member-badge-dialog--collection > h2 { font-size: var(--type-size-24); }
 }

@@ -1,7 +1,5 @@
-import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js';
-import { BADGE_STATE_KEY, readBadgeState, badgeProgress, recordBadgeActivity, setBadgeVisible } from './badge-state.js';
-import { readFollowedCollections } from './collection-follow-state.js';
-import { unreadCollectionStories } from './collection-update-state.js';
+import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=3';
+import { BADGE_STATE_KEY, readBadgeState, badgeProgress, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
 import { escapeText } from './story-card.js';
 
 const day = () => new Intl.DateTimeFormat('en-CA',{ timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit' }).format(new Date());
@@ -23,9 +21,6 @@ function renderProfileBadges() {
   const current = currentMemberBadge(earned,own ? saved.hidden : []);
   portrait.querySelector('.profile-current-badge')?.remove();
   if (current) portrait.insertAdjacentHTML('beforeend',`<button class="profile-current-badge" type="button" data-badge-view="${current.id}" aria-label="${current.name} badge. View badge details" title="${current.name}">${medal(current)}</button>`);
-  // Keep visibility and unearned criteria reachable without a profile chip row.
-  const editForm = document.querySelector('.edit-profile-form');
-  if (own && editForm && !editForm.querySelector('[data-badge-view]')) editForm.insertAdjacentHTML('beforeend','<button class="member-badges-all" type="button" data-badge-view="all">View all badges</button>');
 }
 function showBadges(id) {
   if (own && !signedIn()) {
@@ -145,27 +140,30 @@ document.addEventListener('prediction-call',event => {
   if (event.detail?.id && ['in','out'].includes(event.detail.call)) record({ type:'call',id:event.detail.id,call:event.detail.call });
   else recordCalls();
 });
+function recordSaves(announce = true) {
+  if (!signedIn()) return;
+  let stories = [];
+  try { const saved = JSON.parse(sessionStorage.getItem('saved-stories') || '[]'); if (Array.isArray(saved)) stories = saved; } catch {}
+  const saved = state();
+  for (const story of stories) {
+    const id = story.href || story.id;
+    if (id && !saved.savedSignals.includes(id) && !saved.baselineSavedSignals.includes(id)) record({type:'save',story:id},announce);
+  }
+}
+document.addEventListener('saved-stories-change',()=>recordSaves());
 document.addEventListener('click',event => {
   const trigger = event.target.closest('[data-badge-view]');
   if (trigger) showBadges(trigger.dataset.badgeView);
-  const link = event.target.closest('a[href]');
-  if (!link || !signedIn()) return;
-  const url = new URL(link.href,location.href);
-  if (url.origin !== location.origin) return;
-  try {
-    const fresh = readFollowedCollections(localStorage).flatMap(href => unreadCollectionStories(localStorage,href));
-    if (fresh.includes(url.pathname.split('/').pop())) record({ type:'update' });
-  } catch {}
 });
 const readingEnd = document.querySelector('article.article .article-members');
-const collection = document.querySelector('article.article .article-collection')?.getAttribute('href');
-if (readingEnd && collection && 'IntersectionObserver' in window) {
+const storyPage = document.querySelector('article.article') ? location.pathname.split('/').pop() : null;
+if (readingEnd && storyPage && 'IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && signedIn()) { record({ type:'read',collection }); observer.disconnect(); }
+    if (entries[0].isIntersecting && signedIn()) { record({ type:'read',story:storyPage }); observer.disconnect(); }
   },{ threshold:0.25 });
   observer.observe(readingEnd);
 }
-document.addEventListener('auth-change',() => { recordCalls(); renderProfileBadges(); });
+document.addEventListener('auth-change',() => { recordCalls(); recordSaves(false); renderProfileBadges(); });
 document.addEventListener('member-badges-reset',() => { renderProfileBadges(); document.querySelectorAll('.badge-confetti').forEach(burst=>burst.remove()); });
 window.addEventListener('storage',event => { if (event.key === BADGE_STATE_KEY) renderProfileBadges(); });
-recordCalls(); record({ type:'refresh' },false); renderProfileBadges();
+recordCalls(); recordSaves(false); record({ type:'refresh' },false); renderProfileBadges();

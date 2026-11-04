@@ -14,9 +14,9 @@ test('every badge-enabled page loads all five symbol glyphs instead of displayin
   }
 });
 test('the current avatar medal is the most recently earned visible badge', () => {
-  const earned = {'first-call':'2026-10-27','curious-mind':'2026-10-30'};
-  assert.equal(currentMemberBadge(earned).id,'curious-mind');
-  assert.equal(currentMemberBadge(earned,['curious-mind']).id,'first-call');
+  const earned = {'first-call':'2026-10-27','deep-diver':'2026-10-30'};
+  assert.equal(currentMemberBadge(earned).id,'deep-diver');
+  assert.equal(currentMemberBadge(earned,['deep-diver']).id,'first-call');
   assert.equal(currentMemberBadge({},[]),null);
   assert.equal(currentMemberBadge(earned,Object.keys(earned)),null);
 });
@@ -42,21 +42,45 @@ test('first call awards once, and regular hunting requires five different call d
   for(let d=2;d<=5;d++) recordBadgeActivity(storage,{type:'call',id:`call${d}`,call:'in'},`2026-11-0${d}`);
   assert.equal(readBadgeState(storage).earned['regular-hunter'],'2026-11-05');
 });
-test('curiosity requires five distinct collections and tracking requires three distinct dates', () => {
+test('Deep Diver counts three distinct completed signals, not repeat reads or collection visits', () => {
   const storage=memory();
-  for(let i=0;i<5;i++) recordBadgeActivity(storage,{type:'read',collection:`collection${i}`},'2026-11-01');
-  recordBadgeActivity(storage,{type:'read',collection:'collection0'},'2026-11-02');
-  assert.equal(badgeProgress(readBadgeState(storage)).collections,5);
-  assert.equal(readBadgeState(storage).earned['curious-mind'],'2026-11-01');
-  for(const day of ['2026-11-01','2026-11-01','2026-11-02','2026-11-03']) recordBadgeActivity(storage,{type:'update'},day);
-  assert.equal(readBadgeState(storage).earned['trend-tracker'],'2026-11-03');
+  recordBadgeActivity(storage,{type:'read',story:'one.html'},'2026-11-01');
+  recordBadgeActivity(storage,{type:'read',story:'one.html'},'2026-11-02');
+  recordBadgeActivity(storage,{type:'read',collection:'unidentified-visit'},'2026-11-02');
+  recordBadgeActivity(storage,{type:'read',story:'two.html'},'2026-11-02');
+  assert.equal(badgeProgress(readBadgeState(storage)).completedReads,2);
+  assert.equal(readBadgeState(storage).earned['deep-diver'],undefined);
+  assert.deepEqual(recordBadgeActivity(storage,{type:'read',story:'three.html'},'2026-11-03').newlyEarned,['deep-diver']);
+});
+test('Field Notes counts five distinct saves, retains the award, and honors reset baselines', () => {
+  const storage=memory();
+  for(let i=0;i<4;i++) recordBadgeActivity(storage,{type:'save',story:`story${i}.html`},'2026-11-01');
+  recordBadgeActivity(storage,{type:'save',story:'story0.html'},'2026-11-01');
+  assert.equal(badgeProgress(readBadgeState(storage)).savedSignals,4);
+  assert.equal(readBadgeState(storage).earned['field-notes'],undefined);
+  assert.deepEqual(recordBadgeActivity(storage,{type:'save',story:'story4.html'},'2026-11-02').newlyEarned,['field-notes']);
+  recordBadgeActivity(storage,{type:'refresh'},'2026-11-03');
+  assert.equal(readBadgeState(storage).earned['field-notes'],'2026-11-02');
+  resetBadgeProgress(storage,{},['preexisting.html']);
+  recordBadgeActivity(storage,{type:'save',story:'story0.html'},'2026-11-03');
+  recordBadgeActivity(storage,{type:'save',story:'preexisting.html'},'2026-11-03');
+  assert.equal(badgeProgress(readBadgeState(storage)).savedSignals,0);
+});
+test('retired badge achievements do not carry over to the new requirements', () => {
+  const storage=memory();
+  storage.setItem('trendhunter.member-achievements.v1',JSON.stringify({earned:{'curious-mind':'2026-11-01','trend-tracker':'2026-11-01','first-call':'2026-11-01'},collections:['a','b','c','d','e']}));
+  assert.deepEqual(readBadgeState(storage).earned,{'first-call':'2026-11-01'});
+  assert.equal(badgeProgress(readBadgeState(storage)).completedReads,0);
 });
 test('accuracy only counts verified outcomes; samples and unverified results never award Sharp Eye', () => {
   const storage=memory(), outcomes={};
   for(let i=0;i<5;i++) { recordBadgeActivity(storage,{type:'call',id:`p${i}`,call:'in'},'2026-11-01'); outcomes[`p${i}`]={result:'in',verified:false}; }
   assert.equal(badgeProgress(readBadgeState(storage),outcomes).correctCalls,0);
   assert.equal(readBadgeState(storage).earned['sharp-eye'],undefined);
-  Object.values(outcomes).forEach(outcome=>outcome.verified=true);
+  outcomes.p0.verified=true; outcomes.p1.verified=true;
+  recordBadgeActivity(storage,{type:'refresh'},'2026-11-02',outcomes);
+  assert.equal(readBadgeState(storage).earned['sharp-eye'],undefined);
+  outcomes.p2.verified=true;
   recordBadgeActivity(storage,{type:'refresh'},'2026-11-02',outcomes);
   assert.equal(readBadgeState(storage).earned['sharp-eye'],'2026-11-02');
 });

@@ -1731,15 +1731,6 @@
       ]
     },
     {
-      "key": "button:member-badges-all",
-      "classes": "member-badges-all",
-      "tag": "button",
-      "name": "View all badges",
-      "sources": [
-        "badges.js"
-      ]
-    },
-    {
       "key": "button:nav-menu",
       "classes": "nav-menu",
       "tag": "button",
@@ -3923,10 +3914,6 @@
         "feed.html",
         "feed.html",
         "feed.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
         "story-card.js",
         "trend-ai-gift-ideas.html",
         "trend-ai-gift-ideas.html",
@@ -4170,10 +4157,6 @@
         "collection.html",
         "collection.html",
         "collection.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
-        "feed.html",
         "feed.html",
         "feed.html",
         "feed.html",

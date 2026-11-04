@@ -42,7 +42,7 @@ The original local prototype was copied from `TrendHunterB2C`; unrelated CSA fil
 
 Author profiles show first-name empty-state copy only when posts or author votes are absent. Samantha’s main article byline links to her contributor bio. Profile side padding and filter horizontal padding are 16px.
 
-The profile icon opens a right-side account drawer using the Menu drawer component, with Profile and Log Out actions. On mobile and tablet below 960px, the lightning shortcut opens `predictions.html`; it is hidden in desktop navigation. Its selected color is `--color-border-focus`. Desktop article prediction cards hide context and Read more only for the story already open, retaining the same deck and other cards’ controls.
+The profile icon opens a right-side account drawer using the Menu drawer component, with Your Profile and Log Out actions. On mobile and tablet below 960px, the lightning shortcut opens `predictions.html`; it is hidden in desktop navigation. Its selected color is `--color-border-focus`. Desktop article prediction cards hide context and Read more only for the story already open, retaining the same deck and other cards’ controls.
 
 ## Email sign-in demo
 
@@ -165,9 +165,9 @@ The navigation bolt uses a 20px graphic in a 48px target; negative outer margins
 All 39 Trend Detail pages end their article text with Members exploring this collection, before the mobile prediction deck. The panel follows the supplied signed-in/signed-out design with the DS black surface (--color-black, #000000), 10px corners, 12px top/bottom padding on desktop and mobile, 16px phone / 24px desktop side padding, 14px bold condensed label and matching linked 24px fictional member portraits overlapping by 8px. Both adjacent section gaps are 24px. Signed-out readers get a lime underlined Join them link into the existing login-and-return flow; signed-in readers see only the label and portraits. The sample members are not live presence. Fixed illustrative totals of 3, 4, 5 or 7 are shown with exactly that many distinct supplied portraits, with no and others suffix.
 
 
-Seven public reader profiles use distinct supplied 160px circular community photos rather than contributor portraits. The unchanged PNGs and fictional-name mapping are in site/assets/readers/. They reuse the personal-profile DS with Collections and Predictions only; Saved is private. Their sample libraries and calls are read-only. Follow / Following is a separate relationship control; signed-out visits redirect to login. When a signed-in visitor has already voted on the same prediction, their actual call appears beneath the member’s sample call. No unanswered-vote controls appear on public reader profiles. The Following feed offers Make Your Call for pending member activities. User names and histories are illustrative and do not identify the people in the supplied photographs.
+Seven public reader profiles use distinct supplied 160px circular community photos rather than contributor portraits. The unchanged PNGs and fictional-name mapping are in site/assets/readers/. They reuse the personal-profile DS with Collections and Predictions only; Saved is private. Their sample libraries and member calls are read-only; visitors can record their own comparison votes. Follow / Following is a separate relationship control; signed-out visits redirect to login. When a signed-in visitor has already voted on the same prediction, their actual call appears beneath the member’s sample call. Signed-in visitors can select Make your call on unanswered open predictions. The Following feed offers Make Your Call for pending member activities. User names and histories are illustrative and do not identify the people in the supplied photographs.
 
-Signed-out article avatars have no href, keyboard focus stop or hover state. Signing in enables the profile links. Direct public-reader URLs use the existing browser-only login-and-return flow; read-only community profiles are available after signing in.
+Signed-out article avatars have no href, keyboard focus stop or hover state. Signing in enables the profile links. Direct public-reader URLs use the existing browser-only login-and-return flow; community profiles are available after signing in.
 
 All reader profiles and the personal profile show Member since 2026 beneath the name, reusing the 14px muted uppercase profile-role style and 4px identity gap.
 
@@ -197,17 +197,17 @@ New story markers clear after half of a card’s media has been visible for 600m
 
 Recommendation thumbs match the muted label color, show selection with a filled icon, and toggle off on a second click. Feedback saves without moving or hiding the current card or scrolling to the tabs; ranking changes apply on the next visit to For You. Reset Recommendations in prototype settings removes thumb feedback and restores hidden recommendations immediately, opens For You and reveals an unanswered recommended card first, retaining selected topic interests and follows.
 
-Achievement badges use rounded-square tiles with --radius-md corners: 72px full badges, 32px symbols, lime #BEFC4F inset borders and forest #1C2410 fill. Only the most recently earned visible badge appears as a 48px tile on the lower-right of the 140px avatar. The old chip row is removed.
+Achievement badges use rounded-square tiles with --radius-md corners: 72px full badges, 32px symbols, lime #BEFC4F inset borders and charcoal #343841 fill. Only the most recently earned visible badge appears as a 48px tile on the lower-right of the 140px avatar. The old chip row is removed.
 
 Both Trending views provide sticky All / Ascending / Descending controls. Ascending sorts visible percentages low to high; Descending sorts high to low; All restores the existing direction-specific default. Following uses the same sticky filter treatment, with an opaque 24px gap beneath the pills.
 
 Desktop More Stories on articles, collections and channels is unframed; cards fill the available middle-column width. The retailtainment article uses the supplied escalator still photo again. The city content-walk article video is 9:16. Signed-in Following activity offers an inline Make Your Call control for unanswered member predictions and displays the visitor’s saved call after submission.
 
-The current avatar badge opens a square detail popup with 100px --radius-full corners, a 3px --stroke-thick lime border and the shared panel scrim. It uses Card headline, a 144px symbol (80px on phones), Body criteria (16/22 Inter), Helper progress/date (12/20), and Close / Show all actions with 24px above the row. Own-badge Show all flips to five earned/to-collect badges; gray unearned icons remain clickable for criteria and progress. Show recent returns to the latest earned badge. Other members’ badge details offer Close only. Outside clicks, including transparent rounded corners, and Escape dismiss the popup. Personal awards trigger a short 900ms confetti burst near the toast; reduced motion omits it. Reset Badges clears personal progress while treating existing saved calls as a baseline.
+The current avatar badge opens a square detail popup with 100px --radius-full corners, a 3px --stroke-thick lime border and the shared panel scrim. It uses Card headline, a 144px symbol (80px on phones), Body criteria (16/22 Inter), Helper progress/date (12/20), and Close / Show all actions with 24px above the row. Own-badge Show all flips to five earned/to-collect badges; gray unearned icons remain clickable for criteria and progress. Show recent returns to the latest earned badge. Other members’ badge details offer Close only. Outside clicks, including transparent rounded corners, and Escape dismiss the popup. Personal awards trigger a 1200ms Medal burst near the toast; reduced motion omits it. Reset Badges clears personal progress while treating existing saved calls as a baseline.
 
 The daily feed-completion section now fits its content with 24px padding on all sides; the old 9:16 aspect ratio and vertical centering are removed.
 
-Editorial card controls now have 16px bottom padding in desktop and mobile layouts. The account drawer separates Profile and Log Out with the existing DS divider.
+Editorial card controls now have 16px bottom padding in desktop and mobile layouts. The account drawer separates Your Profile and Log Out with the existing DS divider.
 
 Community presence labels now emphasize collections: fixed illustrative totals of 3, 4, 5 or 7 members exploring this collection, consistent across a collection’s stories, with no and others suffix. Public reader profiles expose only Collections and Predictions and default to Collections; Saved remains private to the owner profile.
 
@@ -225,4 +225,16 @@ Show new in Collections in prototype settings sets a separate manual red-dot pre
 
 Following activity labels align left with card content, using the same typography and color as Recommended for you. Medal burst is the selected award treatment: a temporary earned-badge preview above the toast with 24 radial DS-color particles over 1200ms. Reduced motion keeps only the confirmation toast. Desktop badge-detail typography uses 40px names, 18px descriptions and actions, and 14px dates.
 
-The Following and personal-profile filters are labelled All / Creators / Community. Community retains the same member activity and follow state. Account-menu divider list items stretch across the drawer so the existing DS rule is visible between Profile and Log Out.
+The Following and personal-profile filters are labelled All / Creators / Community. Community retains the same member activity and follow state. Account-menu divider list items stretch across the drawer so the existing DS rule is visible between Your Profile and Log Out.
+
+Badge surfaces use #343841, the existing DS overlay color. The Member Badges heading-to-grid spacing is --spacing-layout-xl (32px) at every viewport. The account-drawer action is labelled Your Profile.
+
+The badge catalogue now contains First Call (first prediction vote), Regular Hunter (calls on five different dates), Deep Diver (finish three different signals), Field Notes (save five distinct signals), and Sharp Eye (three correct verified predictions). Retired badge awards are not converted into the new achievements. Reset Badges preserves saved stories and calls as baselines. Edit Profile no longer includes a View all badges action; current earned badges remain accessible on the avatar. The personal profile heading reads Your Profile.
+
+Typography roles expose copyable semantic font tokens, including --type-card-headline. Feed card headings use --type-card-headline (28px/28px, 800). Trending Videos headings use --type-button-label (16px/18px, 700). Caught on the Move cards omit share, bookmark and author controls.
+
+Public community prediction profiles share the creator comparison flow. Signed-in visitors see their actual saved call beneath the member call, or Make your call to open In/Out choices on open predictions. These votes use shared prediction state and count toward actual participation badges. Sample member choices stay unchanged; no example visitor votes are invented. Signed-out visitors have no voting controls.
+
+Trending Videos use 20 × 20px visuals for volume, share, bookmark and the author avatar, centered in 48px targets with --spacing-component-sm (8px) between targets. Video headings use --type-button-label.
+
+Badge icon mapping uses Material Symbols Outlined: First Call → bolt; Regular Hunter → my_location; Deep Diver → scuba_diving; Field Notes → menu_book; Sharp Eye → eye_tracking.

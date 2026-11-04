@@ -87,6 +87,8 @@
 .ds-type-row:last-child { padding-bottom: 0; border: 0; }
 .ds-type-row h4 { font: var(--type-weight-medium) var(--type-size-14)/1.4 var(--type-font-body); margin-bottom: var(--spacing-component-sm); }
 .ds-type-row p { font-size: var(--type-size-12); }
+.ds-type-token { display: flex; align-items: center; flex-wrap: wrap; gap: var(--spacing-component-sm); margin-top: var(--spacing-component-ms); }
+.ds-type-token code { overflow-wrap: anywhere; }
 .ds-type-sample { min-width: 0; overflow-wrap: anywhere; }
 .ds-type-sample.trend-card-headline { color: var(--color-text-primary); }
 .ds-mobile-prediction-heading { font-size: var(--type-size-18); line-height: var(--type-line-height-ui-lg); }

@@ -54,7 +54,7 @@ if (accountTrigger) {
     <button class="drawer-close" type="button" aria-label="Close account menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
     <nav class="drawer-nav" aria-label="Account">
       <ul class="drawer-links">
-        <li><a class="drawer-link" href="userprofile.html">Profile</a></li>
+        <li><a class="drawer-link" href="userprofile.html">Your Profile</a></li>
         <li aria-hidden="true"><hr class="drawer-divider"></li>
         <li><button class="drawer-link drawer-logout" type="button">Log Out</button></li>
       </ul>
@@ -337,8 +337,9 @@ syncBookmarks();
 document.addEventListener('collection-stories-rendered', syncBookmarks);
 
 function saveBookmark(bookmark) {
+  const previousMessage = toastMessage.innerHTML;
   setStorySaved(bookmark, true);
-  showToast(TOAST_SAVED);
+  if (toastMessage.innerHTML === previousMessage) showToast(TOAST_SAVED);
 }
 
 authPrompt.querySelector('.auth-close').addEventListener('click', () => authPrompt.close());

@@ -7,6 +7,7 @@
 
   const isAuthor = document.body.classList.contains('page-contributor');
   const isReader = document.body.classList.contains('page-reader');
+  const isPublicProfile = isAuthor || isReader;
   const authorName = profile.querySelector('.profile-name')?.textContent.trim() || 'Author';
   const authorId = profile.dataset.authorId;
   const firstName = authorName.split(' ')[0];
@@ -19,7 +20,7 @@
   const empty = predictionPanel.querySelector('.profile-predictions-empty');
   let selectedFilter = isAuthor ? 'author' : 'all';
   let entrancePlayed = false;
-  const callStatus = isAuthor ? document.createElement('p') : null;
+  const callStatus = isPublicProfile ? document.createElement('p') : null;
   if (callStatus) {
     callStatus.className = 'visually-hidden';
     callStatus.setAttribute('role', 'status');
@@ -106,7 +107,7 @@
         </div>`;
     } else if (prediction.resolved) {
       comparison = '<p class="profile-call-unavailable">No vote to compare</p>';
-    } else if (isAuthor && isSignedIn()) {
+    } else if (isPublicProfile && isSignedIn()) {
       comparison = `
         <div class="profile-call-comparison profile-call-comparison--pending">
           <button type="button" class="button-primary profile-call-start" data-profile-make-call aria-expanded="false" aria-controls="profile-call-${prediction.id}">Make your call</button>
@@ -221,7 +222,7 @@
 
   predictionPanel.addEventListener('click', event => {
     const startCall = event.target.closest('[data-profile-make-call]');
-    if (startCall && isAuthor) {
+    if (startCall && isPublicProfile) {
       if (!isSignedIn()) {
         try { sessionStorage.setItem('return-to', `${location.pathname.split('/').pop()}#predictions`); } catch {}
         location.href = 'login.html';
@@ -236,10 +237,10 @@
       return;
     }
     const vote = event.target.closest('[data-profile-call]');
-    if (vote && isAuthor && isSignedIn()) {
+    if (vote && isPublicProfile && isSignedIn()) {
       const id = vote.closest('.prediction-result').dataset.id;
       const call = vote.dataset.profileCall;
-      const prediction = authorHistory().find(item => item.id === id);
+      const prediction = profileHistory().find(item => item.id === id);
       if (!['in', 'out'].includes(call) || !prediction || prediction.resolved) return;
       const key = prediction.comparisonExample ? EXAMPLE_CALLS_KEY : CALLS_KEY;
       const previous = prediction.comparisonExample ? savedExampleCalls() : savedCalls();
@@ -249,6 +250,7 @@
         return;
       }
       renderHistory();
+      if (!prediction.comparisonExample) document.dispatchEvent(new CustomEvent('prediction-call', {detail:{id,call}}));
       callStatus.textContent = `Your call is locked in. You voted ${call}.`;
       list.querySelector(`[data-id="${id}"] .prediction-result-more`)?.focus({ preventScroll: true });
       return;

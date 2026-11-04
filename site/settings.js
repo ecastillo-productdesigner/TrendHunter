@@ -78,9 +78,10 @@ if (settingsButton && settingsPanel) {
     else location.assign('feed.html');
   });
   settingsPanel.querySelector('[data-setting="reset-badges"]')?.addEventListener('click', async () => {
-    const { resetBadgeProgress } = await import('./badge-state.js');
+    const { resetBadgeProgress } = await import('./badge-state.js?v=3');
     let calls = {}; try { calls = JSON.parse(sessionStorage.getItem('prediction-calls') || '{}'); } catch {}
-    if (!resetBadgeProgress(localStorage,calls)) { window.showToast?.('Badges could not be reset. Please try again.'); return; }
+    let saved = []; try { saved = JSON.parse(sessionStorage.getItem('saved-stories') || '[]').map(story=>story.href || story.id); } catch {}
+    if (!resetBadgeProgress(localStorage,calls,saved)) { window.showToast?.('Badges could not be reset. Please try again.'); return; }
     setOpen(false);
     document.dispatchEvent(new Event('member-badges-reset'));
     window.showToast?.('Badges reset. Your saved calls are unchanged.');

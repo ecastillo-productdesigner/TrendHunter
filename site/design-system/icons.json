@@ -1167,15 +1167,18 @@
     "cancel",
     "checkroom",
     "directions_bike",
+    "eye_tracking",
     "flight",
     "head_mounted_device",
     "health_and_beauty",
     "info",
     "local_bar",
     "menu_book",
+    "my_location",
     "pause_circle",
     "play_circle",
     "public",
+    "scuba_diving",
     "spa",
     "thumb_down",
     "thumb_up",
@@ -1438,6 +1441,38 @@
       "states": [
         "More like this",
         "Not interested"
+      ]
+    },
+    {
+      "name": "Regular Hunter badge",
+      "group": "Predictions and signals",
+      "note": "The selected Material Symbols Outlined achievement icon.",
+      "states": [
+        "Badge symbol"
+      ]
+    },
+    {
+      "name": "Deep Diver badge",
+      "group": "Predictions and signals",
+      "note": "The selected Material Symbols Outlined achievement icon.",
+      "states": [
+        "Badge symbol"
+      ]
+    },
+    {
+      "name": "Field Notes badge",
+      "group": "Predictions and signals",
+      "note": "The selected Material Symbols Outlined achievement icon.",
+      "states": [
+        "Badge symbol"
+      ]
+    },
+    {
+      "name": "Sharp Eye badge",
+      "group": "Predictions and signals",
+      "note": "The selected Material Symbols Outlined achievement icon.",
+      "states": [
+        "Badge symbol"
       ]
     }
   ]
