@@ -9,6 +9,6 @@
     "check": "node scripts/check.mjs",
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",
-    "design-system:build": "python3 scripts/build-design-guide.py"
+    "design-system:build": "python3 scripts/build-collection-story-data.py && node scripts/build-badge-guide.mjs && python3 scripts/build-design-guide.py"
   }
 }

@@ -39,7 +39,7 @@ def build_icon_reference(project, out):
     add('Profile', 'Navigation and saved', '24px slot with a 16px glyph. Outline off-page; filled lime on the personal profile page.', [
         state('Inactive', '<span class="nav-profile">'+span('nav-profile-icon')+'</span>'),
         state('Active · current page', '<span class="nav-profile" aria-current="page">'+span('nav-profile-icon')+'</span>')])
-    add('Daily Predictions shortcut', 'Navigation and saved', '20px Material Symbols Outlined bolt in a 48px tap target. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.', [
+    add('Predict the Next Trend shortcut', 'Navigation and saved', '20px Material Symbols Outlined bolt in a 48px tap target. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.', [
         state('Inactive', '<span class="nav-predictions">'+span('nav-predictions-icon material-symbols-outlined','bolt')+'</span>'),
         state('Active · current page', '<span class="nav-predictions" aria-current="page">'+span('nav-predictions-icon material-symbols-outlined','bolt')+'</span>')])
     add('Menu', 'Navigation and saved', '20px. The menu glyph has dark and light theme assets; opening the drawer does not change its shape.', [
@@ -93,7 +93,8 @@ def build_icon_reference(project, out):
 
     add('Topic interests', 'Navigation and saved', '20px filled Material Symbols. Unselected icons inherit the neutral tile label; selected icons use dark text on the supplied topic fill, with white on the deep purple Tech tile.', [state('Beauty', span('topic-icon','health_and_beauty')),state('Books', span('topic-icon','menu_book')),state('Food & Drink', span('topic-icon','local_bar')),state('Wellness', span('topic-icon','spa')),state('Style', span('topic-icon','checkroom')),state('Tech', span('topic-icon','head_mounted_device')),state('Fitness', span('topic-icon','directions_bike')),state('Culture', span('topic-icon','public')),state('Travel', span('topic-icon','flight'))])
 
-    add('Recommended for you', 'Predictions and signals', '20px filled info Material Symbol beside a 16px recommendation label, both #697182. The 48px label-and-icon target opens Why this recommendation, with a reason and More like this / Not interested feedback. Shown above the image on two illustrative For You cards.', [state('Default', '<span class="trend-card-recommendation">'+span('recommendation-icon','info')+'</span>')])
+    add('Recommended for you', 'Predictions and signals', 'Two direct 20px thumbs beside a 16px label, with 48px targets. More like this prioritizes the collection; Not interested hides the story with Undo. No information popup.', [state('Thumbs', '<span class="recommendation-inline-actions"><button class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_up')+'</button><button class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_down')+'</button></span>')])
+    add('Member achievement medals', 'Predictions and signals', 'Logo-inspired medals in DS accent colors. The Sharp Eye visibility symbol denotes verified prediction outcomes; it stays locked until verified records exist.', [state('Sharp Eye design', '<span class="badge-medal" data-badge="sharp-eye">'+span('material-symbols-outlined','visibility')+'</span>')])
 
     add('Recommendation feedback', 'Answers feedback', '24px outlined Material Symbols thumb_up and thumb_down in 48px circular targets. Labels and tooltips remain More like this and Not interested. Feedback behavior is unchanged.', [state('More like this', '<span class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_up')+'</span>'), state('Not interested', '<span class="recommendation-feedback-button">'+span('material-symbols-outlined','thumb_down')+'</span>')])
 
@@ -131,7 +132,7 @@ def build_icon_reference(project, out):
             family['states']=[family['states'][0],family['states'][3]]
             family['note']='Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.'
 
-    expected_fonts = {'arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars','info','thumb_up','thumb_down'}
+    expected_fonts = {'visibility','arrow_downward','bolt','cancel','pause_circle','play_circle','volume_off','volume_up','health_and_beauty','menu_book','local_bar','spa','checkroom','head_mounted_device','directions_bike','public','flight','wand_stars','info','thumb_up','thumb_down'}
     if set(fonts) != expected_fonts:
         raise ValueError(f'Update icon states for Material Symbols: {set(fonts) ^ expected_fonts}')
     manifest_assets = []

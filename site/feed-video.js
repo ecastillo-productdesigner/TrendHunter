@@ -20,7 +20,7 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
 
   function syncLabel() {
     card.dataset.videoPaused = String(video.paused);
-    const preview = Boolean(card.querySelector('.trending-video-article'));
+    const preview = Boolean(card.closest('[data-video-carousel]'));
     playback.setAttribute('aria-label', video.paused ? (preview ? 'Play video preview' : 'Play story video') : (preview ? 'Pause video preview' : 'Pause story video'));
     const control = playback.querySelector('[data-video-control-symbol]');
     if (control) control.textContent = video.paused ? 'play_circle' : 'pause_circle';
@@ -82,11 +82,13 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
     if (manualPlayback) readerPaused = true;
     syncLabel();
   });
+  // A next-card peek must not start playing and interrupt the visible clip.
+  const visibilityThreshold = card.closest('[data-video-carousel]') ? 0.6 : 0.25;
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
-      inView = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.25;
+      inView = entries[0].isIntersecting && entries[0].intersectionRatio >= visibilityThreshold;
       autoplay();
-    }, { threshold: [0, 0.25] }).observe(card);
+    }, { threshold: [0, visibilityThreshold] }).observe(card);
   } else {
     inView = true;
     autoplay();
@@ -97,7 +99,7 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   syncLabel();
 });
 
-document.querySelectorAll('[data-video-carousel]').forEach(track => {
+document.querySelectorAll('[data-video-carousel], [data-mover-carousel]').forEach(track => {
   track.addEventListener('keydown', event => {
     if (event.target !== track || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
     event.preventDefault();

@@ -91,6 +91,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "channel-experiences.html",
         "trend-school-routines.html",
         "collection-preventive-health.html",
@@ -106,7 +107,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -192,6 +192,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "channel-experiences.html",
         "trend-school-routines.html",
         "collection-preventive-health.html",
@@ -206,7 +207,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -364,6 +364,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "channel-experiences.html",
         "trend-school-routines.html",
         "collection-preventive-health.html",
@@ -378,7 +379,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -464,6 +464,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "channel-experiences.html",
         "trend-school-routines.html",
         "collection-preventive-health.html",
@@ -478,7 +479,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -631,6 +631,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
         "login-code.html",
@@ -648,7 +649,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -736,6 +736,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
         "login-code.html",
@@ -753,7 +754,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -867,6 +867,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
         "login-code.html",
@@ -884,7 +885,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -972,6 +972,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
         "login-code.html",
@@ -990,7 +991,6 @@
         "collection-tactile-home-design.html",
         "collection-solo-travel.html",
         "trend-travel-advisors.html",
-        "open-predictions.html",
         "trend-wellness-first-dating.html",
         "contributor.html",
         "contributor-nadia-patel.html",
@@ -1147,6 +1147,7 @@
     "spa",
     "thumb_down",
     "thumb_up",
+    "visibility",
     "volume_off",
     "volume_up",
     "wand_stars"
@@ -1172,7 +1173,7 @@
       ]
     },
     {
-      "name": "Daily Predictions shortcut",
+      "name": "Predict the Next Trend shortcut",
       "group": "Navigation and saved",
       "note": "20px Material Symbols Outlined bolt in a 48px tap target. FILL 0 inactive; FILL 1 and lime active. The navigation shortcut is mobile/tablet only.",
       "states": [
@@ -1385,9 +1386,17 @@
     {
       "name": "Recommended for you",
       "group": "Predictions and signals",
-      "note": "20px filled info Material Symbol beside a 16px recommendation label, both #697182. The 48px label-and-icon target opens Why this recommendation, with a reason and More like this / Not interested feedback. Shown above the image on two illustrative For You cards.",
+      "note": "Two direct 20px thumbs beside a 16px label, with 48px targets. More like this prioritizes the collection; Not interested hides the story with Undo. No information popup.",
       "states": [
-        "Default"
+        "Thumbs"
+      ]
+    },
+    {
+      "name": "Member achievement medals",
+      "group": "Predictions and signals",
+      "note": "Logo-inspired medals in DS accent colors. The Sharp Eye visibility symbol denotes verified prediction outcomes; it stays locked until verified records exist.",
+      "states": [
+        "Sharp Eye design"
       ]
     },
     {

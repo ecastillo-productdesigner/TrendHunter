@@ -51,7 +51,7 @@ def momentum_markup(direction='rising', collection=None):
     value = SAMPLE_INTEREST.get(key, 22 if direction == 'rising' else 20)
     label = f'Interest {direction} {value}%'
     return (f'<span class="collection-momentum collection-momentum--{direction}" '
-            f'role="img" aria-label="{label}" title="{label}">'
+            f'data-level="{max(1, min(4, (value + 24) // 25))}" role="img" aria-label="{label}" title="{label}">'
             '<span class="collection-momentum-track" aria-hidden="true">'
             '<span class="collection-momentum-fill"></span></span>'
             f'<span class="collection-momentum-value" aria-hidden="true">{value}%</span></span>')

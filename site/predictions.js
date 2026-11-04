@@ -288,6 +288,7 @@ if (stack) {
     try {
       const calls = JSON.parse(sessionStorage.getItem(key)) || {};
       sessionStorage.setItem(key, JSON.stringify({ ...calls, [id]: call }));
+      document.dispatchEvent(new CustomEvent('prediction-call', { detail:{ id,call } }));
     } catch (e) {}
   };
 
@@ -458,6 +459,31 @@ if (stack) {
     if (!cards.length) showResults();
   }
 
+  function showPredictionSummary(focus = false) {
+    const count = openPredictionList(getCalls()).filter(prediction => ['in', 'out'].includes(getCalls()[prediction.id])).length;
+    const panel = stack.closest('.predictions-panel');
+    panel?.classList.add('predictions-panel--summary');
+    saveDeck({ resultsDismissed: true });
+    stack.innerHTML = `<section class="prediction-summary" aria-labelledby="prediction-summary-heading">
+      <h3 class="type-h4-caps" id="prediction-summary-heading">My Predictions <span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></h3>
+      <a class="pill-button" href="userprofile.html?prediction-filter=active#predictions">${count} active prediction${count === 1 ? '' : 's'}</a>
+    </section>`;
+    if (focus) {
+      stack.querySelector('a').focus({ preventScroll: true });
+      requestAnimationFrame(() => panel?.closest('.rail-right')?.scrollTo({ top: 0, behavior: 'auto' }));
+    }
+  }
+
+  function reopenSkippedPredictions() {
+    queue = PREDICTIONS.filter(prediction => !getCalls()[prediction.id]);
+    skipped = [];
+    saveDeck({ skipped: [], resultsDismissed: false });
+    stack.closest('.predictions-panel')?.classList.remove('predictions-panel--summary');
+    stack.innerHTML = '';
+    layoutDeck();
+    stack.querySelector('[data-vote], button')?.focus({ preventScroll: true });
+  }
+
   function showResults() {
     const calls = getCalls();
     const called = PREDICTIONS.filter((p) => calls[p.id]);
@@ -468,6 +494,22 @@ if (stack) {
     if (current) calls[current.id] = requestedCall;
     const remaining = current ? PREDICTIONS.filter(prediction => !calls[prediction.id]) : skipped;
     const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
+    const desktop = matchMedia('(min-width: 960px)').matches;
+    if (!current && getDeck().resultsDismissed && desktop) {
+      showPredictionSummary();
+      return;
+    }
+    if (!current && called.length === 0) {
+      stack.innerHTML = `<section class="prediction-results prediction-results--empty" aria-labelledby="prediction-empty-heading">
+        <header class="prediction-results-header"><h3 class="prediction-results-title" id="prediction-empty-heading">Nothing to call today</h3><p class="prediction-results-remaining">Come back tomorrow for<br>new predictions</p></header>
+        <button class="prediction-results-finish prediction-results-close" type="button">Close</button>
+        <button class="prediction-restart-link" type="button">Make today’s calls</button>
+      </section>`;
+      stack.querySelector('.prediction-results-close').addEventListener('click', () => showPredictionSummary(true));
+      stack.querySelector('.prediction-restart-link').addEventListener('click', reopenSkippedPredictions);
+      return;
+    }
+
     if (current) {
       const others = called.filter((p) => p.id !== current.id);
       stack.innerHTML = `
@@ -496,15 +538,17 @@ if (stack) {
           </header>
           <ul class="prediction-results-list">${called.map((p) => resultRow(p, calls[p.id])).join('')}</ul>
           ${finishButton}
+          ${!remaining.length && desktop ? '<button class="prediction-results-finish prediction-results-okay" type="button">Okay</button>' : ''}
         </div>`;
     }
+    stack.querySelector('.prediction-results-okay')?.addEventListener('click', () => showPredictionSummary(true));
 
-    const finish = stack.querySelector('.prediction-results-finish');
+    const finish = stack.querySelector('.prediction-results-finish:not(.prediction-results-okay)');
     if (finish) {
       finish.addEventListener('click', () => {
         queue = remaining;
         skipped = [];
-        saveDeck({ skipped: [] });
+        saveDeck({ skipped: [], resultsDismissed: false });
         stack.innerHTML = '';
         layoutDeck();
       });
@@ -680,7 +724,8 @@ if (stack) {
   document.addEventListener('prediction-deal', (event) => {
     queue = PREDICTIONS.slice();
     skipped = [];
-    saveDeck({ coverDone: !event.detail.asNewUser, skipped: [], flipped: null });
+    saveDeck({ coverDone: !event.detail.asNewUser, skipped: [], flipped: null, resultsDismissed: false });
+    stack.closest('.predictions-panel')?.classList.remove('predictions-panel--summary');
     stack.innerHTML = '';
     layoutDeck();
     if (event.detail.asNewUser && coverTemplate) placeCover(coverTemplate.cloneNode(true));

@@ -132,7 +132,6 @@
   }
 
   function renderHistory() {
-    if (!isAuthor && !isReader && personalHistory().length === 0) selectedFilter = 'all';
     let history = profileHistory();
     if (!isAuthor && !isReader && selectedFilter !== 'all') history = history.filter(prediction => prediction.resolved === (selectedFilter === 'resolved'));
     const readerCalls = new Map(isSignedIn() ? personalHistory().map(prediction => [prediction.id, prediction.call]) : []);
@@ -164,6 +163,11 @@
 
   function selectFilter(button) {
     selectedFilter = button.dataset.predictionFilter;
+    if (!isAuthor && !isReader) {
+      const url = new URL(location.href);
+      url.searchParams.set('prediction-filter', selectedFilter);
+      history.replaceState(history.state, '', url);
+    }
     for (const option of filters.querySelectorAll('button')) option.setAttribute('aria-pressed', String(option === button));
     renderHistory();
   }
@@ -271,6 +275,10 @@
   });
 
   function restoreSection() {
+    if (!isAuthor && !isReader) {
+      const requested = new URLSearchParams(location.search).get('prediction-filter');
+      if (['all', 'active', 'resolved'].includes(requested)) selectedFilter = requested;
+    }
     renderPosts();
     renderFilters();
     const hash = !isAuthor && location.hash === '#saved' ? '#stories' : location.hash;

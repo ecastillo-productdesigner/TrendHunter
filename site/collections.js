@@ -1,16 +1,26 @@
 import { COLLECTIONS } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed, recommendedCollections } from './collection-follow-state.js';
 
+import { COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, unreadCollectionStories, unnoticedCollectionStories, acknowledgeCollectionUpdates } from './collection-update-state.js';
+import { interestLevel } from './collection-data.js';
+
+import { editorialStoryCard } from './story-card.js';
+import { COLLECTION_STORIES } from './collection-story-data.js';
+import { followedStoryList } from './followed-story-filter.js';
+
 const catalog = new Map(COLLECTIONS.map(collection => [collection.href, collection]));
 const followButtons = [...document.querySelectorAll('[data-collection-follow]')];
 const followedLists = [...document.querySelectorAll('[data-followed-list]')];
 const recommendedList = document.querySelector('[data-recommended-list]');
+const followedStories = document.querySelector('[data-followed-stories]');
+const collectionFilters = document.querySelector('.followed-collection-filters');
+let selectedCollection = new URLSearchParams(location.search).get('collection') || 'all';
 
 function savedCollections() {
   try { return readFollowedCollections(localStorage); } catch { return []; }
 }
 
-function collectionCard(collection) {
+function collectionCard(collection, showUpdates = false) {
   const item = document.createElement('li');
   const link = document.createElement('a');
   link.className = 'pill-button';
@@ -18,6 +28,7 @@ function collectionCard(collection) {
   link.append(document.createTextNode(`${collection.name} `));
   const momentum = document.createElement('span');
   momentum.className = `collection-momentum collection-momentum--${collection.direction}`;
+  momentum.dataset.level = interestLevel(collection.percentage);
   momentum.setAttribute('role', 'img');
   const label = `Interest ${collection.direction} ${collection.percentage}%`;
   momentum.setAttribute('aria-label', label);
@@ -34,8 +45,92 @@ function collectionCard(collection) {
   value.textContent = `${collection.percentage}%`;
   momentum.append(track, value);
   link.append(momentum);
+  const unread = showUpdates ? unreadStories(collection.href) : [];
+  if (unread.length) {
+    link.classList.add('pill-button--has-updates');
+    const badge = document.createElement('span');
+    badge.className = 'collection-new-badge';
+    badge.textContent = `${unread.length} new ${unread.length === 1 ? 'story' : 'stories'}`;
+    link.append(badge);
+  }
   item.append(link);
   return item;
+}
+
+function unreadStories(href) {
+  try { return unreadCollectionStories(localStorage, href); } catch { return []; }
+}
+
+function renderUpdateSignals(followed) {
+  if (!document.body.classList.contains('page-feed')) return;
+  const unread = new Set(followed.flatMap(unreadStories));
+  let unnoticed = [...unread];
+  try {
+    if (document.body.dataset.feedView === 'collections') acknowledgeCollectionUpdates(localStorage, [...unread]);
+    unnoticed = unnoticedCollectionStories(localStorage, [...unread]);
+  } catch {}
+  const tab = document.querySelector('[data-feed-view="collections"][role="tab"]');
+  if (tab) {
+    let dot = tab.querySelector('.collection-updates-dot');
+    if (!dot) {
+      dot = document.createElement('span');
+      dot.className = 'collection-updates-dot';
+      dot.setAttribute('aria-hidden', 'true');
+      tab.append(dot);
+    }
+    dot.hidden = unnoticed.length === 0;
+    if (unnoticed.length) tab.setAttribute('aria-label', `Collections, ${unnoticed.length} new ${unnoticed.length === 1 ? 'story' : 'stories'}`);
+    else tab.removeAttribute('aria-label');
+  }
+  document.querySelectorAll('.feed-list > li > .trend-card--editorial').forEach(card => {
+    const href = card.querySelector('.bookmark-button')?.dataset.href;
+    let label = card.querySelector('.followed-story-update');
+    if (unread.has(href)) {
+      if (!label) {
+        label = document.createElement('p');
+        label.className = 'followed-story-update';
+        label.innerHTML = '<span class="collection-updates-dot" aria-hidden="true"></span><span>New in this collection</span>';
+        card.prepend(label);
+      }
+    } else label?.remove();
+  });
+}
+
+function renderFollowedStories(followed) {
+  if (!followedStories) return;
+  if (selectedCollection !== 'all' && !followed.includes(selectedCollection)) selectedCollection = 'all';
+  collectionFilters.replaceChildren();
+  for (const href of ['all', ...followed]) {
+    const filter = document.createElement('button');
+    filter.type = 'button';
+    filter.className = 'profile-prediction-filter';
+    filter.textContent = href === 'all' ? 'All' : catalog.get(href).name;
+    filter.setAttribute('aria-pressed', String(href === selectedCollection));
+    filter.addEventListener('click', () => {
+      selectedCollection = href;
+      const url = new URL(location.href);
+      if (href === 'all') url.searchParams.delete('collection');
+      else url.searchParams.set('collection', href);
+      history.replaceState(history.state, '', url);
+      renderFollowedStories(followed);
+      [...collectionFilters.children].find(button => button.getAttribute('aria-pressed') === 'true')?.focus({ preventScroll: true });
+    });
+    collectionFilters.append(filter);
+  }
+  const unread = followed.flatMap(unreadStories);
+  const stories = followedStoryList(COLLECTION_STORIES, followed, selectedCollection, unread);
+  followedStories.innerHTML = stories.map(story => editorialStoryCard(story, catalog.get(story.collectionHref), { isNew: unread.includes(story.href) })).join('');
+  collectionFilters.hidden = followed.length === 0;
+  followedStories.hidden = followed.length === 0;
+  if (followed.length && document.body.dataset.feedView === 'collections') {
+    [...collectionFilters.children].find(button => button.getAttribute('aria-pressed') === 'true')?.scrollIntoView({ block:'nearest', inline:'nearest' });
+  }
+  const directory = followedStories.closest('.feed-collection-directory');
+  directory.dataset.followedCount = followed.length;
+  if (document.body.dataset.feedView === 'collections') {
+    document.getElementById('feed-view-status').textContent = `${stories.length} stories from ${selectedCollection === 'all' ? `${followed.length} followed collections` : catalog.get(selectedCollection).name}`;
+  }
+  document.dispatchEvent(new Event('collection-stories-rendered'));
 }
 
 function renderCollections() {
@@ -50,19 +145,19 @@ function renderCollections() {
     button.setAttribute('aria-label', `${following ? 'Unfollow' : 'Follow'} ${collection.name}`);
   }
   for (const list of followedLists) {
-    list.replaceChildren(...followed.slice().reverse().map(href => collectionCard(catalog.get(href))));
+    list.replaceChildren(...followed.slice().reverse().map(href => collectionCard(catalog.get(href), true)));
     list.hidden = followed.length === 0;
   }
   document.querySelectorAll('[data-followed-empty]').forEach(empty => { empty.hidden = followed.length > 0; });
   document.querySelectorAll('[data-followed-section]').forEach(section => { section.hidden = followed.length === 0; });
   if (recommendedList) {
     const recommendations = recommendedCollections(followed);
-    recommendedList.replaceChildren(...recommendations.map(collectionCard));
+    recommendedList.replaceChildren(...recommendations.map(collection => collectionCard(collection)));
     document.querySelector('[data-recommended-section]').hidden = recommendations.length === 0;
   }
-  if (document.body.dataset.feedView === 'collections') {
-    document.getElementById('feed-view-status').textContent = `${followed.length} followed collection${followed.length === 1 ? '' : 's'}`;
-  }
+  renderUpdateSignals(followed);
+  renderFollowedStories(followed);
+
 }
 
 function notify(collection, following) {
@@ -70,7 +165,7 @@ function notify(collection, following) {
   text.textContent = following ? `You’re following ${collection.name}. ` : `You’re no longer following ${collection.name}. `;
   const link = document.createElement('a');
   link.className = 'toast-link';
-  link.href = 'feed.html#collections';
+  link.href = following ? `feed.html?collection=${encodeURIComponent(collection.href)}#collections` : 'feed.html#collections';
   link.textContent = 'View Collections';
   window.showToast(text.innerHTML + link.outerHTML);
 }
@@ -90,6 +185,10 @@ for (const button of followButtons) {
     notify(collection, following);
   });
 }
-window.addEventListener('storage', event => { if (event.key === FOLLOWED_COLLECTIONS_KEY || event.key === null) renderCollections(); });
-window.addEventListener('pageshow', renderCollections);
+window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, COLLECTION_READ_KEY, COLLECTION_UPDATES_SEEN_KEY, null].includes(event.key)) renderCollections(); });
+document.addEventListener('feed-view-selected', event => { if (event.detail === 'collections') renderCollections(); });
+window.addEventListener('pageshow', () => {
+  selectedCollection = new URLSearchParams(location.search).get('collection') || 'all';
+  renderCollections();
+});
 renderCollections();

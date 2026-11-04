@@ -321,6 +321,7 @@ renderSavedStories();
 document.addEventListener('saved-stories-change', renderSavedStories);
 window.addEventListener('pageshow', renderSavedStories);
 syncBookmarks();
+document.addEventListener('collection-stories-rendered', syncBookmarks);
 
 function saveBookmark(bookmark) {
   setStorySaved(bookmark, true);

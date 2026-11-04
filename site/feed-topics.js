@@ -1,4 +1,4 @@
-import { readSelectedTopics, saveSelectedTopics } from './feed-personalization.js';
+import { saveSelectedTopics } from './feed-personalization.js';
 
 // Mobile feed interests. Choices are browser-local prototype preferences, not collection follows.
 (() => {
@@ -36,7 +36,8 @@ import { readSelectedTopics, saveSelectedTopics } from './feed-personalization.j
   const buttons = [...picker.querySelectorAll('[data-topic]')];
   const submit = picker.querySelector('.topic-picker-submit');
   const status = picker.querySelector('[data-topic-status]');
-  const selected = new Set(readSelectedTopics());
+  // Draft choices always start empty; saved preferences still personalize the feed.
+  const selected = new Set();
 
   function sync() {
     buttons.forEach(button => button.setAttribute('aria-pressed', String(selected.has(button.dataset.topic))));
@@ -56,6 +57,8 @@ import { readSelectedTopics, saveSelectedTopics } from './feed-personalization.j
       window.showToast('Your topics could not be saved. Please try again.');
       return;
     }
+    selected.clear();
+    sync();
     document.dispatchEvent(new Event('feed-topics-updated'));
     window.showToast('Your feed has been updated.');
   });

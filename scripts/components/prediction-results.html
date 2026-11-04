@@ -1,6 +1,7 @@
 <article class="ds-panel ds-component ds-results-component" id="prediction-results" aria-labelledby="ds-results-heading">
   <h3 id="ds-results-heading">Prediction results</h3>
   <p>Saved vote rows use the same product classes as the feed and article results. The headline sits on the left, the personal vote badge sits at the top right, and Read more appears below the headline when it links to another story. The full-width In/Out bar sits below this group. Percentages shown here are sample data.</p>
+  <p>On desktop, finishing all daily calls adds an Okay button. It replaces the results with a compact My Predictions panel using the existing 20px bolt and a pill displaying the actual number of active voted calls; skipped cards never count. The pill opens Profile → Predictions → Active. This dismissed state persists in the tab. Skipping every daily prediction instead shows Nothing to call today, Come back tomorrow for new predictions, Close and an underlined Make today’s calls action. Close shows My Predictions; Make today’s calls restores the skipped daily stack without erasing saved votes. Prototype Deal again resets the dismissal.</p>
   <div class="ds-two-column">
     <div class="prediction-results ds-results-preview" aria-label="Saved vote row examples">
       <ul class="prediction-results-list">
@@ -42,7 +43,7 @@
         <dt>Heading group to split</dt><dd>16px</dd>
         <dt>Divider</dt><dd>1px · default DS border · #FFFFFF at 25% in dark theme</dd>
         <dt>Space above / below divider</dt><dd>24px / 24px</dd>
-        <dt>Mobile side inset</dt><dd>12px in feed and article results</dd>
+        <dt>Mobile side inset</dt><dd>24px on every side of feed and article results, without a second inner inset</dd>
       </dl>
       <p>Feed results scroll inside the card. Article results expand with the page. The final row has no divider.</p>
     </div>

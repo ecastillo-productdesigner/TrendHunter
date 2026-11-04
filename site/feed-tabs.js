@@ -30,6 +30,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   const names = {
     'for-you': 'For You',
     collections: 'Collections',
+    following: 'Following',
     'trending-up': 'Trending Up',
     'trending-down': 'Trending Down',
   };
@@ -45,7 +46,8 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     }
     panel.setAttribute('aria-labelledby', selected.id);
     heading.textContent = view === 'for-you' ? 'Your feed' : names[view];
-    list.hidden = view === 'collections';
+    list.hidden = view === 'collections' || view === 'following';
+    panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
 
     const order = view === 'trending-up' ? 'rising' : view === 'trending-down' ? 'falling' : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
@@ -70,11 +72,13 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
       item.hidden = Boolean(direction && !story.querySelector(`.collection-momentum--${direction}`)) || (view === 'for-you' && feedback.hiddenStories.includes(story.querySelector('.bookmark-button')?.dataset.href));
       if (!item.hidden) count += 1;
     }
-    const followedCount = directory.querySelectorAll('[data-followed-list] > li').length;
+    const followedCount = Number(directory.dataset.followedCount || 0);
+    const followedStoryCount = directory.querySelectorAll('[data-followed-stories] > li').length;
     status.textContent = view === 'collections'
-      ? `${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
+      ? `${followedStoryCount} stories from ${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
+      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${view === 'trending-up' ? ', highest percentage gain first' : view === 'trending-down' ? ', smallest percentage decline first' : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
 
+    document.dispatchEvent(new CustomEvent('feed-view-selected', { detail: view }));
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);
     if (resetScroll) {
       main.scrollTo({ top: 0, behavior: 'auto' });

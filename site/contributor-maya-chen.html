@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=layout-polish-2">
+  <link rel="stylesheet" href="feed.css?v=community-5">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -18,7 +18,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility,arrow_downward,bolt">
 </head>
 <body class="page-profile page-contributor">
 
@@ -34,7 +34,7 @@
         <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
       </a>
       <div class="nav-utilities">
-        <a class="nav-predictions" href="predictions.html" aria-label="Daily Predictions"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
+        <a class="nav-predictions" href="predictions.html" aria-label="Predict the Next Trend"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
         <button class="theme-toggle" aria-label="Switch to light theme">
           <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
           <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
@@ -101,11 +101,14 @@
     <section class="profile-header" aria-label="Contributor">
       <img class="profile-avatar profile-avatar--contributor" src="assets/authors/maya-chen.webp" width="256" height="256" alt="">
       <div class="profile-identity"><h1 class="profile-name">Maya Chen</h1><p class="profile-role">Wellness &amp; Everyday Life Writer</p></div>
+
+      <button class="edit-profile-button person-follow-button" type="button" data-person-follow="maya-chen" aria-pressed="false" aria-label="Follow Maya Chen">Follow</button>
       <div class="profile-bio">
         <p class="profile-bio-preview">Maya Chen writes about the small shifts that change everyday life, from family routines and food habits to the technology people bring home. <button class="profile-bio-more" aria-expanded="false" aria-controls="bio-full">More...</button></p>
         <div class="profile-bio-full" id="bio-full" tabindex="-1" hidden><p>Maya Chen writes about the small shifts that change everyday life, from family routines and food habits to the technology people bring home. Based in Portland, Maya follows ideas from their first moment of curiosity to the point where they become a useful habit. Her stories look at how people fit new products, tools and rituals into busy weeks. She favors clear explanations, practical questions and the details that are easy to overlook. Away from her desk, she enjoys neighborhood walks, cooking with friends and collecting secondhand cookbooks.</p><p><strong>Based in:</strong> Portland, Oregon<br><strong>Areas of interest:</strong> Family routines, approachable wellness and everyday technology</p></div>
       </div>
-    </section>
+
+</section>
     <nav class="filter-tabs" role="tablist" aria-label="Contributor sections">
       <button id="profile-posts-tab" class="filter-tab filter-tab--active" type="button" role="tab" aria-selected="true" aria-controls="contributor-posts" data-profile-section="posts">Posts</button>
       <button id="profile-predictions-tab" class="filter-tab" type="button" role="tab" aria-selected="false" aria-controls="profile-predictions" tabindex="-1" data-profile-section="predictions">Predictions</button>
@@ -151,10 +154,10 @@
   </div>
 
   <script type="module" src="share.js?v=system-sharing-1"></script>
-  <script src="app.js?v=reader-avatars-1"></script>
-  <script src="predictions.js?v=open-predictions-1"></script>
+  <script src="app.js?v=collection-cards-2"></script>
+  <script src="predictions.js?v=badges-5"></script>
   <script src="comparison-motion.js?v=entrance-1"></script>
-  <script src="profile-predictions.js?v=reader-comparison-2"></script>
+  <script src="profile-predictions.js?v=active-2-reader-comparison-2"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>
@@ -169,5 +172,7 @@
   </button>
   <script src="settings.js?v=2"></script>
 
+  <script type="module" src="people.js?v=1"></script>
+  <script type="module" src="badges.js?v=1"></script>
 </body>
 </html>

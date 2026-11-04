@@ -224,3 +224,8 @@ export const RECOMMENDED_COLLECTIONS = Object.freeze([
   "collection-longevity.html",
   "collection-peptides.html",
 ]);
+
+export function interestLevel(value) {
+  const score = Math.max(0, Math.min(100, Number(value) || 0));
+  return Math.max(1, Math.ceil(score / 25));
+}

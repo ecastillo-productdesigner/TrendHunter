@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=layout-polish-2">
+  <link rel="stylesheet" href="feed.css?v=community-5">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -16,7 +16,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,bolt">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility,arrow_downward,bolt">
 </head>
 <body>
 
@@ -32,7 +32,7 @@
         <img class="theme-light-only" src="assets/feed/wordmark-light.svg" alt="Trend Hunter">
       </a>
       <div class="nav-utilities">
-        <a class="nav-predictions" href="predictions.html" aria-label="Daily Predictions"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
+        <a class="nav-predictions" href="predictions.html" aria-label="Predict the Next Trend"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
         <button class="theme-toggle" aria-label="Switch to light theme">
           <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
           <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
@@ -124,7 +124,7 @@
         <!-- Masthead -->
         <header class="masthead">
           <div class="masthead-title-row">
-            <h1 class="masthead-title"><span class="masthead-title-tail">Mind-Body<span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 18%" title="Interest rising 18%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">18%</span></span></span></h1>
+            <h1 class="masthead-title"><span class="masthead-title-tail">Mind-Body<span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 18%" title="Interest rising 18%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">18%</span></span></span></h1>
           </div>
           <p class="masthead-description">This channel is where readers come to understand what's actually happening with how we sleep, move, eat, recover, and feel — not just what's going viral this week. Mind &amp; Body tracks the signals behind wellness culture: the supplement everyone's suddenly talking about, the recovery habit spreading through group chats, the shift in how people think about stress or aging, revealing fact from opinion. Mind &amp; Body separates the durable from the fleeting, attributing every claim to a real source, and leaving those curious smarter and calmer about the choices they're weighing. The promise is simple: come here to figure out whether a trend is worth your time, attention, or your money.</p>
         </header>
@@ -133,26 +133,26 @@
         <section class="channel-collections" aria-labelledby="collections-heading">
           <h2 id="collections-heading" class="type-h4-caps">Explore the Collections in this channel</h2>
           <ul class="collection-list">
-              <li><a href="collection-andropause-hormonal-midlife.html" class="pill-button">Andropause &amp; Hormonal Midlife <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 28%" title="Interest rising 28%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">28%</span></span></a></li>
-              <li><a href="collection-biohackers-body.html" class="pill-button">Biohacker's Body <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 26%" title="Interest rising 26%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">26%</span></span></a></li>
-              <li><a href="collection-cardio-and-its-health.html" class="pill-button">Cardio and Its Health <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 7%" title="Interest rising 7%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">7%</span></span></a></li>
-              <li><a href="collection-evidence-based-beauty.html" class="pill-button">Evidence-Based Beauty <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 22%" title="Interest rising 22%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">22%</span></span></a></li>
-              <li><a href="collection-fitness-reset.html" class="pill-button">Fitness Reset <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 19%" title="Interest rising 19%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">19%</span></span></a></li>
-              <li><a href="collection-gut-brain-axis.html" class="pill-button">Gut-Brain Axis <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
-              <li><a href="collection-her-health.html" class="pill-button">Her Health <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 23%" title="Interest rising 23%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">23%</span></span></a></li>
-              <li><a href="collection-longevity.html" class="pill-button">Longevity Living <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a></li>
-              <li><a href="collection-lymphatic-system-literacy.html" class="pill-button">Lymphatic System Literacy <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 8%" title="Interest rising 8%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">8%</span></span></a></li>
-              <li><a href="collection-metabolic-life.html" class="pill-button">Metabolic Life <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 21%" title="Interest rising 21%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">21%</span></span></a></li>
-              <li><a href="collection-mind-body-for-families.html" class="pill-button">Mind &amp; Body for Families <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
-              <li><a href="collection-modern-anxiety-care.html" class="pill-button">Modern Anxiety Care <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 16%" title="Interest rising 16%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">16%</span></span></a></li>
-              <li><a href="collection-modern-hydration-caffeine.html" class="pill-button">Modern Hydration &amp; Caffeine <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 10%" title="Interest rising 10%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">10%</span></span></a></li>
-              <li><a href="collection-nervous-system-gym.html" class="pill-button">Nervous System Gym <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 29%" title="Interest rising 29%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">29%</span></span></a></li>
-              <li><a href="collection-preventive-health.html" class="pill-button">Preventive Health <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 14%" title="Interest rising 14%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">14%</span></span></a></li>
-              <li><a href="collection-regulated-living.html" class="pill-button">Regulated Living <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 8%" title="Interest rising 8%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">8%</span></span></a></li>
-              <li><a href="collection-sleep-medicine.html" class="pill-button">Sleep Medicine <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 27%" title="Interest rising 27%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">27%</span></span></a></li>
-              <li><a href="collection-supplement-science.html" class="pill-button">Supplement Science <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 16%" title="Interest falling 16%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">16%</span></span></a></li>
-              <li><a href="collection-the-intuitive-body.html" class="pill-button">The Intuitive Body <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 6%" title="Interest rising 6%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">6%</span></span></a></li>
-              <li><a href="collection-wellness-maxxing.html" class="pill-button">Wellness Maxxing <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 13%" title="Interest falling 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
+              <li><a href="collection-andropause-hormonal-midlife.html" class="pill-button">Andropause &amp; Hormonal Midlife <span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 28%" title="Interest rising 28%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">28%</span></span></a></li>
+              <li><a href="collection-biohackers-body.html" class="pill-button">Biohacker's Body <span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 26%" title="Interest rising 26%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">26%</span></span></a></li>
+              <li><a href="collection-cardio-and-its-health.html" class="pill-button">Cardio and Its Health <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 7%" title="Interest rising 7%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">7%</span></span></a></li>
+              <li><a href="collection-evidence-based-beauty.html" class="pill-button">Evidence-Based Beauty <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 22%" title="Interest rising 22%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">22%</span></span></a></li>
+              <li><a href="collection-fitness-reset.html" class="pill-button">Fitness Reset <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 19%" title="Interest rising 19%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">19%</span></span></a></li>
+              <li><a href="collection-gut-brain-axis.html" class="pill-button">Gut-Brain Axis <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
+              <li><a href="collection-her-health.html" class="pill-button">Her Health <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 23%" title="Interest rising 23%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">23%</span></span></a></li>
+              <li><a href="collection-longevity.html" class="pill-button">Longevity Living <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">17%</span></span></a></li>
+              <li><a href="collection-lymphatic-system-literacy.html" class="pill-button">Lymphatic System Literacy <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 8%" title="Interest rising 8%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">8%</span></span></a></li>
+              <li><a href="collection-metabolic-life.html" class="pill-button">Metabolic Life <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 21%" title="Interest rising 21%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">21%</span></span></a></li>
+              <li><a href="collection-mind-body-for-families.html" class="pill-button">Mind &amp; Body for Families <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
+              <li><a href="collection-modern-anxiety-care.html" class="pill-button">Modern Anxiety Care <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 16%" title="Interest rising 16%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">16%</span></span></a></li>
+              <li><a href="collection-modern-hydration-caffeine.html" class="pill-button">Modern Hydration &amp; Caffeine <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 10%" title="Interest rising 10%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">10%</span></span></a></li>
+              <li><a href="collection-nervous-system-gym.html" class="pill-button">Nervous System Gym <span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 29%" title="Interest rising 29%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">29%</span></span></a></li>
+              <li><a href="collection-preventive-health.html" class="pill-button">Preventive Health <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 14%" title="Interest rising 14%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">14%</span></span></a></li>
+              <li><a href="collection-regulated-living.html" class="pill-button">Regulated Living <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 8%" title="Interest rising 8%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">8%</span></span></a></li>
+              <li><a href="collection-sleep-medicine.html" class="pill-button">Sleep Medicine <span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 27%" title="Interest rising 27%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">27%</span></span></a></li>
+              <li><a href="collection-supplement-science.html" class="pill-button">Supplement Science <span class="collection-momentum collection-momentum--falling" data-level="1" role="img" aria-label="Interest falling 16%" title="Interest falling 16%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">16%</span></span></a></li>
+              <li><a href="collection-the-intuitive-body.html" class="pill-button">The Intuitive Body <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 6%" title="Interest rising 6%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">6%</span></span></a></li>
+              <li><a href="collection-wellness-maxxing.html" class="pill-button">Wellness Maxxing <span class="collection-momentum collection-momentum--falling" data-level="1" role="img" aria-label="Interest falling 13%" title="Interest falling 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a></li>
           </ul>
         </section>
 
@@ -161,55 +161,43 @@
           <h2 id="stories-heading" class="type-h4-caps">More Stories</h2>
           <ol class="feed-list">
             <li>
-              <article class="trend-card">
-                <img class="trend-card-image" src="assets/feed/trend-02.png" alt="" loading="lazy">
-                <a href="collection-retailtainment-hubs.html" class="trend-card-collection"><span class="trend-card-collection-label">Retailtainment Hubs</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 34%" title="Interest rising 34%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">34%</span></span></a>
-                <div class="trend-card-content">
-                  <h2 class="trend-card-headline">How Gen Z Brands Like Edikted Are Converting TikTok Followers</h2>
-                  <p class="trend-card-summary">The generation raised on Instagram checkout and next-day shipping is walking into physical stores again — and retailers from Urban Outfitters to Coach are rebuilding their formats around them. What started as a post-pandemic curiosity is now a measurable shift in where young shoppers spend, and it’s about to force a broader rethink of what a store is for.</p>
-                  <a href="trend-retailtainment.html" class="button-primary">Go Deeper</a>
-                </div>
-                <div class="trend-card-actions">
-                <button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
-                  
-                  <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
-                  <a href="contributor-daniel-reed.html" class="avatar avatar--contributor trend-card-action" aria-label="View Daniel Reed’s profile"><img src="assets/authors/daniel-reed.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
-                </div>
-              </article>
+              <article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-retailtainment.html" aria-label="Read: How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits"><img class="trend-card-image" src="assets/feed/trend-02.png" alt="" loading="lazy"></a>
+    <a href="collection-retailtainment-hubs.html" class="trend-card-collection"><span class="trend-card-collection-label">Retailtainment Hubs</span><span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 34%" title="Interest rising 34%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-retailtainment.html">How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-daniel-reed.html" aria-label="View Daniel Reed’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/daniel-reed.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Daniel Reed</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="how-gen-z-brands-like-edikted-are-converting-tiktok-followers" data-title="How Gen Z Brands Like Edikted Are Converting TikTok Followers Into Store Visits" data-image="assets/feed/trend-02.png" data-href="trend-retailtainment.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article>
             </li>
             <li>
-              <article class="trend-card">
-                <img class="trend-card-image" src="assets/feed/trend-03.png" alt="" loading="lazy">
-                <a href="collection-back-to-school-transitions.html" class="trend-card-collection"><span class="trend-card-collection-label">Back-to-School Transitions</span> <span class="collection-momentum collection-momentum--falling" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a>
-                <div class="trend-card-content">
-                  <h2 class="trend-card-headline">Morning Meltdowns Fatigue May Mean Child’s Routine Is Still Shape</h2>
-                  <p class="trend-card-summary">As classrooms fill back up, parents watching tired kids and morning meltdowns are asking the same question about their back-to-school routine: when does this get easier? The honest answer is that the adjustment stretches well past the first-day photo — and how families handle the next few weeks will shape the rest of the school year.</p>
-                  <a href="trend-school-routines.html" class="button-primary">Go Deeper</a>
-                </div>
-                <div class="trend-card-actions">
-                <button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
-                  
-                  <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="morning-meltdowns-fatigue-may-mean-child-s-routine-is-still-shape" data-title="Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape" data-image="assets/feed/trend-03.png" data-href="trend-school-routines.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
-                  <a href="contributor-owen-brooks.html" class="avatar avatar--contributor trend-card-action" aria-label="View Owen Brooks’s profile"><img src="assets/authors/owen-brooks.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
-                </div>
-              </article>
+              <article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-school-routines.html" aria-label="Read: Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape"><img class="trend-card-image" src="assets/feed/trend-03.png" alt="" loading="lazy"></a>
+    <a href="collection-back-to-school-transitions.html" class="trend-card-collection"><span class="trend-card-collection-label">Back-to-School Transitions</span><span class="collection-momentum collection-momentum--falling" data-level="1" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-school-routines.html">Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-owen-brooks.html" aria-label="View Owen Brooks’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/owen-brooks.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Owen Brooks</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="morning-meltdowns-fatigue-may-mean-child-s-routine-is-still-shape" data-title="Morning Meltdowns and Fatigue May Mean a Child’s School Routine Is Still Taking Shape" data-image="assets/feed/trend-03.png" data-href="trend-school-routines.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article>
             </li>
             <li>
-              <article class="trend-card">
-                <img class="trend-card-image" src="assets/feed/trend-04.png" alt="" loading="lazy">
-                <a href="collection-mind-body-for-families.html" class="trend-card-collection"><span class="trend-card-collection-label">Mind &amp; Body for Families</span> <span class="collection-momentum collection-momentum--rising" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">13%</span></span></a>
-                <div class="trend-card-content">
-                  <h2 class="trend-card-headline">Teens’ Phone Habits Are Costing Them Major Sleep. The Fallout Beginning</h2>
-                  <p class="trend-card-summary">New research is drawing a sharper line between teen screen time and adolescent well-being, and the picture isn’t reassuring. A federal study of nearly 2,000 U.S. teenagers found heavy recreational screen use tracks with worse sleep, more anxiety and thinner support networks. What comes next will test whether families, schools and platforms can adjust before “problematic media use” becomes the default setting of adolescence.</p>
-                  <a href="trend-teen-phone-sleep.html" class="button-primary">Go Deeper</a>
-                </div>
-                <div class="trend-card-actions">
-                <button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button>
-                  
-                  <button class="trend-card-action bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="teens-phone-habits-are-costing-them-major-sleep-the-fallout-beginning" data-title="Teens’ Phone Habits Are Costing Them Sleep. Families Are Rethinking the Nighttime Routine" data-image="assets/feed/trend-04.png" data-href="trend-teen-phone-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button>
-                  <a href="contributor-sofia-morales.html" class="avatar avatar--contributor trend-card-action" aria-label="View Sofia Morales’s profile"><img src="assets/authors/sofia-morales.webp" alt="" width="256" height="256" loading="lazy" decoding="async"></a>
-                </div>
-              </article>
+              <article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-teen-phone-sleep.html" aria-label="Read: Teens’ Phone Habits Are Costing Them Sleep. Families Are Rethinking the Nighttime Routine"><img class="trend-card-image" src="assets/feed/trend-04.png" alt="" loading="lazy"></a>
+    <a href="collection-mind-body-for-families.html" class="trend-card-collection"><span class="trend-card-collection-label">Mind &amp; Body for Families</span><span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 13%" title="Interest rising 13%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-teen-phone-sleep.html">Teens’ Phone Habits Are Costing Them Sleep. Families Are Rethinking the Nighttime Routine</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-sofia-morales.html" aria-label="View Sofia Morales’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/sofia-morales.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Sofia Morales</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="teens-phone-habits-are-costing-them-major-sleep-the-fallout-beginning" data-title="Teens’ Phone Habits Are Costing Them Sleep. Families Are Rethinking the Nighttime Routine" data-image="assets/feed/trend-04.png" data-href="trend-teen-phone-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article>
             </li>
           </ol>
         </section>
@@ -231,9 +219,9 @@
     </main>
 
     <!-- Right rail: Predictions Panel -->
-    <aside class="rail-right" aria-label="Daily predictions">
+    <aside class="rail-right" aria-label="Predict the Next Trend">
       <section class="predictions-panel" aria-labelledby="predictions-heading">
-        <h2 id="predictions-heading" class="type-h4-caps">Daily Predictions</h2>
+        <h2 id="predictions-heading" class="type-h4-caps">Predict the Next Trend</h2>
         <div class="prediction-stack">
           <div class="prediction-card prediction-card--onboarding">
             <p class="prediction-onboarding-copy">
@@ -258,8 +246,8 @@
   </div>
 
   <script type="module" src="share.js?v=system-sharing-1"></script>
-  <script src="app.js?v=reader-avatars-1"></script>
-  <script src="predictions.js?v=open-predictions-1"></script>
+  <script src="app.js?v=collection-cards-2"></script>
+  <script src="predictions.js?v=badges-5"></script>
   <script src="answers.js?v=compact-mobile-1"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
@@ -275,5 +263,6 @@
   </button>
   <script src="settings.js?v=2"></script>
 
+  <script type="module" src="badges.js?v=1"></script>
 </body>
 </html>
