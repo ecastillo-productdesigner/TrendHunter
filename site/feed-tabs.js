@@ -61,11 +61,12 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const trending = view === 'trending-up' || view === 'trending-down';
     const sort = sortFromUrl();
     sortFilters.hidden = !trending;
-    const sortControl = sortFilters.querySelector('select');
+    const sortControl = sortFilters.querySelector('[data-trend-sort]');
     const movement = view === 'trending-down' ? 'drop' : 'rise';
-    sortControl.options[0].textContent = `Biggest ${movement}`;
-    sortControl.options[1].textContent = `Smallest ${movement}`;
-    sortControl.value = sort;
+    const sortLabel = `${sort === 'biggest' ? 'Biggest' : 'Smallest'} ${movement}`;
+    const nextSortLabel = `${sort === 'biggest' ? 'Smallest' : 'Biggest'} ${movement}`;
+    sortControl.textContent = sortLabel;
+    sortControl.setAttribute('aria-label', `${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
 
     const order = trending ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
@@ -105,12 +106,12 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     if (resetScroll) selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   }
 
-  sortFilters.addEventListener('change', event => {
-    const control = event.target.closest('select[data-trend-sort]');
+  sortFilters.addEventListener('click', event => {
+    const control = event.target.closest('button[data-trend-sort]');
     if (!control) return;
     const url = new URL(location.href);
-    if (control.value === 'biggest') url.searchParams.delete('sort');
-    else url.searchParams.set('sort',control.value);
+    if (sortFromUrl() === 'smallest') url.searchParams.delete('sort');
+    else url.searchParams.set('sort', 'smallest');
     history.replaceState(history.state,'',url);
     select(viewFromUrl(), { resetScroll:false });
     control.focus({ preventScroll:true });

@@ -1691,6 +1691,15 @@
       ]
     },
     {
+      "key": "button:feed-trend-sort-toggle",
+      "classes": "feed-trend-sort-toggle",
+      "tag": "button",
+      "name": "Biggest rise",
+      "sources": [
+        "feed.html"
+      ]
+    },
+    {
       "key": "button:filter-tab",
       "classes": "filter-tab",
       "tag": "button",

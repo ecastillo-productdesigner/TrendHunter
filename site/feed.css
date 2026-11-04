@@ -5655,7 +5655,9 @@ body:has(.auth-prompt[open]) {
   background: var(--color-background-surface);
 }
 .feed-trend-filters[hidden] { display: none; }
-.feed-trend-filters > label { flex-shrink: 0; font: var(--type-helper); color: var(--color-text-dim); }
+.feed-trend-sort-toggle { min-height: var(--icon-size-2xl); padding: 0; border: 0; border-radius: var(--radius-x-sm); background: transparent; color: var(--color-text-primary); font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-sm) var(--type-font-display); text-align: left; cursor: pointer; }
+.feed-trend-sort-toggle:hover { color: var(--color-text-body-link); }
+.feed-trend-sort-toggle:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .feed-trend-sort { min-height: var(--icon-size-2xl); min-width: 0; padding: var(--spacing-component-sm) var(--spacing-layout-md); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-full); background: var(--color-background-surface); color: var(--color-text-primary); font: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-sm) var(--type-font-display); cursor: pointer; }
 .feed-trend-sort:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .page-feed[data-feed-view^="trending-"] .feed-tab-panel > .feed-list { padding-top: 0; }
