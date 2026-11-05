@@ -505,6 +505,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "feed.css",
         "contributor-ryan-brennan.html",
         "channel-experiences.html",
         "trend-school-routines.html",
@@ -688,6 +689,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "feed.css",
         "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
@@ -801,6 +803,7 @@
         "contributor-maya-chen.html",
         "collection-nervous-system-gym.html",
         "collection-everyday-living.html",
+        "feed.css",
         "contributor-ryan-brennan.html",
         "login-terms.html",
         "channel-experiences.html",
@@ -1010,6 +1013,7 @@
         "trend-city-content-walk.html",
         "collection-adventure-active-travel.html",
         "collection-budgeted-living.html",
+        "onboarding.html",
         "reader-riley-chen.html",
         "collection-modern-hydration-caffeine.html",
         "trend-dollar-store-shoppers.html"
@@ -1124,6 +1128,7 @@
         "trend-city-content-walk.html",
         "collection-adventure-active-travel.html",
         "collection-budgeted-living.html",
+        "onboarding.html",
         "reader-riley-chen.html",
         "collection-modern-hydration-caffeine.html",
         "trend-dollar-store-shoppers.html"
@@ -1290,7 +1295,7 @@
     {
       "name": "Menu",
       "group": "Navigation and saved",
-      "note": "20px. The menu glyph has dark and light theme assets; opening the drawer does not change its shape.",
+      "note": "20px SVG mask using the DS icon color. Menu label and icon turn primary text color on hover or keyboard focus (white in dark mode); opening the drawer does not change the glyph.",
       "states": [
         "Default \u00b7 follows theme"
       ]
@@ -1298,7 +1303,7 @@
     {
       "name": "Theme toggle",
       "group": "Navigation and saved",
-      "note": "24px. Sun switches to light theme; moon switches to dark theme.",
+      "note": "24px SVG mask. Sun switches to light theme; moon switches to dark theme. The glyph turns primary text color on hover or keyboard focus, matching Menu and Login.",
       "states": [
         "Dark \u00b7 sun",
         "Light \u00b7 moon"
@@ -1410,7 +1415,7 @@
     {
       "name": "Collection interest",
       "group": "Predictions and signals",
-      "note": "Logo-inspired four-chevron indicator in a 20 \u00d7 14px box. Rising points right in DS lime; falling points left in DS red, with progressively fading chevrons. Percentages stay in accessible labels and tooltips, and keep the existing Trending sorting; they are hidden visually. Values are illustrative prototype data, not live analytics. Collection labels retain these chevrons; Caught on the Move places them after its time text alongside separate movement arrows.",
+      "note": "Logo-inspired four-chevron indicator in a 20 \u00d7 14px box. Rising points right in DS lime; falling points left in DS red, with progressively fading chevrons. Percentages stay in accessible labels and tooltips, and keep the existing Trending sorting; they are hidden visually. Values are illustrative prototype data, not live analytics. Channel mastheads have no chevrons. Collection labels retain these chevrons; Caught on the Move places them after its time text alongside separate movement arrows.",
       "states": [
         "Interest rising \u00b7 sample 22%",
         "Interest falling \u00b7 sample 20%"

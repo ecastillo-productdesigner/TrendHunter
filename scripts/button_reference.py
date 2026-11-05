@@ -61,6 +61,10 @@ def build_button_reference(project, out):
     def pair(name, default, active, active_label='Hover'):
         states.append(f'<article class="ds-button-state-family"><h4>{name}</h4><div class="ds-button-state-pair"><figure><div class="ds-button-canvas">{default}</div><figcaption>Default</figcaption></figure><figure><div class="ds-button-canvas">{active}</div><figcaption>{active_label}</figcaption></figure></div></article>')
     pair('Back navigation', '<a class="nav-menu nav-back" href="#"><span class="nav-back-icon"></span><span class="nav-text-button">Back</span></a>', '<a class="nav-menu nav-back ds-back-hover" href="#"><span class="nav-back-icon"></span><span class="nav-text-button">Back</span></a>')
+    pair('Menu navigation', '<button class="nav-menu"><span class="nav-text-button">Menu</span></button>', '<button class="nav-menu ds-navigation-hover"><span class="nav-text-button">Menu</span></button>')
+    pair('Login navigation', '<a class="nav-text-button nav-login" href="#">Login</a>', '<a class="nav-text-button nav-login ds-navigation-hover" href="#">Login</a>')
+    pair('Theme control', '<button class="theme-toggle" aria-label="Switch theme"></button>', '<button class="theme-toggle ds-navigation-hover" aria-label="Switch theme"></button>')
+    pair('Footer links', '<ul class="footer-links"><li><a href="#">Privacy Policy</a></li></ul>', '<ul class="footer-links"><li><a class="ds-navigation-hover" href="#">Privacy Policy</a></li></ul>')
     pair('Explore Solutions · business banner', '<span class="thb2b-banner-cta">Explore Solutions</span>', '<span class="thb2b-banner-cta ds-business-cta-hover">Explore Solutions</span>')
     pair('Primary', '<button class="button-primary">Go deeper</button>','<button class="button-primary ds-hover-primary">Go deeper</button>')
     pair('Sign-in primary', '<button class="auth-button auth-button--primary">Continue</button>','<button class="auth-button auth-button--primary" disabled>Continue</button>','Disabled')

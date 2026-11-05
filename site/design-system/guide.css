@@ -358,3 +358,6 @@
 .ds-color-group .ds-swatch-value { margin-top: var(--spacing-component-xs); font-size: var(--type-size-12); }
 .ds-color-uses { margin-top: var(--spacing-component-ms); font-size: var(--type-size-12); line-height: var(--type-utility-helper-line-height); color: var(--ds-muted); }
 .ds-color-uses strong { font-weight: var(--type-weight-medium); }
+
+.ds-border-line { display: block; width: 100%; min-width: var(--spacing-page-2xl); }
+.ds-page .ds-navigation-hover { color: var(--color-text-primary); }

@@ -935,6 +935,15 @@
       ]
     },
     {
+      "key": "button:button-primary topic-picker-submit onboarding-continue",
+      "classes": "button-primary topic-picker-submit onboarding-continue",
+      "tag": "button",
+      "name": "Continue",
+      "sources": [
+        "onboarding.html"
+      ]
+    },
+    {
       "key": "a:button-primary trending-video-deeper",
       "classes": "button-primary trending-video-deeper",
       "tag": "a",
@@ -2340,6 +2349,36 @@
       ]
     },
     {
+      "key": "button:onboarding-edit",
+      "classes": "onboarding-edit",
+      "tag": "button",
+      "name": "Edit trend setters",
+      "sources": [
+        "onboarding.js",
+        "onboarding.js",
+        "onboarding.js",
+        "onboarding.js"
+      ]
+    },
+    {
+      "key": "button:onboarding-skip",
+      "classes": "onboarding-skip",
+      "tag": "button",
+      "name": "Skip for now",
+      "sources": [
+        "onboarding.html"
+      ]
+    },
+    {
+      "key": "button:onboarding-step",
+      "classes": "onboarding-step",
+      "tag": "button",
+      "name": "furthest ? 'disabled' : ''}  data-complete=\"",
+      "sources": [
+        "onboarding.js"
+      ]
+    },
+    {
       "key": "a:pill-button",
       "classes": "pill-button",
       "tag": "a",
@@ -2718,6 +2757,15 @@
         "trend.html",
         "trend.html",
         "trend.html"
+      ]
+    },
+    {
+      "key": "button:pill-button onboarding-collection",
+      "classes": "pill-button onboarding-collection",
+      "tag": "button",
+      "name": "pill-button onboarding-collection",
+      "sources": [
+        "onboarding.js"
       ]
     },
     {

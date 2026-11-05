@@ -1,7 +1,7 @@
 import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=2';
 import { escapeText as esc } from './story-card.js';
 import { medalBurst } from './badge-celebration.js?v=3';
-import { predictionCallPanels, resolvedPredictionRow } from './prediction-result-card.js';
+import { predictionCallPanels, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-2';
 const records=()=>{try{return readPredictionResults(localStorage);}catch{return [];}};
 const signedIn=()=>window.isSignedIn?.()===true;
 const destination=id=>`userprofile.html?prediction-filter=resolved&result=${encodeURIComponent(id)}#predictions`;

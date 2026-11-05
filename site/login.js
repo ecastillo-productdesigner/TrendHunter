@@ -53,7 +53,7 @@ if (firstBack) {
   } catch (e) {}
 }
 
-function finishSignIn() {
+function finishSignIn({ onboarding = false } = {}) {
   let returnTo = 'feed.html';
   try {
     sessionStorage.setItem('signed-in', 'true');
@@ -61,12 +61,12 @@ function finishSignIn() {
     sessionStorage.removeItem(RETURN_KEY);
     sessionStorage.removeItem(CHALLENGE_KEY);
   } catch (e) {}
-  window.location.href = returnTo;
+  window.location.href = onboarding ? 'onboarding.html#topics' : returnTo;
 }
 
 // Apple / Google
 document.querySelectorAll('.auth-button[data-auth]').forEach((provider) => {
-  provider.addEventListener('click', finishSignIn);
+  provider.addEventListener('click', () => finishSignIn());
 });
 
 // Email — only a valid address enables submission. Inline errors replace
@@ -261,7 +261,10 @@ if (termsForm) {
 
   termsForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (termsCheckbox.checked) finishSignIn();
+    if (termsCheckbox.checked) {
+      try { sessionStorage.removeItem('trendhunter.onboarding-draft.v2'); } catch {}
+      finishSignIn({ onboarding: true });
+    }
     else {
       showError(termsCheckbox, error, true);
       termsCheckbox.focus();
