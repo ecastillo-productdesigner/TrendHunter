@@ -981,10 +981,7 @@ button {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
   overflow: hidden;
-  font-family: var(--type-font-display);
-  font-size: var(--type-size-18);
-  font-weight: var(--type-weight-bold);
-  line-height: var(--type-line-height-ui-md);
+  font: var(--type-section-heading-bold);
   text-transform: uppercase;
   color: var(--color-text-tertiary);
   transition: color var(--motion-hover) ease;
