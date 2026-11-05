@@ -1367,7 +1367,7 @@ a.story-lockup:hover .story-lockup-headline {
   outline-offset: var(--spacing-component-xs);
 }
 .trend-card-media-link:focus-visible { outline-offset: calc(-1 * var(--spacing-component-xs)); }
-.trend-card-title-link:is(:hover, :focus-visible) { color: var(--color-text-body-link); }
+.trend-card-title-link:is(:hover, :focus-visible) { color: var(--trend-card-icon); }
 .story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
 
 .trend-card-image--retailtainment-still { object-position: center 25%; }
