@@ -20,7 +20,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     return ['smallest','ascending'].includes(value) ? 'smallest' : 'biggest';
   };
   const originalItems = [...list.children];
-  const movementSamples = new Map([...document.querySelectorAll('.trend-card--mover')].map(card => [card.querySelector('.trend-card-title-link')?.getAttribute('href'), card.querySelector('.mover-update')?.textContent]));
+  const movementSamples = new Map([...document.querySelectorAll('.trend-card--mover')].map(card => [card.querySelector('.trend-card-title-link')?.getAttribute('href'), card.querySelector('.mover-update-text')?.textContent]));
   // Fixed prototype recency examples, shared with Caught on the Move where available.
   originalItems.forEach((item, index) => {
     const card = item.querySelector(':scope > .trend-card');

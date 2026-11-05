@@ -278,6 +278,8 @@
   --radius-x-sm: 2px;
   --radius-sm: 4px;
   --radius-md: 10px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
   --radius-full: 100px;
   --avatar-radius-soft: 2px;
   --avatar-radius-full: 100px;
@@ -5533,18 +5535,24 @@ body:has(.auth-prompt[open]) {
 .mover-track:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .feed-movers .trend-card--mover {
   display: grid;
-  grid-template-columns: minmax(0,30%) minmax(0,1fr);
-  grid-template-rows: auto 1fr auto;
-  column-gap: var(--spacing-layout-md);
+  grid-template-columns: var(--size-image-thumbnail-width) minmax(0,1fr);
+  grid-template-rows: 1fr auto;
+  column-gap: var(--spacing-component-ms);
   row-gap: var(--spacing-component-sm);
   align-items: start;
   padding: 0;
   border: 0;
   height: 100%;
 }
-.trend-card--mover .trend-card-media { grid-column: 1; grid-row: 1 / 4; aspect-ratio: 1; }
-.trend-card--mover .trend-card-collection { grid-column: 2; grid-row: 1; }
-.trend-card--mover .trend-card-content { grid-column: 2; grid-row: 2; min-width: 0; }
+.trend-card--mover .trend-card-media {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: var(--size-image-thumbnail-width);
+  height: var(--size-image-thumbnail-height);
+  aspect-ratio: auto;
+  border-radius: var(--radius-x-sm);
+}
+.trend-card--mover .trend-card-content { grid-column: 2; grid-row: 1; min-width: 0; }
 .trend-card--mover .trend-card-headline {
   font: var(--type-section-heading-bold);
   display: -webkit-box;
@@ -5554,9 +5562,12 @@ body:has(.auth-prompt[open]) {
   min-height: 0;
 }
 .trend-card--mover .mover-update {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-component-sm);
   grid-column: 2;
-  grid-row: 3;
-  margin-top: var(--spacing-component-sm);
+  grid-row: 2;
   font: var(--type-helper);
   color: var(--color-text-secondary);
 }
@@ -5740,8 +5751,7 @@ body:has(.auth-prompt[open]) {
   max-height: none;
   padding: var(--spacing-layout-lg);
   border: 0;
-  /* Preview value requested for review before adding it to the DS radius scale. */
-  border-radius: 40px;
+  border-radius: var(--radius-xl);
   background: var(--badge-medal-surface);
   color: var(--auth-prompt-heading);
   text-align: center;
@@ -5814,9 +5824,9 @@ body:has(.auth-prompt[open]) {
 .badge-award-close::before { content: ''; position: absolute; width: var(--icon-size-xl); height: var(--icon-size-xl); border: var(--stroke-weight-2) solid var(--badge-medal-accent); border-radius: var(--radius-circle); background: var(--badge-medal-surface); }
 .badge-award-close .drawer-close-icon { position: relative; width: var(--icon-size-sm); height: var(--icon-size-sm); background: currentColor; }
 .badge-award-close:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
-.badge-award-dialog { width: min(calc(100vw - var(--spacing-layout-xl)), var(--layout-prediction-compact-card-width)); max-height: calc(100dvh - var(--spacing-layout-xl)); margin: auto; padding: 0; border: 0; border-radius: 40px; background: var(--badge-medal-surface); color: var(--auth-prompt-heading); overflow: auto; }
+.badge-award-dialog { width: min(calc(100vw - var(--spacing-layout-xl)), var(--layout-prediction-compact-card-width)); max-height: calc(100dvh - var(--spacing-layout-xl)); margin: auto; padding: 0; border: 0; border-radius: var(--radius-xl); background: var(--badge-medal-surface); color: var(--auth-prompt-heading); overflow: auto; }
 .badge-award-dialog[open] { backface-visibility: hidden; animation: badge-coin-reveal calc(var(--motion-card-flip) / 2) ease-out both; }
-.badge-award-dialog::before { content: ''; position: absolute; inset: var(--spacing-component-sm); border: var(--stroke-weight-6) solid var(--badge-medal-accent); border-radius: 32px; pointer-events: none; }
+.badge-award-dialog::before { content: ''; position: absolute; inset: var(--spacing-component-sm); border: var(--stroke-weight-6) solid var(--badge-medal-accent); border-radius: var(--radius-lg); pointer-events: none; }
 .badge-award-dialog::backdrop { background: var(--color-scrim); }
 .badge-award-card { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--spacing-layout-lg); aspect-ratio: 1; padding: var(--spacing-page-2xl) var(--spacing-layout-xl); text-align: center; }
 .badge-award-symbol { flex: none; width: var(--size-badge-popup-icon-compact); height: var(--size-badge-popup-icon-compact); font-size: var(--size-badge-popup-icon-compact); line-height: 1; color: var(--badge-medal-accent); }
@@ -6022,7 +6032,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   --story-start-row: 2;
   display: grid;
   grid-template-columns: minmax(0, var(--size-image-thumbnail-width)) minmax(0, 1fr);
-  grid-template-rows: auto min-content min-content 1fr auto;
+  grid-template-rows: auto 1fr min-content min-content auto;
   column-gap: var(--spacing-component-ms);
   row-gap: 0;
   align-items: start;
@@ -6043,7 +6053,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .trend-card--editorial:not(.trend-card--mover) > .recommendation-inline > span { transform: none; }
 .trend-card--editorial:not(.trend-card--mover):has(> .people-activity-label):has(> .collection-story-update) {
   --story-start-row: 3;
-  grid-template-rows: auto auto min-content min-content 1fr auto;
+  grid-template-rows: auto auto 1fr min-content min-content auto;
 }
 .trend-card--editorial:not(.trend-card--mover):has(> .people-activity-label) > .collection-story-update { grid-row: 2; }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-media {
@@ -6053,11 +6063,13 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   height: var(--size-image-thumbnail-height);
   aspect-ratio: auto;
   align-self: end;
+  border-radius: var(--radius-x-sm);
 }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-collection {
   grid-column: 2;
   grid-row: var(--story-start-row);
-  margin-bottom: var(--spacing-layout-md);
+  align-self: end;
+  margin-bottom: var(--spacing-component-ms);
   min-width: 0;
 }
 .trend-card--editorial:not(.trend-card--mover) > .moving-story-update {
