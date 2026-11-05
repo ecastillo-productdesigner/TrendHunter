@@ -179,6 +179,12 @@ function articleDeckQueue(calls, skippedIds, current) {
   return { queue, skipped };
 }
 
+// The bolt destination always starts with a prediction the reader can still
+// answer. Skipped cards remain available; editorially resolved cards do not.
+function predictionPageQueue(calls, resolvedIds = []) {
+  return PREDICTIONS.filter(prediction => !['in', 'out'].includes(calls[prediction.id]) && !resolvedIds.includes(prediction.id));
+}
+
 function resultVoteSplit(prediction) {
   const inPercent = prediction.sampleInPercent;
   const outPercent = 100 - inPercent;
@@ -280,6 +286,8 @@ const stack = document.querySelector('.prediction-stack');
 
 if (stack) {
   const cover = stack.querySelector('.prediction-card--onboarding');
+  const isPredictionPage = document.body.classList.contains('page-predictions');
+  let pageResolvedIds = [];
 
   const getCalls = () => {
     try { return JSON.parse(sessionStorage.getItem(CALLS_KEY)) || {}; } catch (e) { return {}; }
@@ -297,6 +305,7 @@ if (stack) {
     try {
       const calls = JSON.parse(sessionStorage.getItem(key)) || {};
       sessionStorage.setItem(key, JSON.stringify({ ...calls, [id]: call }));
+      if (isPredictionPage) renderPageCalls();
       document.dispatchEvent(new CustomEvent('prediction-call', { detail:{ id,call } }));
     } catch (e) {}
   };
@@ -323,6 +332,15 @@ if (stack) {
   // Cards still to call; skipped ones go back in the queue for "Finish today's predictions"
   let queue = [];
   let skipped = [];
+
+  function renderPageCalls() {
+    const section = document.querySelector('[data-prediction-page-calls]');
+    if (!section) return;
+    const calls = getCalls();
+    const called = PREDICTIONS.filter(prediction => ['in', 'out'].includes(calls[prediction.id]) && !pageResolvedIds.includes(prediction.id));
+    section.hidden = called.length === 0;
+    section.querySelector('ul').innerHTML = called.map(prediction => resultRow(prediction, calls[prediction.id])).join('');
+  }
 
   // Each card has two faces. "Get the context" flips it on its vertical axis to the back,
   // "Back" flips it home. Both faces carry the vote buttons, so a call can be made from either side.
@@ -484,7 +502,7 @@ if (stack) {
   }
 
   function reopenSkippedPredictions() {
-    queue = PREDICTIONS.filter(prediction => !getCalls()[prediction.id]);
+    queue = isPredictionPage ? predictionPageQueue(getCalls(), pageResolvedIds) : PREDICTIONS.filter(prediction => !getCalls()[prediction.id]);
     skipped = [];
     saveDeck({ skipped: [], resultsDismissed: false });
     stack.closest('.predictions-panel')?.classList.remove('predictions-panel--summary');
@@ -495,7 +513,7 @@ if (stack) {
 
   function showResults() {
     const calls = getCalls();
-    const called = PREDICTIONS.filter((p) => calls[p.id]);
+    const called = PREDICTIONS.filter((p) => calls[p.id] && (!isPredictionPage || !pageResolvedIds.includes(p.id)));
     const requested = articleStoryArrival;
     const requestedCall = displayedCall(requested);
     if (requested && requestedCall && !called.some(prediction => prediction.id === requested.id)) called.push(requested);
@@ -505,6 +523,11 @@ if (stack) {
     const finishButton = remaining.length ? '<button class="prediction-results-finish" type="button">Finish today\'s predictions</button>' : '';
     const desktop = matchMedia('(min-width: 960px)').matches;
     if (!current && !window.isSignedIn?.()) { stack.innerHTML = predictionAccountPrompt(called.length > 0); return; }
+    if (isPredictionPage) {
+      stack.innerHTML = `<section class="prediction-results prediction-results--empty"><header class="prediction-results-header"><h3 class="prediction-results-title">You’re all caught up</h3><p class="prediction-results-subtitle">${remaining.length ? 'You can still make a call on the predictions you skipped.' : 'Come back tomorrow for new predictions.'}</p></header>${remaining.length ? '<button class="prediction-restart-link" type="button">Make today’s calls</button>' : ''}</section>`;
+      stack.querySelector('.prediction-restart-link')?.addEventListener('click', reopenSkippedPredictions);
+      return;
+    }
     if (!current && getDeck().resultsDismissed && desktop) {
       showPredictionSummary();
       return;
@@ -733,30 +756,49 @@ if (stack) {
   // Deal again — from the settings panel (settings.js). Clears every call and deals
   // the whole deck from the first card; as a new user, the cover goes back on top too.
   document.addEventListener('prediction-deal', (event) => {
-    queue = PREDICTIONS.slice();
+    queue = isPredictionPage ? predictionPageQueue(getCalls(), pageResolvedIds) : PREDICTIONS.slice();
     skipped = [];
     saveDeck({ coverDone: !event.detail.asNewUser, skipped: [], flipped: null, resultsDismissed: false });
     stack.closest('.predictions-panel')?.classList.remove('predictions-panel--summary');
     stack.innerHTML = '';
     layoutDeck();
+    if (isPredictionPage) renderPageCalls();
     if (event.detail.asNewUser && coverTemplate) placeCover(coverTemplate.cloneNode(true));
   });
 
   // First visit: the cover waits on top. After that the deck picks up where it was left:
   // called cards are gone, skipped ones wait for "Finish today's predictions",
   // and the top card shows the side it was on.
-  const calls = getCalls();
-  const deck = getDeck();
-  ({ queue, skipped } = articleDeckQueue(calls, deck.skipped, articleStoryArrival));
-  layoutDeck();
-  if (readMoreArticleArrival) saveDeck({ flipped: null });
-  else if (deck.flipped) restoreFlip(deck.flipped);
+  if (isPredictionPage) {
+    let initialized = false;
+    // prediction-results.js supplies the persisted outcomes before the first
+    // deal, so a closed prediction never flashes in the unanswered stack.
+    window.setPredictionPageResults = results => {
+      const ids = results.map(result => result.id);
+      if (initialized && JSON.stringify(ids) === JSON.stringify(pageResolvedIds)) return;
+      initialized = true;
+      pageResolvedIds = ids;
+      renderPageCalls();
+      queue = predictionPageQueue(getCalls(), pageResolvedIds);
+      skipped = [];
+      stack.innerHTML = '';
+      layoutDeck();
+      if (getDeck().flipped) restoreFlip(getDeck().flipped);
+    };
+  } else {
+    const calls = getCalls();
+    const deck = getDeck();
+    ({ queue, skipped } = articleDeckQueue(calls, deck.skipped, articleStoryArrival));
+    layoutDeck();
+    if (readMoreArticleArrival) saveDeck({ flipped: null });
+    else if (deck.flipped) restoreFlip(deck.flipped);
 
-  if (cover && !articleStoryArrival && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
-    cover.remove();
-    placeCover(cover);
-  } else if (cover) {
-    cover.remove();
+    if (cover && !articleStoryArrival && !deck.coverDone && !Object.keys(calls).length && !skipped.length) {
+      cover.remove();
+      placeCover(cover);
+    } else if (cover) {
+      cover.remove();
+    }
   }
   const desktopArticle = window.matchMedia('(min-width: 960px)');
   desktopArticle.addEventListener('change', () => {

@@ -904,7 +904,7 @@
       "tag": "a",
       "name": "Read our analysis",
       "sources": [
-        "prediction-results.js"
+        "prediction-result-card.js"
       ]
     },
     {
@@ -2827,6 +2827,7 @@
       "tag": "button",
       "name": "Make today\u2019s calls",
       "sources": [
+        "predictions.js",
         "predictions.js"
       ]
     },

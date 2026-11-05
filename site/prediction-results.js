@@ -1,21 +1,19 @@
 import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=3';
 import { escapeText as esc } from './story-card.js';
 import { medalBurst } from './badge-celebration.js?v=4';
-import { predictionCallPanels, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-3';
+import { predictionResultContent, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-4';
 const records=()=>{try{return readPredictionResults(localStorage);}catch{return [];}};
 const signedIn=()=>window.isSignedIn?.()===true;
 const destination=id=>`userprofile.html?prediction-filter=resolved&result=${encodeURIComponent(id)}#predictions`;
 let dialog, currentId, trigger, flipping = false, flipAnimation, flipVersion = 0;
 let pendingCelebration, clearConfetti = () => {};
+const mobileNavigation = matchMedia('(max-width: 959px)');
 window.predictionResultHistory=()=>signedIn()?records():[];
 function revealMarkup(result) {
   const all = records(), index = all.findIndex(item => item.id === result.id);
   return `<section class="prediction-outcome-reveal" tabindex="-1">
     <button class="prediction-outcome-close" type="button" data-result-close aria-label="Close prediction result"><span class="drawer-close-icon" aria-hidden="true"></span></button>
-    <header class="prediction-outcome-card-header"><h2 id="prediction-outcome-heading">${result.call===result.outcome?'You called it':'Your call was different'}</h2></header>
-    <h3 class="prediction-outcome-question" id="prediction-outcome-question">${esc(result.text)}</h3>
-    ${predictionCallPanels(result)}
-    <a class="button-primary prediction-outcome-analysis" href="${result.articleHref}">Read our analysis</a>
+    ${predictionResultContent(result)}
     <footer class="prediction-outcome-card-footer" ${all.length<2?'hidden':''}><button type="button" data-result-previous aria-label="Previous prediction" ${index===0?'hidden disabled':''}><span class="prediction-outcome-nav-icon prediction-outcome-nav-icon--previous material-symbols-outlined" aria-hidden="true">arrow_right_alt</span> Previous</button><button type="button" data-result-next aria-label="Next prediction" ${index===all.length-1?'hidden disabled':''}>Next <span class="prediction-outcome-nav-icon material-symbols-outlined" aria-hidden="true">arrow_right_alt</span></button></footer>
     <p class="visually-hidden" id="prediction-outcome-sample">Fictional prototype prediction result, not a live verified outcome.</p>
   </section>`;
@@ -93,14 +91,14 @@ function renderAlert(){
     let dot=bolt.querySelector('.prediction-results-dot');
     if(!dot){dot=document.createElement('span');dot.className='collection-updates-dot prediction-results-dot';dot.setAttribute('aria-hidden','true');bolt.append(dot);}
     dot.hidden=!available||!unread.length;
-    if(available&&results.length){
+    if(available&&results.length&&!mobileNavigation.matches){
       const first=unread[0]||results[0];
       bolt.href=destination(first.id);
       bolt.dataset.resultReveal=first.id;
       bolt.setAttribute('aria-haspopup','dialog');
       bolt.setAttribute('aria-label',unread.length?`${unread.length} prediction results are in`:'View prediction results');
     }
-    else {bolt.href='predictions.html';delete bolt.dataset.resultReveal;bolt.removeAttribute('aria-haspopup');bolt.setAttribute('aria-label','Predict the Next Trend');}
+    else {bolt.href='predictions.html';delete bolt.dataset.resultReveal;bolt.removeAttribute('aria-haspopup');bolt.setAttribute('aria-label',available&&unread.length?`Predict the Next Trend, ${unread.length} new result${unread.length===1?'':'s'}`:'Predict the Next Trend');}
   });
   const list=document.querySelector('.page-feed .feed-tab-panel > .feed-list');if(!list)return;
   let slot=list.querySelector('.prediction-results-alert-slot');
@@ -120,6 +118,29 @@ document.addEventListener('click',event=>{
   if(event.target.closest('[data-result-previous]')) flipResult(-1);
 });
 let focusedResult;
+let pageResultsObserver;
+function renderPageResults() {
+  const section = document.querySelector('[data-prediction-page-results]');
+  if (!section) return;
+  const results = records();
+  // A resolved prediction cannot be offered for another call, even when the
+  // sample result was enabled without a session vote on this device.
+  window.setPredictionPageResults?.(results);
+  pageResultsObserver?.disconnect();
+  section.hidden = results.length === 0;
+  section.querySelector('[data-prediction-page-result-list]').innerHTML = results.map(result => {
+    const prefix = `prediction-page-${result.id}`;
+    return `<li><article class="prediction-outcome-reveal prediction-outcome-page-card" data-result-id="${esc(result.id)}" aria-labelledby="${prefix}-heading ${prefix}-question">${predictionResultContent(result, prefix)}<span class="visually-hidden">Fictional prototype prediction result, not a live verified outcome.</span></article></li>`;
+  }).join('');
+  if (!('IntersectionObserver' in window)) return;
+  pageResultsObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting && entry.intersectionRatio >= .5) {
+      acknowledge(entry.target.dataset.resultId);
+      pageResultsObserver.unobserve(entry.target);
+    }
+  }), {threshold: .5});
+  section.querySelectorAll('[data-result-id]').forEach(card => pageResultsObserver.observe(card));
+}
 function watchProfileResults(){
   if(!document.querySelector('[data-people-manage]')||location.hash!=='#predictions')return;
   const requested=new URLSearchParams(location.search).get('result');
@@ -136,7 +157,8 @@ function redirectLegacyArticle(){
   const record = RESULT_CATALOG.find(item => item.id === id) || RESULT_CATALOG[0];
   location.replace(record.articleHref);
 }
-function refresh(){renderAlert();document.dispatchEvent(new Event('prediction-results-ready'));requestAnimationFrame(watchProfileResults);}
+function refresh(){renderAlert();renderPageResults();document.dispatchEvent(new Event('prediction-results-ready'));requestAnimationFrame(watchProfileResults);}
+mobileNavigation.addEventListener('change',renderAlert);
 document.addEventListener('prediction-results-preview',refresh);
 document.addEventListener('auth-change',refresh);
 document.addEventListener('feed-view-selected',renderAlert);

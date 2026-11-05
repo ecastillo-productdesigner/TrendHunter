@@ -9,6 +9,14 @@ export function predictionCallPanels(result) {
   </div>`;
 }
 
+// Shared by the popup and the persistent results below the mobile voting deck.
+export function predictionResultContent(result, prefix = 'prediction-outcome') {
+  return `<header class="prediction-outcome-card-header"><h2 id="${prefix}-heading">${result.call === result.outcome ? 'You called it' : 'Your call was different'}</h2></header>
+    <h3 class="prediction-outcome-question" id="${prefix}-question">${esc(result.text)}</h3>
+    ${predictionCallPanels(result)}
+    <a class="button-primary prediction-outcome-analysis" href="${esc(result.articleHref)}">Read our analysis</a>`;
+}
+
 export function resolvedPredictionRow(result) {
   return `<li class="prediction-result prediction-result--outcome" data-id="${esc(result.id)}" data-result-status="resolved" tabindex="-1"><h3 class="prediction-result-headline">${esc(result.text)}</h3><div class="prediction-result-comparison">${predictionCallPanels(result)}<a class="prediction-outcome-article" href="${esc(result.articleHref)}">Read our analysis</a></div><span class="visually-hidden">Fictional prototype prediction result.</span></li>`;
 }

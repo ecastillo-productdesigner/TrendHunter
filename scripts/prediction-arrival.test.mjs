@@ -28,6 +28,16 @@ test('ordinary decks retain pending and skipped order', () => {
   assert.deepEqual(read("articleDeckQueue({'telehealth-trt':'in'}, ['dollar-stores'], null).skipped.map(p => p.id)"), ['dollar-stores']);
 });
 
+test('bolt page offers unanswered cards, including skips, and excludes resolved predictions', () => {
+  const read = load();
+  const ids = read("predictionPageQueue({'telehealth-trt':'out','ai-holidays':'skip'}, ['retail-events','dollar-stores','skin-longevity']).map(p => p.id)");
+  assert.equal(ids[0], 'ai-holidays');
+  assert.equal(ids.length, 6);
+  assert.ok(!ids.includes('telehealth-trt'));
+  assert.ok(!ids.some(id => ['retail-events','dollar-stores','skin-longevity'].includes(id)));
+  assert.equal(read("predictionPageQueue(Object.fromEntries(PREDICTIONS.map(p => [p.id,'in']))).length"), 0);
+});
+
 test('Read More puts a skipped matching prediction first exactly once', () => {
   const read = load();
   const ids = read("articleDeckQueue({}, ['skin-longevity'], findPrediction('skin-longevity')).queue.map(p => p.id)");

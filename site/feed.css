@@ -2668,6 +2668,16 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
 .predictions-page .predictions-panel { border: 0; padding: 0; }
 .predictions-page .prediction-stack { zoom: var(--prediction-stack-zoom, 1); }
 .predictions-page .prediction-stack:has(.prediction-results) { width: 100%; height: calc(var(--layout-predictions-stack-height) + var(--spacing-page-2xl) * 2); zoom: 1; }
+.prediction-page-results { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); margin-top: var(--spacing-layout-xl); }
+.prediction-page-results[hidden] { display: none; }
+.prediction-page-results > h2 { font: var(--type-section-heading); text-align: center; text-transform: uppercase; color: var(--color-text-primary); }
+.prediction-page-result-list { display: grid; gap: var(--spacing-layout-lg); padding: 0; list-style: none; }
+.prediction-page-calls { border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); padding: var(--spacing-layout-lg); }
+.prediction-page-calls .prediction-results-list { margin: 0; padding: 0; overflow: visible; }
+.prediction-page-calls .prediction-result:last-child { margin-bottom: 0; padding-bottom: 0; }
+.prediction-page-calls .prediction-result-top { display: flex; flex-wrap: wrap; }
+.prediction-page-calls .prediction-result-copy { flex: 1 1 var(--layout-prediction-vote-width); }
+.prediction-outcome-page-card { border: var(--stroke-default) solid var(--prediction-card-border); border-radius: var(--radius-md); background: var(--prediction-card-background-card); color: var(--prediction-card-copy); }
 @media (min-width: 960px) {
   .nav-primary .nav-predictions { display: none; }
   .page-trend:not(.has-prediction-arrival) .prediction-card--current-article [data-flip],
