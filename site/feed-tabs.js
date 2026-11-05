@@ -30,7 +30,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const hours = index % 6 + 1;
     const update = document.createElement('p');
     update.className = 'moving-story-update';
-    update.textContent = movementSamples.get(href) || `Moved ${card.querySelector('.collection-momentum--falling') ? 'down' : 'up'} · ${hours} hour${hours === 1 ? '' : 's'} ago`;
+    update.textContent = movementSamples.get(href) || `Moved ${card.querySelector('.collection-momentum--falling') ? 'down' : 'up'} · ${hours}hr${hours === 1 ? '' : 's'} ago`;
     collection?.after(update);
   });
   const movingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum'));

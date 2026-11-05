@@ -5560,20 +5560,31 @@ body:has(.auth-prompt[open]) {
   font: var(--type-section-heading-bold);
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   overflow: hidden;
   min-height: 0;
 }
 .trend-card--mover .mover-update {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-component-sm);
+  gap: var(--spacing-component-xs);
   grid-column: 2;
   grid-row: 1;
   font: var(--type-helper);
   color: var(--color-text-secondary);
 }
+.mover-direction.material-symbols-outlined {
+  display: block;
+  flex: none;
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  font-size: var(--icon-size-md);
+  line-height: 1;
+  color: inherit;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+}
+.mover-update-text { min-width: 0; }
+.mover-update .collection-momentum { margin-left: var(--spacing-component-xs); }
 @media (max-width: 599px) { .mover-track { grid-auto-columns: 85%; } }
 @media (min-width: 600px) { .feed-movers { padding: var(--spacing-layout-lg); } }
 
