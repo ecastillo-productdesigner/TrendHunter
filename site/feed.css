@@ -2993,22 +2993,24 @@ a.drawer-heading:hover {
 
 .prediction-vote-icon {
   flex: none;
+  /* Match the visible capital letters, which sit below Barlow's line-box center. */
+  transform: translateY(1px);
 }
 
 .prediction-vote--out .prediction-vote-icon {
   width: 14px;
   height: 14px;
   background-color: var(--prediction-vote-out-icon);
-  mask: url("assets/predictions/cross.svg?v=2") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/cross.svg?v=2") center / contain no-repeat;
+  mask: url("assets/predictions/cross.svg?v=4") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/cross.svg?v=4") center / contain no-repeat;
 }
 
 .prediction-vote--in .prediction-vote-icon {
   width: 17px;
   height: 12px;
   background-color: var(--prediction-vote-in);
-  mask: url("assets/predictions/check.svg?v=2") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/check.svg?v=2") center / contain no-repeat;
+  mask: url("assets/predictions/check.svg?v=4") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/check.svg?v=4") center / contain no-repeat;
 }
 
 .prediction-skip {
@@ -3250,16 +3252,16 @@ a.drawer-heading:hover {
   width: 17px;
   height: 12px;
   flex: none;
-  mask: url("assets/predictions/check.svg?v=2") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/check.svg?v=2") center / contain no-repeat;
+  mask: url("assets/predictions/check.svg?v=4") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/check.svg?v=4") center / contain no-repeat;
 }
 
 .prediction-badge--out .prediction-badge-icon {
   width: 14px;
   height: 14px;
   flex: none;
-  mask: url("assets/predictions/cross.svg?v=2") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/cross.svg?v=2") center / contain no-repeat;
+  mask: url("assets/predictions/cross.svg?v=4") center / contain no-repeat;
+  -webkit-mask: url("assets/predictions/cross.svg?v=4") center / contain no-repeat;
 }
 
 .prediction-results-finish {
@@ -5964,12 +5966,13 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .prediction-outcome-calls { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: var(--spacing-layout-md); }
 .prediction-outcome-call { display: flex; flex-direction: column; gap: var(--spacing-component-xs); padding: var(--spacing-component-ms); border-radius: var(--radius-md); background: var(--prediction-button-bg); }
 .prediction-outcome-label { font: var(--type-weight-light) var(--type-size-14)/var(--type-line-height-ui-xs) var(--type-font-display); text-transform: uppercase; }
-.prediction-outcome-call strong { display: flex; align-items: center; gap: var(--spacing-component-sm); color: var(--prediction-vote-in); font: var(--type-button-label); text-transform: uppercase; }
+.prediction-outcome-call strong { display: flex; align-items: center; min-height: var(--icon-size-lg); gap: var(--spacing-component-sm); color: var(--prediction-vote-in); font: var(--type-button-label); text-transform: uppercase; }
 .prediction-outcome-call strong[data-call="out"] { color: var(--color-content-new); }
-.prediction-outcome-call-icon { flex: none; width: 17px; height: 12px; background: currentColor; mask: url('assets/predictions/check.svg?v=2') center / contain no-repeat; -webkit-mask: url('assets/predictions/check.svg?v=2') center / contain no-repeat; }
-.prediction-outcome-call-icon[data-call="out"] { width: 14px; height: 14px; mask-image: url('assets/predictions/cross.svg?v=2'); -webkit-mask-image: url('assets/predictions/cross.svg?v=2'); }
-.prediction-outcome-verified { display: grid; place-items: center; flex: none; width: var(--icon-size-lg); height: var(--icon-size-lg); border-radius: var(--radius-circle); background: var(--prediction-vote-in); }
-.prediction-outcome-verified::before { content: ''; width: 17px; height: 12px; background: var(--prediction-button-bg); mask: url('assets/predictions/check.svg?v=2') center / contain no-repeat; -webkit-mask: url('assets/predictions/check.svg?v=2') center / contain no-repeat; }
+.prediction-outcome-call-icon { flex: none; width: 17px; height: 12px; background: currentColor; mask: url('assets/predictions/check.svg?v=4') center / contain no-repeat; -webkit-mask: url('assets/predictions/check.svg?v=4') center / contain no-repeat; }
+.prediction-outcome-call-icon[data-call="out"] { width: 14px; height: 14px; mask-image: url('assets/predictions/cross.svg?v=4'); -webkit-mask-image: url('assets/predictions/cross.svg?v=4'); }
+.prediction-outcome-call-icon { transform: translateY(1px); }
+.prediction-outcome-verified { display: grid; place-items: center; flex: none; width: calc(var(--icon-size-lg) * .9); height: calc(var(--icon-size-lg) * .9); transform: translateY(1px); border-radius: var(--radius-circle); background: var(--prediction-vote-in); }
+.prediction-outcome-verified::before { content: ''; width: calc(17px * .9); height: calc(12px * .9); background: var(--prediction-button-bg); mask: url('assets/predictions/check.svg?v=4') center / contain no-repeat; -webkit-mask: url('assets/predictions/check.svg?v=4') center / contain no-repeat; }
 .prediction-outcome-analysis { align-self: center; display: inline-flex; align-items: center; justify-content: center; min-height: var(--icon-size-2xl); max-width: 100%; padding-inline: var(--spacing-layout-lg); border-radius: var(--radius-x-sm); background: var(--prediction-card-button); color: var(--prediction-button-bg); font: var(--type-button-label); text-align: center; text-transform: uppercase; text-decoration: none; }
 .prediction-outcome-analysis:hover { background: var(--prediction-card-button-hover); color: var(--prediction-button-bg); }
 .prediction-outcome-card-footer { display: flex; justify-content: space-between; gap: var(--spacing-layout-md); }
