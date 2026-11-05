@@ -1230,6 +1230,7 @@
   ],
   "materialSymbols": [
     "arrow_downward",
+    "arrow_right_alt",
     "bolt",
     "cancel",
     "chat",
@@ -1558,6 +1559,15 @@
       "states": [
         "Unselected",
         "Selected"
+      ]
+    },
+    {
+      "name": "Prediction result navigation",
+      "group": "Predictions and signals",
+      "note": "20px outlined arrow_right_alt. Previous mirrors the same glyph; color follows the footer label.",
+      "states": [
+        "Next",
+        "Previous"
       ]
     }
   ]
