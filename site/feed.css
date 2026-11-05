@@ -1475,9 +1475,9 @@ a.story-lockup:hover .story-lockup-headline {
   mask-size: calc(var(--icon-size-md) * 32 / 24) auto;
   -webkit-mask-size: calc(var(--icon-size-md) * 32 / 24) auto;
 }
-/* Face the artwork toward the 12px gap; 48px targets extend outward without
+/* Face the artwork toward the 16px gap; 48px targets extend outward without
    overlapping. Bookmark's tight 20 × 24 drawing ends at the 24px card inset. */
-.trend-card--editorial .trend-card-footer .trend-card-actions { gap: var(--spacing-component-ms); margin-inline-end: calc(var(--icon-size-md) * 20 / 24 - var(--icon-size-2xl)); }
+.trend-card--editorial .trend-card-footer .trend-card-actions { gap: var(--spacing-layout-md); margin-inline-end: calc(var(--icon-size-md) * 20 / 24 - var(--icon-size-2xl)); }
 .trend-card--editorial .trend-card-footer .trend-card-actions > .story-share { justify-items: end; }
 .trend-card--editorial .trend-card-footer .trend-card-actions > .bookmark-button { justify-items: start; }
 .trend-card--editorial .trend-card-footer .bookmark-icon { width: calc(var(--icon-size-md) * 20 / 24); }
