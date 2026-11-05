@@ -6027,7 +6027,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   column-gap: var(--spacing-layout-md);
   row-gap: 0;
   align-items: start;
-  padding-bottom: var(--spacing-layout-lg);
+  padding-bottom: var(--spacing-layout-md);
 }
 .trend-card--editorial:not(.trend-card--mover) > :is(.recommendation-inline, .people-activity-label, .collection-story-update) {
   grid-column: 1 / -1;
