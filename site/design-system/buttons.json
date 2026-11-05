@@ -771,7 +771,7 @@
       "key": "button:button-primary",
       "classes": "button-primary",
       "tag": "button",
-      "name": "Reveal ",
+      "name": "See ",
       "sources": [
         "prediction-results.js"
       ]

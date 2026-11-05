@@ -40,7 +40,8 @@ function renderAlert(){
   if(!slot){slot=document.createElement('li');slot.className='prediction-results-alert-slot';list.prepend(slot);}
   slot.hidden=!available||!unread.length;
   if(!unread.length)return;
-  slot.innerHTML=`<section class="prediction-results-alert"><p class="prediction-outcome-source">Prototype sample results</p><h2 class="trend-card-headline">${unread.length===1?'Your prediction results are in':`${unread.length} of your predictions have results`}</h2><p class="prediction-outcome-summary">See what happened and how your call compares.</p><button class="button-primary" type="button" data-result-reveal="${unread[0].id}">Reveal ${unread.length===1?'result':'results'}</button></section>`;
+  // These records remain fictional prototype results; the reveal and analysis label them as samples.
+  slot.innerHTML=`<section class="prediction-results-alert" aria-label="Prediction results, prototype sample"><div class="prediction-results-art" aria-hidden="true"><span class="prediction-results-art-card prediction-results-art-card--out"><span>?</span></span><span class="prediction-results-art-card prediction-results-art-card--in"><span>?</span></span></div><h2 class="trend-card-headline">${unread.length===1?'Your prediction results are in':`${unread.length} of your predictions have results`}</h2><button class="button-primary" type="button" data-result-reveal="${unread[0].id}">See ${unread.length===1?'result':'results'}</button></section>`;
   list.prepend(slot);
 }
 document.addEventListener('click',event=>{
