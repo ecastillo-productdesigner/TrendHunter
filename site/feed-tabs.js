@@ -20,6 +20,19 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     return ['smallest','ascending'].includes(value) ? 'smallest' : 'biggest';
   };
   const originalItems = [...list.children];
+  const movementSamples = new Map([...document.querySelectorAll('.trend-card--mover')].map(card => [card.querySelector('.trend-card-title-link')?.getAttribute('href'), card.querySelector('.mover-update')?.textContent]));
+  // Fixed prototype recency examples, shared with Caught on the Move where available.
+  originalItems.forEach((item, index) => {
+    const card = item.querySelector(':scope > .trend-card');
+    if (!card) return;
+    const collection = card.querySelector('.trend-card-collection');
+    const href = card.querySelector('.trend-card-title-link')?.getAttribute('href');
+    const hours = index % 6 + 1;
+    const update = document.createElement('p');
+    update.className = 'moving-story-update';
+    update.textContent = movementSamples.get(href) || `Moved ${card.querySelector('.collection-momentum--falling') ? 'down' : 'up'} · ${hours} hour${hours === 1 ? '' : 's'} ago`;
+    collection?.after(update);
+  });
   const movingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
   let preferences = readSelectedTopics();

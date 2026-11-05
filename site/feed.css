@@ -5936,6 +5936,6 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .prediction-outcome-page { max-width: var(--layout-feed-width); margin: var(--spacing-layout-lg) auto; padding-inline: var(--spacing-component-ms); }
 .prediction-outcome-page .article { display: flex; flex-direction: column; gap: var(--spacing-layout-lg); }
 @media (prefers-reduced-motion: reduce) { .prediction-outcome-reveal { animation: none; } }
-.prediction-email-preference { display: flex; align-items: center; gap: var(--spacing-component-sm); margin-top: var(--spacing-layout-lg); padding-top: var(--spacing-layout-lg); border-top: var(--stroke-default) solid var(--color-border-default); min-height: var(--icon-size-2xl); font: var(--type-helper); color: var(--color-text-dim); }
-.prediction-email-preference input { accent-color: var(--color-text-body-link); width: var(--icon-size-md); height: var(--icon-size-md); }
+.moving-story-update { display: none; margin-top: calc(-1 * var(--spacing-component-sm)); font: var(--type-helper); color: var(--color-text-secondary); }
+.page-feed[data-feed-view="moving"] .moving-story-update { display: block; }
 .page-collection .feed-topics-slot { display: block; }

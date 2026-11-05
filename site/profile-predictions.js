@@ -27,17 +27,6 @@
     predictionPanel.appendChild(callStatus);
   }
 
-  if (!isPublicProfile) {
-    const preferences=document.createElement('label'); preferences.className='prediction-email-preference';
-    preferences.innerHTML='<input type="checkbox"> <span>Email me when prediction results are in</span>';
-    try { preferences.querySelector('input').checked=localStorage.getItem('trendhunter.prediction-email-alerts')==='true'; }catch{}
-    preferences.querySelector('input').addEventListener('change',event=>{
-      try {localStorage.setItem('trendhunter.prediction-email-alerts',String(event.target.checked));}
-      catch {event.target.checked=!event.target.checked;}
-    });
-    predictionPanel.append(preferences);
-  }
-
   const resolvedExamples = PROFILE_RESOLVED_PREDICTIONS;
   // Fictional demonstration histories, not a claim about any writer's actual votes.
   const authorExamples = {
