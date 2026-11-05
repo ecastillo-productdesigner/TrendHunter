@@ -10,5 +10,5 @@ export function predictionCallPanels(result) {
 }
 
 export function resolvedPredictionRow(result) {
-  return `<li class="prediction-result prediction-result--outcome" data-id="${esc(result.id)}" data-result-status="resolved" tabindex="-1"><h3 class="prediction-result-headline">${esc(result.text)}</h3>${predictionCallPanels(result)}<a class="prediction-outcome-article" href="${esc(result.articleHref)}">Read our analysis</a><span class="visually-hidden">Fictional prototype prediction result.</span></li>`;
+  return `<li class="prediction-result prediction-result--outcome" data-id="${esc(result.id)}" data-result-status="resolved" tabindex="-1"><h3 class="prediction-result-headline">${esc(result.text)}</h3><div class="prediction-result-comparison">${predictionCallPanels(result)}<a class="prediction-outcome-article" href="${esc(result.articleHref)}">Read our analysis</a></div><span class="visually-hidden">Fictional prototype prediction result.</span></li>`;
 }

@@ -16,7 +16,7 @@
 }
 .ds-page { background: var(--ds-surface); color: var(--color-text-primary); font: 400 var(--type-size-16)/1.6 var(--type-font-body); }
 .ds-page h1, .ds-page h2, .ds-page h3, .ds-page h4 { color: var(--color-text-primary); }
-.ds-page code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--type-size-12); overflow-wrap: anywhere; }
+.ds-page code { font-family: var(--type-font-mono); font-size: var(--type-size-12); overflow-wrap: anywhere; }
 .ds-page p { color: var(--ds-muted); }
 .ds-page button, .ds-page a, .ds-page input, .ds-page select { -webkit-tap-highlight-color: transparent; }
 .ds-page :focus-visible { outline: var(--stroke-focus) solid var(--share-focus-ring, var(--color-border-focus)); outline-offset: var(--spacing-component-xs); }
@@ -82,6 +82,7 @@
 .ds-swatch [data-value] { display: block; font-size: var(--type-size-12); color: var(--ds-muted); margin-top: var(--spacing-component-xs); }
 .ds-swatch code { display: block; margin-top: var(--spacing-layout-md); color: var(--ds-muted); }
 .ds-swatch .ds-copy { position: absolute; top: var(--spacing-layout-md); right: var(--spacing-layout-md); }
+.ds-type-group-heading { margin: var(--spacing-layout-xl) 0 var(--spacing-layout-md); font: var(--type-section-heading-bold); }
 .ds-type-row { display: grid; grid-template-columns: 1fr 2fr; gap: var(--spacing-layout-xl); padding-block: var(--spacing-layout-xl); border-bottom: var(--stroke-default) solid var(--ds-line); align-items: center; }
 .ds-type-row:first-child { padding-top: 0; }
 .ds-type-row:last-child { padding-bottom: 0; border: 0; }
@@ -336,11 +337,14 @@
 .ds-article-collection-hover { color: var(--color-text-primary); }
 .ds-author-name-hover { color: var(--color-text-primary); }
 .ds-button-canvas:has(.share-menu-item) { background: var(--color-background-surface); }
-.ds-button-canvas .share-menu-item:not(.ds-share-icon-hover, .is-copied) { color: var(--color-text-secondary); }
+.ds-button-canvas .share-menu-item:not(.ds-share-icon-hover, .is-copied, :hover, :focus-visible) { color: var(--color-text-secondary); }
 .ds-button-canvas:has(.settings-panel-item) { background: var(--settings-panel-bg); }
 .ds-button-canvas > .settings-panel-item { color: var(--settings-panel-text); }
 .ds-button-canvas > .share-sheet-actions { width: 100%; margin-top: 0; }
 .ds-button-canvas > .prediction-shortcut { display: inline-flex; position: static; transform: none; }
+.ds-button-canvas:has(.thb2b-banner-cta) { background: var(--color-background-bg-overlay); color: var(--color-icon-on-media); }
+.ds-business-cta-hover { background: var(--auth-email-bg-hover); color: var(--color-text-on-media); }
+.ds-back-hover { color: var(--color-text-primary); }
 
 /* Colors are deduplicated per theme; complete semantic mappings stay in All Tokens. */
 .ds-color-theme[data-palette-theme="light"] { display: none; }

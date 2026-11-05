@@ -1,5 +1,12 @@
 'use strict';
 
+// Live CSS hover/focus previews, without triggering product actions or navigation.
+document.addEventListener('click', event => {
+  if (!event.target.closest('.ds-button-canvas, [data-ds-hover-preview]')) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+}, true);
+
 const accountExample = document.getElementById('ds-account-drawer');
 const accountExampleTrigger = document.querySelector('[data-ds-account-open]');
 accountExampleTrigger?.addEventListener('click', () => {

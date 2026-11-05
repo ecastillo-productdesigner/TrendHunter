@@ -4038,6 +4038,15 @@
       ]
     },
     {
+      "key": "button:thb2b-banner-close",
+      "classes": "thb2b-banner-close",
+      "tag": "button",
+      "name": "Close business banner",
+      "sources": [
+        "thb2b-banner.js"
+      ]
+    },
+    {
       "key": "button:theme-toggle",
       "classes": "theme-toggle",
       "tag": "button",

@@ -829,12 +829,16 @@ if (articleNode && predictionsPanel && stack) {
   const inArticle = window.matchMedia('(max-width: 959px)');
   const placeArticleDeck = () => {
     const articleResult = Boolean(stack.querySelector('.prediction-results--article'));
-    const home = inArticle.matches || articleResult ? articleSection : predictionsPanel;
+    const home = inArticle.matches ? articleSection : predictionsPanel;
     articleSection.classList.toggle('prediction-inline-section--article-result', articleResult);
     predictionsPanel.classList.toggle('predictions-panel--article-result', articleResult);
     if (stack.parentElement !== home) home.append(stack);
-    const width = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-predictions-stack-width'));
-    stack.style.setProperty('--prediction-stack-zoom', String(Math.min(1, articleSection.clientWidth / width)));
+    if (inArticle.matches) {
+      const width = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-predictions-stack-width'));
+      stack.style.setProperty('--prediction-stack-zoom', String(Math.min(1, articleSection.clientWidth / width)));
+    } else {
+      stack.style.removeProperty('--prediction-stack-zoom');
+    }
   };
   inArticle.addEventListener('change', placeArticleDeck);
   window.addEventListener('resize', placeArticleDeck);

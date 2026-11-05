@@ -3,6 +3,7 @@
 
 const settingsButton = document.querySelector('.settings-fab');
 const settingsPanel = document.querySelector('.settings-panel');
+const businessBanner = import('./thb2b-banner.js').then(({ installBusinessBanner }) => installBusinessBanner());
 
 if (settingsButton && settingsPanel) {
   // Fetch the cancel icon now, so it's ready the first time the panel opens
@@ -15,6 +16,17 @@ if (settingsButton && settingsPanel) {
   };
 
   settingsButton.addEventListener('click', () => setOpen(settingsPanel.hidden));
+
+  const showBusinessBanner = document.createElement('button');
+  showBusinessBanner.className = 'settings-panel-item';
+  showBusinessBanner.type = 'button';
+  showBusinessBanner.dataset.setting = 'show-thb2b-banner';
+  showBusinessBanner.textContent = 'Show THB2B Banner';
+  settingsPanel.querySelector('[data-setting="osano"]')?.before(showBusinessBanner);
+  showBusinessBanner.addEventListener('click', async () => {
+    setOpen(false);
+    (await businessBanner)?.show();
+  });
 
   // Escape or a click anywhere else closes it
   document.addEventListener('keydown', (event) => {
