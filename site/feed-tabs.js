@@ -20,11 +20,8 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     return ['smallest','ascending'].includes(value) ? 'smallest' : 'biggest';
   };
   const originalItems = [...list.children];
-  const risingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--rising'));
-  const fallingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum--falling'));
+  const movingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
-  const rankedRisingItems = [...risingItems].sort((a, b) => percentage(b) - percentage(a));
-  const rankedFallingItems = [...fallingItems].sort((a, b) => percentage(b) - percentage(a));
   let preferences = readSelectedTopics();
   let feedback = readRecommendationFeedback();
   let currentOrder = '';
@@ -43,7 +40,6 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     moving: 'Moving',
   };
   const viewFromUrl = () => ['trending-up','trending-down'].includes(location.hash.slice(1)) ? 'moving' : Object.hasOwn(names, location.hash.slice(1)) ? location.hash.slice(1) : 'for-you';
-  const directionFromUrl = () => location.hash === '#trending-up' ? 'up' : location.hash === '#trending-down' ? 'down' : ['up','down'].includes(new URLSearchParams(location.search).get('direction')) ? new URLSearchParams(location.search).get('direction') : 'all';
 
   function select(view, { updateUrl = false, resetScroll = true } = {}) {
     const signedIn = window.isSignedIn?.() === true;
@@ -62,21 +58,18 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
     const trending = view === 'moving';
-    const movingDirection = directionFromUrl();
-    sortFilters.querySelectorAll('[data-moving-direction]').forEach(button => button.setAttribute('aria-pressed',String(button.dataset.movingDirection === movingDirection)));
     const sort = sortFromUrl();
     sortFilters.hidden = !trending;
     const sortControl = sortFilters.querySelector('[data-trend-sort]');
-    const movement = movingDirection === 'down' ? 'drop' : movingDirection === 'up' ? 'rise' : 'change';
+    const movement = 'change';
     const sortLabel = `${sort === 'biggest' ? 'Biggest' : 'Smallest'} ${movement}`;
     const nextSortLabel = `${sort === 'biggest' ? 'Smallest' : 'Biggest'} ${movement}`;
     sortControl.textContent = sortLabel;
     sortControl.setAttribute('aria-label', `${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
 
-    const order = trending ? `${view}:${movingDirection}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
+    const order = trending ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
-      const defaultItems = movingDirection === 'down' ? rankedFallingItems : movingDirection === 'up' ? rankedRisingItems : [...rankedRisingItems,...rankedFallingItems];
-      const rankedItems = [...defaultItems].sort((a,b) => sort === 'smallest' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
+      const rankedItems = [...movingItems].sort((a,b) => sort === 'smallest' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
       const ranked = new Set(rankedItems);
       const items = trending
         ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
@@ -88,12 +81,11 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
       currentOrder = order;
     }
 
-    const direction = trending && movingDirection !== 'all' ? (movingDirection === 'up' ? 'rising' : 'falling') : null;
     let count = 0;
     for (const item of list.children) {
       const story = item.querySelector(':scope > .trend-card');
       if (!story) continue;
-      item.hidden = Boolean(direction && !story.querySelector(`.collection-momentum--${direction}`)) || (view === 'for-you' && feedback.hiddenStories.includes(story.querySelector('.bookmark-button')?.dataset.href));
+      item.hidden = view === 'for-you' && feedback.hiddenStories.includes(story.querySelector('.bookmark-button')?.dataset.href);
       if (!item.hidden) count += 1;
     }
     const followedCount = Number(directory.dataset.followedCount || 0);
@@ -112,14 +104,6 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   }
 
   sortFilters.addEventListener('click', event => {
-    const directionControl = event.target.closest('[data-moving-direction]');
-    if (directionControl) {
-      const url = new URL(location.href); url.hash = 'moving';
-      if (directionControl.dataset.movingDirection === 'all') url.searchParams.delete('direction');
-      else url.searchParams.set('direction',directionControl.dataset.movingDirection);
-      history.replaceState(history.state,'',url); select('moving',{resetScroll:false});
-      directionControl.focus({preventScroll:true}); return;
-    }
     const control = event.target.closest('button[data-trend-sort]');
     if (!control) return;
     const url = new URL(location.href);

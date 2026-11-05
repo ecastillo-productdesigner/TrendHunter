@@ -2795,11 +2795,8 @@
       "key": "button:profile-prediction-filter",
       "classes": "profile-prediction-filter",
       "tag": "button",
-      "name": "All",
+      "name": "profile-prediction-filter",
       "sources": [
-        "feed.html",
-        "feed.html",
-        "feed.html",
         "people.js"
       ]
     },

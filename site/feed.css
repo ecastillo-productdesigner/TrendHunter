@@ -5582,7 +5582,7 @@ body:has(.auth-prompt[open]) {
 .prediction-summary { display: flex; flex-direction: column; gap: var(--spacing-layout-xl); width: 100%; }
 .prediction-summary .type-h4-caps { display: flex; align-items: center; gap: var(--spacing-component-sm); }
 .prediction-summary .nav-predictions-icon { color: var(--color-icon-default); }
-.prediction-results--empty { justify-content: center; gap: var(--spacing-layout-lg); }
+.prediction-results--empty { height: auto; justify-content: flex-start; gap: var(--spacing-layout-lg); }
 .prediction-results--empty .prediction-results-remaining { font-size: var(--type-size-16); line-height: var(--type-line-height-ui-lg); }
 .prediction-restart-link {
   align-self: center;
@@ -5898,9 +5898,6 @@ body:has(.auth-prompt[open]) {
 .prediction-results-subtitle { font: var(--type-body); text-align: center; }
 .prediction-results-header:has(> .prediction-results-subtitle) { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
 
-.moving-direction-filters { display: flex; gap: var(--spacing-component-sm); overflow-x: auto; padding-block: var(--spacing-component-xs); margin-bottom: var(--spacing-layout-lg); scrollbar-width: none; }
-.moving-direction-filters .profile-prediction-filter { flex-shrink: 0; }
-
 html:not([data-auth="signed-in"]) .feed-navigation,
 .feed-navigation[hidden], .feed-navigation-tab[hidden] { display: none; }
 html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
@@ -5910,12 +5907,12 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .prediction-account-actions { display: flex; flex-direction: column; gap: var(--spacing-layout-xl); width: 100%; }
 .prediction-account-prompt { height: auto; gap: calc(var(--spacing-layout-lg) + var(--spacing-component-xs)); padding: var(--spacing-layout-lg); }
 .prediction-account-prompt .auth-button { width: 100%; flex-shrink: 0; }
-.predictions-panel:has(.prediction-account-prompt),
-.feed-predictions-slot .predictions-panel:has(.prediction-account-prompt) { aspect-ratio: auto; display: block; padding: var(--spacing-layout-lg); }
-.predictions-panel > .prediction-stack:has(.prediction-account-prompt),
-.feed-predictions-slot .prediction-stack:has(.prediction-account-prompt) { height: auto; }
-.predictions-panel .prediction-account-prompt { padding: 0; }
-.predictions-panel:has(.prediction-account-prompt) > .predictions-open-link { display: none; }
+.predictions-panel:has(:is(.prediction-account-prompt, .prediction-results--empty)),
+.feed-predictions-slot .predictions-panel:has(:is(.prediction-account-prompt, .prediction-results--empty)) { aspect-ratio: auto; display: block; padding: var(--spacing-layout-lg); }
+.predictions-panel > .prediction-stack:has(:is(.prediction-account-prompt, .prediction-results--empty)),
+.feed-predictions-slot .prediction-stack:has(:is(.prediction-account-prompt, .prediction-results--empty)) { height: auto; }
+.predictions-panel :is(.prediction-account-prompt, .prediction-results--empty) { padding: 0; }
+.predictions-panel:has(:is(.prediction-account-prompt, .prediction-results--empty)) > .predictions-open-link { display: none; }
 [data-profile-section="following"] { position: relative; }
 [data-profile-section="following"] > .collection-updates-dot { position: absolute; top: var(--spacing-component-sm); right: 0; }
 /* Editorial prediction outcomes use the same card, body and helper roles. */
