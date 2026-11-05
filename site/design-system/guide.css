@@ -273,7 +273,7 @@
 .ds-story-share-hover .trend-card-share-icon { background-color: var(--trend-card-primary-text); }
 .ds-share-hover :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon),
 .ds-share-focus :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--share-hover); }
-:is(.ds-share-pressed, .ds-share-open) :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--color-icon-signal); }
+:is(.ds-share-pressed, .ds-share-open) :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--color-icon-signal); mask-image: url('../assets/feed/icon-share.svg'); -webkit-mask-image: url('../assets/feed/icon-share.svg'); }
 .ds-share-focus { outline: var(--stroke-focus) solid var(--share-focus-ring); outline-offset: var(--spacing-component-xs); }
 .ds-share-states { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: var(--spacing-layout-md); margin: var(--spacing-layout-lg) 0; }
 .ds-share-states figure { margin: 0; text-align: center; }

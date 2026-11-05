@@ -1380,8 +1380,8 @@ a.story-lockup:hover .story-lockup-headline {
   width: var(--icon-size-xl);
   height: var(--icon-size-xl);
   background-color: var(--trend-card-icon);
-  mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/feed/icon-share.svg") center / contain no-repeat;
+  mask: url("assets/feed/icon-share-outlined.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-share-outlined.svg") center / contain no-repeat;
 }
 /* The arrow occupies 28 of its 32 SVG units. Match the bookmark's 20px visible width
    while keeping the 30px button centered on the shared action-rail axis. */
@@ -1406,7 +1406,11 @@ a.story-lockup:hover .story-lockup-headline {
   :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--share-hover); }
 :is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:active, [aria-expanded="true"]) { color: var(--color-icon-signal); }
 :is(.story-share, .prediction-share, .article-share, [data-answer-share], [data-share-menu]):is(:active, [aria-expanded="true"])
-  :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) { background-color: var(--color-icon-signal); }
+  :is(.trend-card-share-icon, .article-share-icon, .answer-share-icon) {
+    background-color: var(--color-icon-signal);
+    mask-image: url("assets/feed/icon-share.svg");
+    -webkit-mask-image: url("assets/feed/icon-share.svg");
+  }
 
 /* Contextual share menu — top layer prevents story-card clipping. */
 .share-menu {
@@ -4116,8 +4120,9 @@ body:has(.edit-profile-modal[open]) {
 .article-share-icon {
   display: block;
   background-color: var(--color-icon-default);
-  mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/trend/masthead-share.svg") center / contain no-repeat;
+  /* Preserve the article arrow's existing 15px visible height in its 20px slot. */
+  mask: url("assets/feed/icon-share-outlined.svg") center / calc(var(--icon-size-md) * 12 / 11) auto no-repeat;
+  -webkit-mask: url("assets/feed/icon-share-outlined.svg") center / calc(var(--icon-size-md) * 12 / 11) auto no-repeat;
 }
 
 /* Header actions share the same theme-aware hover as the collection label. */
@@ -5239,7 +5244,7 @@ body:has(.auth-prompt[open]) {
 .answer-icon-button[aria-pressed="true"] { color: var(--color-text-body-link); background: var(--buttons-secondary-bg); }
 .answer-outline-button { display: inline-flex; justify-content: center; align-items: center; gap: var(--spacing-component-sm); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-full); padding: var(--spacing-component-sm) var(--spacing-layout-md); color: var(--color-text-body); font: var(--type-weight-regular) var(--type-size-14)/var(--type-line-height-ui-lg) var(--type-font-body); }
 .answer-share { margin-left: auto; }
-.answer-share-icon { width: var(--icon-size-sm); height: var(--icon-size-sm); background: currentColor; mask: url('assets/feed/icon-share.svg') center / contain no-repeat; -webkit-mask: url('assets/feed/icon-share.svg') center / contain no-repeat; }
+.answer-share-icon { width: var(--icon-size-sm); height: var(--icon-size-sm); background: currentColor; mask: url('assets/feed/icon-share-outlined.svg') center / contain no-repeat; -webkit-mask: url('assets/feed/icon-share-outlined.svg') center / contain no-repeat; }
 .answer-sources { margin-top: var(--spacing-layout-md); }
 .answer-sources-header { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-layout-md); }
 .answer-source-controls { display: flex; gap: var(--spacing-component-xs); }

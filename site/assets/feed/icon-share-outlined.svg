@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Keep the outlined arrow within the filled arrow's 22-unit height.
+       At the story size, its visible stroke matches the bookmark outline. -->
+  <path transform="translate(16 16) scale(0.88095238) translate(-16 -16)" d="M18.2105 5L30 15.2667L18.2105 25.5333V18.9333C9.36842 18.9333 4.94737 21.1333 2 27C2 18.2 7.15789 11.6 18.2105 10.1333V5Z" stroke="#D1D5DB" stroke-width="2.97297" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
