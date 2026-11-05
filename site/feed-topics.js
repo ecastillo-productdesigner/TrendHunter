@@ -6,8 +6,11 @@ import { saveSelectedTopics } from './feed-personalization.js';
   const anchor = document.querySelector(compact ? '.trend-card-list' : '.page-feed .feed-answers-slot');
   if (!anchor) return;
   const topicPickerTemplate = `
-    <h2 class="type-h4-caps" id="feed-topics-heading">Hunt What You Like</h2>
-    <form class="topic-picker-form">
+    <header class="topic-picker-header">
+      <h2 class="type-h4-caps" id="feed-topics-heading">Hunt What You Like</h2>
+      <p class="topic-picker-helper" id="feed-topics-helper">Select topics that interests you to customize your hunting experience</p>
+    </header>
+    <form class="topic-picker-form" aria-describedby="feed-topics-helper">
       <div class="topic-grid" role="group" aria-label="Choose topics">
         <button class="topic-tile" type="button" data-topic="beauty" aria-pressed="false"><span class="topic-icon" aria-hidden="true">health_and_beauty</span><span class="topic-label">Beauty</span></button>
         <button class="topic-tile" type="button" data-topic="books" aria-pressed="false"><span class="topic-icon" aria-hidden="true">menu_book</span><span class="topic-label">Books</span></button>
@@ -61,9 +64,17 @@ import { saveSelectedTopics } from './feed-personalization.js';
     }
     selected.clear();
     sync();
-    if (compact) { location.href = 'feed.html#for-you'; return; }
+    if (compact) { location.href = 'feed.html?topics-updated=1#for-you'; return; }
     document.dispatchEvent(new Event('feed-topics-updated'));
     window.showToast('Your feed has been updated.');
   });
   sync();
+  if (!compact) {
+    const url = new URL(location.href);
+    if (url.searchParams.get('topics-updated') === '1') {
+      url.searchParams.delete('topics-updated');
+      history.replaceState(history.state, '', url);
+      window.showToast('Your feed has been updated.');
+    }
+  }
 })();

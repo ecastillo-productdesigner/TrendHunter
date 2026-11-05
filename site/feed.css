@@ -2213,6 +2213,8 @@ a.drawer-heading:hover {
   border-radius: var(--radius-x-sm);
   background: var(--color-background-surface-raised);
 }
+.topic-picker-header { display: flex; flex-direction: column; gap: var(--spacing-component-sm); }
+.topic-picker-helper { font: var(--type-helper); color: var(--color-text-dim); }
 .topic-picker-form { display: flex; flex-direction: column; gap: var(--spacing-layout-md); }
 .topic-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-component-sm); }
 .topic-tile {
@@ -5297,6 +5299,12 @@ body:has(.auth-prompt[open]) {
 .trending-video-story-actions .trend-card-actions { --trend-card-icon: #D1D5DB; position: static; flex-direction: column; gap: var(--spacing-component-xs); }
 .trending-video-story-actions .trend-card-sound { position: static; flex: 0 0 auto; display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); margin: 0; }
 .trending-video-story-actions .trend-card-video-symbol { width: var(--icon-size-lg); height: var(--icon-size-lg); font-size: var(--icon-size-lg); }
+.trending-video-story-actions .trend-card-actions .trend-card-share-icon {
+  width: calc(var(--icon-size-md) * 0.9 * 28 / 22);
+  height: calc(var(--icon-size-md) * 0.9);
+  mask-size: calc(var(--icon-size-md) * 0.9 * 32 / 22) auto;
+  -webkit-mask-size: calc(var(--icon-size-md) * 0.9 * 32 / 22) auto;
+}
 .trending-video-author { display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); }
 .trending-video-author .avatar { width: var(--icon-size-lg); height: var(--icon-size-lg); }
 .trending-video-author:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); border-radius: var(--radius-circle); }
@@ -5892,14 +5900,22 @@ body:has(.auth-prompt[open]) {
 .moving-direction-filters { display: flex; gap: var(--spacing-component-sm); overflow-x: auto; padding-block: var(--spacing-component-xs); margin-bottom: var(--spacing-layout-lg); scrollbar-width: none; }
 .moving-direction-filters .profile-prediction-filter { flex-shrink: 0; }
 
-html:not([data-auth="signed-in"]) .feed-navigation [data-feed-view="collections"],
-html:not([data-auth="signed-in"]) .feed-navigation [data-feed-view="following"], .feed-navigation-tab[hidden] { display: none; }
+html:not([data-auth="signed-in"]) .feed-navigation,
+.feed-navigation[hidden], .feed-navigation-tab[hidden] { display: none; }
+html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .feed-topic-picker--compact .topic-grid { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - var(--spacing-component-sm) * 3) / 3.35); grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding-bottom: var(--spacing-component-sm); }
 .feed-topic-picker--compact .topic-tile { scroll-snap-align: start; }
 .feed-topic-picker--compact { margin-block: var(--spacing-layout-lg); }
 .prediction-account-actions { display: flex; flex-direction: column; gap: var(--spacing-layout-xl); width: 100%; }
-.prediction-account-prompt { padding: var(--spacing-layout-lg); }
-.prediction-account-prompt .auth-button { width: 100%; }
+.prediction-account-prompt { height: auto; gap: calc(var(--spacing-layout-lg) + var(--spacing-component-xs)); padding: var(--spacing-layout-lg); }
+.prediction-account-prompt .prediction-results-header { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
+.prediction-account-prompt .auth-button { width: 100%; flex-shrink: 0; }
+.predictions-panel:has(.prediction-account-prompt),
+.feed-predictions-slot .predictions-panel:has(.prediction-account-prompt) { aspect-ratio: auto; display: block; padding: var(--spacing-layout-lg); }
+.predictions-panel > .prediction-stack:has(.prediction-account-prompt),
+.feed-predictions-slot .prediction-stack:has(.prediction-account-prompt) { height: auto; }
+.predictions-panel .prediction-account-prompt { padding: 0; }
+.predictions-panel:has(.prediction-account-prompt) > .predictions-open-link { display: none; }
 [data-profile-section="following"] { position: relative; }
 [data-profile-section="following"] > .collection-updates-dot { position: absolute; top: var(--spacing-component-sm); right: 0; }
 /* Editorial prediction outcomes use the same card, body and helper roles. */

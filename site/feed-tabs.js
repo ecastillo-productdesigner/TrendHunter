@@ -46,8 +46,10 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   const directionFromUrl = () => location.hash === '#trending-up' ? 'up' : location.hash === '#trending-down' ? 'down' : ['up','down'].includes(new URLSearchParams(location.search).get('direction')) ? new URLSearchParams(location.search).get('direction') : 'all';
 
   function select(view, { updateUrl = false, resetScroll = true } = {}) {
-    if (!Object.hasOwn(names, view) || ['collections','following'].includes(view) && !window.isSignedIn?.()) view = 'for-you';
-    tabs.forEach(tab => { tab.hidden = ['collections','following'].includes(tab.dataset.feedView) && !window.isSignedIn?.(); });
+    const signedIn = window.isSignedIn?.() === true;
+    if (!Object.hasOwn(names, view) || !signedIn) view = 'for-you';
+    navigation.hidden = !signedIn;
+    tabs.forEach(tab => { tab.hidden = !signedIn; });
     document.body.dataset.feedView = view;
     const selected = tabs.find(tab => tab.dataset.feedView === view);
     for (const tab of tabs) {
@@ -106,7 +108,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
       main.scrollTo({ top: 0, behavior: 'auto' });
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
-    if (resetScroll) selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+    if (resetScroll && signedIn) selected.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   }
 
   sortFilters.addEventListener('click', event => {
@@ -147,7 +149,7 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
   document.addEventListener('feed-topics-updated', () => {
     preferences = readSelectedTopics();
     select('for-you', { updateUrl: true });
-    tabs[0].focus({ preventScroll: true });
+    if (!navigation.hidden) tabs[0].focus({ preventScroll: true });
   });
   document.addEventListener('feed-recommendations-updated', event => {
     feedback = readRecommendationFeedback();
