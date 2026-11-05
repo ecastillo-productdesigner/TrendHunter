@@ -751,7 +751,9 @@ button {
 @media (max-width: 959px) {
   .thb2b-banner { padding-inline: var(--spacing-component-ms); }
   .thb2b-banner-description { display: none; }
-  .thb2b-banner-content { gap: var(--spacing-component-sm) var(--spacing-layout-md); }
+  .thb2b-banner-content { flex-wrap: nowrap; justify-content: flex-start; gap: var(--spacing-component-ms); }
+  .thb2b-banner-title { flex: 1; min-width: 0; text-wrap: balance; }
+  .thb2b-banner-cta { padding-inline: var(--spacing-component-ms); }
 }
 
 .site-header {
