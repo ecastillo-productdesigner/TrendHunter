@@ -109,7 +109,7 @@ document.querySelector('[data-onboarding-form]').addEventListener('submit', even
   }
   next.disabled = true;
   // Keep any prediction calls, bookmarks and profile data already in this session.
-  window.navigateWithAccountSetup('feed.html#for-you');
+  window.navigateWithAccountSetup('feed.html#for-you', { minimumDuration: 8000 });
 });
 window.addEventListener('hashchange', () => render());
 render({ focus: false });

@@ -6306,3 +6306,15 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   margin-top: var(--spacing-layout-lg);
   height: var(--icon-size-lg);
 }
+
+/* Compact editorial headlines on mobile; desktop retains Card headline. */
+@media (width < 960px) {
+  .trend-card--editorial:not(.trend-card--mover) {
+    grid-template-columns: minmax(0, calc(var(--size-image-thumbnail-width) * .75)) minmax(0, 1fr);
+  }
+  .trend-card--editorial:not(.trend-card--mover) > .trend-card-media {
+    width: calc(var(--size-image-thumbnail-width) * .75);
+    height: calc(var(--size-image-thumbnail-height) * .75);
+  }
+  .trend-card--editorial:not(.trend-card--mover) .trend-card-headline { font: var(--type-section-heading-bold); }
+}
