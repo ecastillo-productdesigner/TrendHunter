@@ -5896,6 +5896,7 @@ body:has(.auth-prompt[open]) {
 .badge-popup-share:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .comments-sign-in .comments-login { display: inline-flex; align-items: center; min-height: var(--icon-size-2xl); font: var(--type-body); color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); }
 .prediction-results-subtitle { font: var(--type-body); text-align: center; }
+.prediction-results-header:has(> .prediction-results-subtitle) { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
 
 .moving-direction-filters { display: flex; gap: var(--spacing-component-sm); overflow-x: auto; padding-block: var(--spacing-component-xs); margin-bottom: var(--spacing-layout-lg); scrollbar-width: none; }
 .moving-direction-filters .profile-prediction-filter { flex-shrink: 0; }
@@ -5908,7 +5909,6 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .feed-topic-picker--compact { margin-block: var(--spacing-layout-lg); }
 .prediction-account-actions { display: flex; flex-direction: column; gap: var(--spacing-layout-xl); width: 100%; }
 .prediction-account-prompt { height: auto; gap: calc(var(--spacing-layout-lg) + var(--spacing-component-xs)); padding: var(--spacing-layout-lg); }
-.prediction-account-prompt .prediction-results-header { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
 .prediction-account-prompt .auth-button { width: 100%; flex-shrink: 0; }
 .predictions-panel:has(.prediction-account-prompt),
 .feed-predictions-slot .predictions-panel:has(.prediction-account-prompt) { aspect-ratio: auto; display: block; padding: var(--spacing-layout-lg); }
