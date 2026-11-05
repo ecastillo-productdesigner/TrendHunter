@@ -236,9 +236,9 @@ import { shareWithSystem } from './system-share.js';
     if (event.target === sheet && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)) sheet.close();
   });
 
-  // Deck cards are replaced as readers vote or skip. Keep their Share action attached.
+  // Actual predictions keep Share when the deck changes; the introductory cover has none.
   function addPredictionShare(card) {
-    if (!card.querySelector('.prediction-card-headline, .prediction-onboarding-copy')) return;
+    if (!card.querySelector('.prediction-card-headline')) return;
     const faces = [...card.querySelectorAll('.prediction-card-face')];
     // A control inside each face inherits its 3D rotation and inert state.
     for (const target of faces.length ? faces : [card]) {

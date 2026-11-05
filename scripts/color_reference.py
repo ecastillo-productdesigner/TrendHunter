@@ -17,6 +17,11 @@ ROLES = {
     '--color-icon-signal-secondary': 'Secondary signals', '--color-interest-rising': 'Rising interest',
     '--color-interest-falling': 'Falling interest', '--color-icon-inverse': 'Inverse icons',
     '--color-icon-dim': 'Dim icons', '--color-text-inverse': 'Inverse text', '--color-recommendation': 'Recommendations',
+    '--color-text-on-media': 'Text over video in both themes',
+    '--color-icon-on-media': 'Icons over video in both themes',
+    '--color-overlay-video': 'Video readability gradient',
+    '--color-shadow-soft': 'Play/pause feedback shadow',
+    '--color-shadow-strong': 'Volume control shadows',
 }
 NAMES = {'#BEFC4F': 'Lime', '#875FE7': 'Purple', '#FFFFFF': 'White', '#F5F7F9': 'Off white', '#E5E7EB': 'Cool gray 200',
          '#D1D5DB': 'Cool gray 300', '#9AA4B2': 'Cool gray 400', '#697182': 'Slate', '#343841': 'Charcoal',

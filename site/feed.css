@@ -91,6 +91,12 @@
   /* Color — Scrim (not a Figma variable: black at 30%, per design spec) */
   --color-scrim: rgba(0, 0, 0, 0.3);
 
+  /* Media treatment — fixed in both themes to keep controls legible over video. */
+  --color-text-on-media: #FFFFFF;
+  --color-icon-on-media: #D1D5DB;
+  --color-overlay-video: rgba(0, 0, 0, 0.45);
+  --color-shadow-soft: rgba(0, 0, 0, 0.25);
+  --color-shadow-strong: rgba(0, 0, 0, 0.5);
 
   /* Color — Icon */
   --color-icon-avatar: #875FE7;
@@ -378,6 +384,7 @@
   --layout-terms-checkbox-offset: 1px; /* centers the 20px box on the first 22px line */
 
   /* Motion — not in Figma; defined here so timings live in one place */
+  --motion-hover: 150ms;
   --motion-video-feedback: 900ms;
   --motion-badge-celebration: 2500ms;
   --motion-toast-enter: 450ms;
@@ -580,7 +587,7 @@ button {
   line-height: var(--type-line-height-ui-xs);
   text-transform: uppercase;
   color: var(--buttons-tertiary-label);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--motion-hover) ease;
 }
 
 .pill-button:hover {
@@ -656,7 +663,7 @@ button {
   letter-spacing: var(--type-letter-spacing-button);
   text-transform: uppercase;
   color: var(--buttons-primary-text-default);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--motion-hover) ease;
 }
 
 /* Hover — lightens to buttons/primary/bg-hover */
@@ -825,7 +832,7 @@ button {
   color: var(--color-text-tertiary);
   text-decoration: none;
   cursor: pointer;
-  transition: color 150ms ease, border-color 150ms ease;
+  transition: color var(--motion-hover) ease, border-color var(--motion-hover) ease;
 }
 .feed-navigation-tab:hover,
 .feed-navigation-tab[aria-selected="true"] { color: var(--color-text-primary); }
@@ -980,7 +987,7 @@ button {
   line-height: var(--type-line-height-ui-md);
   text-transform: uppercase;
   color: var(--color-text-tertiary);
-  transition: color 0.15s ease;
+  transition: color var(--motion-hover) ease;
 }
 
 /* TrendList label ("Now Trending") — color/text/tertiary, like the headlines below it */
@@ -1068,7 +1075,7 @@ a.story-lockup:hover .story-lockup-headline {
   right: var(--spacing-component-xs);
   bottom: var(--spacing-component-xs);
   margin: 0;
-  filter: drop-shadow(0 1px 6px rgb(0 0 0 / 50%));
+  filter: drop-shadow(0 1px 6px var(--color-shadow-strong));
 }
 .trending-video-track:focus-visible {
   outline: var(--stroke-focus) solid var(--share-focus-color);
@@ -1158,7 +1165,7 @@ a.story-lockup:hover .story-lockup-headline {
   margin-left: calc(-1 * var(--icon-size-lg));
   opacity: 0;
   pointer-events: none;
-  filter: drop-shadow(0 1px 6px rgb(0 0 0 / 25%));
+  filter: drop-shadow(0 1px 6px var(--color-shadow-soft));
 }
 .trend-card-video-feedback .trend-card-video-symbol {
   color: var(--trend-card-bookmark-active);
@@ -1356,7 +1363,7 @@ a.story-lockup:hover .story-lockup-headline {
   right: var(--spacing-component-xs);
   bottom: var(--spacing-component-xs);
   margin: 0;
-  filter: drop-shadow(0 1px 6px rgb(0 0 0 / 50%));
+  filter: drop-shadow(0 1px 6px var(--color-shadow-strong));
 }
 .trend-card--editorial .story-share {
   --share-hover: var(--color-text-primary);
@@ -1988,7 +1995,7 @@ body:has(.article-sheet[open]) {
   font-weight: var(--type-weight-regular);
   line-height: var(--type-line-height-ui-lg);
   color: var(--color-text-primary);
-  transition: color 0.15s ease;
+  transition: color var(--motion-hover) ease;
 }
 
 /* Figma shows "Mind-Body" in color/text/tertiary — used here as the hover state */
@@ -2122,8 +2129,8 @@ a.drawer-heading:hover {
   gap: var(--spacing-component-ms);
   overflow-x: auto;
   scrollbar-width: none;
-  mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--layout-answers-edge-fade), #000 calc(100% - var(--layout-answers-edge-fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, var(--color-black) var(--layout-answers-edge-fade), var(--color-black) calc(100% - var(--layout-answers-edge-fade)), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, var(--color-black) var(--layout-answers-edge-fade), var(--color-black) calc(100% - var(--layout-answers-edge-fade)), transparent);
 }
 .answers-suggestion-row.is-ticker { overflow: hidden; }
 .answers-suggestion-row::-webkit-scrollbar { display: none; }
@@ -2237,7 +2244,7 @@ a.drawer-heading:hover {
   color: var(--color-text-tertiary);
   text-align: left;
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+  transition: background-color var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease;
 }
 .topic-label { font: var(--type-weight-extrabold) var(--type-size-16)/var(--type-line-height-ui-sm) var(--type-font-display); text-transform: uppercase; }
 .topic-icon {
@@ -2377,7 +2384,7 @@ a.drawer-heading:hover {
   gap: var(--spacing-component-xs);
   color: var(--trend-up-icon);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color var(--motion-hover) ease;
 }
 .product-card-cta:hover { color: var(--color-text-primary); }
 .product-card-price-label {
@@ -2773,7 +2780,7 @@ a.drawer-heading:hover {
   text-transform: none;
   font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
 }
-.prediction-shortcut { transition: background-color 0.15s ease, color 0.15s ease; }
+.prediction-shortcut { transition: background-color var(--motion-hover) ease, color var(--motion-hover) ease; }
 .prediction-shortcut:hover, .prediction-shortcut:focus-visible { background-color: var(--prediction-shortcut-bg-hover); color: var(--prediction-shortcut-label-hover); }
 @media (prefers-reduced-motion: reduce) { .prediction-shortcut { transition: none; } }
 .prediction-shortcut:focus-visible {
@@ -2985,7 +2992,7 @@ a.drawer-heading:hover {
   cursor: pointer;
   /* Tint the black fill without changing the label, icon or border colors. */
   box-shadow: inset 0 0 0 var(--layout-prediction-vote-height) var(--prediction-hover-overlay);
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow var(--motion-hover) ease;
 }
 .prediction-vote:hover { --prediction-hover-overlay: var(--buttons-tertiary-bg-hover); }
 @media (prefers-reduced-motion: reduce) {
@@ -3402,7 +3409,7 @@ a.drawer-heading:hover {
   line-height: var(--type-line-height-ui-xs);
   text-transform: uppercase;
   color: var(--buttons-tertiary-label);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--motion-hover) ease;
 }
 
 /* Hover — buttons/tertiary/bg-hover */
@@ -3717,7 +3724,7 @@ body:has(.edit-profile-modal[open]) {
   white-space: nowrap;
   background: transparent;
   color: var(--color-text-on-topic);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color var(--motion-hover) ease, border-color var(--motion-hover) ease;
 }
 .profile-call-start::after {
   content: "";
@@ -3959,7 +3966,7 @@ body:has(.edit-profile-modal[open]) {
   letter-spacing: var(--type-letter-spacing-button);
   text-transform: uppercase;
   color: var(--buttons-secondary-label);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--motion-hover) ease;
 }
 
 /* Hover — buttons/secondary/bg-hover */
@@ -4008,7 +4015,7 @@ body:has(.edit-profile-modal[open]) {
   text-transform: uppercase;
   color: var(--buttons-tertiary-label);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color var(--motion-hover) ease;
 }
 
 .article-collection:hover,
@@ -4065,7 +4072,7 @@ body:has(.edit-profile-modal[open]) {
 .contributor-name {
   font-weight: var(--type-weight-bold);
   color: var(--color-text-tertiary);
-  transition: color 150ms ease;
+  transition: color var(--motion-hover) ease;
 }
 .contributor-name:hover { color: var(--color-text-primary); }
 
@@ -4179,7 +4186,7 @@ body:has(.edit-profile-modal[open]) {
   right: var(--spacing-component-xs);
   bottom: var(--spacing-component-xs);
   margin: 0;
-  filter: drop-shadow(0 1px 6px rgb(0 0 0 / 50%));
+  filter: drop-shadow(0 1px 6px var(--color-shadow-strong));
 }
 .article-video .trend-card-sound:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
@@ -4908,7 +4915,7 @@ body:has(.auth-prompt[open]) {
   border: var(--stroke-default) solid var(--settings-fab-border);
   border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color var(--motion-hover) ease;
 }
 
 .settings-fab:hover {
@@ -5299,8 +5306,8 @@ body:has(.auth-prompt[open]) {
   gap: var(--spacing-component-ms);
   padding: var(--spacing-layout-md);
   padding-right: calc(var(--icon-size-2xl) + var(--spacing-layout-lg));
-  color: #FFFFFF;
-  background: linear-gradient(transparent 40%, rgb(0 0 0 / 45%) 70%, #000000);
+  color: var(--color-text-on-media);
+  background: linear-gradient(transparent 40%, var(--color-overlay-video) 70%, var(--color-black));
   pointer-events: none;
 }
 .trending-video-title {
@@ -5309,11 +5316,11 @@ body:has(.auth-prompt[open]) {
   overflow: visible;
   font: var(--type-button-label);
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: var(--color-text-on-media);
 }
 .feed-featured-video .trending-video-title { font: var(--type-card-headline); }
 .trending-video-story-actions { position: absolute; z-index: 3; right: var(--spacing-component-sm); bottom: var(--spacing-component-sm); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-xs); width: var(--icon-size-2xl); pointer-events: auto; }
-.trending-video-story-actions .trend-card-actions { --trend-card-icon: #D1D5DB; position: static; flex-direction: column; gap: var(--spacing-component-xs); }
+.trending-video-story-actions .trend-card-actions { --trend-card-icon: var(--color-icon-on-media); position: static; flex-direction: column; gap: var(--spacing-component-xs); }
 .trending-video-story-actions .trend-card-sound { position: static; flex: 0 0 auto; display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); margin: 0; }
 .trending-video-story-actions .trend-card-video-symbol { width: var(--icon-size-lg); height: var(--icon-size-lg); font-size: var(--icon-size-lg); }
 .trending-video-story-actions .trend-card-actions .trend-card-share-icon {
@@ -5483,7 +5490,6 @@ body:has(.auth-prompt[open]) {
   color: var(--toast-label);
 }
 .recommendation-dialog[open] { display: flex; flex-direction: column; gap: var(--spacing-layout-md); }
-.recommendation-dialog::backdrop { background: rgba(0,0,0,.6); }
 .recommendation-dialog .trend-card-headline { color: inherit; }
 .recommendation-dialog p { font: var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body); }
 .recommendation-close { display: grid; place-items: center; top: var(--spacing-component-xs); right: var(--spacing-component-xs); width: var(--spacing-page-2xl); height: var(--spacing-page-2xl); padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; }
@@ -5744,7 +5750,7 @@ body:has(.auth-prompt[open]) {
 .member-badge:focus-visible,.member-badges-all:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .member-badges-all { min-height: var(--icon-size-2xl); font: var(--type-weight-regular) var(--type-size-14)/var(--type-line-height-ui-sm) var(--type-font-display); color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); }
 .member-badge-dialog { position: fixed; width: min(calc(100% - var(--spacing-layout-xl)),720px); max-height: calc(100dvh - var(--spacing-layout-xl)); margin: auto; padding: var(--spacing-layout-xl) var(--spacing-layout-lg); padding-top: var(--spacing-page-2xl); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-md); color: var(--color-text-primary); background: var(--color-background-surface-raised); overflow: auto; }
-.member-badge-dialog::backdrop { background: rgb(0 0 0 / 65%); }
+.member-badge-dialog::backdrop { background: var(--color-scrim); }
 .member-badge-dialog--medal {
   width: min(calc(100vw - var(--spacing-layout-xl)), calc(100dvh - var(--spacing-layout-xl)), var(--layout-feed-width));
   aspect-ratio: 1;
@@ -5851,7 +5857,7 @@ body:has(.auth-prompt[open]) {
 .trending-video-deeper:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .article-video.article-video--portrait { aspect-ratio: 9 / 16; }
 
-.trending-video-card { --trend-card-primary-text: #FFFFFF; --trend-card-icon: #D1D5DB; --trend-card-bookmark-active: var(--bookmark-icon-active); }
+.trending-video-card { --trend-card-primary-text: var(--color-text-on-media); --trend-card-icon: var(--color-icon-on-media); --trend-card-bookmark-active: var(--bookmark-icon-active); }
 
 /* Article discussion — shared DS typography, spacing and theme colors. */
 .article-comments {
@@ -6032,7 +6038,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   --story-start-row: 2;
   display: grid;
   grid-template-columns: minmax(0, var(--size-image-thumbnail-width)) minmax(0, 1fr);
-  grid-template-rows: auto 1fr min-content min-content auto;
+  grid-template-rows: auto min-content min-content 1fr auto;
   column-gap: var(--spacing-component-ms);
   row-gap: 0;
   align-items: start;
@@ -6053,7 +6059,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .trend-card--editorial:not(.trend-card--mover) > .recommendation-inline > span { transform: none; }
 .trend-card--editorial:not(.trend-card--mover):has(> .people-activity-label):has(> .collection-story-update) {
   --story-start-row: 3;
-  grid-template-rows: auto auto 1fr min-content min-content auto;
+  grid-template-rows: auto auto min-content min-content 1fr auto;
 }
 .trend-card--editorial:not(.trend-card--mover):has(> .people-activity-label) > .collection-story-update { grid-row: 2; }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-media {
@@ -6062,13 +6068,13 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   width: var(--size-image-thumbnail-width);
   height: var(--size-image-thumbnail-height);
   aspect-ratio: auto;
-  align-self: end;
+  align-self: start;
   border-radius: var(--radius-x-sm);
 }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-collection {
   grid-column: 2;
   grid-row: var(--story-start-row);
-  align-self: end;
+  align-self: start;
   margin-bottom: var(--spacing-component-ms);
   min-width: 0;
 }
@@ -6081,7 +6087,7 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   grid-column: 2;
   grid-row: calc(var(--story-start-row) + 2);
   min-width: 0;
-  align-self: end;
+  align-self: start;
 }
 .trend-card--editorial:not(.trend-card--mover) .trend-card-headline {
   text-box-trim: trim-end;
@@ -6091,6 +6097,6 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-footer {
   grid-column: 1 / -1;
   grid-row: calc(var(--story-start-row) + 3);
-  margin-top: var(--spacing-component-sm);
+  margin-top: var(--spacing-layout-lg);
   height: var(--icon-size-lg);
 }
