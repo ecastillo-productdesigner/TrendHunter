@@ -1,7 +1,8 @@
 import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=4';
 import { BADGE_STATE_KEY, readBadgeState, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
 import { escapeText } from './story-card.js';
-import { celebrateBadge, dismissBadgeCelebration } from './badge-celebration.js?v=3';
+import { celebrateBadge, dismissBadgeCelebration } from './badge-celebration.js?v=4';
+import { closeBadgeDialog } from './badge-dialog-motion.js';
 
 const day = () => new Intl.DateTimeFormat('en-CA',{ timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit' }).format(new Date());
 const signedIn = () => window.isSignedIn?.() === true;
@@ -34,6 +35,7 @@ function renderProfileBadges() {
   if (current) portrait.insertAdjacentHTML('beforeend',`<button class="profile-current-badge" type="button" data-badge-view="${current.id}" aria-label="${current.name} badge. View badge details" title="${current.name}">${medal(current)}</button>`);
 }
 function showBadges(id) {
+  if (modal?.dataset.closing) return;
   if (own && !signedIn()) {
     try { sessionStorage.setItem('return-to','userprofile.html#following'); } catch {}
     location.href = 'login.html';
@@ -54,9 +56,10 @@ function showBadges(id) {
     let startedOutside = false;
     modal.addEventListener('pointerdown',event => { startedOutside = outside(event); });
     modal.addEventListener('click',event => {
-      if (event.target.closest('[data-badge-close]') || startedOutside && outside(event)) modal.close();
+      if (event.target.closest('[data-badge-close]') || startedOutside && outside(event)) closeBadgeDialog(modal);
       startedOutside = false;
     });
+    modal.addEventListener('cancel', event => { event.preventDefault(); closeBadgeDialog(modal); });
     modal.addEventListener('change',event => {
       const toggle = event.target.closest('[data-badge-visibility]');
       if (!toggle) return;
@@ -105,7 +108,7 @@ function showBadges(id) {
     const duration = (parseFloat(getComputedStyle(modal).getPropertyValue('--motion-card-flip')) || 600) / 2;
     const turn = modal.animate([{transform:'perspective(960px) rotateY(0)'},{transform:'perspective(960px) rotateY(90deg)'}],{duration,easing:'ease-in',fill:'forwards'});
     turn.finished.then(() => {
-      if (!modal.open) { turn.cancel(); return; }
+      if (!modal.open || modal.dataset.closing) { turn.cancel(); return; }
       render();
       modal.animate([{transform:'perspective(960px) rotateY(-90deg)'},{transform:'perspective(960px) rotateY(0)'}],{duration,easing:'ease-out'});
       turn.cancel();

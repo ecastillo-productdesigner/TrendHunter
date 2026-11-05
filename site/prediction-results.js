@@ -1,7 +1,7 @@
-import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=2';
+import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=3';
 import { escapeText as esc } from './story-card.js';
-import { medalBurst } from './badge-celebration.js?v=3';
-import { predictionCallPanels, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-2';
+import { medalBurst } from './badge-celebration.js?v=4';
+import { predictionCallPanels, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-3';
 const records=()=>{try{return readPredictionResults(localStorage);}catch{return [];}};
 const signedIn=()=>window.isSignedIn?.()===true;
 const destination=id=>`userprofile.html?prediction-filter=resolved&result=${encodeURIComponent(id)}#predictions`;
@@ -93,8 +93,14 @@ function renderAlert(){
     let dot=bolt.querySelector('.prediction-results-dot');
     if(!dot){dot=document.createElement('span');dot.className='collection-updates-dot prediction-results-dot';dot.setAttribute('aria-hidden','true');bolt.append(dot);}
     dot.hidden=!available||!unread.length;
-    if(available&&unread.length){bolt.href=destination(unread[0].id);bolt.setAttribute('aria-label',`${unread.length} prediction results are in`);}
-    else {bolt.href='predictions.html';bolt.setAttribute('aria-label','Predict the Next Trend');}
+    if(available&&results.length){
+      const first=unread[0]||results[0];
+      bolt.href=destination(first.id);
+      bolt.dataset.resultReveal=first.id;
+      bolt.setAttribute('aria-haspopup','dialog');
+      bolt.setAttribute('aria-label',unread.length?`${unread.length} prediction results are in`:'View prediction results');
+    }
+    else {bolt.href='predictions.html';delete bolt.dataset.resultReveal;bolt.removeAttribute('aria-haspopup');bolt.setAttribute('aria-label','Predict the Next Trend');}
   });
   const list=document.querySelector('.page-feed .feed-tab-panel > .feed-list');if(!list)return;
   let slot=list.querySelector('.prediction-results-alert-slot');
@@ -106,7 +112,10 @@ function renderAlert(){
   list.prepend(slot);
 }
 document.addEventListener('click',event=>{
-  const revealButton=event.target.closest('[data-result-reveal]');if(revealButton){reveal(revealButton.dataset.resultReveal,revealButton);return;}
+  const revealButton=event.target.closest('[data-result-reveal]');if(revealButton){
+    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||event.button>0)return;
+    event.preventDefault();reveal(revealButton.dataset.resultReveal,revealButton);return;
+  }
   if(event.target.closest('[data-result-next]')) flipResult(1);
   if(event.target.closest('[data-result-previous]')) flipResult(-1);
 });

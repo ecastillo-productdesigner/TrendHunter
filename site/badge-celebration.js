@@ -1,7 +1,8 @@
 import { escapeText } from './story-card.js';
+import { closeBadgeDialog } from './badge-dialog-motion.js';
 
 let dismissCurrent = () => {};
-export function dismissBadgeCelebration() { dismissCurrent(); }
+export function dismissBadgeCelebration() { dismissCurrent({ immediate: true }); }
 
 // The same short medal burst accompanies newly earned badges and correct results.
 export function medalBurst(container) {
@@ -26,7 +27,7 @@ export function medalBurst(container) {
 // Celebrations announce real awards; replaying this view never awards progress.
 export function celebrateBadge(badge) {
   requestAnimationFrame(() => {
-    dismissCurrent();
+    dismissCurrent({ immediate: true });
     const previousFocus = document.activeElement;
     const explanation = {
       'first-call': 'You earned this badge because you voted on your first prediction.',
@@ -44,22 +45,27 @@ export function celebrateBadge(badge) {
     burst.className = 'badge-award-burst';
     burst.setAttribute('aria-hidden', 'true');
     popup.append(burst);
-    let clearParticles = () => {}, dismissed = false;
-    const dismiss = () => {
-      if (dismissed) return;
-      dismissed = true;
-      clearParticles();
+    let clearParticles = () => {}, dismissed = false, cleaned = false;
+    const finish = () => {
+      if (cleaned) return;
+      cleaned = true;
       if (popup.open) popup.close();
       popup.remove();
-      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
+      if (previousFocus?.isConnected && !document.querySelector('dialog[open]')) previousFocus.focus({ preventScroll: true });
       if (dismissCurrent === dismiss) dismissCurrent = () => {};
+    };
+    const dismiss = ({ immediate = false } = {}) => {
+      if (dismissed) { if (immediate) finish(); return; }
+      dismissed = true;
+      clearParticles();
+      if (immediate) finish(); else closeBadgeDialog(popup).then(finish);
     };
     popup.querySelector('.badge-award-close').addEventListener('click', dismiss);
     popup.addEventListener('click', event => { if (event.target === popup) dismiss(); });
     popup.addEventListener('cancel', event => { event.preventDefault(); dismiss(); });
     popup.addEventListener('close', dismiss);
     popup.addEventListener('animationend', event => {
-      if (event.target === popup && event.animationName === 'badge-coin-reveal' && popup.open) clearParticles = medalBurst(burst);
+      if (event.target === popup && event.animationName === 'badge-coin-reveal' && popup.open && !dismissed) clearParticles = medalBurst(burst);
     }, { once: true });
     dismissCurrent = dismiss;
     document.body.append(popup);

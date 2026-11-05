@@ -1244,6 +1244,7 @@
     "checkroom",
     "directions_bike",
     "eye_tracking",
+    "fact_check",
     "family_restroom",
     "flight",
     "head_mounted_device",
@@ -1409,6 +1410,15 @@
       "name": "Prediction vote icons",
       "group": "Predictions and signals",
       "note": "In uses a lime check; Out uses an orange-red cross. Vote buttons use 20px icons. Creator/reader badges use 12px: black on filled creator chips, state color in reader comparisons, gray when resolved. See comparison components for those contexts.",
+      "states": [
+        "In",
+        "Out"
+      ]
+    },
+    {
+      "name": "Verified prediction outcome",
+      "group": "Predictions and signals",
+      "note": "20px Material Symbols Outlined fact_check, weight 400 and FILL 0. Lime for In and red for Out. Shared by the result popup and resolved profile comparison.",
       "states": [
         "In",
         "Out"

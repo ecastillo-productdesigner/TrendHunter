@@ -5,7 +5,7 @@ import { escapeText as esc } from './story-card.js';
 export function predictionCallPanels(result) {
   return `<div class="prediction-outcome-calls">
     <div class="prediction-outcome-call"><span class="prediction-outcome-label">Your call</span><strong data-call="${result.call}"><span class="prediction-outcome-call-icon" data-call="${result.call}" aria-hidden="true"></span>${result.call==='in'?'I’m in':'I’m out'}</strong></div>
-    <div class="prediction-outcome-call"><span class="prediction-outcome-label">Verified outcome</span><strong data-outcome="${result.outcome}"><span class="prediction-outcome-verified" aria-hidden="true"></span>${result.outcome.toUpperCase()}</strong></div>
+    <div class="prediction-outcome-call"><span class="prediction-outcome-label">Verified outcome</span><strong data-outcome="${result.outcome}"><span class="prediction-outcome-verified material-symbols-outlined" aria-hidden="true">fact_check</span>${result.outcome.toUpperCase()}</strong></div>
   </div>`;
 }
 

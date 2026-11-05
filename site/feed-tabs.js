@@ -42,7 +42,12 @@ import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommenda
     const time = document.createElement('span');
     time.textContent = movementSamples.get(href)?.replace(/^Moved (up|down) ·\s*/, '') || `${hours}hr${hours === 1 ? '' : 's'} ago`;
     update.append(arrow, description, time);
-    collection?.after(update);
+    if (collection) {
+      const meta = document.createElement('div');
+      meta.className = 'trend-card-meta';
+      collection.before(meta);
+      meta.append(collection, update);
+    }
   });
   const movingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum'));
   const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));

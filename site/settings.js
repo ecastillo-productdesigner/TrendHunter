@@ -101,7 +101,7 @@ if (settingsButton && settingsPanel) {
     else location.assign('feed.html');
   });
   settingsPanel.querySelector('[data-setting="show-prediction-results"]')?.addEventListener('click', async () => {
-    const { previewPredictionResults } = await import('./prediction-result-state.js?v=2');
+    const { previewPredictionResults } = await import('./prediction-result-state.js?v=3');
     let calls={};try{calls=JSON.parse(sessionStorage.getItem('prediction-calls')||'{}');}catch{}
     if(!previewPredictionResults(localStorage,calls)){window.showToast?.('Results could not be shown.');return;}
     setOpen(false);
