@@ -6091,6 +6091,6 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-footer {
   grid-column: 1 / -1;
   grid-row: calc(var(--story-start-row) + 3);
-  margin-top: var(--spacing-layout-md);
+  margin-top: var(--spacing-component-sm);
   height: var(--icon-size-lg);
 }
