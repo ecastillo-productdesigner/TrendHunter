@@ -258,6 +258,7 @@
   --type-page-masthead: var(--type-weight-extrabold) var(--type-size-40)/var(--type-line-height-display-lg) var(--type-font-display);
   --type-card-headline: var(--type-weight-extrabold) var(--type-size-28)/var(--type-line-height-display-md) var(--type-font-display);
   --type-section-heading: var(--type-weight-light) var(--type-size-18)/var(--type-line-height-ui-lg) var(--type-font-display);
+  --type-section-heading-bold: var(--type-weight-bold) var(--type-size-18)/var(--type-line-height-ui-lg) var(--type-font-display);
   --type-mobile-prediction-heading: var(--type-section-heading);
   --type-body: var(--type-weight-regular) var(--type-size-16)/var(--type-line-height-ui-lg) var(--type-font-body);
   --type-button-label: var(--type-weight-bold) var(--type-size-16)/var(--type-line-height-ui-sm) var(--type-font-display);
@@ -1257,7 +1258,7 @@ a.story-lockup:hover .story-lockup-headline {
   flex-direction: column;
   gap: var(--spacing-layout-md);
   aspect-ratio: auto;
-  padding: var(--spacing-layout-md);
+  padding: var(--spacing-layout-lg);
   border: var(--stroke-default) solid var(--color-border-default);
   border-radius: var(--radius-x-sm);
   background: var(--color-background-surface-raised);
@@ -1366,9 +1367,7 @@ a.story-lockup:hover .story-lockup-headline {
   outline-offset: var(--spacing-component-xs);
 }
 .trend-card-media-link:focus-visible { outline-offset: calc(-1 * var(--spacing-component-xs)); }
-@media (min-width: 600px) {
-  .trend-card--editorial { padding: var(--spacing-layout-lg); padding-bottom: var(--spacing-layout-md); }
-}
+.trend-card-title-link:is(:hover, :focus-visible) { color: var(--color-text-body-link); }
 .story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
 
 .trend-card-image--retailtainment-still { object-position: center 25%; }
@@ -5547,7 +5546,7 @@ body:has(.auth-prompt[open]) {
 .trend-card--mover .trend-card-collection { grid-column: 2; grid-row: 1; }
 .trend-card--mover .trend-card-content { grid-column: 2; grid-row: 2; min-width: 0; }
 .trend-card--mover .trend-card-headline {
-  font: var(--type-card-headline);
+  font: var(--type-section-heading-bold);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -6027,13 +6026,21 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   column-gap: var(--spacing-layout-md);
   row-gap: 0;
   align-items: start;
-  padding-bottom: var(--spacing-layout-md);
+  padding: var(--spacing-layout-lg);
 }
 .trend-card--editorial:not(.trend-card--mover) > :is(.recommendation-inline, .people-activity-label, .collection-story-update) {
   grid-column: 1 / -1;
   grid-row: 1;
   margin-bottom: var(--spacing-layout-md);
 }
+/* Keep the label 16px from the top and media; full-size feedback targets
+   extend around the compact text row without changing its visible spacing. */
+.trend-card--editorial:not(.trend-card--mover) > .recommendation-inline {
+  height: var(--type-line-height-ui-sm);
+  min-height: var(--type-line-height-ui-sm);
+  margin-top: calc(var(--spacing-layout-md) - var(--spacing-layout-lg));
+}
+.trend-card--editorial:not(.trend-card--mover) > .recommendation-inline > span { transform: none; }
 .trend-card--editorial:not(.trend-card--mover):has(> .people-activity-label):has(> .collection-story-update) {
   --story-start-row: 3;
   grid-template-rows: auto auto min-content min-content 1fr auto;
