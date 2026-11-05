@@ -90,3 +90,8 @@ test('recommendations follow the first three stories while discovery modules kee
   assert.deepEqual(rankedStories.map((item,index)=>item.recommended?index:null).filter(index=>index!==null),[3,8]);
   assert.equal(new Set(ranked).size,items.length);
 });
+
+test('home and family interests rank matching catalogue stories in existing slots', () => {
+  assert.equal(personalizeStorySlots(stories, ['home-living'], topicsFor)[0].href, 'trend-whole-house-water.html');
+  assert.equal(personalizeStorySlots(stories, ['family-parenting'], topicsFor)[0].href, 'trend-school-routines.html');
+});

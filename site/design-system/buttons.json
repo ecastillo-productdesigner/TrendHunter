@@ -793,8 +793,9 @@
       "key": "button:button-primary",
       "classes": "button-primary",
       "tag": "button",
-      "name": "See ",
+      "name": "Try again",
       "sources": [
+        "account-setup.js",
         "prediction-results.js"
       ]
     },
@@ -2022,6 +2023,15 @@
       ]
     },
     {
+      "key": "a:nav-menu nav-back onboarding-header-back",
+      "classes": "nav-menu nav-back onboarding-header-back",
+      "tag": "a",
+      "name": "Back",
+      "sources": [
+        "onboarding.html"
+      ]
+    },
+    {
       "key": "a:nav-predictions",
       "classes": "nav-predictions",
       "tag": "a",
@@ -2352,11 +2362,8 @@
       "key": "button:onboarding-edit",
       "classes": "onboarding-edit",
       "tag": "button",
-      "name": "Edit trend setters",
+      "name": "Choose interests",
       "sources": [
-        "onboarding.js",
-        "onboarding.js",
-        "onboarding.js",
         "onboarding.js"
       ]
     },
@@ -2364,8 +2371,10 @@
       "key": "button:onboarding-skip",
       "classes": "onboarding-skip",
       "tag": "button",
-      "name": "Skip for now",
+      "name": "Back",
       "sources": [
+        "account-setup.js",
+        "account-setup.js",
         "onboarding.html"
       ]
     },
@@ -2373,7 +2382,7 @@
       "key": "button:onboarding-step",
       "classes": "onboarding-step",
       "tag": "button",
-      "name": "furthest ? 'disabled' : ''}  data-complete=\"",
+      "name": "furthest ? 'disabled' : ''}  data-complete=\"\">",
       "sources": [
         "onboarding.js"
       ]
@@ -4330,7 +4339,7 @@
       "key": "button:topic-tile",
       "classes": "topic-tile",
       "tag": "button",
-      "name": "health_and_beautyBeauty",
+      "name": "spaHealth & Wellness",
       "sources": [
         "feed-topics.js",
         "feed-topics.js",

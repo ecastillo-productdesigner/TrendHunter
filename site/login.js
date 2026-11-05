@@ -61,7 +61,8 @@ function finishSignIn({ onboarding = false } = {}) {
     sessionStorage.removeItem(RETURN_KEY);
     sessionStorage.removeItem(CHALLENGE_KEY);
   } catch (e) {}
-  window.location.href = onboarding ? 'onboarding.html#topics' : returnTo;
+  if (onboarding && window.navigateWithAccountSetup) window.navigateWithAccountSetup('onboarding.html#topics');
+  else window.location.href = onboarding ? 'onboarding.html#topics' : returnTo;
 }
 
 // Apple / Google

@@ -1,6 +1,6 @@
 // Illustrative topic metadata ranks the existing demo stories; no account service is connected.
 export const TOPIC_STORAGE_KEY = 'trendhunter.selected-topics.v1';
-const topicIds = new Set(['beauty', 'books', 'food-drink', 'wellness', 'style', 'tech', 'fitness', 'culture', 'travel']);
+const topicIds = new Set(['wellness', 'beauty', 'food-drink', 'fitness', 'home-living', 'tech', 'family-parenting', 'culture', 'travel']);
 const cleanTopics = value => Array.isArray(value) ? [...new Set(value.filter(id => topicIds.has(id)))] : [];
 
 export function readSelectedTopics(storage) {

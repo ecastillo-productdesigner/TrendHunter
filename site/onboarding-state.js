@@ -1,6 +1,6 @@
 import { COLLECTIONS } from './collection-data.js';
 import { PEOPLE } from './people-data.js';
-import { TOPIC_STORAGE_KEY, readSelectedTopics } from './feed-personalization.js';
+import { TOPIC_STORAGE_KEY, readSelectedTopics } from './feed-personalization.js?v=topics-9';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
 import { PEOPLE_FOLLOW_KEY, readFollowing } from './people-follow-state.js';
 
@@ -8,10 +8,15 @@ import { PEOPLE_FOLLOW_KEY, readFollowing } from './people-follow-state.js';
 export const ONBOARDING_DRAFT_KEY = 'trendhunter.onboarding-draft.v2';
 export const ONBOARDING_COMPLETE_KEY = 'trendhunter.onboarding-complete.v1';
 export const TOPICS = [
-  ['beauty', 'Beauty', 'health_and_beauty'], ['books', 'Books', 'menu_book'],
-  ['food-drink', 'Food & Drink', 'local_bar'], ['wellness', 'Wellness', 'spa'],
-  ['style', 'Style', 'checkroom'], ['tech', 'Tech', 'head_mounted_device'],
-  ['fitness', 'Fitness', 'directions_bike'], ['culture', 'Culture', 'public'], ['travel', 'Travel', 'flight'],
+  ['wellness', 'Health & Wellness', 'spa'],
+  ['beauty', 'Beauty & Skincare', 'health_and_beauty'],
+  ['food-drink', 'Food & Drink', 'local_bar'],
+  ['fitness', 'Fitness', 'directions_bike'],
+  ['home-living', 'Home & Living', 'home'],
+  ['tech', 'Tech & AI', 'head_mounted_device'],
+  ['family-parenting', 'Family & Parenting', 'family_restroom'],
+  ['culture', 'Culture & Experiences', 'public'],
+  ['travel', 'Travel', 'flight'],
 ].map(([id, name, icon]) => ({ id, name, icon }));
 export const STEPS = ['topics', 'collections', 'trend-setters', 'review'];
 const uniqueKnown = (values, known) => Array.isArray(values) ? [...new Set(values.filter(value => known.has(value)))] : [];
@@ -34,12 +39,23 @@ export function saveOnboardingDraft(draft, session) {
   try { session.setItem(ONBOARDING_DRAFT_KEY, JSON.stringify(cleanDraft(draft))); return true; }
   catch { return false; }
 }
+export function onboardingSelectionCount(draft, step) {
+  const clean = cleanDraft(draft);
+  if (step === 'trend-setters') return clean.people.filter(id => PEOPLE.some(person => person.id === id && person.kind === 'creators')).length;
+  return clean[step]?.length || 0;
+}
+export function skipOnboardingStep(draft, step) {
+  const clean = cleanDraft(draft);
+  const key = step === 'trend-setters' ? 'people' : step;
+  if (Object.hasOwn(clean, key)) clean[key] = [];
+  return clean;
+}
 const suggestions = {
   beauty: ['evidence-based-beauty', 'beauty-from-within', 'longevity'],
-  books: ['everyday-living', 'tactile-home-design'],
+  'home-living': ['smart-home-energy', 'tactile-home-design', 'budgeted-living', 'everyday-living'],
   'food-drink': ['protein-forward-eating', 'food-as-an-experience', 'modern-hydration-caffeine'],
   wellness: ['longevity', 'nervous-system-gym', 'sleep-medicine'],
-  style: ['retailtainment-hubs', 'tactile-home-design'],
+  'family-parenting': ['back-to-school-transitions', 'mind-body-for-families', 'modern-anxiety-care'],
   tech: ['ai-everyday-life', 'health-technology', 'smart-home-energy'],
   fitness: ['fitness-reset', 'biohackers-body', 'cardio-and-its-health'],
   culture: ['retailtainment-hubs', 'everyday-living'],
@@ -54,7 +70,7 @@ export function onboardingCreators(selected = []) {
   const ids = [...new Set(['nadia-patel', 'owen-brooks', 'daniel-reed', 'maya-chen', ...selected])];
   return ids.map(id => PEOPLE.find(person => person.id === id && person.kind === 'creators')).filter(Boolean);
 }
-export function completeOnboarding(draft, storage, session) {
+export function completeOnboarding(draft, storage, session, { keepDraft = false } = {}) {
   const clean = cleanDraft(draft);
   // Onboarding adds follows; skipping a step never removes existing preferences.
   const topics = clean.topics.length ? clean.topics : readSelectedTopics(storage);
@@ -71,6 +87,6 @@ export function completeOnboarding(draft, storage, session) {
     }
     return false;
   }
-  try { session.setItem(ONBOARDING_COMPLETE_KEY, 'true'); session.removeItem(ONBOARDING_DRAFT_KEY); } catch {}
+  try { session.setItem(ONBOARDING_COMPLETE_KEY, 'true'); if (!keepDraft) session.removeItem(ONBOARDING_DRAFT_KEY); } catch {}
   return true;
 }

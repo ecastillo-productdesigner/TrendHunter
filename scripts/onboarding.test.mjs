@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ONBOARDING_DRAFT_KEY, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding } from '../site/onboarding-state.js';
+import { ONBOARDING_DRAFT_KEY, TOPICS, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding, onboardingSelectionCount, skipOnboardingStep } from '../site/onboarding-state.js';
 import { TOPIC_STORAGE_KEY, readSelectedTopics } from '../site/feed-personalization.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from '../site/collection-follow-state.js';
 import { PEOPLE_FOLLOW_KEY, readFollowing } from '../site/people-follow-state.js';
@@ -40,6 +40,20 @@ test('fresh onboarding has no preselected values and skipping preserves existing
   assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
   assert.deepEqual(readFollowing(storage), ['nadia-patel']);
 });
+test('skipping clears only that step, survives reload and preserves other picks and saved follows', () => {
+  const storage = memory(), session = memory();
+  storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
+  const draft = { topics: ['beauty'], collections: ['collection-evidence-based-beauty.html'], people: ['owen-brooks'] };
+  const skipped = skipOnboardingStep(draft, 'collections');
+  saveOnboardingDraft(skipped, session);
+  const restored = readOnboardingDraft(storage, session);
+  assert.equal(onboardingSelectionCount(restored, 'collections'), 0);
+  assert.equal(onboardingSelectionCount(restored, 'topics'), 1);
+  assert.equal(onboardingSelectionCount(restored, 'trend-setters'), 1);
+  assert.deepEqual(draft.collections, ['collection-evidence-based-beauty.html']);
+  assert.equal(completeOnboarding(restored, storage, session), true);
+  assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
+});
 test('skipping every step permits an empty completion and corrupt draft values are filtered', () => {
   const storage = memory(), session = memory();
   session.setItem(ONBOARDING_DRAFT_KEY, '{"topics":["nope","tech","tech"],"people":["unknown"]}');
@@ -65,4 +79,16 @@ test('suggestions use unique real collections and preserve selected choices when
   assert.equal(new Set(result.map(value => value.href)).size, result.length);
   assert.ok(result.some(value => value.href === 'collection-solo-travel.html'));
   assert.ok(onboardingCreators(['jamie-park']).every(person => person.kind === 'creators'));
+});
+
+test('current interests cover home and family and retain a retry draft until navigation succeeds', () => {
+  const storage = memory(), session = memory();
+  assert.deepEqual(TOPICS.map(topic => topic.name), ['Health & Wellness', 'Beauty & Skincare', 'Food & Drink', 'Fitness', 'Home & Living', 'Tech & AI', 'Family & Parenting', 'Culture & Experiences', 'Travel']);
+  const draft = { topics: ['home-living', 'family-parenting'], collections: ['collection-smart-home-energy.html'], people: ['owen-brooks'] };
+  saveOnboardingDraft(draft, session);
+  assert.equal(completeOnboarding(draft, storage, session, { keepDraft: true }), true);
+  assert.deepEqual(readSelectedTopics(storage), draft.topics);
+  assert.deepEqual(readOnboardingDraft(storage, session), draft);
+  assert.equal(onboardingCollections(['home-living'])[0].href, 'collection-smart-home-energy.html');
+  assert.equal(onboardingCollections(['family-parenting'])[0].href, 'collection-back-to-school-transitions.html');
 });

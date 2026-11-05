@@ -1,4 +1,4 @@
-import { saveSelectedTopics } from './feed-personalization.js';
+import { saveSelectedTopics } from './feed-personalization.js?v=topics-9';
 
 // Feed and collection interests. Choices are browser-local prototype preferences, not collection follows.
 (() => {
@@ -12,14 +12,14 @@ import { saveSelectedTopics } from './feed-personalization.js';
     </header>
     <form class="topic-picker-form" aria-describedby="feed-topics-helper">
       <div class="topic-grid" role="group" aria-label="Choose topics">
-        <button class="topic-tile" type="button" data-topic="beauty" aria-pressed="false"><span class="topic-icon" aria-hidden="true">health_and_beauty</span><span class="topic-label">Beauty</span></button>
-        <button class="topic-tile" type="button" data-topic="books" aria-pressed="false"><span class="topic-icon" aria-hidden="true">menu_book</span><span class="topic-label">Books</span></button>
+        <button class="topic-tile" type="button" data-topic="wellness" aria-pressed="false"><span class="topic-icon" aria-hidden="true">spa</span><span class="topic-label">Health &amp; Wellness</span></button>
+        <button class="topic-tile" type="button" data-topic="beauty" aria-pressed="false"><span class="topic-icon" aria-hidden="true">health_and_beauty</span><span class="topic-label">Beauty &amp; Skincare</span></button>
         <button class="topic-tile" type="button" data-topic="food-drink" aria-pressed="false"><span class="topic-icon" aria-hidden="true">local_bar</span><span class="topic-label">Food &amp; Drink</span></button>
-        <button class="topic-tile" type="button" data-topic="wellness" aria-pressed="false"><span class="topic-icon" aria-hidden="true">spa</span><span class="topic-label">Wellness</span></button>
-        <button class="topic-tile" type="button" data-topic="style" aria-pressed="false"><span class="topic-icon" aria-hidden="true">checkroom</span><span class="topic-label">Style</span></button>
-        <button class="topic-tile" type="button" data-topic="tech" aria-pressed="false"><span class="topic-icon" aria-hidden="true">head_mounted_device</span><span class="topic-label">Tech</span></button>
         <button class="topic-tile" type="button" data-topic="fitness" aria-pressed="false"><span class="topic-icon" aria-hidden="true">directions_bike</span><span class="topic-label">Fitness</span></button>
-        <button class="topic-tile" type="button" data-topic="culture" aria-pressed="false"><span class="topic-icon" aria-hidden="true">public</span><span class="topic-label">Culture</span></button>
+        <button class="topic-tile" type="button" data-topic="home-living" aria-pressed="false"><span class="topic-icon" aria-hidden="true">home</span><span class="topic-label">Home &amp; Living</span></button>
+        <button class="topic-tile" type="button" data-topic="tech" aria-pressed="false"><span class="topic-icon" aria-hidden="true">head_mounted_device</span><span class="topic-label">Tech &amp; AI</span></button>
+        <button class="topic-tile" type="button" data-topic="family-parenting" aria-pressed="false"><span class="topic-icon" aria-hidden="true">family_restroom</span><span class="topic-label">Family &amp; Parenting</span></button>
+        <button class="topic-tile" type="button" data-topic="culture" aria-pressed="false"><span class="topic-icon" aria-hidden="true">public</span><span class="topic-label">Culture &amp; Experiences</span></button>
         <button class="topic-tile" type="button" data-topic="travel" aria-pressed="false"><span class="topic-icon" aria-hidden="true">flight</span><span class="topic-label">Travel</span></button>
       </div>
       <button class="button-primary topic-picker-submit" type="submit" disabled>Update My Feed</button>
