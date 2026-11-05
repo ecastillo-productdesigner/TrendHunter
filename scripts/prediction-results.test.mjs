@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readPredictionResults,previewPredictionResults,markPredictionResultSeen} from '../site/prediction-result-state.js';
+import { readFile } from 'node:fs/promises';
+import {RESULT_CATALOG,readPredictionResults,previewPredictionResults,markPredictionResultSeen} from '../site/prediction-result-state.js';
 import {unnoticedPeopleUpdates,acknowledgePeopleUpdates,showPeopleUpdatesPreview,peoplePreviewPending} from '../site/people-update-state.js';
 const memory=()=>{const values=new Map();return {getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};};
 test('preview preserves actual call direction and acknowledging retains resolved history',()=>{
@@ -13,9 +14,24 @@ test('preview preserves actual call direction and acknowledging retains resolved
  previewPredictionResults(storage,{'retail-events':'out'});assert.equal(readPredictionResults(storage)[0].seen,false);
 });
 test('empty preview uses separate sample records and failed storage never claims success',()=>{
- const storage=memory();previewPredictionResults(storage);assert.equal(readPredictionResults(storage).length,3);
+ const storage=memory();previewPredictionResults(storage);assert.equal(readPredictionResults(storage).length,3);assert.ok(readPredictionResults(storage).some(result=>result.call==='out'));
  assert.equal(previewPredictionResults({setItem(){throw Error('blocked');}}),false);
  assert.deepEqual(readPredictionResults({getItem(){return 'broken';}}),[]);
+});
+test('each outcome links to a complete fictional article with the normal page panels',async()=>{
+ for(const result of RESULT_CATALOG){
+  const page=await readFile(new URL('../site/'+result.articleHref,import.meta.url),'utf8');
+  assert.match(page,/class="page-layout"/);
+  assert.match(page,/class="rail-left rail-left--trend"/);
+  assert.match(page,/class="rail-right"/);
+  assert.match(page,/class="predictions-panel"/);
+  assert.match(page,/src="answers\.js/);
+  assert.match(page,/src="comments\.js/);
+  assert.match(page,/More Stories/);
+  assert.match(page,/Fictional prediction follow-up/);
+  assert.doesNotMatch(page,/Read the original story|View your prediction results/);
+  assert.match(page,/This article and its outcome are made up for the prototype/);
+ }
 });
 test('Following acknowledges only followed releases; a later followed person adds updates',()=>{
  const storage=memory();assert.deepEqual(unnoticedPeopleUpdates(storage,[]),[]);

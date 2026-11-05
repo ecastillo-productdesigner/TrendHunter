@@ -57,7 +57,8 @@
     const outcomes = window.predictionResultHistory?.() || [];
     const resolvedIds = new Set(outcomes.map(item=>item.id));
     const open = active.filter(item=>!resolvedIds.has(item.id));
-    return [...open, ...outcomes, ...(active.length ? resolvedExamples : [])];
+    // The explicit outcome examples replace the older undetailed history fixture.
+    return [...open, ...outcomes, ...(active.length && !outcomes.length ? resolvedExamples : [])];
   }
 
   function authorHistory() {

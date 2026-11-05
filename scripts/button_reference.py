@@ -36,6 +36,7 @@ def button_inventory(project):
             registry[key]['sources'].append(source.name)
     # These controls are created with document.createElement rather than template markup.
     generated = [
+        ('badge-award-close','Close earned badge','<span class="drawer-close-icon"></span>','badge-celebration.js'),
         ('prediction-share','Share prediction','<span class="trend-card-share-icon"></span>','share.js'),
         ('profile-prediction-filter','All','All','profile-predictions.js'),
         ('button-primary prediction-shortcut','Make your call','Make your call<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>','predictions.js'),

@@ -1,6 +1,7 @@
 import { MEMBER_BADGES, READER_BADGE_EXAMPLES, currentMemberBadge } from './badge-catalog.js?v=4';
 import { BADGE_STATE_KEY, readBadgeState, recordBadgeActivity, setBadgeVisible } from './badge-state.js?v=3';
 import { escapeText } from './story-card.js';
+import { celebrateBadge, dismissBadgeCelebration } from './badge-celebration.js?v=3';
 
 const day = () => new Intl.DateTimeFormat('en-CA',{ timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit' }).format(new Date());
 const signedIn = () => window.isSignedIn?.() === true;
@@ -114,34 +115,6 @@ function showBadges(id) {
   }
 }
 
-function celebrateBadge(badge) {
-  requestAnimationFrame(() => {
-    const burst = document.createElement('div'); burst.className = 'badge-confetti'; burst.setAttribute('role','status');
-    document.querySelectorAll('.badge-confetti').forEach(previous=>previous.remove());
-    const message = document.createElement('span'); message.className = 'visually-hidden'; message.textContent = `You earned ${badge.name}.`;
-    burst.append(message);
-    const award = document.createElement('div'); award.className = 'badge-confetti-medal';
-    award.setAttribute('aria-hidden','true');
-    award.innerHTML = `<span class="badge-medal badge-medal--award" data-badge="${badge.id}"><span class="material-symbols-outlined">${badge.icon}</span><span class="badge-award-name">${escapeText(badge.name)}</span></span>`;
-    burst.append(award);
-    for (let i=0;i<24;i++) {
-      const particle = document.createElement('span'); particle.className = 'badge-confetti-particle';
-      particle.setAttribute('aria-hidden','true');
-      const angle = i / 24 * Math.PI * 2, reach = 110 + i%4 * 18;
-      const x = Math.cos(angle)*reach, y = Math.sin(angle)*reach;
-      particle.style.setProperty('--particle-x',`${x}px`);
-      particle.style.setProperty('--particle-mid-x',`${x*.75}px`);
-      particle.style.setProperty('--particle-y',`${y}px`);
-      particle.style.setProperty('--particle-end-y',`${y+55}px`);
-      particle.style.setProperty('--particle-mid-turn',`${i*23}deg`);
-      particle.style.setProperty('--particle-turn',`${i*37}deg`);
-      burst.append(particle);
-    }
-    document.body.append(burst);
-    const duration = parseFloat(getComputedStyle(burst).getPropertyValue('--motion-badge-celebration')) || 2500;
-    setTimeout(()=>burst.remove(),duration + 100);
-  });
-}
 function record(activity, announce = true) {
   if (!signedIn()) return;
   let result; try { result = recordBadgeActivity(localStorage,activity,day()); } catch { return; }
@@ -186,7 +159,7 @@ if (readingEnd && storyPage && 'IntersectionObserver' in window) {
   observer.observe(readingEnd);
 }
 document.addEventListener('auth-change',() => { recordCalls(); recordSaves(false); renderProfileBadges(); });
-document.addEventListener('member-badges-reset',() => { renderProfileBadges(); document.querySelectorAll('.badge-confetti').forEach(burst=>burst.remove()); });
+document.addEventListener('member-badges-reset',() => { renderProfileBadges(); dismissBadgeCelebration(); });
 window.addEventListener('storage',event => { if (event.key === BADGE_STATE_KEY) renderProfileBadges(); });
 recordCalls(); recordSaves(false); record({ type:'refresh' },false); renderProfileBadges();
 const sharedBadge = new URLSearchParams(location.search).get('badge');
