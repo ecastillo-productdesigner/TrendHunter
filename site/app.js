@@ -187,6 +187,7 @@ function syncArticleMemberLinks() {
     }
   });
 }
+if (articleBody) import('./article-feedback.js?v=1').then(({ installArticleFeedback }) => installArticleFeedback(articleBody));
 syncArticleMemberLinks();
 document.addEventListener('auth-change', syncArticleMemberLinks);
 
@@ -385,6 +386,7 @@ function renderBookmarkRevisit() {
   }));
   track.scrollLeft = 0;
 }
+if (document.querySelector('[data-followed-carousel]')) import('./feed-followed-carousel.js?v=1');
 renderBookmarkRevisit();
 document.addEventListener('saved-stories-change', renderBookmarkRevisit);
 document.addEventListener('auth-change', renderBookmarkRevisit);

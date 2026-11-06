@@ -72,6 +72,15 @@
       ]
     },
     {
+      "key": "button:article-feedback-reason",
+      "classes": "article-feedback-reason",
+      "tag": "button",
+      "name": "article-feedback-reason",
+      "sources": [
+        "article-feedback.js"
+      ]
+    },
+    {
       "key": "button:article-share",
       "classes": "article-share",
       "tag": "button",
@@ -796,6 +805,7 @@
       "name": "Try again",
       "sources": [
         "account-setup.js",
+        "article-feedback.js",
         "following-intro.js",
         "prediction-results.js"
       ]
@@ -1750,6 +1760,15 @@
       "name": "Edit Profile",
       "sources": [
         "userprofile.html"
+      ]
+    },
+    {
+      "key": "button:edit-profile-button article-feedback-cancel",
+      "classes": "edit-profile-button article-feedback-cancel",
+      "tag": "button",
+      "name": "Cancel",
+      "sources": [
+        "article-feedback.js"
       ]
     },
     {
@@ -2986,6 +3005,15 @@
         "feed.html",
         "feed.html",
         "feed.html"
+      ]
+    },
+    {
+      "key": "button:recommendation-feedback-button article-feedback-vote",
+      "classes": "recommendation-feedback-button article-feedback-vote",
+      "tag": "button",
+      "name": "thumb_",
+      "sources": [
+        "article-feedback.js"
       ]
     },
     {

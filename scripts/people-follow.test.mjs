@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PEOPLE_FOLLOW_KEY, readFollowing, setPersonFollowed, followingPeople } from '../site/people-follow-state.js';
+import { PEOPLE_FOLLOW_KEY, readFollowing, setPersonFollowed, followingPeople, unfollowedCreators } from '../site/people-follow-state.js';
 import { collectionFollowActivity, interleaveCollectionFollows } from '../site/people-collection-activity.js';
 import { peopleReleaseIds, unnoticedPeopleUpdates, acknowledgePeopleUpdates } from '../site/people-update-state.js';
 import { editorialStoryCard } from '../site/story-card.js';
@@ -54,4 +54,16 @@ test('collection follows are capped at three and separated by other activity', (
   assert.deepEqual(rows.filter(row => row.startsWith('story')), primary);
   assert.deepEqual(interleaveCollectionFollows([],follows), ['follow-a']);
   assert.deepEqual(interleaveCollectionFollows(['story'],follows), ['story','follow-a']);
+});
+
+
+test('Who to Follow excludes followed writers, fills available alternatives, and empties when exhausted', () => {
+  const initial = unfollowedCreators([]);
+  assert.equal(initial.length, 6);
+  assert.ok(initial.every(person => person?.kind === 'creators'));
+  const next = unfollowedCreators(initial.slice(0, 2).map(person => person.id));
+  assert.ok(next.every(person => person.kind === 'creators' && !initial.slice(0, 2).some(followed => followed.id === person.id)));
+  const all = unfollowedCreators([], 100);
+  assert.equal(new Set(all.map(person => person.id)).size, all.length);
+  assert.deepEqual(unfollowedCreators(all.map(person => person.id)), []);
 });

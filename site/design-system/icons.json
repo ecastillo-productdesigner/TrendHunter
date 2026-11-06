@@ -1518,7 +1518,7 @@
     {
       "name": "Recommended for you",
       "group": "Predictions and signals",
-      "note": "Two direct 20px thumbs beside a 16px label, with 48px targets. Thumbs match the label color and toggle off on a second click. Feedback saves in place; future For You visits apply the choice. Reset Recommendations restores hidden cards. No information popup.",
+      "note": "Two direct 20px thumbs beside an Editorial H4 label, with 48px targets. The down thumb aligns with the visible bookmark edge below. Thumbs match the label color and toggle off on a second click. Feedback saves in place; future For You visits apply the choice. Reset Recommendations restores hidden cards. No information popup.",
       "states": [
         "Thumbs"
       ]
@@ -1534,7 +1534,7 @@
     {
       "name": "Recommendation feedback",
       "group": "Answers feedback",
-      "note": "24px outlined Material Symbols thumb_up and thumb_down in 48px circular targets. Labels and tooltips remain More like this and Not interested. Feedback behavior is unchanged.",
+      "note": "20px outlined Material Symbols thumb_up and thumb_down in 48px targets. Recommendations use More like this and Not interested; article feedback uses Thumbs up and Thumbs down before the members-exploring strip, with optional reasons in a modal.",
       "states": [
         "More like this",
         "Not interested"

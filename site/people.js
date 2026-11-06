@@ -2,7 +2,7 @@ import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpd
 import { PEOPLE } from './people-data.js';
 import { COLLECTIONS } from './collection-data.js';
 import { COLLECTION_STORIES } from './collection-story-data.js';
-import { PEOPLE_FOLLOW_KEY, PEOPLE_FOLLOW_INTENT, readFollowing, setPersonFollowed, followingPeople } from './people-follow-state.js';
+import { PEOPLE_FOLLOW_KEY, PEOPLE_FOLLOW_INTENT, readFollowing, setPersonFollowed, followingPeople, unfollowedCreators } from './people-follow-state.js?v=2';
 import { editorialStoryCard, escapeText } from './story-card.js?v=2';
 import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
@@ -36,9 +36,14 @@ function personRow(person, following) {
 // Curated fictional writers reuse the same profile destinations and live Follow
 // controls as the Following directory; each portrait represents a distinct writer.
 const suggestedCreators = document.querySelector('[data-who-to-follow]');
-if (suggestedCreators) {
-  suggestedCreators.innerHTML = ['daniel-reed', 'maya-chen', 'owen-brooks', 'nadia-patel', 'sofia-morales', 'marcus-bennett'].map(id => {
-    const person = catalog.get(id);
+let suggestionsKey = '';
+function renderSuggestedCreators(ids) {
+  if (!suggestedCreators) return;
+  const people = unfollowedCreators(ids), key = people.map(person => person.id).join(',');
+  suggestedCreators.closest('.feed-who-to-follow-slot').hidden = !people.length;
+  if (key === suggestionsKey) return;
+  suggestionsKey = key;
+  suggestedCreators.innerHTML = people.map(person => {
     return `<li><article class="who-to-follow-card"><a class="who-to-follow-profile" href="${person.href}"><img class="who-to-follow-avatar" src="${person.image}" alt="" loading="lazy"><span class="who-to-follow-name">${escapeText(person.name)}</span><span class="who-to-follow-role">${escapeText(person.role)}</span></a><button class="edit-profile-button person-follow-button" type="button" data-person-follow="${person.id}" aria-pressed="false" aria-label="Follow ${escapeText(person.name)}">Follow</button></article></li>`;
   }).join('');
 }
@@ -102,6 +107,7 @@ function updatePeopleSignals(acknowledge = false) {
 function render() {
   const ids = signedIn() ? follows() : [];
   const people = followingPeople(ids, kind);
+  renderSuggestedCreators(ids);
   document.querySelectorAll('[data-person-follow]').forEach(button => {
     const person = catalog.get(button.dataset.personFollow);
     if (!person) return;
@@ -137,7 +143,13 @@ function setFollowing(person, following) {
   let saved;
   try { saved = setPersonFollowed(localStorage,person.id,following); } catch { saved = null; }
   if (!saved) { window.showToast('Couldn’t save this follow. Please try again.'); return; }
+  const suggestion = document.activeElement?.closest('.who-to-follow-card');
+  const index = suggestion ? [...suggestedCreators.children].indexOf(suggestion.closest('li')) : -1;
   render();
+  if (index >= 0) {
+    const buttons = suggestedCreators.querySelectorAll('button');
+    (buttons[Math.min(index, buttons.length - 1)] || document.querySelector('.feed-navigation-tab[aria-selected="true"]'))?.focus({ preventScroll: true });
+  }
   if (following) window.showToast(`You’re following ${escapeText(person.name)}. <a class="toast-link" href="feed.html#following">View Following</a>`);
   else window.showToast(`You’re no longer following ${escapeText(person.name)}. <button type="button" class="toast-link" data-person-undo="${person.id}">Undo</button>`);
 }

@@ -17,3 +17,8 @@ export function setPersonFollowed(storage, id, following) {
 export function followingPeople(ids, kind = 'all') {
   return ids.map(id => PEOPLE.find(person => person.id === id)).filter(person => person && (kind === 'all' || person.kind === kind));
 }
+export function unfollowedCreators(ids, limit = 6) {
+  const followed = new Set(ids);
+  const priority = [...new Set(['daniel-reed', 'maya-chen', 'owen-brooks', 'nadia-patel', 'sofia-morales', 'marcus-bennett', ...PEOPLE.filter(person => person.kind === 'creators').map(person => person.id)])];
+  return priority.filter(id => !followed.has(id)).slice(0, limit).map(id => PEOPLE.find(person => person.id === id));
+}
