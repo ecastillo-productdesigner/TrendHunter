@@ -115,8 +115,8 @@ function renderAlert(){
   const predictionPage = document.body.classList.contains('page-predictions');
   const list = document.querySelector('.page-feed .feed-tab-panel > .feed-list') || document.querySelector('.page-predictions .predictions-page');
   if (!list) return;
-  // Feed alerts show unread results; the dedicated page keeps the full history accessible.
-  const alertResults = predictionPage ? results : unread;
+  // Both banners and the bolt dot represent unread results, not saved history.
+  const alertResults = unread;
   let slot=list.querySelector('.prediction-results-alert-slot');
   if(!slot){slot=document.createElement(predictionPage ? 'div' : 'li');slot.className='prediction-results-alert-slot';list.prepend(slot);}
   slot.hidden=!available||!alertResults.length;
