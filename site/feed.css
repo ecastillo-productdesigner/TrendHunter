@@ -4549,8 +4549,8 @@ body:has(.edit-profile-modal[open]) {
   min-width: 0;
 }
 .collection-interest-signal { display: flex; align-items: center; gap: var(--spacing-layout-md); }
-.collection-interest-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-component-sm) var(--spacing-layout-md); }
-.collection-interest-value { font: var(--type-detail-h1); color: var(--color-interest-rising); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.collection-interest-metadata { font: var(--type-helper); color: var(--color-text-dim); }
+.collection-interest-value { font: var(--type-card-headline); color: var(--color-interest-rising); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .collection-interest-summary[data-direction="falling"] .collection-interest-value { color: var(--color-interest-falling); }
 .collection-interest-period, .collection-interest-updated { font: var(--type-helper); color: var(--color-text-dim); white-space: nowrap; }
 .collection-interest-bar > .masthead-actions { flex-shrink: 0; margin-left: auto; }

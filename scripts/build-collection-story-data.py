@@ -61,10 +61,7 @@ for collection in collections:
           <div class="collection-interest-bar">
             <div class="collection-interest-summary" data-direction="{collection['direction']}" role="group" aria-label="Seven-day interest change · prototype sample" title="Illustrative interest change compared with the previous 7 days. Prototype sample, not live analytics.">
               <div class="collection-interest-signal"><strong class="collection-interest-value">{signed}</strong>{momentum_markup(collection['direction'], collection['href'], value=collection['percentage'])}</div>
-              <div class="collection-interest-metadata">
-                <p class="collection-interest-updated">Updated {hours}hr{'s' if hours != 1 else ''} ago</p>
-                <p class="collection-interest-period">Interest · 7 days</p>
-              </div>
+              <p class="collection-interest-metadata"><span class="collection-interest-updated">Updated {hours}hr{'s' if hours != 1 else ''} ago</span> · <span class="collection-interest-period">Interest · 7 days</span></p>
             </div>
             <div class="masthead-actions">
               <button class="follow-button" type="button" data-collection-follow="{collection['href']}" aria-pressed="false">Follow</button>
