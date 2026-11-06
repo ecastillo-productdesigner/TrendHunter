@@ -6334,7 +6334,11 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 }
 .page-feed:not([data-feed-view="for-you"]) .prediction-results-alert-slot { display: none; }
 .nav-predictions { position: relative; }
-.prediction-results-dot { position: absolute; top: var(--spacing-component-sm); right: var(--spacing-component-xs); }
+.prediction-results-dot {
+  position: absolute;
+  top: calc(50% - var(--spacing-component-sm));
+  left: calc(50% + var(--spacing-component-xs));
+}
 .prediction-outcome-source, .prediction-outcome-date { font: var(--type-helper); color: var(--color-text-dim); }
 .prediction-outcome-summary { font: var(--type-body); }
 .prediction-outcome-dialog { width: min(calc(100vw - var(--spacing-layout-xl)),var(--layout-prediction-compact-card-width)); max-height: calc(100dvh - var(--spacing-layout-xl)); margin: auto; padding: 0; border: var(--stroke-default) solid var(--prediction-card-border); border-radius: var(--radius-md); color: var(--prediction-card-copy); background: var(--prediction-card-background-card); }
