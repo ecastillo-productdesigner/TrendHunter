@@ -4107,13 +4107,8 @@ body:has(.edit-profile-modal[open]) {
   color: var(--color-text-primary);
 }
 
-/* Keep the final collection word and interest indicator together when possible. */
-.masthead-title-tail {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-component-sm);
-}
+/* Channel headings retain their existing final-word wrapper. */
+.masthead-title-tail { display: inline-flex; align-items: center; flex-wrap: wrap; gap: var(--spacing-component-sm); }
 
 .masthead-description {
   font-family: var(--type-font-body);
@@ -4538,8 +4533,32 @@ body:has(.edit-profile-modal[open]) {
 }
 
 /* ===========================
-   Collection page — Follow + share row
+   Collection page — interest summary, Follow + Share
 =========================== */
+.collection-interest-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-layout-md) var(--spacing-layout-lg);
+  margin-top: var(--spacing-component-ms);
+}
+.collection-interest-summary {
+  display: grid;
+  flex: 1 1 min-content;
+  gap: var(--spacing-component-xs);
+  min-width: 0;
+}
+.collection-interest-signal { display: flex; align-items: center; gap: var(--spacing-layout-md); }
+.collection-interest-metadata { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-component-sm) var(--spacing-layout-md); }
+.collection-interest-value { font: var(--type-detail-h1); color: var(--color-interest-rising); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.collection-interest-summary[data-direction="falling"] .collection-interest-value { color: var(--color-interest-falling); }
+.collection-interest-period, .collection-interest-updated { font: var(--type-helper); color: var(--color-text-dim); white-space: nowrap; }
+.collection-interest-bar > .masthead-actions { flex-shrink: 0; margin-left: auto; }
+@media (max-width: 599px) {
+  .collection-interest-summary { flex-basis: 100%; }
+  .collection-interest-bar > .masthead-actions { margin-left: 0; }
+}
+
 .masthead-actions {
   display: flex;
   align-items: center;

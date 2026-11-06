@@ -1,13 +1,6 @@
-import { COLLECTIONS, interestLevel } from './collection-data.js';
+import { COLLECTIONS, interestLevel } from './collection-data.js?v=2';
 import { COLLECTION_STORIES } from './collection-story-data.js';
 
-// Fixed illustrative updates, not measured interest or publication timestamps.
-const sampleHours = new Map([
-  ['collection-evidence-based-beauty.html', 1],
-  ['collection-back-to-school-transitions.html', 2],
-  ['collection-retailtainment-hubs.html', 3],
-  ['collection-clean-living-control.html', 4],
-]);
 // A few sample update batches include additional context stories to expand.
 const expandableSamples = new Set([
   'collection-retailtainment-hubs.html',
@@ -18,9 +11,8 @@ const expandableSamples = new Set([
 ]);
 
 export function changingCollectionUpdates() {
-  return COLLECTIONS.map((collection, index) => ({
+  return COLLECTIONS.map(collection => ({
     ...collection,
-    hours: sampleHours.get(collection.href) || index % 6 + 1,
     stories: COLLECTION_STORIES.filter(story => story.collections.includes(collection.href)).slice(0, 3),
     moreStories: expandableSamples.has(collection.href) ? COLLECTION_STORIES.filter(story => story.collections.includes(collection.href)).slice(3) : [],
   })).filter(collection => collection.stories.length);

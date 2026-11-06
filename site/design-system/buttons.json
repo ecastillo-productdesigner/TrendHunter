@@ -75,7 +75,7 @@
       "key": "button:article-share",
       "classes": "article-share",
       "tag": "button",
-      "name": "Share",
+      "name": "Share collection",
       "sources": [
         "collection-adventure-active-travel.html",
         "collection-ai-everyday-life.html",

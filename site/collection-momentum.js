@@ -40,6 +40,8 @@ export function bindCollectionMomentum(root = document, view = window) {
       card.querySelector('.changing-collection-value').textContent = `${direction === 'falling' ? '−' : '+'}${value}%`;
       card.parentElement.dataset.percentage = value;
     }
+    const summary = element.closest('.collection-interest-summary');
+    if (summary) summary.querySelector('.collection-interest-value').textContent = `${direction === 'falling' ? '−' : '+'}${value}%`;
   }
 
   function register() {

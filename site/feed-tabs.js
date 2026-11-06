@@ -2,7 +2,7 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
 
 import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
-import { bindChangingCollections } from './changing-collections.js?v=3';
+import { bindChangingCollections } from './changing-collections.js?v=4';
 
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {

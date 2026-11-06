@@ -1,6 +1,7 @@
 """Build the followed-collection feed from actual prototype collection/story pages."""
 from pathlib import Path
 import html, json, re
+from collection_momentum import momentum_markup
 site = Path(__file__).resolve().parents[1] / 'site'
 source = (site / 'collection-data.js').read_text()
 collections = json.loads(re.search(r'Object.freeze\((\[.*?\])\.map', source, re.S)[1])
@@ -46,6 +47,32 @@ for href, groups in membership.items():
 for collection in collections:
     path = site / collection['href']
     page = path.read_text()
+    # Collection identity stays free of chevrons. The inline summary shares the
+    # catalog's fixed illustrative score and recency with What’s Changing.
+    masthead = re.search(r'<header class="masthead">.*?</header>', page, re.S)
+    assert masthead, f'Missing collection masthead: {path.name}'
+    description = re.search(r'<p class="masthead-description">.*?</p>', masthead[0], re.S)
+    assert description, f'Missing collection description: {path.name}'
+    hours = collection['hours']
+    signed = ('−' if collection['direction'] == 'falling' else '+') + str(collection['percentage']) + '%'
+    header = f'''<header class="masthead">
+          <div class="masthead-title-row"><h1 class="masthead-title">{html.escape(collection['name'])}</h1></div>
+          {description[0]}
+          <div class="collection-interest-bar">
+            <div class="collection-interest-summary" data-direction="{collection['direction']}" role="group" aria-label="Seven-day interest change · prototype sample" title="Illustrative interest change compared with the previous 7 days. Prototype sample, not live analytics.">
+              <div class="collection-interest-signal"><strong class="collection-interest-value">{signed}</strong>{momentum_markup(collection['direction'], collection['href'], value=collection['percentage'])}</div>
+              <div class="collection-interest-metadata">
+                <p class="collection-interest-updated">Updated {hours}hr{'s' if hours != 1 else ''} ago</p>
+                <p class="collection-interest-period">Interest · 7 days</p>
+              </div>
+            </div>
+            <div class="masthead-actions">
+              <button class="follow-button" type="button" data-collection-follow="{collection['href']}" aria-pressed="false">Follow</button>
+              <button class="article-share" type="button" aria-label="Share collection"><span class="article-share-icon" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </header>'''
+    page = page[:masthead.start()] + header + page[masthead.end():]
     rows = ''.join(
         f'<li><a href="{story["href"]}" class="story-lockup"><img class="story-lockup-image" src="{story["image"]}" alt="" loading="lazy"><h3 class="story-lockup-headline">{html.escape(story["title"])}</h3></a></li>'
         for story in stories if collection['href'] in story['collections']

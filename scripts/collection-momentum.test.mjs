@@ -72,10 +72,21 @@ test('a collection panel keeps its visible score and sortable value in sync with
   const fixture = previewFixture();
   const score = { textContent: '' };
   const item = { dataset: {} };
-  fixture.elements[0].closest = () => ({ querySelector: () => score, parentElement: item });
+  fixture.elements[0].closest = selector => selector === '.changing-collection-card' ? { querySelector: () => score, parentElement: item } : null;
   bindCollectionMomentum(fixture.root, fixture.view);
   assert.equal(score.textContent, '+22%');
   fixture.tick();
   assert.equal(score.textContent, '+27%');
   assert.equal(item.dataset.percentage, 27);
+});
+
+test('a collection detail summary updates its visible percentage together with its chevrons', () => {
+  const fixture = previewFixture();
+  const score = { textContent: '' };
+  fixture.elements[0].closest = selector => selector === '.collection-interest-summary' ? { querySelector: () => score } : null;
+  bindCollectionMomentum(fixture.root, fixture.view);
+  assert.equal(score.textContent, '+22%');
+  fixture.tick();
+  assert.equal(score.textContent, '+27%');
+  assert.equal(fixture.elements[0].dataset.level, 2);
 });
