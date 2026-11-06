@@ -9,7 +9,7 @@ export function predictionCallPanels(result) {
   </div>`;
 }
 
-// Shared by the popup and the persistent results below the mobile voting deck.
+// The popup and normal profile history share the same comparison content.
 export function predictionResultContent(result, prefix = 'prediction-outcome') {
   return `<header class="prediction-outcome-card-header"><h2 id="${prefix}-heading">${result.call === result.outcome ? 'You called it' : 'Your call was different'}</h2></header>
     <h3 class="prediction-outcome-question" id="${prefix}-question">${esc(result.text)}</h3>

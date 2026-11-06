@@ -26,20 +26,6 @@ import { feedViews, resolveFeedView } from './feed-view-state.js';
   originalItems.forEach((item, index) => {
     const card = item.querySelector(':scope > .trend-card');
     if (!card) return;
-    const createAccount = document.createElement('a');
-    createAccount.className = 'trend-card-create-account';
-    createAccount.href = 'login.html';
-    createAccount.setAttribute('aria-label', 'Create an account');
-    createAccount.title = 'Create an account';
-    const createIcon = document.createElement('span');
-    createIcon.className = 'material-symbols-outlined';
-    createIcon.setAttribute('aria-hidden', 'true');
-    createIcon.textContent = 'add_circle';
-    createAccount.append(createIcon);
-    createAccount.addEventListener('click', () => {
-      try { sessionStorage.setItem('return-to', `feed.html${location.search}${location.hash}`); } catch {}
-    });
-    card.append(createAccount);
     const collection = card.querySelector('.trend-card-collection');
     const href = card.querySelector('.trend-card-title-link')?.getAttribute('href');
     const hours = index % 6 + 1;

@@ -21,6 +21,15 @@ function filters() {
 function personRow(person, following) {
   return `<li><a class="people-profile" href="${person.href}"><img class="people-avatar" src="${person.image}" alt="" width="48" height="48"><span><span class="people-name">${escapeText(person.name)}</span><span class="people-role">${person.kind === 'creators' ? 'Content creator' : 'Community member'}</span></span></a><button class="edit-profile-button person-follow-button" type="button" data-person-follow="${person.id}" aria-label="${following ? 'Unfollow' : 'Follow'} ${escapeText(person.name)}" aria-pressed="${following}">${following ? 'Following' : 'Follow'}</button></li>`;
 }
+// Curated fictional writers reuse the same profile destinations and live Follow
+// controls as the Following directory; each portrait represents a distinct writer.
+const suggestedCreators = document.querySelector('[data-who-to-follow]');
+if (suggestedCreators) {
+  suggestedCreators.innerHTML = ['daniel-reed', 'maya-chen', 'owen-brooks', 'nadia-patel', 'sofia-morales', 'marcus-bennett'].map(id => {
+    const person = catalog.get(id);
+    return `<li><article class="who-to-follow-card"><a class="who-to-follow-profile" href="${person.href}"><img class="who-to-follow-avatar" src="${person.image}" alt="" loading="lazy"><span class="who-to-follow-name">${escapeText(person.name)}</span><span class="who-to-follow-role">${escapeText(person.role)}</span></a><button class="edit-profile-button person-follow-button" type="button" data-person-follow="${person.id}" aria-pressed="false" aria-label="Follow ${escapeText(person.name)}">Follow</button></article></li>`;
+  }).join('');
+}
 function emptyState(hasFollows) {
   if (!signedIn()) return '<div class="profile-empty-state people-empty"><h2 class="profile-empty-title">Follow people who inspire your next hunt</h2><p class="profile-empty-copy"><a class="profile-empty-link" href="login.html" data-following-login>Sign in</a> to follow creators and community members</p></div>';
   if (hasFollows) return `<div class="profile-empty-state"><h2 class="profile-empty-title">No ${kind === 'creators' ? 'creators' : 'members'} followed yet</h2><p class="profile-empty-copy">Follow people to see their public activity here</p></div>`;

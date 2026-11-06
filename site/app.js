@@ -337,6 +337,59 @@ window.addEventListener('pageshow', renderSavedStories);
 syncBookmarks();
 document.addEventListener('collection-stories-rendered', syncBookmarks);
 
+// Resurface real saves once within For You. Older saves lead; no sample saves
+// or invented movement metadata are inserted into the reader's library.
+const bookmarkRevisitSlot = document.querySelector('.feed-bookmarks-slot');
+let bookmarkRevisitKey = '';
+function renderBookmarkRevisit() {
+  if (!bookmarkRevisitSlot) return;
+  const track = bookmarkRevisitSlot.querySelector('.bookmark-revisit-track');
+  const seen = new Set();
+  const stories = isSignedIn() ? getSaved().slice().reverse().filter(story => {
+    if (!story || typeof story.title !== 'string' || typeof story.image !== 'string'
+      || !/^(?:trend(?:-[a-z0-9-]+)?|prediction-analysis-[a-z0-9-]+)\.html$/.test(story.href)
+      || !/^assets\/[a-z0-9/_ .-]+\.(?:png|jpe?g|webp|svg)$/i.test(story.image)
+      || seen.has(story.href)) return false;
+    seen.add(story.href);
+    return true;
+  }).slice(0, 6) : [];
+  bookmarkRevisitSlot.hidden = stories.length === 0;
+  const key = JSON.stringify(stories);
+  if (key === bookmarkRevisitKey) return;
+  bookmarkRevisitKey = key;
+  track.replaceChildren(...stories.map((story, index) => {
+    const item = document.createElement('li');
+    item.setAttribute('role', 'group');
+    item.setAttribute('aria-label', `Bookmark ${index + 1} of ${stories.length}`);
+    const article = document.createElement('article');
+    article.className = 'bookmark-revisit-card';
+    const media = document.createElement('a');
+    media.className = 'bookmark-revisit-media';
+    media.href = story.href;
+    media.setAttribute('aria-label', `Read: ${story.title}`);
+    const image = document.createElement('img');
+    image.src = story.image;
+    image.alt = '';
+    image.loading = 'lazy';
+    media.append(image);
+    const heading = document.createElement('h3');
+    heading.className = 'bookmark-revisit-headline';
+    const link = document.createElement('a');
+    link.className = 'trend-card-title-link';
+    link.href = story.href;
+    link.textContent = story.title;
+    heading.append(link);
+    article.append(media, heading);
+    item.append(article);
+    return item;
+  }));
+  track.scrollLeft = 0;
+}
+renderBookmarkRevisit();
+document.addEventListener('saved-stories-change', renderBookmarkRevisit);
+document.addEventListener('auth-change', renderBookmarkRevisit);
+window.addEventListener('pageshow', renderBookmarkRevisit);
+
 function saveBookmark(bookmark) {
   const previousMessage = toastMessage.innerHTML;
   setStorySaved(bookmark, true);

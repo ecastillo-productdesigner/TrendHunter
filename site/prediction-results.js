@@ -50,7 +50,7 @@ function reveal(id,origin) {
     dialog=document.createElement('dialog');dialog.className='prediction-outcome-dialog';document.body.append(dialog);
     dialog.setAttribute('aria-labelledby','prediction-outcome-heading');
     dialog.setAttribute('aria-describedby','prediction-outcome-question prediction-outcome-sample');
-    dialog.addEventListener('animationend',event=>{if(event.animationName==='badge-coin-reveal'&&!flipping)celebrateVisibleResult();});
+    dialog.addEventListener('animationend',event=>{if(event.animationName==='prediction-card-load'&&!flipping)celebrateVisibleResult();});
     dialog.addEventListener('click',event=>{if(event.target===dialog||event.target.closest('[data-result-close]'))dialog.close();});
     dialog.addEventListener('close',()=>{ flipVersion++; flipAnimation?.cancel(); flipping=false; pendingCelebration=null; clearConfetti(); const target=trigger?.isConnected?trigger:document.querySelector('.feed-navigation-tab[aria-selected="true"]');target?.focus({preventScroll:true}); });
   }
@@ -100,14 +100,24 @@ function renderAlert(){
     }
     else {bolt.href='predictions.html';delete bolt.dataset.resultReveal;bolt.removeAttribute('aria-haspopup');bolt.setAttribute('aria-label',available&&unread.length?`Predict the Next Trend, ${unread.length} new result${unread.length===1?'':'s'}`:'Predict the Next Trend');}
   });
-  const list=document.querySelector('.page-feed .feed-tab-panel > .feed-list');if(!list)return;
+  const predictionPage = document.body.classList.contains('page-predictions');
+  const list = document.querySelector('.page-feed .feed-tab-panel > .feed-list') || document.querySelector('.page-predictions .predictions-page');
+  if (!list) return;
+  // Feed alerts show unread results; the dedicated page keeps the full history accessible.
+  const alertResults = predictionPage ? results : unread;
   let slot=list.querySelector('.prediction-results-alert-slot');
-  if(!slot){slot=document.createElement('li');slot.className='prediction-results-alert-slot';list.prepend(slot);}
-  slot.hidden=!available||!unread.length;
-  if(!unread.length)return;
-  // These records remain fictional prototype results; the reveal and analysis label them as samples.
-  slot.innerHTML=`<section class="prediction-results-alert" aria-label="Prediction results, prototype sample"><div class="prediction-results-art" aria-hidden="true"><span class="prediction-results-art-card prediction-results-art-card--out"><span>?</span></span><span class="prediction-results-art-card prediction-results-art-card--in"><span>?</span></span></div><h2 class="trend-card-headline">${unread.length===1?'Your prediction results are in':`${unread.length} of your predictions have results`}</h2><button class="button-primary" type="button" data-result-reveal="${unread[0].id}">See ${unread.length===1?'result':'results'}</button></section>`;
+  if(!slot){slot=document.createElement(predictionPage ? 'div' : 'li');slot.className='prediction-results-alert-slot';list.prepend(slot);}
+  slot.hidden=!available||!alertResults.length;
+  if(!alertResults.length)return;
   list.prepend(slot);
+  const signature = alertResults.map(result => result.id).join('|');
+  if (slot.dataset.resultsSignature === signature) return;
+  slot.dataset.resultsSignature = signature;
+  // These records remain fictional prototype results; the reveal and analysis label them as samples.
+  const singular = alertResults.length === 1;
+  const sheetCount = Math.min(alertResults.length, 3);
+  const sheets = Array.from({length: sheetCount}, (_, index) => `<span class="prediction-results-art-sheet">${index === sheetCount - 1 ? `<strong class="prediction-results-art-number">${alertResults.length}</strong><span class="prediction-results-art-label">${singular ? 'Result is in' : 'Results are in'}</span>` : ''}</span>`).join('');
+  slot.innerHTML=`<section class="prediction-results-alert" aria-label="Prediction results, prototype sample"><div class="prediction-results-copy"><h2 class="trend-card-headline">${singular?'Your prediction result is in':`${alertResults.length} of your predictions have results`}</h2><button class="button-primary" type="button" data-result-reveal="${(unread[0] || alertResults[0]).id}">See ${singular?'result':'results'}</button></div><div class="prediction-results-art" aria-hidden="true">${sheets}</div></section>`;
 }
 document.addEventListener('click',event=>{
   const revealButton=event.target.closest('[data-result-reveal]');if(revealButton){
@@ -118,28 +128,11 @@ document.addEventListener('click',event=>{
   if(event.target.closest('[data-result-previous]')) flipResult(-1);
 });
 let focusedResult;
-let pageResultsObserver;
 function renderPageResults() {
-  const section = document.querySelector('[data-prediction-page-results]');
-  if (!section) return;
-  const results = records();
-  // A resolved prediction cannot be offered for another call, even when the
-  // sample result was enabled without a session vote on this device.
-  window.setPredictionPageResults?.(results);
-  pageResultsObserver?.disconnect();
-  section.hidden = results.length === 0;
-  section.querySelector('[data-prediction-page-result-list]').innerHTML = results.map(result => {
-    const prefix = `prediction-page-${result.id}`;
-    return `<li><article class="prediction-outcome-reveal prediction-outcome-page-card" data-result-id="${esc(result.id)}" aria-labelledby="${prefix}-heading ${prefix}-question">${predictionResultContent(result, prefix)}<span class="visually-hidden">Fictional prototype prediction result, not a live verified outcome.</span></article></li>`;
-  }).join('');
-  if (!('IntersectionObserver' in window)) return;
-  pageResultsObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (entry.isIntersecting && entry.intersectionRatio >= .5) {
-      acknowledge(entry.target.dataset.resultId);
-      pageResultsObserver.unobserve(entry.target);
-    }
-  }), {threshold: .5});
-  section.querySelectorAll('[data-result-id]').forEach(card => pageResultsObserver.observe(card));
+  if (!document.body.classList.contains('page-predictions')) return;
+  // Results open from the top banner. Only their IDs are needed to keep resolved
+  // predictions out of the live voting deck; the banner itself marks nothing read.
+  window.setPredictionPageResults?.(records());
 }
 function watchProfileResults(){
   if(!document.querySelector('[data-people-manage]')||location.hash!=='#predictions')return;
