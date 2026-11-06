@@ -6,6 +6,8 @@ import { PEOPLE_FOLLOW_KEY, PEOPLE_FOLLOW_INTENT, readFollowing, setPersonFollow
 import { editorialStoryCard, escapeText } from './story-card.js?v=2';
 import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
+import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed } from './collection-follow-state.js';
+import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=2';
 
 // Following and activity are browser-only prototype data. Member saves are never broadcast.
 const feed = document.querySelector('[data-people-feed]');
@@ -16,6 +18,14 @@ let kind = new URLSearchParams(location.search).get('people') || 'all';
 if (!['all', 'creators', 'members'].includes(kind)) kind = 'all';
 const signedIn = () => window.isSignedIn?.() === true;
 const follows = () => { try { return readFollowing(localStorage); } catch { return []; } };
+const followedCollections = () => { try { return readFollowedCollections(localStorage); } catch { return []; } };
+const introPicks = { people: new Set(), collections: new Set() };
+const introPreview = () => Boolean(feed) && isFollowingIntro(location.search);
+function leaveIntro() {
+  const url = new URL(location.href);
+  url.searchParams.delete('following-intro');
+  history.replaceState(history.state, '', url);
+}
 
 function filters() {
   return `<div class="people-filters" role="group" aria-label="Filter followed people">${[['all','All'],['creators','Creators'],['members','Community']].map(([value,label]) => `<button class="profile-prediction-filter" type="button" data-people-filter="${value}" aria-pressed="${kind === value}">${label}</button>`).join('')}</div>`;
@@ -102,8 +112,14 @@ function render() {
   });
   if (feed) {
     const activity = signedIn() && people.length ? activities(people) : '';
-    feed.innerHTML = filters() + (activity ? `<ol class="people-activity-list">${activity}</ol>` : emptyState(ids.length > 0));
-    if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = `${people.length} followed people in ${{all:'All',creators:'Creators',members:'Community'}[kind]}`;
+    feed.innerHTML = signedIn() && introPreview()
+      ? followingIntroMarkup({ people: [...introPicks.people], collections: [...introPicks.collections], preview: true })
+      : signedIn() && !ids.length
+        ? followingIntroMarkup({ collections: followedCollections() })
+        : filters() + (activity ? `<ol class="people-activity-list">${activity}</ol>` : emptyState(ids.length > 0));
+    if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = introPreview()
+      ? `${introPicks.people.size} people and ${introPicks.collections.size} collections selected. Follow suggestions for collections, authors, and community members.`
+      : `${people.length} followed people in ${{all:'All',creators:'Creators',members:'Community'}[kind]}`;
   }
   if (management) management.innerHTML = filters() + (people.length ? `<ul class="people-list">${people.map(person => personRow(person,true)).join('')}</ul>` : emptyState(ids.length > 0));
   updatePeopleSignals();
@@ -126,6 +142,31 @@ function setFollowing(person, following) {
   else window.showToast(`You’re no longer following ${escapeText(person.name)}. <button type="button" class="toast-link" data-person-undo="${person.id}">Undo</button>`);
 }
 document.addEventListener('click', event => {
+  const introPerson = event.target.closest('[data-intro-person-follow]');
+  const introCollection = event.target.closest('[data-intro-collection-follow]');
+  if (introPerson || introCollection) {
+    const control = introPerson || introCollection;
+    if (control.getAttribute('aria-pressed') === 'true') return;
+    if (!signedIn()) return;
+    const id = introPerson ? control.dataset.introPersonFollow : control.dataset.introCollectionFollow;
+    let saved;
+    try { saved = introPerson ? setPersonFollowed(localStorage, id, true) : setCollectionFollowed(localStorage, id, true); } catch { saved = null; }
+    if (!saved) { window.showToast?.('Couldn’t save this follow. Please try again.'); return; }
+    (introPerson ? introPicks.people : introPicks.collections).add(id);
+    const name = introPerson ? catalog.get(id).name : collections.get(id).name;
+    document.dispatchEvent(new Event('collection-updates-preview'));
+    render();
+    feed.querySelector(`[${introPerson ? 'data-intro-person-follow' : 'data-intro-collection-follow'}="${id}"]`)?.focus({ preventScroll: true });
+    window.showToast?.(`You’re following ${escapeText(name)}.`);
+    return;
+  }
+  if (event.target.closest('[data-following-intro-done]')) {
+    const view = introPicks.people.size ? 'following' : 'collections';
+    leaveIntro();
+    const tab = document.querySelector(`[data-feed-tabs] [data-feed-view="${view}"]`);
+    tab?.click(); tab?.focus({ preventScroll: true });
+    return;
+  }
   const startCall = event.target.closest('[data-following-make-call]');
   if (startCall && signedIn()) {
     const choices = document.getElementById(startCall.getAttribute('aria-controls'));
@@ -185,17 +226,23 @@ try {
     setFollowing(person,true);
   }
 } catch {}
-document.addEventListener('feed-view-selected', event => { if (event.detail === 'following') { updatePeopleSignals(true); render(); } });
+document.addEventListener('following-intro-preview', () => {
+  kind = 'all'; introPicks.people.clear(); introPicks.collections.clear(); render();
+});
+document.addEventListener('feed-view-selected', event => {
+  if (event.detail === 'following') { if (!introPreview()) updatePeopleSignals(true); render(); }
+  else if (introPreview()) { leaveIntro(); introPicks.people.clear(); introPicks.collections.clear(); }
+});
 document.addEventListener('people-updates-preview',()=>updatePeopleSignals());
 document.addEventListener('click',event => { if(event.target.closest('[data-profile-section="following"]')) updatePeopleSignals(true); });
 document.addEventListener('auth-change', render);
 document.addEventListener('prediction-call', render);
-window.addEventListener('storage', event => { if ([PEOPLE_FOLLOW_KEY,PEOPLE_UPDATES_SEEN_KEY,PEOPLE_UPDATES_PREVIEW_KEY,null].includes(event.key)) render(); });
+window.addEventListener('storage', event => { if ([PEOPLE_FOLLOW_KEY,FOLLOWED_COLLECTIONS_KEY,PEOPLE_UPDATES_SEEN_KEY,PEOPLE_UPDATES_PREVIEW_KEY,null].includes(event.key)) render(); });
 window.addEventListener('pageshow', () => {
   kind = new URLSearchParams(location.search).get('people') || 'all';
   if (!['all','creators','members'].includes(kind)) kind = 'all';
-  if (location.hash === '#following') updatePeopleSignals(true);
+  if (location.hash === '#following' && !introPreview()) updatePeopleSignals(true);
   render();
 });
-if (location.hash === '#following') updatePeopleSignals(true);
+if (location.hash === '#following' && !introPreview()) updatePeopleSignals(true);
 render();

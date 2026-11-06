@@ -4,7 +4,7 @@ import json
 import re
 from collection_momentum import momentum_markup
 
-ANCHOR_CLASSES = {'button-primary', 'pill-button', 'auth-button', 'nav-login', 'nav-predictions', 'drawer-link', 'answer-outline-button', 'prediction-card-more', 'nav-back', 'channel-button', 'trend-card-collection', 'share-sheet-email', 'avatar'}
+ANCHOR_CLASSES = {'button-primary', 'pill-button', 'auth-button', 'nav-login', 'nav-predictions', 'drawer-link', 'answer-outline-button', 'prediction-card-more', 'nav-back', 'channel-button', 'trend-card-collection', 'share-sheet-email', 'avatar', 'feature-announcement-link'}
 
 
 def button_inventory(project):

@@ -796,6 +796,7 @@
       "name": "Try again",
       "sources": [
         "account-setup.js",
+        "following-intro.js",
         "prediction-results.js"
       ]
     },
@@ -1765,6 +1766,8 @@
         "contributor-ryan-brennan.html",
         "contributor-sofia-morales.html",
         "contributor.html",
+        "following-intro.js",
+        "following-intro.js",
         "people.js",
         "people.js",
         "reader-alex-rivera.html",
@@ -1790,6 +1793,15 @@
       "classes": "feature-announcement-close",
       "tag": "button",
       "name": "Dismiss Following announcement",
+      "sources": [
+        "feed.html"
+      ]
+    },
+    {
+      "key": "a:feature-announcement-link",
+      "classes": "feature-announcement-link",
+      "tag": "a",
+      "name": "Try it.",
       "sources": [
         "feed.html"
       ]
@@ -2777,6 +2789,15 @@
         "trend.html",
         "trend.html",
         "trend.html"
+      ]
+    },
+    {
+      "key": "a:pill-button following-start-collection",
+      "classes": "pill-button following-start-collection",
+      "tag": "a",
+      "name": "pill-button following-start-collection",
+      "sources": [
+        "following-intro.js"
       ]
     },
     {

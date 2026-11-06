@@ -30,6 +30,23 @@ export function installFeatureAnnouncement() {
     sync();
     document.querySelector('.feed-navigation-tab[aria-selected="true"]')?.focus({ preventScroll: true });
   });
+  announcement?.querySelector('a').addEventListener('click', event => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
+    event.preventDefault();
+    const destination = 'feed.html?following-intro=1#following';
+    if (window.isSignedIn?.() !== true) {
+      try { sessionStorage.setItem('return-to', destination); } catch {}
+      location.assign('login.html');
+      return;
+    }
+    const url = new URL(location.href);
+    url.searchParams.set('following-intro', '1');
+    url.searchParams.delete('people');
+    history.replaceState(history.state, '', url);
+    document.dispatchEvent(new Event('following-intro-preview'));
+    const tab = document.querySelector('[data-feed-tabs] [data-feed-view="following"]');
+    tab?.click(); tab?.focus({ preventScroll: true });
+  });
   document.addEventListener('feed-view-selected', sync);
   window.addEventListener('pageshow', () => { readDismissal(); sync(); });
   window.addEventListener('storage', event => {

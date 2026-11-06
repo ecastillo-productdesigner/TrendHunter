@@ -55,6 +55,10 @@
   --settings-panel-bg: #343841;   /* color/background/bg-overlay */
   --settings-panel-text: #FFFFFF;
 
+  /* Feature announcement — fixed mint and near-black in both themes. */
+  --feature-announcement-bg: #34D399;
+  --feature-announcement-text: #0F0F0F;
+
   /* Color — Border */
   --color-accent-foreground: #BEFC4F; /* links and meaningful accents on the theme surface */
   --color-border-default: rgba(255, 255, 255, 0.25);
@@ -980,18 +984,18 @@ button {
   outline-offset: calc(-1 * var(--spacing-component-xs));
 }
 .feed-tab-panel { min-width: 0; }
-/* Inline feature announcement — fixed purple and white in both themes. */
+/* Inline feature announcement — fixed mint and near-black in both themes. */
 .feature-announcement {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-component-ms);
   padding: var(--spacing-component-ms);
-  padding-inline-end: calc(var(--icon-size-2xl) + var(--spacing-component-xs) + var(--spacing-component-ms));
+  padding-inline-end: calc(var(--spacing-component-xs) + (var(--icon-size-2xl) + var(--icon-size-md)) / 2 + var(--spacing-component-ms));
   min-height: calc(var(--icon-size-2xl) + var(--spacing-component-xs) * 2);
   border-radius: var(--radius-md);
-  background: var(--color-background-callout);
-  color: var(--color-text-on-media);
+  background: var(--feature-announcement-bg);
+  color: var(--feature-announcement-text);
 }
 .feature-announcement[hidden] { display: none; }
 .feature-announcement-icon {
@@ -1001,6 +1005,9 @@ button {
 }
 .feature-announcement-copy { flex: 1; min-width: 0; font: var(--type-body); }
 .feature-announcement-copy strong { font-weight: var(--type-weight-bold); }
+.feature-announcement-link { color: inherit; white-space: nowrap; text-decoration: underline; text-underline-offset: var(--stroke-focus); transition: color var(--motion-hover) ease; }
+.feature-announcement-link:hover { color: var(--color-icon-on-media); }
+.feature-announcement-link:focus-visible { outline: var(--stroke-focus) solid var(--feature-announcement-text); outline-offset: var(--spacing-component-xs); }
 .feature-announcement-close {
   position: absolute;
   inset-block-start: var(--spacing-component-xs);
@@ -1018,7 +1025,7 @@ button {
 .feature-announcement-close .auth-close-icon { background-color: currentColor; }
 .feature-announcement-close:hover { color: var(--color-icon-on-media); }
 .feature-announcement-close:focus-visible {
-  outline: var(--stroke-focus) solid var(--color-text-on-media);
+  outline: var(--stroke-focus) solid var(--feature-announcement-text);
   outline-offset: var(--spacing-component-xs);
 }
 .feature-announcement[data-dismissing] {
@@ -6162,6 +6169,17 @@ body:has(.auth-prompt[open]) {
 .people-prediction .prediction-results-list { margin: 0; overflow: visible; padding: 0; }
 .people-prediction .prediction-result { margin: 0; padding: 0; border: 0; }
 .people-empty .profile-empty-link { color: var(--color-text-body-link); text-decoration: underline; }
+.following-start { display: grid; gap: var(--spacing-layout-lg); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); }
+.following-start-collection { flex: 1; min-width: 0; }
+.following-start .following-start-collection-list { gap: var(--spacing-component-ms); margin-top: var(--spacing-layout-md); }
+.following-start .following-start-collection-row { padding: 0; border: 0; }
+.following-start :is(.following-start-collection, .people-profile):is(:hover, :focus-visible) { color: var(--color-text-primary); }
+.following-start .people-name { color: var(--color-text-tertiary); }
+.following-start .people-profile:is(:hover, :focus-visible) .people-name { color: var(--color-text-primary); }
+.following-start .person-follow-button { min-height: var(--icon-size-2xl); }
+.following-start .people-list:not(.following-start-collection-list) { gap: 0; }
+.following-start .people-list > li:last-child { border-bottom: 0; padding-bottom: 0; }
+.following-start .people-role { font: var(--type-editorial-h6); text-transform: uppercase; }
 .profile .filter-tabs:has([data-profile-section="following"]) { overflow-x: auto; scrollbar-width: none; }
 .profile [data-profile-section="following"] { flex-shrink: 0; }
 @media (min-width: 600px) { .feed-following-directory { padding: 0; } }
