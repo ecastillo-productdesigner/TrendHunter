@@ -92,10 +92,10 @@ import { bindChangingCollections } from './changing-collections.js?v=3';
     sortFilters.hidden = !moving;
     const sortControl = sortFilters.querySelector('[data-trend-sort]');
     const movement = 'change';
-    const sortLabel = `${sort === 'biggest' ? 'Biggest' : 'Smallest'} ${movement}`;
-    const nextSortLabel = `${sort === 'biggest' ? 'Smallest' : 'Biggest'} ${movement}`;
-    sortControl.textContent = sortLabel;
-    sortControl.setAttribute('aria-label', `${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
+    const sortLabel = `${sort === 'biggest' ? 'biggest' : 'smallest'} ${movement}`;
+    const nextSortLabel = `${sort === 'biggest' ? 'smallest' : 'biggest'} ${movement}`;
+    sortControl.textContent = `Filter by ${sortLabel}`;
+    sortControl.setAttribute('aria-label', `Filter by ${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
     if (moving) changing.sort(sort);
 
     const order = moving ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';

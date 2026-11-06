@@ -6055,7 +6055,7 @@ body:has(.auth-prompt[open]) {
 .changing-collections { margin: 0 var(--spacing-component-ms) var(--spacing-layout-lg); }
 .changing-collections[hidden] { display: none; }
 .changing-collections-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-layout-lg); list-style: none; padding: 0; }
-.changing-collection-card { display: grid; gap: var(--spacing-component-ms); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); background: var(--color-background-surface); }
+.changing-collection-card { display: grid; gap: var(--spacing-component-ms); padding: var(--spacing-layout-lg) var(--spacing-layout-lg) var(--spacing-layout-md); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); background: var(--color-background-surface); }
 .changing-collection-header { display: grid; grid-template-columns: minmax(0, 1fr) max-content; align-items: start; gap: var(--spacing-layout-md); }
 .changing-collection-updated, .changing-collection-period { font: var(--type-helper); color: var(--color-text-dim); }
 .changing-collection-updated { margin-top: var(--spacing-component-sm); }
