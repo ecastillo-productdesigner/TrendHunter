@@ -6172,6 +6172,7 @@ body:has(.auth-prompt[open]) {
 .following-start { display: grid; gap: var(--spacing-page-2xl); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); }
 .following-start .following-start-header { min-height: 0; padding-bottom: 0; }
 .following-start > section > h3 { text-align: center; }
+.following-start-exhausted { margin-top: var(--spacing-layout-md); color: var(--color-text-dim); font: var(--type-helper); text-align: center; }
 .following-start-collection { flex: 1; min-width: 0; }
 .following-start .following-start-collection { flex-wrap: nowrap; }
 .following-start .following-start-collection-list { gap: var(--spacing-component-ms); margin-top: var(--spacing-layout-md); }
@@ -6181,7 +6182,8 @@ body:has(.auth-prompt[open]) {
 .following-start .people-profile:is(:hover, :focus-visible) .people-name { color: var(--color-text-primary); }
 .following-start .person-follow-button { padding: var(--spacing-component-xs) var(--spacing-component-ms); }
 .following-start .people-list:not(.following-start-collection-list) { gap: 0; }
-.following-start .people-list > li:last-child { border-bottom: 0; padding-bottom: 0; }
+.following-start .people-list > li { border-bottom: 0; }
+.following-start .people-list > li:last-child { padding-bottom: 0; }
 .following-start .people-role { font: var(--type-editorial-h6); text-transform: uppercase; }
 .profile .filter-tabs:has([data-profile-section="following"]) { overflow-x: auto; scrollbar-width: none; }
 .profile [data-profile-section="following"] { flex-shrink: 0; }

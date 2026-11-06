@@ -7,7 +7,7 @@ import { editorialStoryCard, escapeText } from './story-card.js?v=2';
 import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed } from './collection-follow-state.js';
-import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=3';
+import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=4';
 
 // Following and activity are browser-only prototype data. Member saves are never broadcast.
 const feed = document.querySelector('[data-people-feed]');
@@ -113,9 +113,9 @@ function render() {
   if (feed) {
     const activity = signedIn() && people.length ? activities(people) : '';
     feed.innerHTML = signedIn() && introPreview()
-      ? followingIntroMarkup({ people: [...introPicks.people], collections: [...introPicks.collections], preview: true })
+      ? followingIntroMarkup({ people: ids, collections: followedCollections(), retainPeople: [...introPicks.people], retainCollections: [...introPicks.collections], preview: true })
       : signedIn() && !ids.length
-        ? followingIntroMarkup({ collections: followedCollections() })
+        ? followingIntroMarkup({ collections: followedCollections(), retainCollections: [...introPicks.collections] })
         : filters() + (activity ? `<ol class="people-activity-list">${activity}</ol>` : emptyState(ids.length > 0));
     if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = introPreview()
       ? `${introPicks.people.size} people and ${introPicks.collections.size} collections selected. Follow suggestions for collections, authors, and community members.`
