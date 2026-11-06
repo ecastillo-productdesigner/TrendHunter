@@ -428,9 +428,9 @@
   --motion-card-nudge: 150ms;
   --motion-card-fly: 460ms;
   --motion-results-fade: 400ms;
-  --motion-card-enter: 800ms;
-  --motion-card-enter-stagger: 240ms;
-  --motion-card-enter-blur: 20px;
+  --motion-card-enter: 1200ms;
+  --motion-card-enter-stagger: 320ms;
+  --motion-card-enter-blur: 4px;
   --motion-ease-card-enter: cubic-bezier(0.25, 0.1, 0.25, 1);
   --motion-ease-card-settle: cubic-bezier(0.3, 0, 0.5, 0.9);
   --motion-ease-card-fly: cubic-bezier(0.37, 0, 0.63, 1);
@@ -5865,6 +5865,7 @@ body:has(.auth-prompt[open]) {
 }
 @keyframes prediction-card-load {
   from { opacity: 0; filter: blur(var(--motion-card-enter-blur)); }
+  30% { filter: blur(0); }
   to { opacity: 1; filter: blur(0); }
 }
 @media (prefers-reduced-motion: reduce) {
