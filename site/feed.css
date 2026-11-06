@@ -977,6 +977,57 @@ button {
   outline-offset: calc(-1 * var(--spacing-component-xs));
 }
 .feed-tab-panel { min-width: 0; }
+/* Inline feature announcement — fixed purple and white in both themes. */
+.feature-announcement {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-component-ms);
+  padding: var(--spacing-component-ms);
+  border-radius: var(--radius-md);
+  background: var(--color-background-callout);
+  color: var(--color-text-on-media);
+}
+.feature-announcement[hidden] { display: none; }
+.feature-announcement-icon {
+  flex: none;
+  font-size: var(--icon-size-xl);
+  line-height: 1;
+}
+.feature-announcement-copy { flex: 1; min-width: 0; font: var(--type-body); }
+.feature-announcement-copy strong { font-weight: var(--type-weight-bold); }
+.feature-announcement-link {
+  color: inherit;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: var(--stroke-focus);
+  transition: color var(--motion-hover) ease;
+}
+.feature-announcement-link:hover { color: var(--buttons-primary-bg-hover); }
+.feature-announcement-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--motion-hover) ease;
+}
+.feature-announcement-close .auth-close-icon { background-color: currentColor; }
+.feature-announcement-close:hover { background: var(--color-white-10); }
+.feature-announcement :is(a, button):focus-visible {
+  outline: var(--stroke-focus) solid var(--color-text-on-media);
+  outline-offset: var(--spacing-component-xs);
+}
+.feed-tab-panel > .feature-announcement { margin: var(--spacing-layout-lg) var(--spacing-component-ms) 0; }
+@media (min-width: 600px) {
+  .feed-tab-panel > .feature-announcement { margin: 0 0 var(--spacing-layout-lg); }
+}
+@media (max-width: 599px) {
+  .feature-announcement { gap: var(--spacing-component-sm); }
+  .feature-announcement-close { align-self: flex-start; }
+}
 .page-feed:not([data-feed-view="for-you"]) .site-footer { display: none; }
 .feed-tab-panel:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);

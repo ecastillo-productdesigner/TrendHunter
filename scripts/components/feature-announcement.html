@@ -1,0 +1,11 @@
+<article class="ds-panel ds-component" id="feature-announcement">
+  <h3>New feature announcement · Following</h3>
+  <p>A dismissible announcement sits at the top of For You / Discover, before the prediction-result banner and first story. It is hidden in other feed tabs. Try it opens Following and focuses its tab for signed-in readers. Signed-out readers go through sign-in and return to Following. Dismissal is remembered in this browser for this feature version. Prototype settings → Show new feature restores it and returns to the top of the feed, including when opened from another page.</p>
+  <p>Uses --color-background-callout (purple) and --color-text-on-media (white) in both themes, --type-body with --type-weight-bold for the introduction, --radius-md (10px), --spacing-component-ms (12px) padding/gaps, and --spacing-layout-lg (24px) after the banner. The celebration emoji is decorative at --icon-size-xl (32px). Close uses the existing 20px mask inside a --icon-size-2xl (48px) target. Phone gaps use --spacing-component-sm (8px). Try it stays together on one line. The link stays underlined and changes to --buttons-primary-bg-hover on hover. Close uses --color-white-10 on hover; both controls have a white keyboard focus ring. All visual values reuse existing DS tokens. Preview controls below are isolated from account state.</p>
+  <aside class="feature-announcement" aria-label="Following announcement preview" data-ds-hover-preview>
+    <span class="feature-announcement-icon" aria-hidden="true">🎉</span>
+    <p class="feature-announcement-copy"><strong>Introducing Following.</strong> Keep up with your favorite trendsetters and fellow hunters. See their latest stories, predictions, and the collections they follow. <a class="feature-announcement-link" href="../feed.html#following">Try it.</a></p>
+    <button class="feature-announcement-close" type="button" aria-label="Dismiss Following announcement"><span class="auth-close-icon" aria-hidden="true"></span></button>
+  </aside>
+  <p><a class="ds-text-link" href="../feed.html">Open the feed</a> · Use Show new feature in prototype settings to replay.</p>
+</article>

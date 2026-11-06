@@ -4,6 +4,7 @@
 const settingsButton = document.querySelector('.settings-fab');
 const settingsPanel = document.querySelector('.settings-panel');
 const businessBanner = import('./thb2b-banner.js').then(({ installBusinessBanner }) => installBusinessBanner());
+const featureAnnouncement = import('./feature-announcement.js').then(({ installFeatureAnnouncement }) => installFeatureAnnouncement());
 
 if (settingsButton && settingsPanel) {
   // Fetch the cancel icon now, so it's ready the first time the panel opens
@@ -26,6 +27,17 @@ if (settingsButton && settingsPanel) {
   showBusinessBanner.addEventListener('click', async () => {
     setOpen(false);
     (await businessBanner)?.show();
+  });
+
+  const showNewFeature = document.createElement('button');
+  showNewFeature.className = 'settings-panel-item';
+  showNewFeature.type = 'button';
+  showNewFeature.dataset.setting = 'show-new-feature';
+  showNewFeature.textContent = 'Show new feature';
+  showBusinessBanner.before(showNewFeature);
+  showNewFeature.addEventListener('click', async () => {
+    setOpen(false);
+    (await featureAnnouncement).show();
   });
 
   // Escape or a click anywhere else closes it
@@ -51,22 +63,6 @@ if (settingsButton && settingsPanel) {
 
   settingsPanel.querySelector('[data-setting="deal"]').addEventListener('click', () => deal(false));
   settingsPanel.querySelector('[data-setting="deal-new-user"]').addEventListener('click', () => deal(true));
-
-  // Read more on phones and tablets: open the story page (default) or the bottom sheet, to compare both
-  const readMoreItem = settingsPanel.querySelector('[data-setting="read-more"]');
-  if (readMoreItem) {
-    const getMode = () => {
-      try { return sessionStorage.getItem('read-more-mode') || 'page'; } catch (e) { return 'page'; }
-    };
-    const showMode = () => {
-      readMoreItem.textContent = `Read more opens: ${getMode() === 'sheet' ? 'Sheet' : 'Story page'}`;
-    };
-    showMode();
-    readMoreItem.addEventListener('click', () => {
-      try { sessionStorage.setItem('read-more-mode', getMode() === 'sheet' ? 'page' : 'sheet'); } catch (e) {}
-      showMode();
-    });
-  }
 
   // Open Osano — the cookie consent tool isn't part of the prototype yet
   settingsPanel.querySelector('[data-setting="osano"]').addEventListener('click', () => setOpen(false));

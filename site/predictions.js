@@ -2,7 +2,7 @@
 // The cover shows until the reader makes their first call. Calls are kept for this tab
 // (sessionStorage), so the panel picks up where it left off on every page.
 
-// Every prediction has its own matching story; page and sheet modes use the same link.
+// Every prediction has its own matching story, opened as a regular article page.
 // Vote splits are fixed illustrative percentages for this prototype, not live totals.
 const PREDICTIONS = [
   {
@@ -225,11 +225,6 @@ const CALLS_KEY = 'prediction-calls';
 const DECK_KEY = 'prediction-deck';
 const PROFILE_EXAMPLE_CALLS_KEY = 'profile-comparison-example-calls';
 const RETURN_KEY = 'predictions-return'; // read by app.js on the story page
-const READ_MORE_MODE_KEY = 'read-more-mode'; // 'page' (default) or 'sheet', set from the prototype settings
-
-const readMoreMode = () => {
-  try { return sessionStorage.getItem(READ_MORE_MODE_KEY) || 'page'; } catch (e) { return 'page'; }
-};
 const VISIBLE_CARDS = 3;
 
 // Timings match the CSS motion tokens
@@ -625,11 +620,9 @@ if (stack) {
   // Buttons on the top card
   stack.addEventListener('click', (event) => {
     // Remember the Read more origin at every viewport so article headings match the flow.
-    // The prototype settings can switch phones and tablets to a bottom sheet instead.
     const more = event.target.closest('.prediction-card-more');
     if (more) {
       const fromResults = more.classList.contains('prediction-result-more');
-      const desktop = window.matchMedia('(min-width: 960px)').matches;
       try {
         sessionStorage.setItem(RETURN_KEY, JSON.stringify({
           to: new URL(more.getAttribute('href'), location.href).pathname,
@@ -637,12 +630,6 @@ if (stack) {
           source: fromResults ? 'results' : 'card',
         }));
       } catch (e) {}
-      if (desktop) return;
-      if (readMoreMode() === 'sheet') {
-        event.preventDefault();
-        openArticleSheet(more.getAttribute('href'));
-        return;
-      }
       return;
     }
     const flip = event.target.closest('[data-flip]');
