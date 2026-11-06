@@ -7,7 +7,7 @@ import { editorialStoryCard, escapeText } from './story-card.js?v=2';
 import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed } from './collection-follow-state.js';
-import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=4';
+import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=6';
 
 // Following and activity are browser-only prototype data. Member saves are never broadcast.
 const feed = document.querySelector('[data-people-feed]');

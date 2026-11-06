@@ -36,9 +36,9 @@ export function followingIntroMarkup({ people = [], collections = [], retainPeop
   const group = (id, title, items, itemMarkup, empty) => `<section aria-labelledby="following-start-${id}"><h3 class="type-h4-caps" id="following-start-${id}">${title}</h3>${items.length ? `<ul class="people-list${id === 'collections' ? ' following-start-collection-list' : ''}">${items.map(itemMarkup).join('')}</ul>` : `<p class="following-start-exhausted">${empty}</p>`}</section>`;
   return `<section class="following-start" aria-labelledby="following-start-heading">
     <header class="profile-empty-state following-start-header"><h2 class="profile-empty-title" id="following-start-heading">${retainPeople.length ? 'Your Following is taking shape' : 'You’re not following anyone yet'}</h2><p class="profile-empty-copy">Follow collections, authors, and community members to keep up with what interests you. Here are some recommendations:</p></header>
-    ${group('collections', 'Collections', suggestions.collections, collection, 'You’re following all the collections available right now.')}
-    ${group('authors', 'Authors', suggestions.authors, person, 'You’re following all the authors available right now.')}
-    ${group('members', 'Community members', suggestions.members, person, 'You’re following all the community members available right now.')}
+    ${group('collections', 'Most followed Collections', suggestions.collections, collection, 'You’re following all the collections available right now.')}
+    ${group('authors', 'Most followed Writers', suggestions.authors, person, 'You’re following all the authors available right now.')}
+    ${group('members', 'Most active Community Members', suggestions.members, person, 'You’re following all the community members available right now.')}
     ${picked ? `<button class="button-primary" type="button" data-following-intro-done>${retainPeople.length ? 'See Following' : 'View Collections'}</button>` : ''}
     ${preview ? '<p class="visually-hidden">Prototype introduction: existing follows are preserved and excluded from recommendations. New picks stay visible until you leave this preview.</p>' : ''}
   </section>`.replace(/^ +$/gm, '');
