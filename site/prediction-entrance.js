@@ -27,7 +27,7 @@
       const cover = cards.find(card => card.matches('.prediction-card--onboarding'));
       const calls = cards.filter(card => card.matches('.prediction-card--call'))
         .sort((a, b) => Number(a.dataset.depth) - Number(b.dataset.depth));
-      // Avoid showing the question through the fading cover in the same position.
+      // Keep the question hidden while the opaque cover copy enters.
       const covered = cover ? calls[0] : null;
       const order = target.matches('.prediction-stack')
         ? cover ? [cover, ...calls.slice(1)] : calls
@@ -38,7 +38,7 @@
         card.classList.remove('prediction-enter-pending');
         active.add(card);
         const complete = event => {
-          if (event.target !== card || event.animationName !== 'prediction-card-load') return;
+          if (event.target !== card || !['prediction-card-load', 'prediction-cover-load'].includes(event.animationName)) return;
           clean(card);
           if (card === cover && covered) clean(covered);
           card.removeEventListener('animationend', complete);

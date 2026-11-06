@@ -5863,6 +5863,19 @@ body:has(.auth-prompt[open]) {
   animation: prediction-card-load var(--motion-card-enter) var(--motion-ease-card-enter) backwards;
   animation-delay: calc(var(--prediction-enter-index, 0) * var(--motion-card-enter-stagger));
 }
+/* The cover is an opaque surface. Only its copy fades; rear cards must never
+   show through its face while the entrance opacity is below one. */
+.prediction-card--onboarding.prediction-enter-pending { opacity: 1; }
+.prediction-card--onboarding.prediction-enter-pending > * { opacity: 0; }
+.prediction-card--onboarding.prediction-enter-active { animation-name: prediction-cover-load; }
+.prediction-card--onboarding.prediction-enter-active > * {
+  animation: prediction-cover-copy var(--motion-card-enter) var(--motion-ease-card-enter) both;
+}
+@keyframes prediction-cover-load {
+  from { filter: blur(var(--motion-card-enter-blur)); }
+  30%, to { filter: blur(0); }
+}
+@keyframes prediction-cover-copy { from { opacity: 0; } to { opacity: 1; } }
 @keyframes prediction-card-load {
   from { opacity: 0; filter: blur(var(--motion-card-enter-blur)); }
   30% { filter: blur(0); }
@@ -5871,6 +5884,7 @@ body:has(.auth-prompt[open]) {
 @media (prefers-reduced-motion: reduce) {
   .prediction-enter-pending { opacity: 1; }
   .prediction-enter-active { animation: none; }
+  .prediction-card--onboarding.prediction-enter-active > * { animation: none; }
 }
 
 /* Four quarter-range segments communicate strength on the 0–100 scale. */
