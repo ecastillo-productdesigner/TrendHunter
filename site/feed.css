@@ -5762,6 +5762,27 @@ body:has(.auth-prompt[open]) {
   border-radius: var(--radius-x-sm);
   background: var(--color-background-surface-raised);
 }
+.feed-movers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-layout-md);
+}
+.feed-movers-see-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: var(--icon-size-2xl);
+  min-height: var(--icon-size-2xl);
+  margin-block: calc(-1 * var(--spacing-component-ms));
+  font: var(--type-editorial-h4);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  transition: color var(--motion-hover) ease;
+}
+.feed-movers-see-more:hover { color: var(--color-text-primary); }
+.feed-movers-see-more:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .mover-track {
   display: grid;
   grid-auto-flow: column;
