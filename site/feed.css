@@ -971,7 +971,7 @@ button {
 }
 .feed-navigation-tab:hover,
 .feed-navigation-tab[aria-selected="true"] { color: var(--color-text-primary); }
-.feed-navigation-tab[aria-selected="true"] { border-bottom-color: var(--filter-tab-active); }
+.feed-navigation-tab:is(:hover, :focus-visible, [aria-selected="true"]) { border-bottom-color: var(--filter-tab-active); }
 .feed-navigation-tab:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: calc(-1 * var(--spacing-component-xs));
