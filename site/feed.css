@@ -421,6 +421,9 @@
   --motion-badge-celebration: 2500ms;
   --motion-toast-enter: 450ms;
   --motion-toast-exit: 200ms;
+  --motion-feature-dismiss: 300ms;
+  --motion-feature-dismiss-scale: 1.06;
+  --motion-feature-dismiss-blur: 4px;
   --motion-ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-drawer: 350ms;
   --motion-sheet: 400ms;            /* Read more article sheet sliding up */
@@ -979,10 +982,13 @@ button {
 .feed-tab-panel { min-width: 0; }
 /* Inline feature announcement — fixed purple and white in both themes. */
 .feature-announcement {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--spacing-component-ms);
   padding: var(--spacing-component-ms);
+  padding-inline-end: calc(var(--icon-size-2xl) + var(--spacing-component-xs) + var(--spacing-component-ms));
+  min-height: calc(var(--icon-size-2xl) + var(--spacing-component-xs) * 2);
   border-radius: var(--radius-md);
   background: var(--color-background-callout);
   color: var(--color-text-on-media);
@@ -995,15 +1001,10 @@ button {
 }
 .feature-announcement-copy { flex: 1; min-width: 0; font: var(--type-body); }
 .feature-announcement-copy strong { font-weight: var(--type-weight-bold); }
-.feature-announcement-link {
-  color: inherit;
-  white-space: nowrap;
-  text-decoration: underline;
-  text-underline-offset: var(--stroke-focus);
-  transition: color var(--motion-hover) ease;
-}
-.feature-announcement-link:hover { color: var(--buttons-primary-bg-hover); }
 .feature-announcement-close {
+  position: absolute;
+  inset-block-start: var(--spacing-component-xs);
+  inset-inline-end: var(--spacing-component-xs);
   display: grid;
   place-items: center;
   flex: none;
@@ -1012,13 +1013,24 @@ button {
   color: inherit;
   cursor: pointer;
   border-radius: var(--radius-sm);
-  transition: background-color var(--motion-hover) ease;
+  transition: color var(--motion-hover) ease;
 }
 .feature-announcement-close .auth-close-icon { background-color: currentColor; }
-.feature-announcement-close:hover { background: var(--color-white-10); }
-.feature-announcement :is(a, button):focus-visible {
+.feature-announcement-close:hover { color: var(--color-icon-on-media); }
+.feature-announcement-close:focus-visible {
   outline: var(--stroke-focus) solid var(--color-text-on-media);
   outline-offset: var(--spacing-component-xs);
+}
+.feature-announcement[data-dismissing] {
+  pointer-events: none;
+  animation: feature-announcement-puff var(--motion-feature-dismiss) ease-out both;
+}
+@keyframes feature-announcement-puff {
+  from { opacity: 1; transform: scale(1); filter: blur(0); }
+  to { opacity: 0; transform: scale(var(--motion-feature-dismiss-scale)); filter: blur(var(--motion-feature-dismiss-blur)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feature-announcement[data-dismissing] { animation: none; }
 }
 .feed-tab-panel > .feature-announcement { margin: var(--spacing-layout-lg) var(--spacing-component-ms) 0; }
 @media (min-width: 600px) {
@@ -1026,7 +1038,6 @@ button {
 }
 @media (max-width: 599px) {
   .feature-announcement { gap: var(--spacing-component-sm); }
-  .feature-announcement-close { align-self: flex-start; }
 }
 .page-feed:not([data-feed-view="for-you"]) .site-footer { display: none; }
 .feed-tab-panel:focus-visible {

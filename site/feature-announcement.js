@@ -4,6 +4,7 @@ const dismissalKey = 'feature-announcement-following-v1-dismissed';
 export function installFeatureAnnouncement() {
   const announcement = document.querySelector('[data-feature-announcement]');
   let dismissed = false;
+  let closing = false, closeVersion = 0;
   const readDismissal = () => {
     try { dismissed = localStorage.getItem(dismissalKey) === 'true'; } catch {}
   };
@@ -11,29 +12,25 @@ export function installFeatureAnnouncement() {
 
   const sync = () => {
     if (!announcement) return;
-    announcement.hidden = dismissed || document.body.dataset.feedView !== 'for-you';
-    announcement.querySelector('a').href = window.isSignedIn?.() === true ? 'feed.html#following' : 'login.html';
+    announcement.hidden = (dismissed && !closing) || document.body.dataset.feedView !== 'for-you';
   };
 
-  announcement?.querySelector('button').addEventListener('click', () => {
+  announcement?.querySelector('button').addEventListener('click', async () => {
+    if (closing) return;
+    closing = true;
+    const version = ++closeVersion;
     dismissed = true;
     try { localStorage.setItem(dismissalKey, 'true'); } catch {}
+    announcement.dataset.dismissing = 'true';
+    const puff = announcement.getAnimations().find(animation => animation.animationName === 'feature-announcement-puff');
+    try { await puff?.finished; } catch { /* A restored banner cancels dismissal. */ }
+    if (version !== closeVersion) return;
+    closing = false;
+    delete announcement.dataset.dismissing;
     sync();
     document.querySelector('.feed-navigation-tab[aria-selected="true"]')?.focus({ preventScroll: true });
   });
-  announcement?.querySelector('a').addEventListener('click', event => {
-    if (window.isSignedIn?.() === true) {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
-      event.preventDefault();
-      const tab = document.querySelector('[data-feed-tabs] [data-feed-view="following"]');
-      tab?.click();
-      tab?.focus({ preventScroll: true });
-    } else {
-      try { sessionStorage.setItem('return-to', 'feed.html#following'); } catch {}
-    }
-  });
   document.addEventListener('feed-view-selected', sync);
-  document.addEventListener('auth-change', sync);
   window.addEventListener('pageshow', () => { readDismissal(); sync(); });
   window.addEventListener('storage', event => {
     if (event.key === dismissalKey || event.key === null) { readDismissal(); sync(); }
@@ -42,13 +39,17 @@ export function installFeatureAnnouncement() {
 
   return {
     show() {
+      closeVersion++;
+      closing = false;
+      announcement?.getAnimations().filter(animation => animation.animationName === 'feature-announcement-puff').forEach(animation => animation.cancel());
+      if (announcement) delete announcement.dataset.dismissing;
       dismissed = false;
       try { localStorage.removeItem(dismissalKey); } catch {}
       if (!announcement) { location.assign('feed.html#for-you'); return; }
       document.querySelector('[data-feed-tabs] [data-feed-view="for-you"]')?.click();
       sync();
       announcement.scrollIntoView({ block: 'nearest' });
-      announcement.querySelector('a').focus({ preventScroll: true });
+      announcement.querySelector('button').focus({ preventScroll: true });
     },
   };
 }

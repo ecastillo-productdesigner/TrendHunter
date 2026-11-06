@@ -1795,15 +1795,6 @@
       ]
     },
     {
-      "key": "a:feature-announcement-link",
-      "classes": "feature-announcement-link",
-      "tag": "a",
-      "name": "Try it.",
-      "sources": [
-        "feed.html"
-      ]
-    },
-    {
       "key": "button:feed-navigation-tab",
       "classes": "feed-navigation-tab",
       "tag": "button",
