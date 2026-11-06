@@ -4554,6 +4554,10 @@ body:has(.edit-profile-modal[open]) {
 .collection-interest-summary[data-direction="falling"] .collection-interest-value { color: var(--color-interest-falling); }
 .collection-interest-period, .collection-interest-updated { font: var(--type-helper); color: var(--color-text-dim); white-space: nowrap; }
 .collection-interest-bar > .masthead-actions { flex-shrink: 0; margin-left: auto; }
+@media (min-width: 960px) {
+  .collection-interest-metadata { display: grid; gap: var(--spacing-component-xs); }
+  .collection-interest-separator { display: none; }
+}
 @media (max-width: 599px) {
   .collection-interest-summary { flex-basis: 100%; }
   .collection-interest-bar > .masthead-actions { margin-left: 0; }
