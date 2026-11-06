@@ -4,7 +4,7 @@ import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowe
 import { COLLECTION_READ_KEY, COLLECTION_UPDATES_PREVIEW_KEY, collectionUpdatePreviewPending, dismissCollectionUpdatesPreview, COLLECTION_UPDATES_SEEN_KEY, COLLECTION_CARDS_SEEN_KEY, unreadCollectionStories, unseenCollectionCards, unnoticedCollectionStories, acknowledgeCollectionUpdates, markCollectionCardSeen } from './collection-update-state.js';
 import { interestLevel } from './collection-data.js';
 
-import { editorialStoryCard } from './story-card.js';
+import { editorialStoryCard } from './story-card.js?v=2';
 import { COLLECTION_STORIES } from './collection-story-data.js';
 import { followedStoryList } from './followed-story-filter.js';
 

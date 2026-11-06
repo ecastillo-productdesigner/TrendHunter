@@ -1,11 +1,11 @@
 // One editorial card renderer for followed collections and followed creators.
 export const escapeText = value => String(value).replace(/[&<>"']/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[character]));
-export function editorialStoryCard(story, collection, { isNew = false, context = '', contextHref = '' } = {}) {
+export function editorialStoryCard(story, collection, { isNew = false, context = '', contextHref = '', contextName = '' } = {}) {
   const title = escapeText(story.title);
   const label = `Interest ${collection.direction} ${collection.percentage}%`;
   const level = Math.max(1, Math.min(4, Math.ceil(collection.percentage / 25)));
   return `<li><article class="trend-card trend-card--editorial trend-card--followed">
-    ${context ? `<p class="people-activity-label">${contextHref ? `<a href="${contextHref}">${escapeText(context)}</a>` : escapeText(context)}</p>` : ''}
+    ${context ? `<p class="people-activity-label">${contextName ? `${contextHref ? `<a href="${escapeText(contextHref)}">${escapeText(contextName)}</a>` : escapeText(contextName)} ` : ''}${escapeText(context)}</p>` : ''}
     ${isNew ? '<p class="followed-story-update collection-story-update"><span class="collection-updates-dot" aria-hidden="true"></span><span>New in this collection</span></p>' : ''}
     <a class="trend-card-media trend-card-media-link" href="${story.href}" aria-label="Read: ${title}"><img class="trend-card-image" src="${story.image}" alt="" loading="lazy"></a>
     <a href="${collection.href}" class="trend-card-collection"><span class="trend-card-collection-label">${escapeText(collection.name)}</span><span class="collection-momentum collection-momentum--${collection.direction}" data-level="${level}" role="img" aria-label="${label}" title="${label}"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>

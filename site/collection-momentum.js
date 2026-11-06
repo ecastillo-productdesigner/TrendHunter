@@ -35,6 +35,11 @@ export function bindCollectionMomentum(root = document, view = window) {
     track?.style.setProperty('--momentum-lit', `${level * 25}%`);
     const number = element.querySelector('.collection-momentum-value');
     if (number) number.textContent = `${value}%`;
+    const card = element.closest('.changing-collection-card');
+    if (card) {
+      card.querySelector('.changing-collection-value').textContent = `${direction === 'falling' ? '−' : '+'}${value}%`;
+      card.parentElement.dataset.percentage = value;
+    }
   }
 
   function register() {

@@ -3,6 +3,26 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { feedViews, resolveFeedView } from '../site/feed-view-state.js';
+import { changingCollectionUpdates } from '../site/changing-collections.js';
+import { COLLECTIONS } from '../site/collection-data.js';
+import { COLLECTION_STORIES } from '../site/collection-story-data.js';
+
+test('changing collection panels cover the catalog and link only to their own stories', () => {
+  const updates = changingCollectionUpdates();
+  assert.equal(updates.length, COLLECTIONS.length);
+  assert.equal(new Set(updates.map(collection => collection.href)).size, updates.length);
+  assert.ok(updates.some(collection => collection.direction === 'falling'));
+  for (const collection of updates) {
+    assert.ok(collection.stories.length > 0 && collection.stories.length <= 3);
+    assert.equal(new Set(collection.stories.map(story => story.href)).size, collection.stories.length);
+    for (const story of [...collection.stories, ...collection.moreStories]) {
+      assert.ok(story.collections.includes(collection.href), `${story.href} does not belong to ${collection.href}`);
+      assert.ok(COLLECTION_STORIES.some(original => original.href === story.href));
+    }
+  }
+  assert.ok(updates.some(collection => collection.moreStories.length));
+  assert.ok(updates.some(collection => !collection.moreStories.length));
+});
 
 test('public tabs expose Discover and What’s Changing while private feeds require sign-in', () => {
   assert.deepEqual(Object.values(feedViews(false)), ['Discover', 'What’s Changing']);

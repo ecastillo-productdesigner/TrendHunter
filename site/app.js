@@ -1,5 +1,5 @@
 // Shared behavior for the Trend Hunter pages: theme toggle, bookmarks, toast.
-import('./collection-momentum.js?v=2');
+import('./collection-momentum.js?v=3');
 
 // ===========================
 // Theme toggle — flips data-theme on <html> and remembers the choice

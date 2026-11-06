@@ -2,6 +2,7 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './
 
 import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
+import { bindChangingCollections } from './changing-collections.js?v=3';
 
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
@@ -12,6 +13,8 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
   const tabs = [...navigation.querySelectorAll('[role="tab"]')];
   const list = panel.querySelector('.feed-list');
   const directory = panel.querySelector('.feed-collection-directory');
+  const changingDirectory = panel.querySelector('[data-changing-directory]');
+  const changing = bindChangingCollections(changingDirectory);
   const heading = panel.querySelector('#feed-view-heading');
   const status = panel.querySelector('#feed-view-status');
   const main = panel.closest('main');
@@ -50,8 +53,6 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
       meta.append(collection, update);
     }
   });
-  const movingItems = originalItems.filter(item => item.querySelector(':scope > .trend-card .collection-momentum'));
-  const percentage = item => Number(item.querySelector('.collection-momentum-value').textContent.replace('%', ''));
   let preferences = readSelectedTopics();
   let feedback = readRecommendationFeedback();
   let currentOrder = '';
@@ -82,10 +83,11 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
     }
     panel.setAttribute('aria-labelledby', selected.id);
     heading.textContent = view === 'for-you' && signedIn ? 'Your feed' : names[view];
-    list.hidden = view === 'collections' || view === 'following';
+    list.hidden = view !== 'for-you';
     panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
     const moving = view === 'moving';
+    changingDirectory.hidden = !moving;
     const sort = sortFromUrl();
     sortFilters.hidden = !moving;
     const sortControl = sortFilters.querySelector('[data-trend-sort]');
@@ -94,14 +96,11 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
     const nextSortLabel = `${sort === 'biggest' ? 'Smallest' : 'Biggest'} ${movement}`;
     sortControl.textContent = sortLabel;
     sortControl.setAttribute('aria-label', `${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
+    if (moving) changing.sort(sort);
 
     const order = moving ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
-      const rankedItems = [...movingItems].sort((a,b) => sort === 'smallest' ? percentage(a)-percentage(b) : percentage(b)-percentage(a));
-      const ranked = new Set(rankedItems);
-      const items = moving
-        ? [...rankedItems, ...originalItems.filter(item => !ranked.has(item))]
-        : view === 'for-you' ? placeRecommendations(rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null), recommendationFor) : originalItems;
+      const items = view === 'for-you' ? placeRecommendations(rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null), recommendationFor) : originalItems;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
         if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
@@ -120,7 +119,9 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
     const followedStoryCount = directory.querySelectorAll('[data-followed-stories] > li').length;
     status.textContent = view === 'collections'
       ? `${followedStoryCount} stories from ${followedCount} followed collection${followedCount === 1 ? '' : 's'}`
-      : view === 'following' ? 'Updates from people you follow' : `${count} stories in ${names[view]}${moving ? `, ${sort} percentage ${movement} first` : view === 'for-you' && preferences.length ? ', matching interests first' : ''}`;
+      : view === 'following' ? 'Updates from people you follow'
+      : moving ? `${changing.count} collections in What’s Changing, ${sort} percentage change first. Illustrative data.`
+      : `${count} stories in ${names[view]}${preferences.length ? ', matching interests first' : ''}`;
 
     document.dispatchEvent(new CustomEvent('feed-view-selected', { detail: view }));
     if (updateUrl && location.hash !== `#${view}`) history.pushState(null, '', `#${view}`);

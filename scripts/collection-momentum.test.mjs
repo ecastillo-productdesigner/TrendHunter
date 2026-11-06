@@ -25,6 +25,7 @@ function previewFixture({ reduced = false, offscreen = false } = {}) {
       dataset: {}, isConnected: true,
       classList: { contains: name => name === 'collection-momentum--falling' && direction === 'falling' },
       querySelector: selector => selector.includes('-value') ? number : track,
+      closest: () => null,
       getBoundingClientRect: () => ({ width: 20, height: 14, top: offscreen ? 2000 : 10, bottom: offscreen ? 2014 : 24, left: 10, right: 30 }),
       setAttribute(name, value) { this[name] = value; },
     };
@@ -65,4 +66,16 @@ test('offscreen samples do not advance and reduced motion schedules no updates',
   const reduced = previewFixture({ reduced: true });
   bindCollectionMomentum(reduced.root, reduced.view);
   assert.equal(reduced.timers.size, 0);
+});
+
+test('a collection panel keeps its visible score and sortable value in sync with its chevrons', () => {
+  const fixture = previewFixture();
+  const score = { textContent: '' };
+  const item = { dataset: {} };
+  fixture.elements[0].closest = () => ({ querySelector: () => score, parentElement: item });
+  bindCollectionMomentum(fixture.root, fixture.view);
+  assert.equal(score.textContent, '+22%');
+  fixture.tick();
+  assert.equal(score.textContent, '+27%');
+  assert.equal(item.dataset.percentage, 27);
 });

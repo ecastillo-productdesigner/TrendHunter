@@ -1,9 +1,11 @@
-import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpdates, peoplePreviewPending, acknowledgePeopleUpdates } from './people-update-state.js';
+import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpdates, peoplePreviewPending, acknowledgePeopleUpdates } from './people-update-state.js?v=3';
 import { PEOPLE } from './people-data.js';
 import { COLLECTIONS } from './collection-data.js';
 import { COLLECTION_STORIES } from './collection-story-data.js';
 import { PEOPLE_FOLLOW_KEY, PEOPLE_FOLLOW_INTENT, readFollowing, setPersonFollowed, followingPeople } from './people-follow-state.js';
-import { editorialStoryCard, escapeText } from './story-card.js';
+import { editorialStoryCard, escapeText } from './story-card.js?v=2';
+import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
+import { interestLevel } from './collection-data.js';
 
 // Following and activity are browser-only prototype data. Member saves are never broadcast.
 const feed = document.querySelector('[data-people-feed]');
@@ -56,14 +58,24 @@ function predictionActivity(person, id, call) {
     column.insertAdjacentHTML('beforeend',`<button class="button-primary profile-call-start" type="button" data-following-make-call aria-expanded="false" aria-controls="${choiceId}">Make Your Call</button>`);
     top.insertAdjacentHTML('afterend',`<div class="profile-call-choices" id="${choiceId}" role="group" aria-label="Your call on ${escapeText(prediction.text)}" hidden><button class="prediction-vote prediction-vote--out" type="button" data-following-call="out"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m out</button><button class="prediction-vote prediction-vote--in" type="button" data-following-call="in"><span class="prediction-vote-icon" aria-hidden="true"></span>I’m in</button></div>`);
   }
-  return `<li class="people-prediction"><p class="people-activity-label"><a href="${person.href}#predictions">${escapeText(first)} made a prediction</a></p><ul class="prediction-results-list" data-following-prediction>${row.outerHTML}</ul></li>`;
+  return `<li class="people-prediction"><p class="people-activity-label"><a href="${person.href}#predictions">${escapeText(first)}</a> made a prediction</p><ul class="prediction-results-list" data-following-prediction>${row.outerHTML}</ul></li>`;
 }
 function activities(people) {
-  const groups = people.map(person => person.kind === 'creators'
-    ? COLLECTION_STORIES.filter(story => story.authorId === person.id).map(story => editorialStoryCard(story, collections.get(story.collections[0]), { context: `${person.name.split(' ')[0]} published a new story`, contextHref: person.href }))
-    : Object.entries(person.calls || {}).map(([id,call]) => predictionActivity(person,id,call)));
+  const collectionFollows = [];
+  const groups = people.map(person => {
+    const activity = person.kind === 'creators'
+      ? COLLECTION_STORIES.filter(story => story.authorId === person.id).map(story => editorialStoryCard(story, collections.get(story.collections[0]), { contextName: person.name.split(' ')[0], context: 'published a new story', contextHref: person.href }))
+      : Object.entries(person.calls || {}).map(([id,call]) => predictionActivity(person,id,call));
+    const follow = collectionFollowActivity(person.id);
+    if (follow) {
+      const collection = follow.collection;
+      collectionFollows.push(`<li class="people-collection-follow" data-people-collection-follow="${escapeText(follow.id)}"><p class="people-activity-label"><a href="${person.href}">${escapeText(person.name.split(' ')[0])}</a> followed a collection</p><a class="pill-button" href="${collection.href}">${escapeText(collection.name)} <span class="collection-momentum collection-momentum--${collection.direction}" data-level="${interestLevel(collection.percentage)}" role="img" aria-label="Interest ${collection.direction} ${collection.percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span><span class="collection-momentum-value" aria-hidden="true">${collection.percentage}%</span></span></a></li>`);
+    }
+    return activity;
+  });
   // Stable illustrative activity order alternates followed people without inventing publication times.
-  return Array.from({ length: Math.max(0, ...groups.map(group => group.length)) }, (_, i) => groups.map(group => group[i] || '').join('')).join('');
+  const rows = Array.from({ length: Math.max(0, ...groups.map(group => group.length)) }, (_, i) => groups.map(group => group[i] || '').filter(Boolean)).flat();
+  return interleaveCollectionFollows(rows, collectionFollows).join('');
 }
 function updatePeopleSignals(acknowledge = false) {
   const ids = signedIn() ? follows() : [];
