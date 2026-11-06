@@ -56,9 +56,10 @@
   --settings-panel-text: #FFFFFF;
 
   /* Color — Border */
+  --color-accent-foreground: #BEFC4F; /* links and meaningful accents on the theme surface */
   --color-border-default: rgba(255, 255, 255, 0.25);
   --color-border-glass: rgba(255, 255, 255, 0.15);
-  --color-border-focus: #BEFC4F;
+  --color-border-focus: var(--color-accent-foreground);
   --color-border-on-topic: #875FE7;
   --color-white-10: rgba(255, 255, 255, 0.1);
 
@@ -70,7 +71,7 @@
   --color-text-tertiary: #D1D5DB;
   --color-text-accent: #A3FC03;
   --color-text-on-topic: #875FE7;
-  --color-text-body-link: #BEFC4F;
+  --color-text-body-link: var(--color-accent-foreground);
 
   /* Topic picker — selected colors supplied in the mobile reference. */
   --color-topic-beauty: #86D5A3;
@@ -103,8 +104,8 @@
   --color-icon-default: #D1D5DB;
   --color-icon-signal: #BEFC4F;
   --color-icon-signal-secondary: #FD4D13;
-  --trend-up-icon: #BEFC4F; /* lime.500 retained for existing action accents */
-  --color-interest-rising: var(--color-icon-signal);
+  --trend-up-icon: var(--color-accent-foreground);
+  --color-interest-rising: var(--color-accent-foreground);
   --color-interest-falling: var(--prediction-vote-out);
   --trend-up-icon-outline: transparent; /* light theme rims up arrows on light backgrounds */
 
@@ -146,14 +147,14 @@
   /* Form inputs — from the email sign-in frame */
   --form-bg: #FFFFFF;
   --form-border-default: #D1D5DB;
-  --form-border-focus: #BEFC4F;          /* lime.500 — same in both themes */
+  --form-border-focus: var(--color-border-focus);
   --form-label-input-text: #D1D5DB;
   --form-border-error: var(--otc-border-error);
   --form-text-error: var(--otc-border-error);
 
   /* One-time code squares — from the OTC frame */
   --otc-squares: #FFFFFF;
-  --otc-border-focus: #BEFC4F;          /* lime.500 — same in both themes */
+  --otc-border-focus: var(--color-border-focus);
   --otc-border-error: #EF4444;
   --otc-label: #343841;
   --otc-border: rgba(255, 255, 255, 0.25); /* color/border/default */
@@ -172,7 +173,7 @@
   --buttons-secondary-border: rgba(255, 255, 255, 0.25);
   --buttons-secondary-label: #D1D5DB;
   --buttons-secondary-bg-hover: rgba(255, 255, 255, 0.15);
-  --buttons-secondary-border-focus: #BEFC4F;
+  --buttons-secondary-border-focus: var(--color-border-focus);
 
   /* Buttons — Sign in */
   --buttons-sign-in-bg: #FFFFFF;
@@ -359,6 +360,7 @@
   --layout-predictions-stack-height: 419px;
   --layout-prediction-card-width: 280px;
   --layout-prediction-card-height: 376px;
+  --layout-prediction-art-ratio: 4 / 5; /* compact result-announcement sheets */
   --layout-prediction-compact-card-width: 360px;  /* compact deck in a story */
   --layout-prediction-compact-card-height: 253px;
   --layout-prediction-compact-stack-width: 398px; /* room for the tilted cards behind */
@@ -442,6 +444,8 @@
 /* Light mode — Figma variable values from the "Feed Page" frame in Light mode.
    Only tokens that change are listed; everything else inherits from :root. */
 :root[data-theme="light"] {
+  /* 4.62:1 on #F5F7F9 and 4.96:1 on white at full opacity. */
+  --color-accent-foreground: #517C02;
   --topic-tile-background: var(--buttons-secondary-bg);
   --color-background-surface: #F5F7F9;
   --answers-page-bg: #FFFFFF;
@@ -472,11 +476,7 @@
   --buttons-secondary-border: #D1D5DB;  /* from the light Related Channels button */
   --buttons-secondary-label: #343841;
   --buttons-secondary-bg-hover: #D1D5DB; /* not in Figma yet: one step darker than the default fill */
-  --buttons-secondary-border-focus: #BEFC4F; /* channel button focus ring */
-
-  --color-border-focus: #BEFC4F; /* terms checkbox focus ring */
-  --share-focus-color: var(--color-border-on-topic); /* purple stays visible on light surfaces */
-  --color-text-body-link: #538100;
+  --share-focus-color: var(--color-border-focus);
   /* Exception: the primary CTAs (Go Deeper, Make Your Call) keep lime.500 in light theme */
 
   /* From the light-mode Collection page's TrendList */
@@ -496,8 +496,8 @@
   --profile-bio-link: #9333EA;
   --icon-selected-outline: #343841; /* 0.5px rim, drawn by the *-stroke.svg masks */
   --trend-up-icon-outline: #343841;
-  --article-link: #875FE7;
-  --article-link-underline: #875FE7;
+  --article-link: var(--color-text-body-link);
+  --article-link-underline: currentColor;
 
   /* Sign-in CTAs — from the light-mode Continue button: buttons/primary/bg and buttons/primary/label */
   --auth-cta-bg: #0F0F0F;     /* Send me a sign-in link / Continue */
@@ -520,8 +520,8 @@
   --checkbox-icon-default: #0F0F0F;
   --checkbox-check-mark: #BEFC4F;    /* lime.500 check inside the black box */
 
-  /* Active greens are lime.700 in light theme (hover and disabled states keep their own colors).
-     Exceptions keeping lime.500: Go Deeper, Make Your Call, the trend card arrow and saved bookmarks, and components that stay dark in both themes. */
+  /* Lime button fills, saved bookmarks and fixed dark/media surfaces keep their
+     existing treatment. Page links, rising chevrons and focus use the darker accent. */
   /* Trend card icons (bookmark outline, share) — trend-card/icon in light theme */
   --trend-card-icon: #F5F7F9;
 
@@ -530,6 +530,16 @@
   --edit-profile-save-bg: #0F0F0F;            /* Edit Profile Save: black with a lime label in light theme */
   --edit-profile-save-label: #BEFC4F;
   --edit-profile-focus: #BEFC4F;              /* Name underline and cursor while typing */
+}
+
+/* These surfaces remain dark or photographic in both themes. Their focus rings
+   and inline links retain bright lime rather than the light-page foreground. */
+:is(.prediction-card, .prediction-outcome-reveal, .member-badge-dialog--medal,
+    .badge-award-stage, .auth-prompt, .edit-profile-modal, .thb2b-banner,
+    .trending-video-card, .trend-card--video, .article-video) {
+  --color-border-focus: var(--color-icon-signal);
+  --share-focus-color: var(--color-icon-signal);
+  --color-text-body-link: var(--color-icon-signal);
 }
 
 /* ===========================
@@ -6295,7 +6305,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-alert .trend-card-headline { color: var(--color-text-primary); }
 .prediction-results-alert .button-primary { min-inline-size: calc(var(--spacing-page-2xl) * 3); background: var(--prediction-card-button); color: var(--prediction-button-bg); }
 .prediction-results-alert .button-primary:hover { background: var(--prediction-card-button-hover); }
-.prediction-results-art { position: relative; width: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-md)); height: calc(var(--icon-size-2xl) * 3); }
+.prediction-results-art { position: relative; width: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-md)); padding: var(--spacing-component-sm); }
 .prediction-results-art-sheet {
   position: absolute;
   inset: var(--spacing-component-sm);
@@ -6312,12 +6322,12 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
   transform: rotate(-8deg);
 }
 .prediction-results-art-sheet:nth-child(2) { transform: rotate(8deg); }
-.prediction-results-art-sheet:last-child { transform: none; }
+.prediction-results-art-sheet:last-child { position: relative; inset: auto; aspect-ratio: var(--layout-prediction-art-ratio); transform: none; }
 .prediction-results-art-number { font: var(--type-detail-prediction); color: var(--prediction-card-button); }
 .prediction-results-art-label { font: var(--type-editorial-h6); text-transform: uppercase; text-align: center; white-space: nowrap; }
 @media (max-width: 599px) {
   .prediction-results-alert { gap: var(--spacing-component-ms); }
-  .prediction-results-art { width: calc(var(--icon-size-2xl) * 2); height: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-md)); }
+  .prediction-results-art { width: calc(var(--icon-size-2xl) * 2); padding: var(--spacing-component-xs); }
   .prediction-results-art-number { font: var(--type-detail-h1); }
   .prediction-results-art-sheet { gap: var(--spacing-component-xs); inset: var(--spacing-component-xs); }
   .prediction-results-art-label { font-size: var(--type-size-14); }
@@ -6328,7 +6338,8 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-outcome-source, .prediction-outcome-date { font: var(--type-helper); color: var(--color-text-dim); }
 .prediction-outcome-summary { font: var(--type-body); }
 .prediction-outcome-dialog { width: min(calc(100vw - var(--spacing-layout-xl)),var(--layout-prediction-compact-card-width)); max-height: calc(100dvh - var(--spacing-layout-xl)); margin: auto; padding: 0; border: var(--stroke-default) solid var(--prediction-card-border); border-radius: var(--radius-md); color: var(--prediction-card-copy); background: var(--prediction-card-background-card); }
-.prediction-outcome-dialog[open] { backface-visibility: hidden; transform-origin: center; animation: prediction-card-load var(--motion-card-enter) var(--motion-ease-card-enter) both; }
+.prediction-outcome-dialog[open] { backface-visibility: hidden; transform-origin: center; animation: badge-coin-reveal calc(var(--motion-card-flip) / 2) ease-out both; }
+.prediction-outcome-dialog[data-closing] { pointer-events: none; }
 .prediction-outcome-dialog::backdrop { background: var(--color-scrim); }
 .prediction-result-confetti { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
 .prediction-outcome-reveal { position: relative; display: flex; flex-direction: column; gap: var(--spacing-layout-lg); padding: var(--spacing-layout-lg); }

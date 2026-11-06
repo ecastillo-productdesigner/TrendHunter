@@ -1,8 +1,8 @@
 // Account-specific labels share the existing feed routes and their saved state.
 export function feedViews(signedIn) {
   return signedIn
-    ? { 'for-you': 'For You', collections: 'Collections', following: 'Following', moving: 'Moving' }
-    : { 'for-you': 'Discover', moving: 'Movers' };
+    ? { 'for-you': 'For You', collections: 'Collections', following: 'Following', moving: 'What’s Changing' }
+    : { 'for-you': 'Discover', moving: 'What’s Changing' };
 }
 
 export function resolveFeedView(value, signedIn) {

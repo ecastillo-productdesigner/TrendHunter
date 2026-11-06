@@ -4,9 +4,9 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { feedViews, resolveFeedView } from '../site/feed-view-state.js';
 
-test('public tabs expose Discover and Movers while private feeds require sign-in', () => {
-  assert.deepEqual(Object.values(feedViews(false)), ['Discover', 'Movers']);
-  assert.deepEqual(Object.values(feedViews(true)), ['For You', 'Collections', 'Following', 'Moving']);
+test('public tabs expose Discover and What’s Changing while private feeds require sign-in', () => {
+  assert.deepEqual(Object.values(feedViews(false)), ['Discover', 'What’s Changing']);
+  assert.deepEqual(Object.values(feedViews(true)), ['For You', 'Collections', 'Following', 'What’s Changing']);
   for (const view of ['collections', 'following']) {
     assert.equal(resolveFeedView(view, false), 'for-you');
     assert.equal(resolveFeedView(view, true), view);

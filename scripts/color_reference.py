@@ -6,6 +6,7 @@ GROUPS = ['Brand', 'Neutrals', 'Signals', 'Topic colors']
 PRIORITY = {'Brand': 0, 'Signals': 1, 'Topic colors': 2, 'Neutrals': 3}
 ROLES = {
     '--color-black': 'Community member panel',
+    '--color-accent-foreground': 'Accessible foreground accent',
     '--color-background-surface': 'Page surface', '--color-background-surface-raised': 'Raised surface',
     '--color-background-callout': 'Callouts', '--color-background-bg-overlay': 'Overlays',
     '--color-border-default': 'Borders', '--color-border-glass': 'Subtle borders', '--color-border-focus': 'Focus',
@@ -26,7 +27,7 @@ ROLES = {
 NAMES = {'#BEFC4F': 'Lime', '#875FE7': 'Purple', '#FFFFFF': 'White', '#F5F7F9': 'Off white', '#E5E7EB': 'Cool gray 200',
          '#D1D5DB': 'Cool gray 300', '#9AA4B2': 'Cool gray 400', '#697182': 'Slate', '#343841': 'Charcoal',
          '#0F0F0F': 'Near black', '#000000': 'Black', '#EF4444': 'Red', '#FD4D13': 'Orange', '#FDE047': 'Yellow',
-         '#A3FC03': 'Bright lime', '#538100': 'Link green'}
+         '#A3FC03': 'Bright lime', '#517C02': 'Accessible lime green'}
 
 
 def resolve(name, values):
@@ -74,7 +75,7 @@ def build_color_reference(base, light):
                 topic = name.removeprefix('--color-topic-').replace('-', ' ').title()
                 rows.append((name, 'Topic colors', f'{topic} topics', topic))
             else:
-                signals = ('signal', 'interest', 'recommendation', 'text-accent', 'text-body-link', 'border-focus')
+                signals = ('signal', 'interest', 'recommendation', 'text-accent', 'text-body-link', 'border-focus', 'accent-foreground')
                 group = 'Signals' if any(part in name for part in signals) else 'Neutrals'
                 rows.append((name, group, ROLES.get(name, fallback), fallback))
         unique = {}

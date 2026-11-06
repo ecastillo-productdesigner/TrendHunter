@@ -10,7 +10,7 @@
   --ds-line: var(--color-border-default);
   --ds-surface: var(--color-background-surface);
   --ds-muted: var(--color-text-tertiary);
-  --ds-accent: var(--buttons-primary-bg-default);
+  --ds-accent: var(--color-accent-foreground);
   --ds-card-width: 340px;
   --ds-token-table-height: 580px;
 }
@@ -21,7 +21,7 @@
 .ds-page button, .ds-page a, .ds-page input, .ds-page select { -webkit-tap-highlight-color: transparent; }
 .ds-page :focus-visible { outline: var(--stroke-focus) solid var(--share-focus-ring, var(--color-border-focus)); outline-offset: var(--spacing-component-xs); }
 .ds-page [hidden] { display: none !important; }
-.ds-skip { position: fixed; z-index: 100; top: var(--spacing-component-sm); left: var(--spacing-component-sm); padding: var(--spacing-component-sm) var(--spacing-layout-md); background: var(--ds-accent); color: var(--color-text-inverse); transform: translateY(-200%); }
+.ds-skip { position: fixed; z-index: 100; top: var(--spacing-component-sm); left: var(--spacing-component-sm); padding: var(--spacing-component-sm) var(--spacing-layout-md); background: var(--buttons-primary-bg-default); color: var(--color-text-inverse); transform: translateY(-200%); }
 .ds-skip:focus { transform: none; }
 .ds-header { position: sticky; top: 0; z-index: 20; min-height: var(--ds-header-height); padding: var(--spacing-layout-md) var(--spacing-layout-xl); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-layout-lg); background: var(--ds-surface); border-bottom: var(--stroke-default) solid var(--ds-line); }
 .ds-brand { display: flex; align-items: center; gap: var(--spacing-layout-lg); }

@@ -1,6 +1,7 @@
 import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=3';
 import { escapeText as esc } from './story-card.js';
 import { medalBurst } from './badge-celebration.js?v=4';
+import { closeBadgeDialog } from './badge-dialog-motion.js';
 import { predictionResultContent, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-4';
 const records=()=>{try{return readPredictionResults(localStorage);}catch{return [];}};
 const signedIn=()=>window.isSignedIn?.()===true;
@@ -41,7 +42,17 @@ function setResultNavigationBusy(busy) {
   dialog.querySelector('[data-result-next]').disabled = busy || index === all.length - 1;
   dialog.querySelector('section').setAttribute('aria-busy', String(busy));
 }
+function dismissResult() {
+  if (!dialog?.open) return;
+  flipVersion++;
+  flipAnimation?.cancel();
+  flipping = false;
+  pendingCelebration = null;
+  clearConfetti();
+  closeBadgeDialog(dialog);
+}
 function reveal(id,origin) {
+  if (dialog?.dataset.closing) return;
   const result=records().find(item=>item.id===id);if(!result)return;
   clearConfetti();
   pendingCelebration = !result.seen && result.call === result.outcome ? id : null;
@@ -50,8 +61,9 @@ function reveal(id,origin) {
     dialog=document.createElement('dialog');dialog.className='prediction-outcome-dialog';document.body.append(dialog);
     dialog.setAttribute('aria-labelledby','prediction-outcome-heading');
     dialog.setAttribute('aria-describedby','prediction-outcome-question prediction-outcome-sample');
-    dialog.addEventListener('animationend',event=>{if(event.animationName==='prediction-card-load'&&!flipping)celebrateVisibleResult();});
-    dialog.addEventListener('click',event=>{if(event.target===dialog||event.target.closest('[data-result-close]'))dialog.close();});
+    dialog.addEventListener('animationend',event=>{if(event.target===dialog&&event.animationName==='badge-coin-reveal'&&!flipping)celebrateVisibleResult();});
+    dialog.addEventListener('click',event=>{if(event.target===dialog||event.target.closest('[data-result-close]'))dismissResult();});
+    dialog.addEventListener('cancel',event=>{event.preventDefault();dismissResult();});
     dialog.addEventListener('close',()=>{ flipVersion++; flipAnimation?.cancel(); flipping=false; pendingCelebration=null; clearConfetti(); const target=trigger?.isConnected?trigger:document.querySelector('.feed-navigation-tab[aria-selected="true"]');target?.focus({preventScroll:true}); });
   }
   dialog.innerHTML=revealMarkup(result);
@@ -61,7 +73,7 @@ function reveal(id,origin) {
   acknowledge(id);
 }
 async function flipResult(direction) {
-  if (!dialog?.open || flipping) return;
+  if (!dialog?.open || dialog.dataset.closing || flipping) return;
   const all = records(), index = all.findIndex(item => item.id === currentId);
   const next = all[index + direction];
   if (!next) return;
@@ -116,7 +128,7 @@ function renderAlert(){
   // These records remain fictional prototype results; the reveal and analysis label them as samples.
   const singular = alertResults.length === 1;
   const sheetCount = Math.min(alertResults.length, 3);
-  const sheets = Array.from({length: sheetCount}, (_, index) => `<span class="prediction-results-art-sheet">${index === sheetCount - 1 ? `<strong class="prediction-results-art-number">${alertResults.length}</strong><span class="prediction-results-art-label">${singular ? 'Result is in' : 'Results are in'}</span>` : ''}</span>`).join('');
+  const sheets = Array.from({length: sheetCount}, (_, index) => `<span class="prediction-results-art-sheet">${index === sheetCount - 1 ? `<strong class="prediction-results-art-number">${alertResults.length}</strong><span class="prediction-results-art-label">Verified</span>` : ''}</span>`).join('');
   slot.innerHTML=`<section class="prediction-results-alert" aria-label="Prediction results, prototype sample"><div class="prediction-results-copy"><h2 class="trend-card-headline">${singular?'Your prediction result is in':`${alertResults.length} of your predictions have results`}</h2><button class="button-primary" type="button" data-result-reveal="${(unread[0] || alertResults[0]).id}">See ${singular?'result':'results'}</button></div><div class="prediction-results-art" aria-hidden="true">${sheets}</div></section>`;
 }
 document.addEventListener('click',event=>{
