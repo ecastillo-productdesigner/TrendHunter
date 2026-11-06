@@ -923,7 +923,7 @@ button {
 
 /* Feed view navigation — DS display type, 32px tab gaps and selected underline. */
 .page-feed {
-  --layout-feed-tabs-height: calc(var(--spacing-layout-lg) + var(--type-line-height-ui-sm) + var(--spacing-component-ms) + var(--stroke-thick) + var(--stroke-default));
+  --layout-feed-tabs-height: calc(var(--spacing-layout-md) + var(--type-line-height-ui-sm) + var(--spacing-component-ms) + var(--stroke-thick) + var(--stroke-default));
   --layout-header-height: calc(var(--layout-nav-height) + var(--layout-feed-tabs-height));
 }
 .feed-navigation {
@@ -943,7 +943,7 @@ button {
   display: flex;
   align-items: flex-end;
   min-height: var(--icon-size-2xl);
-  padding: var(--spacing-layout-lg) 0 var(--spacing-component-ms);
+  padding: var(--spacing-layout-md) 0 var(--spacing-component-ms);
   border-bottom: var(--stroke-thick) solid transparent;
   font-family: var(--type-font-display);
   font-size: var(--type-size-16);
@@ -5659,6 +5659,7 @@ body:has(.auth-prompt[open]) {
 
 /* All-open-predictions uses the existing secondary action, filters and result type. */
 .predictions-open-link { gap: var(--spacing-component-sm); text-decoration: none; }
+.predictions-open-link[hidden] { display: none; }
 .predictions-open-link .prediction-card-more-icon { flex: 0 0 var(--icon-size-xs); }
 .open-predictions-page {
   display: flex;
@@ -6184,9 +6185,9 @@ body:has(.auth-prompt[open]) {
 .prediction-results-subtitle { font: var(--type-body); text-align: center; }
 .prediction-results-header:has(> .prediction-results-subtitle) { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
 
-html:not([data-auth="signed-in"]) .feed-navigation,
 .feed-navigation[hidden], .feed-navigation-tab[hidden] { display: none; }
-html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
+/* Keep account-only views out of the signed-out first paint. DS specimens remain visible. */
+html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-view="collections"], [data-feed-view="following"]) { display: none; }
 .feed-topic-picker--compact .topic-grid { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - var(--spacing-component-sm) * 3) / 3.35); grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding-bottom: var(--spacing-component-sm); }
 .feed-topic-picker--compact .topic-tile { scroll-snap-align: start; }
 .feed-topic-picker--compact { margin-block: var(--spacing-layout-lg); }
@@ -6319,6 +6320,27 @@ html:not([data-auth="signed-in"]) .page-feed { --layout-feed-tabs-height: 0px; }
   margin-bottom: var(--spacing-layout-md);
 }
 .trend-card--editorial:not(.trend-card--mover) > .trend-card-meta { display: flex; align-items: center; gap: var(--spacing-component-sm); grid-column: 2; grid-row: var(--story-start-row); min-width: 0; margin-bottom: var(--spacing-component-ms); }
+.trend-card-create-account { display: none; }
+html:not([data-auth="signed-in"]) .page-feed .trend-card-create-account {
+  display: grid;
+  place-items: center;
+  grid-column: 2;
+  grid-row: var(--story-start-row);
+  justify-self: end;
+  align-self: start;
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+  margin-top: calc(-1 * var(--spacing-component-ms));
+  margin-inline-end: calc(-1 * var(--spacing-component-ms));
+  color: var(--color-icon-default);
+  text-decoration: none;
+  z-index: 1;
+  transition: color var(--motion-hover) ease;
+}
+.trend-card-create-account .material-symbols-outlined { font-size: var(--icon-size-lg); }
+html:not([data-auth="signed-in"]) .page-feed .trend-card-meta { padding-inline-end: var(--icon-size-2xl); flex-wrap: wrap; }
+html:not([data-auth="signed-in"]) .page-feed .trend-card-create-account:hover { color: var(--color-text-primary); }
+.trend-card-create-account:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .trend-card-meta .trend-card-collection:has(.collection-momentum) { flex-wrap: nowrap; min-width: 0; }
 .trend-card-meta .trend-card-collection-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .trend-card-meta .moving-story-update { flex: none; margin: 0; white-space: nowrap; }

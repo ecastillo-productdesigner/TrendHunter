@@ -1234,6 +1234,7 @@
     }
   ],
   "materialSymbols": [
+    "add_circle",
     "arrow_downward",
     "arrow_drop_down",
     "arrow_drop_up",
@@ -1413,6 +1414,14 @@
       "states": [
         "In",
         "Out"
+      ]
+    },
+    {
+      "name": "Create an account",
+      "group": "Navigation and controls",
+      "note": "24px Material Symbols Outlined add_circle in a 48px tap target. Shown at the top-right of public feed story cards only while signed out. Opens the sign-in or create-account page.",
+      "states": [
+        "Default"
       ]
     },
     {

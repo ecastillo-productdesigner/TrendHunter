@@ -1788,7 +1788,7 @@
       "key": "button:feed-navigation-tab",
       "classes": "feed-navigation-tab",
       "tag": "button",
-      "name": "For You",
+      "name": "Discover",
       "sources": [
         "feed.html",
         "feed.html",
