@@ -12,7 +12,7 @@ export function installFeatureAnnouncement() {
 
   const sync = () => {
     if (!announcement) return;
-    announcement.hidden = (dismissed && !closing) || document.body.dataset.feedView !== 'for-you';
+    announcement.hidden = window.isSignedIn?.() !== true || (dismissed && !closing) || document.body.dataset.feedView !== 'for-you';
   };
 
   announcement?.querySelector('button').addEventListener('click', async () => {
@@ -48,6 +48,7 @@ export function installFeatureAnnouncement() {
     tab?.click(); tab?.focus({ preventScroll: true });
   });
   document.addEventListener('feed-view-selected', sync);
+  document.addEventListener('auth-change', sync);
   window.addEventListener('pageshow', () => { readDismissal(); sync(); });
   window.addEventListener('storage', event => {
     if (event.key === dismissalKey || event.key === null) { readDismissal(); sync(); }
@@ -65,6 +66,7 @@ export function installFeatureAnnouncement() {
       if (!announcement) { location.assign('feed.html#for-you'); return; }
       document.querySelector('[data-feed-tabs] [data-feed-view="for-you"]')?.click();
       sync();
+      if (announcement.hidden) return;
       announcement.scrollIntoView({ block: 'nearest' });
       announcement.querySelector('button').focus({ preventScroll: true });
     },

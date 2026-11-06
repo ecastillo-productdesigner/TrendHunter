@@ -4,7 +4,7 @@
 const settingsButton = document.querySelector('.settings-fab');
 const settingsPanel = document.querySelector('.settings-panel');
 const businessBanner = import('./thb2b-banner.js').then(({ installBusinessBanner }) => installBusinessBanner());
-const featureAnnouncement = import('./feature-announcement.js?v=4').then(({ installFeatureAnnouncement }) => installFeatureAnnouncement());
+const featureAnnouncement = import('./feature-announcement.js?v=5').then(({ installFeatureAnnouncement }) => installFeatureAnnouncement());
 
 if (settingsButton && settingsPanel) {
   // Fetch the cancel icon now, so it's ready the first time the panel opens

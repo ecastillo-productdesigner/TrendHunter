@@ -997,7 +997,8 @@ button {
   background: var(--feature-announcement-bg);
   color: var(--feature-announcement-text);
 }
-.feature-announcement[hidden] { display: none; }
+.feature-announcement[hidden],
+:root:not([data-auth="signed-in"]) [data-feature-announcement] { display: none; }
 .feature-announcement-icon {
   flex: none;
   font-size: var(--icon-size-xl);
