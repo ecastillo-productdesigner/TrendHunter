@@ -1006,7 +1006,7 @@ button {
 .feature-announcement-copy { flex: 1; min-width: 0; font: var(--type-body); }
 .feature-announcement-copy strong { font-weight: var(--type-weight-bold); }
 .feature-announcement-link { color: inherit; white-space: nowrap; text-decoration: underline; text-underline-offset: var(--stroke-focus); transition: color var(--motion-hover) ease; }
-.feature-announcement-link:hover { color: var(--color-icon-on-media); }
+.feature-announcement-link:hover { color: var(--color-text-on-media); }
 .feature-announcement-link:focus-visible { outline: var(--stroke-focus) solid var(--feature-announcement-text); outline-offset: var(--spacing-component-xs); }
 .feature-announcement-close {
   position: absolute;
@@ -1023,7 +1023,7 @@ button {
   transition: color var(--motion-hover) ease;
 }
 .feature-announcement-close .auth-close-icon { background-color: currentColor; }
-.feature-announcement-close:hover { color: var(--color-icon-on-media); }
+.feature-announcement-close:hover { color: var(--color-text-on-media); }
 .feature-announcement-close:focus-visible {
   outline: var(--stroke-focus) solid var(--feature-announcement-text);
   outline-offset: var(--spacing-component-xs);
@@ -6171,6 +6171,7 @@ body:has(.auth-prompt[open]) {
 .people-empty .profile-empty-link { color: var(--color-text-body-link); text-decoration: underline; }
 .following-start { display: grid; gap: var(--spacing-layout-lg); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); }
 .following-start-collection { flex: 1; min-width: 0; }
+.following-start .following-start-collection { flex-wrap: nowrap; }
 .following-start .following-start-collection-list { gap: var(--spacing-component-ms); margin-top: var(--spacing-layout-md); }
 .following-start .following-start-collection-row { padding: 0; border: 0; }
 .following-start :is(.following-start-collection, .people-profile):is(:hover, :focus-visible) { color: var(--color-text-primary); }

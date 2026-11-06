@@ -2795,7 +2795,7 @@
       "key": "a:pill-button following-start-collection",
       "classes": "pill-button following-start-collection",
       "tag": "a",
-      "name": "pill-button following-start-collection",
+      "name": "%",
       "sources": [
         "following-intro.js"
       ]

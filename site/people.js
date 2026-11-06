@@ -7,7 +7,7 @@ import { editorialStoryCard, escapeText } from './story-card.js?v=2';
 import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed } from './collection-follow-state.js';
-import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=2';
+import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=3';
 
 // Following and activity are browser-only prototype data. Member saves are never broadcast.
 const feed = document.querySelector('[data-people-feed]');
@@ -146,18 +146,19 @@ document.addEventListener('click', event => {
   const introCollection = event.target.closest('[data-intro-collection-follow]');
   if (introPerson || introCollection) {
     const control = introPerson || introCollection;
-    if (control.getAttribute('aria-pressed') === 'true') return;
+    const following = control.getAttribute('aria-pressed') !== 'true';
     if (!signedIn()) return;
     const id = introPerson ? control.dataset.introPersonFollow : control.dataset.introCollectionFollow;
     let saved;
-    try { saved = introPerson ? setPersonFollowed(localStorage, id, true) : setCollectionFollowed(localStorage, id, true); } catch { saved = null; }
+    try { saved = introPerson ? setPersonFollowed(localStorage, id, following) : setCollectionFollowed(localStorage, id, following); } catch { saved = null; }
     if (!saved) { window.showToast?.('Couldn’t save this follow. Please try again.'); return; }
-    (introPerson ? introPicks.people : introPicks.collections).add(id);
+    const picks = introPerson ? introPicks.people : introPicks.collections;
+    if (following) picks.add(id); else picks.delete(id);
     const name = introPerson ? catalog.get(id).name : collections.get(id).name;
     document.dispatchEvent(new Event('collection-updates-preview'));
     render();
     feed.querySelector(`[${introPerson ? 'data-intro-person-follow' : 'data-intro-collection-follow'}="${id}"]`)?.focus({ preventScroll: true });
-    window.showToast?.(`You’re following ${escapeText(name)}.`);
+    window.showToast?.(`You’re ${following ? 'following' : 'no longer following'} ${escapeText(name)}.`);
     return;
   }
   if (event.target.closest('[data-following-intro-done]')) {
