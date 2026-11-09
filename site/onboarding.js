@@ -57,7 +57,7 @@ function render({ focus = true } = {}) {
     return `<li><button type="button" class="onboarding-step" data-step="${STEPS[i]}" ${i > furthest ? 'disabled' : ''} ${i === index ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${label}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
   }).join('');
   const copy = {
-    topics: ['What do you follow?', 'Shape your feed', 'You can choose your interests later in your profile.'],
+    topics: ['What topics interest you?', 'Your picks shape the stories and predictions you see.', ''],
     collections: ['Follow these collections', 'These are the collections other hunters are following now', 'You can choose collections to follow later in your profile.'],
     'trend-setters': ['Follow our trend setters', 'They will keep you up to date.', 'You can choose who to follow later in your profile.'],
     review: ['Great picks', draft.topics.length || draft.collections.length || draft.people.length ? 'These will show up on your feed first' : 'Your next discovery is waiting.', ''],
@@ -65,7 +65,7 @@ function render({ focus = true } = {}) {
   [heading.textContent, subtitle.textContent, note.textContent] = copy;
   progress.closest('nav').hidden = step === 'review';
   skip.hidden = step === 'review';
-  note.hidden = step === 'review';
+  note.hidden = !copy[2];
   document.querySelector('[data-onboarding-secondary]').hidden = step === 'review';
   error.hidden = true;
   next.textContent = step === 'review' ? 'See your feed' : 'Continue';
