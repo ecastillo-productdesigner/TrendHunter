@@ -50,8 +50,8 @@ function render({ focus = true } = {}) {
   furthest = Math.max(furthest, index);
   app.dataset.step = step;
   back.href = index ? `#${STEPS[index - 1]}` : 'feed.html';
-  back.setAttribute('aria-label', index ? `Back to ${['Topics', 'Collections', 'Trend Setters'][index - 1]}` : 'Back to feed');
-  const labels = ['Topics', 'Collections', 'Trend Setters'];
+  back.setAttribute('aria-label', index ? `Back to ${['Your interests', 'Collections', 'Trend Setters'][index - 1]}` : 'Back to feed');
+  const labels = ['Your interests', 'Collections', 'Trend Setters'];
   progress.innerHTML = labels.map((label, i) => {
     const complete = i < index && onboardingSelectionCount(draft, STEPS[i]) > 0;
     return `<li><button type="button" class="onboarding-step" data-step="${STEPS[i]}" ${i > furthest ? 'disabled' : ''} ${i === index ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${label}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
