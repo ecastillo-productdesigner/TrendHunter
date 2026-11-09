@@ -54,17 +54,26 @@ const suggestions = {
   beauty: ['evidence-based-beauty', 'beauty-from-within', 'longevity'],
   'home-living': ['smart-home-energy', 'tactile-home-design', 'budgeted-living', 'everyday-living'],
   'food-drink': ['protein-forward-eating', 'food-as-an-experience', 'modern-hydration-caffeine'],
-  wellness: ['longevity', 'nervous-system-gym', 'sleep-medicine'],
+  wellness: ['longevity', 'nervous-system-gym', 'sleep-medicine', 'preventive-health', 'her-health', 'metabolic-life', 'modern-anxiety-care', 'gut-brain-axis'],
   'family-parenting': ['back-to-school-transitions', 'mind-body-for-families', 'modern-anxiety-care'],
   tech: ['ai-everyday-life', 'health-technology', 'smart-home-energy'],
   fitness: ['fitness-reset', 'biohackers-body', 'cardio-and-its-health'],
-  culture: ['retailtainment-hubs', 'everyday-living'],
+  culture: ['retailtainment-hubs', 'group-friend-events', 'food-as-an-experience', 'everyday-living'],
   travel: ['adventure-active-travel', 'solo-travel'],
 };
 export function onboardingCollections(topics, selected = []) {
   const defaults = ['andropause-hormonal-midlife', 'back-to-school-transitions', 'beauty-from-within', 'biohackers-body', 'evidence-based-beauty', 'longevity', 'retailtainment-hubs', 'ai-everyday-life'];
-  const preferred = [...new Set([...topics.flatMap(topic => suggestions[topic] || []), ...defaults])].slice(0, 8).map(slug => `collection-${slug}.html`);
+  const groups = [...new Set(topics)].map(topic => suggestions[topic]).filter(Boolean);
+  // Give every chosen interest a turn before adding more from the same interest.
+  // Never fill a personalized list with unrelated defaults just to reach eight.
+  const ranked = groups.length
+    ? Array.from({ length: Math.max(...groups.map(group => group.length)) }, (_, index) => groups.map(group => group[index]).filter(Boolean)).flat()
+    : defaults;
+  const preferred = [...new Set(ranked)].slice(0, Math.max(8, groups.length)).map(slug => slug === 'group-friend-events' ? 'collection.html' : `collection-${slug}.html`);
   return [...new Set([...preferred, ...selected])].map(href => COLLECTIONS.find(collection => collection.href === href)).filter(Boolean);
+}
+export function onboardingHasPicks(draft) {
+  return STEPS.slice(0, -1).some(step => onboardingSelectionCount(draft, step) > 0);
 }
 export function onboardingCreators(selected = []) {
   const ids = [...new Set(['nadia-patel', 'owen-brooks', 'daniel-reed', 'maya-chen', ...selected])];

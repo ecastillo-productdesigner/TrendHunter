@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { PEOPLE_FOLLOW_KEY, readFollowing, setPersonFollowed, followingPeople, unfollowedCreators } from '../site/people-follow-state.js';
 import { collectionFollowActivity, interleaveCollectionFollows } from '../site/people-collection-activity.js';
-import { peopleReleaseIds, unnoticedPeopleUpdates, acknowledgePeopleUpdates } from '../site/people-update-state.js';
+import { peopleReleaseIds, unnoticedPeopleUpdates, acknowledgePeopleUpdates, peopleActivityUpdates, markPeopleActivitySeen, showPeopleUpdatesPreview, peoplePreviewPending, PEOPLE_UPDATES_SEEN_KEY } from '../site/people-update-state.js';
+import { peopleActivityItems } from '../site/people-activity-data.js';
+import { PEOPLE } from '../site/people-data.js';
 import { editorialStoryCard } from '../site/story-card.js';
 const memory = () => { const entries = new Map(); return { getItem:key=>entries.get(key) || null, setItem:(key,value)=>entries.set(key,value) }; };
 test('people follow persists, supports creators and members, and unfollow is reversible', () => {
@@ -66,4 +68,47 @@ test('Who to Follow excludes followed writers, fills available alternatives, and
   const all = unfollowedCreators([], 100);
   assert.equal(new Set(all.map(person => person.id)).size, all.length);
   assert.deepEqual(unfollowedCreators(all.map(person => person.id)), []);
+});
+
+test('each visible activity clears only its own unread marker and captures a content snapshot', () => {
+  const storage = memory(), ids = ['daniel-reed', 'jamie-park'];
+  const items = peopleActivityItems(ids), original = unnoticedPeopleUpdates(storage, ids);
+  const first = items.find(item => item.id === original[0]);
+  assert.equal(markPeopleActivitySeen(storage, first, ids), true);
+  assert.equal(peopleActivityUpdates(storage, ids).has(first.id), false);
+  assert.deepEqual(unnoticedPeopleUpdates(storage, ids), original.slice(1));
+  assert.deepEqual(JSON.parse(storage.getItem(PEOPLE_UPDATES_SEEN_KEY)).snapshots[first.id], first.snapshot);
+});
+test('a real revision to seen content yields an accurate Updated marker until seen again', () => {
+  const storage = memory(), ids = ['daniel-reed'], item = peopleActivityItems(ids)[0];
+  markPeopleActivitySeen(storage, item, ids);
+  const revised = { ...item, snapshot: { ...item.snapshot, title: 'Revised headline' } };
+  assert.deepEqual(peopleActivityUpdates(storage, ids, [revised]).get(item.id), { label: 'Updated', summary: 'Headline updated' });
+  markPeopleActivitySeen(storage, revised, ids);
+  assert.equal(peopleActivityUpdates(storage, ids, [revised]).has(item.id), false);
+  const prediction = peopleActivityItems(['jamie-park']).find(item => item.type === 'prediction');
+  markPeopleActivitySeen(storage, prediction, ['jamie-park']);
+  const changedCall = { ...prediction, snapshot: { call: prediction.call === 'in' ? 'out' : 'in' } };
+  assert.equal(peopleActivityUpdates(storage, ['jamie-park'], [changedCall]).get(prediction.id).summary, `Call changed to ${changedCall.snapshot.call === 'in' ? 'In' : 'Out'}`);
+});
+test('legacy acknowledgments survive migration and preview acknowledgments are individual', () => {
+  const storage = memory(), ids = ['daniel-reed'];
+  const items = peopleActivityItems(ids), releases = peopleReleaseIds(ids);
+  storage.setItem(PEOPLE_UPDATES_SEEN_KEY, JSON.stringify(releases));
+  assert.deepEqual(unnoticedPeopleUpdates(storage, ids), []);
+  showPeopleUpdatesPreview(storage, ids);
+  assert.equal(peoplePreviewPending(storage, ids), true);
+  markPeopleActivitySeen(storage, items.find(item => item.id === releases[0]), ids);
+  assert.ok(unnoticedPeopleUpdates(storage, ids).includes(releases[1]));
+  acknowledgePeopleUpdates(storage, ids);
+  assert.equal(peoplePreviewPending(storage, ids), false);
+  assert.deepEqual(unnoticedPeopleUpdates(storage, []), []);
+});
+test('unread ids always belong to surfaced activity, including the three-follow cap', () => {
+  const storage = memory(), ids = PEOPLE.map(person => person.id), items = peopleActivityItems(ids);
+  assert.equal(items.filter(item => item.type === 'collection-follow').length, 3);
+  const displayed = new Set(items.map(item => item.id));
+  assert.ok(unnoticedPeopleUpdates(storage, ids).every(id => displayed.has(id)));
+  assert.ok(items.filter(item => item.type === 'collection-follow').every(item => item.person.kind === 'members'));
+  assert.equal(markPeopleActivitySeen({getItem:()=>null,setItem(){throw Error('blocked');}}, items[0], ids), false);
 });

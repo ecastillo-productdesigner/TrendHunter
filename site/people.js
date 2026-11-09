@@ -1,10 +1,9 @@
-import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpdates, peoplePreviewPending, acknowledgePeopleUpdates } from './people-update-state.js?v=3';
+import { PEOPLE_UPDATES_SEEN_KEY, PEOPLE_UPDATES_PREVIEW_KEY, unnoticedPeopleUpdates, peopleActivityUpdates, markPeopleActivitySeen } from './people-update-state.js?v=4';
 import { PEOPLE } from './people-data.js';
 import { COLLECTIONS } from './collection-data.js';
-import { COLLECTION_STORIES } from './collection-story-data.js';
+import { peopleActivityItems } from './people-activity-data.js';
 import { PEOPLE_FOLLOW_KEY, PEOPLE_FOLLOW_INTENT, readFollowing, setPersonFollowed, followingPeople, unfollowedCreators } from './people-follow-state.js?v=2';
 import { editorialStoryCard, escapeText } from './story-card.js?v=2';
-import { collectionFollowActivity, interleaveCollectionFollows } from './people-collection-activity.js?v=2';
 import { interestLevel } from './collection-data.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections, setCollectionFollowed } from './collection-follow-state.js';
 import { isFollowingIntro, followingIntroMarkup } from './following-intro.js?v=6';
@@ -21,6 +20,9 @@ const follows = () => { try { return readFollowing(localStorage); } catch { retu
 const followedCollections = () => { try { return readFollowedCollections(localStorage); } catch { return []; } };
 const introPicks = { people: new Set(), collections: new Set() };
 const introPreview = () => Boolean(feed) && isFollowingIntro(location.search);
+let visitMarkers = null;
+let stopWatching = () => {};
+const activityVisible = () => Boolean(feed) && !feed.hidden && signedIn() && !introPreview() && document.body.dataset.feedView === 'following';
 function leaveIntro() {
   const url = new URL(location.href);
   url.searchParams.delete('following-intro');
@@ -75,38 +77,108 @@ function predictionActivity(person, id, call) {
   }
   return `<li class="people-prediction"><p class="people-activity-label"><a href="${person.href}#predictions">${escapeText(first)}</a> made a prediction</p><ul class="prediction-results-list" data-following-prediction>${row.outerHTML}</ul></li>`;
 }
-function activities(people) {
-  const collectionFollows = [];
-  const groups = people.map(person => {
-    const activity = person.kind === 'creators'
-      ? COLLECTION_STORIES.filter(story => story.authorId === person.id).map(story => editorialStoryCard(story, collections.get(story.collections[0]), { contextName: person.name.split(' ')[0], context: 'published a new story', contextHref: person.href }))
-      : Object.entries(person.calls || {}).map(([id,call]) => predictionActivity(person,id,call));
-    const follow = collectionFollowActivity(person.id);
-    if (follow) {
-      const collection = follow.collection;
-      collectionFollows.push(`<li class="people-collection-follow" data-people-collection-follow="${escapeText(follow.id)}"><p class="people-activity-label"><a href="${person.href}">${escapeText(person.name.split(' ')[0])}</a> followed a collection</p><a class="pill-button" href="${collection.href}">${escapeText(collection.name)} <span class="collection-momentum collection-momentum--${collection.direction}" data-level="${interestLevel(collection.percentage)}" role="img" aria-label="Interest ${collection.direction} ${collection.percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span><span class="collection-momentum-value" aria-hidden="true">${collection.percentage}%</span></span></a></li>`);
-    }
-    return activity;
-  });
-  // Stable illustrative activity order alternates followed people without inventing publication times.
-  const rows = Array.from({ length: Math.max(0, ...groups.map(group => group.length)) }, (_, i) => groups.map(group => group[i] || '').filter(Boolean)).flat();
-  return interleaveCollectionFollows(rows, collectionFollows).join('');
+function activityCard(item, marker) {
+  const { person } = item;
+  let html;
+  if (item.type === 'story') {
+    html = editorialStoryCard(item.story, collections.get(item.story.collections[0]), { contextName: person.name.split(' ')[0], context: marker?.label === 'Updated' ? 'updated a story' : 'published a new story', contextHref: person.href });
+  } else if (item.type === 'prediction') {
+    html = predictionActivity(person, item.predictionId, item.call);
+    if (marker?.label === 'Updated') html = html.replace('made a prediction', 'updated a prediction');
+  } else {
+    const collection = item.collection;
+    html = `<li class="people-collection-follow" data-people-collection-follow="${escapeText(item.id)}"><p class="people-activity-label"><a href="${person.href}">${escapeText(person.name.split(' ')[0])}</a> followed a collection</p><a class="pill-button" href="${collection.href}">${escapeText(collection.name)} <span class="collection-momentum collection-momentum--${collection.direction}" data-level="${interestLevel(collection.percentage)}" role="img" aria-label="Interest ${collection.direction} ${collection.percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span><span class="collection-momentum-value" aria-hidden="true">${collection.percentage}%</span></span></a></li>`;
+  }
+  if (marker) {
+    const badge = `<span class="people-activity-marker"><span class="collection-updates-dot" aria-hidden="true"></span>${marker.label}</span>${marker.summary ? `<span class="people-activity-change">${escapeText(marker.summary)}</span>` : ''}`;
+    html = html.replace('</p>', `${badge}</p>`);
+  }
+  return html.replace(/^<li/, `<li data-people-activity="${escapeText(item.id)}"`);
 }
-function updatePeopleSignals(acknowledge = false) {
+function activities(items) {
+  const recent = items.filter(item => visitMarkers?.has(item.id));
+  const earlier = items.filter(item => !visitMarkers?.has(item.id));
+  const list = rows => `<ol class="people-activity-list">${rows.map(item => activityCard(item, visitMarkers?.get(item.id))).join('')}</ol>`;
+  if (!recent.length) return list(items);
+  return `<section class="people-activity-group"><h2 class="type-h4-caps">New since your last visit</h2>${list(recent)}</section>${earlier.length ? `<section class="people-activity-group"><h2 class="type-h4-caps">Earlier activity</h2>${list(earlier)}</section>` : ''}`;
+}
+// Acknowledge individual cards after a short, uninterrupted visible dwell. Large
+// cards can count without fitting the whole viewport; hidden/filter-excluded rows cannot.
+function watchActivity(items) {
+  if (!activityVisible()) return;
+  const models = new Map(items.map(item => [item.id, item]));
+  const nodes = [...feed.querySelectorAll('[data-people-activity]')];
+  const timers = new Map(), seen = new Set();
+  const dwell = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--motion-activity-seen')) || 600;
+  let frame;
+  function visible(node) {
+    if (!activityVisible() || !node.isConnected || document.visibilityState !== 'visible' || document.querySelector('dialog[open]')) return false;
+    const rect = node.getBoundingClientRect(), main = feed.closest('main')?.getBoundingClientRect();
+    const header = document.querySelector('.site-header')?.getBoundingClientRect();
+    const filters = feed.querySelector('.people-filters')?.getBoundingClientRect();
+    const top = Math.max(0, main?.top || 0, header?.bottom || 0, filters?.bottom || 0);
+    const bottom = Math.min(innerHeight, main?.bottom ?? innerHeight);
+    const available = bottom - top;
+    return available > 0 && rect.width > 0 && rect.right > 0 && rect.left < innerWidth && Math.min(rect.bottom, bottom) - Math.max(rect.top, top) >= Math.min(rect.height, available) / 2;
+  }
+  function check() {
+    frame = undefined;
+    for (const node of nodes) {
+      if (seen.has(node)) continue;
+      if (!visible(node)) { clearTimeout(timers.get(node)); timers.delete(node); continue; }
+      if (timers.has(node)) continue;
+      timers.set(node, setTimeout(() => {
+        timers.delete(node);
+        if (!visible(node)) return;
+        const item = models.get(node.dataset.peopleActivity);
+        if (item && markPeopleActivitySeen(localStorage, item, follows())) {
+          seen.add(node);
+          // Keep this visit's labels and grouping in place while the reader scrolls.
+          updatePeopleSignals();
+        }
+      }, dwell));
+    }
+  }
+  const schedule = () => { if (!frame) frame = requestAnimationFrame(check); };
+  document.addEventListener('scroll', schedule, { capture: true, passive: true });
+  document.addEventListener('visibilitychange', schedule);
+  document.addEventListener('click', schedule);
+  document.addEventListener('keyup', schedule);
+  feed.addEventListener('load', schedule, true);
+  window.addEventListener('resize', schedule);
+  schedule();
+  stopWatching = () => {
+    cancelAnimationFrame(frame);
+    timers.forEach(clearTimeout);
+    document.removeEventListener('scroll', schedule, true);
+    document.removeEventListener('visibilitychange', schedule);
+    document.removeEventListener('click', schedule);
+    document.removeEventListener('keyup', schedule);
+    feed.removeEventListener('load', schedule, true);
+    window.removeEventListener('resize', schedule);
+  };
+}
+function updatePeopleSignals() {
   const ids = signedIn() ? follows() : [];
-  if (acknowledge && signedIn()) acknowledgePeopleUpdates(localStorage,ids);
   const count = unnoticedPeopleUpdates(localStorage,ids).length;
-  const pending = signedIn() && (count > 0 || peoplePreviewPending(localStorage));
+  const pending = signedIn() && count > 0;
   document.querySelectorAll('[data-feed-view="following"][role="tab"], [data-profile-section="following"]').forEach(tab => {
     let dot=tab.querySelector('.collection-updates-dot');
     if (!dot) { dot=document.createElement('span'); dot.className='collection-updates-dot'; dot.setAttribute('aria-hidden','true');tab.append(dot); }
     dot.hidden=!pending;
-    if(pending) tab.setAttribute('aria-label','Following, new updates'); else tab.removeAttribute('aria-label');
+    if(pending) tab.setAttribute('aria-label',`Following, ${count} new update${count === 1 ? '' : 's'}`); else tab.removeAttribute('aria-label');
   });
 }
 function render() {
+  stopWatching();
   const ids = signedIn() ? follows() : [];
   const people = followingPeople(ids, kind);
+  const items = peopleActivityItems(ids);
+  if (activityVisible()) {
+    visitMarkers ||= new Map();
+    for (const [id, marker] of peopleActivityUpdates(localStorage, ids, items)) visitMarkers.set(id, marker);
+  } else visitMarkers = null;
+  const filteredItems = items.filter(item => kind === 'all' || item.person.kind === kind);
   renderSuggestedCreators(ids);
   document.querySelectorAll('[data-person-follow]').forEach(button => {
     const person = catalog.get(button.dataset.personFollow);
@@ -117,18 +189,19 @@ function render() {
     button.setAttribute('aria-label', `${following ? 'Unfollow' : 'Follow'} ${person.name}`);
   });
   if (feed) {
-    const activity = signedIn() && people.length ? activities(people) : '';
+    const activity = signedIn() && filteredItems.length ? activities(filteredItems) : '';
     feed.innerHTML = signedIn() && introPreview()
       ? followingIntroMarkup({ people: ids, collections: followedCollections(), retainPeople: [...introPicks.people], retainCollections: [...introPicks.collections], preview: true })
       : signedIn() && !ids.length
         ? followingIntroMarkup({ collections: followedCollections(), retainCollections: [...introPicks.collections] })
-        : filters() + (activity ? `<ol class="people-activity-list">${activity}</ol>` : emptyState(ids.length > 0));
+        : filters() + (activity ? activity : emptyState(ids.length > 0));
     if (document.body.dataset.feedView === 'following') document.getElementById('feed-view-status').textContent = introPreview()
       ? `${introPicks.people.size} people and ${introPicks.collections.size} collections selected. Follow suggestions for collections, authors, and community members.`
       : `${people.length} followed people in ${{all:'All',creators:'Creators',members:'Community'}[kind]}`;
   }
   if (management) management.innerHTML = filters() + (people.length ? `<ul class="people-list">${people.map(person => personRow(person,true)).join('')}</ul>` : emptyState(ids.length > 0));
   updatePeopleSignals();
+  watchActivity(filteredItems);
   document.dispatchEvent(new Event('collection-stories-rendered'));
 }
 function loginFor(person) {
@@ -243,19 +316,20 @@ document.addEventListener('following-intro-preview', () => {
   kind = 'all'; introPicks.people.clear(); introPicks.collections.clear(); render();
 });
 document.addEventListener('feed-view-selected', event => {
-  if (event.detail === 'following') { if (!introPreview()) updatePeopleSignals(true); render(); }
-  else if (introPreview()) { leaveIntro(); introPicks.people.clear(); introPicks.collections.clear(); }
+  if (event.detail === 'following') render();
+  else {
+    stopWatching(); visitMarkers = null;
+    if (introPreview()) { leaveIntro(); introPicks.people.clear(); introPicks.collections.clear(); }
+  }
 });
-document.addEventListener('people-updates-preview',()=>updatePeopleSignals());
-document.addEventListener('click',event => { if(event.target.closest('[data-profile-section="following"]')) updatePeopleSignals(true); });
+document.addEventListener('people-updates-preview', render);
 document.addEventListener('auth-change', render);
 document.addEventListener('prediction-call', render);
 window.addEventListener('storage', event => { if ([PEOPLE_FOLLOW_KEY,FOLLOWED_COLLECTIONS_KEY,PEOPLE_UPDATES_SEEN_KEY,PEOPLE_UPDATES_PREVIEW_KEY,null].includes(event.key)) render(); });
-window.addEventListener('pageshow', () => {
+window.addEventListener('pageshow', event => {
+  if (event.persisted) visitMarkers = null;
   kind = new URLSearchParams(location.search).get('people') || 'all';
   if (!['all','creators','members'].includes(kind)) kind = 'all';
-  if (location.hash === '#following' && !introPreview()) updatePeopleSignals(true);
   render();
 });
-if (location.hash === '#following' && !introPreview()) updatePeopleSignals(true);
 render();

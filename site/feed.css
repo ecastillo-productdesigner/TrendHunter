@@ -420,6 +420,7 @@
 
   /* Motion — not in Figma; defined here so timings live in one place */
   --motion-hover: 150ms;
+  --motion-activity-seen: 600ms; /* Uninterrupted visibility before acknowledging an activity card. */
   --motion-momentum-change: 1200ms; /* One quiet chevron-strength change. */
   --motion-momentum-refresh: 10000ms; /* Staggered prototype trend updates. */
   --motion-account-setup: 4000ms; /* Expanding-ring account preparation loop. */
@@ -2558,6 +2559,9 @@ button.onboarding-person:hover { color: var(--color-text-primary); }
 .onboarding-choices--review .onboarding-person { flex: 0 1 calc((100% - var(--spacing-layout-lg)) / 2); cursor: default; }
 .onboarding-choices--review .onboarding-person:only-child { margin-inline: auto; }
 .onboarding-choices--review .onboarding-person-portrait { width: min(100%, var(--avatar-size-lg)); }
+@media (width < 960px) {
+  .onboarding[data-step="review"] .onboarding-actions { margin-top: var(--spacing-layout-xl); }
+}
 @media (width < 960px) { .onboarding-choices--review, .onboarding-choices--review[data-groups="2"] { grid-template-columns: 1fr; max-width: var(--layout-login-width); margin-inline: auto; } }
 @media (max-width: 599px) {
   .onboarding { padding-inline: var(--spacing-layout-md); margin-block: var(--spacing-layout-xl); }
@@ -6107,6 +6111,11 @@ body:has(.auth-prompt[open]) {
 .people-activity-label { font: var(--type-editorial-h4); color: var(--color-recommendation); text-align: left; }
 .trend-card .people-activity-label { align-self: stretch; display: flex; align-items: center; justify-content: flex-start; min-height: var(--icon-size-2xl); margin-top: calc(var(--spacing-component-xs) - var(--spacing-layout-md)); margin-bottom: calc(-1 * var(--spacing-component-ms)); }
 @media (min-width: 600px) { .trend-card .people-activity-label { margin-top: calc(var(--spacing-component-xs) - var(--spacing-layout-lg)); } }
+.people-activity-group { display: grid; gap: var(--spacing-layout-md); }
+.people-activity-group + .people-activity-group { margin-top: var(--spacing-layout-xl); }
+.people-activity-marker { display: inline-flex; align-items: center; gap: var(--spacing-component-xs); margin-left: var(--spacing-component-sm); font: var(--type-utility-helper); font-weight: var(--type-weight-bold); color: var(--color-text-secondary); white-space: nowrap; }
+.people-activity-change { margin-left: var(--spacing-component-sm); font: var(--type-utility-helper); color: var(--color-text-dim); }
+.people-activity-marker .collection-updates-dot { flex: none; }
 .people-activity-label a:hover { color: var(--color-text-primary); }
 .trend-card .people-activity-label { column-gap: var(--spacing-component-xs); flex-wrap: wrap; }
 .people-collection-follow { display: grid; gap: var(--spacing-layout-md); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); background: var(--color-background-surface); }

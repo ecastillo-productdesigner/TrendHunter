@@ -101,7 +101,7 @@ if (settingsButton && settingsPanel) {
     if(resetCollectionUpdateMarkers(localStorage)){setOpen(false);document.dispatchEvent(new Event('collection-updates-preview'));}
   });
   settingsPanel.querySelector('[data-setting="show-new-following"]')?.addEventListener('click', async () => {
-    const { showPeopleUpdatesPreview } = await import('./people-update-state.js');
+    const { showPeopleUpdatesPreview } = await import('./people-update-state.js?v=4');
     if (!showPeopleUpdatesPreview(localStorage)) { window.showToast?.('New activity could not be shown. Please try again.'); return; }
     setOpen(false);
     if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('people-updates-preview'));

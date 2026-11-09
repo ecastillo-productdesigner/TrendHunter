@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ONBOARDING_DRAFT_KEY, TOPICS, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding, onboardingSelectionCount, skipOnboardingStep } from '../site/onboarding-state.js';
+import { ONBOARDING_DRAFT_KEY, TOPICS, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingHasPicks } from '../site/onboarding-state.js';
 import { TOPIC_STORAGE_KEY, readSelectedTopics } from '../site/feed-personalization.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from '../site/collection-follow-state.js';
 import { PEOPLE_FOLLOW_KEY, readFollowing } from '../site/people-follow-state.js';
@@ -91,4 +91,21 @@ test('current interests cover home and family and retain a retry draft until nav
   assert.deepEqual(readOnboardingDraft(storage, session), draft);
   assert.equal(onboardingCollections(['home-living'])[0].href, 'collection-smart-home-energy.html');
   assert.equal(onboardingCollections(['family-parenting'])[0].href, 'collection-back-to-school-transitions.html');
+});
+
+test('personalized collection suggestions contain matches only and balance multiple interests', () => {
+  assert.deepEqual(onboardingCollections(['travel']).map(item => item.href), ['collection-adventure-active-travel.html', 'collection-solo-travel.html']);
+  assert.deepEqual(onboardingCollections(['home-living']).map(item => item.href), ['collection-smart-home-energy.html', 'collection-tactile-home-design.html', 'collection-budgeted-living.html', 'collection-everyday-living.html']);
+  const blended = onboardingCollections(['travel', 'beauty', 'tech']);
+  assert.deepEqual(blended.slice(0,3).map(item => item.href), ['collection-adventure-active-travel.html', 'collection-evidence-based-beauty.html', 'collection-ai-everyday-life.html']);
+  assert.ok(!blended.some(item => item.href === 'collection-back-to-school-transitions.html'));
+  assert.ok(onboardingCollections(['culture']).some(item => item.href === 'collection.html'));
+  assert.equal(onboardingCollections([]).length, 8);
+});
+test('only a completely empty onboarding bypasses the summary, including after clearing edits', () => {
+  assert.equal(onboardingHasPicks({ topics: [], collections: [], people: [] }), false);
+  for (const draft of [{ topics: ['tech'] }, { collections: ['collection-solo-travel.html'] }, { people: ['owen-brooks'] }]) assert.equal(onboardingHasPicks(draft), true);
+  const cleared = skipOnboardingStep({ people: ['owen-brooks'] }, 'trend-setters');
+  assert.equal(onboardingHasPicks(cleared), false);
+  assert.equal(onboardingHasPicks({ people: ['jamie-park'] }), false);
 });

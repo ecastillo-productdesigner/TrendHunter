@@ -45,6 +45,6 @@ test('Following acknowledges only followed releases; a later followed person add
  assert.ok(unnoticedPeopleUpdates(storage,['daniel-reed']).length);
  acknowledgePeopleUpdates(storage,['daniel-reed']);assert.deepEqual(unnoticedPeopleUpdates(storage,['daniel-reed']),[]);
  assert.ok(unnoticedPeopleUpdates(storage,['daniel-reed','jamie-park']).length);
- showPeopleUpdatesPreview(storage);assert.equal(peoplePreviewPending(storage),true);
- acknowledgePeopleUpdates(storage,['daniel-reed']);assert.equal(peoplePreviewPending(storage),false);
+ showPeopleUpdatesPreview(storage,['daniel-reed']);assert.equal(peoplePreviewPending(storage,['daniel-reed']),true);
+ acknowledgePeopleUpdates(storage,['daniel-reed']);assert.equal(peoplePreviewPending(storage,['daniel-reed']),false);
 });
