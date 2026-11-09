@@ -2829,6 +2829,17 @@
       ]
     },
     {
+      "key": "button:pill-button onboarding-summary-add",
+      "classes": "pill-button onboarding-summary-add",
+      "tag": "button",
+      "name": "Add more",
+      "sources": [
+        "onboarding.js",
+        "onboarding.js",
+        "onboarding.js"
+      ]
+    },
+    {
       "key": "button:prediction-card-link",
       "classes": "prediction-card-link",
       "tag": "button",
