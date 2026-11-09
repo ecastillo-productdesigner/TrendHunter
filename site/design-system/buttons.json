@@ -167,6 +167,18 @@
       ]
     },
     {
+      "key": "button:article-share article-video-share",
+      "classes": "article-share article-video-share",
+      "tag": "button",
+      "name": "Share story",
+      "sources": [
+        "trend-city-content-walk.html",
+        "trend-led-skincare-lounge.html",
+        "trend-sunday-meal-prep.html",
+        "trend-weekly-laundry-reset.html"
+      ]
+    },
+    {
       "key": "button:article-sheet-close",
       "classes": "article-sheet-close",
       "tag": "button",

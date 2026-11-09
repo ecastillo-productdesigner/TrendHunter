@@ -4545,6 +4545,36 @@ body:has(.edit-profile-modal[open]) {
   height: var(--icon-size-lg);
   font-size: var(--icon-size-lg);
 }
+.article-video-actions {
+  --trend-card-icon: var(--color-icon-on-media);
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-component-xs);
+  right: calc(var(--spacing-component-ms) - (var(--icon-size-2xl) - var(--icon-size-lg)) / 2);
+  bottom: calc(var(--spacing-layout-lg) - (var(--icon-size-2xl) - var(--icon-size-lg)) / 2);
+  filter: drop-shadow(0 1px 6px var(--color-shadow-strong));
+}
+.article-video-actions :is(.trend-card-sound, .article-video-share) {
+  position: static;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+  padding: 0;
+  margin: 0;
+  filter: none;
+}
+.article-video-share { --share-hover: var(--color-text-on-media); }
+.article-video-share .trend-card-share-icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  mask-size: calc(var(--icon-size-lg) * 32 / 28) auto;
+  -webkit-mask-size: calc(var(--icon-size-lg) * 32 / 28) auto;
+}
 .article-video .trend-card-sound:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: calc(-1 * var(--spacing-component-xs));
