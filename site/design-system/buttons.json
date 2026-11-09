@@ -2429,6 +2429,17 @@
       ]
     },
     {
+      "key": "button:onboarding-summary-add",
+      "classes": "onboarding-summary-add",
+      "tag": "button",
+      "name": "Add more",
+      "sources": [
+        "onboarding.js",
+        "onboarding.js",
+        "onboarding.js"
+      ]
+    },
+    {
       "key": "a:pill-button",
       "classes": "pill-button",
       "tag": "a",
@@ -2825,17 +2836,6 @@
       "tag": "button",
       "name": "pill-button onboarding-collection",
       "sources": [
-        "onboarding.js"
-      ]
-    },
-    {
-      "key": "button:pill-button onboarding-summary-add",
-      "classes": "pill-button onboarding-summary-add",
-      "tag": "button",
-      "name": "Add more",
-      "sources": [
-        "onboarding.js",
-        "onboarding.js",
         "onboarding.js"
       ]
     },
