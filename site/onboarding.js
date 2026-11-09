@@ -58,7 +58,7 @@ function render({ focus = true } = {}) {
   }).join('');
   const copy = {
     topics: ['What topics interest you?', 'Your picks shape the stories and predictions you see.', ''],
-    collections: ['Follow these collections', 'These are the collections other hunters are following now', 'You can choose collections to follow later in your profile.'],
+    collections: ['Collections you will like', 'Based on your interests, here are collections to follow.', ''],
     'trend-setters': ['Follow our trend setters', 'They will keep you up to date.', 'You can choose who to follow later in your profile.'],
     review: ['Great picks', draft.topics.length || draft.collections.length || draft.people.length ? 'These will show up on your feed first' : 'Your next discovery is waiting.', ''],
   }[step];
