@@ -2552,8 +2552,8 @@ button.onboarding-person:hover { color: var(--color-text-primary); }
 .onboarding-summary-collections { display: grid; gap: var(--spacing-component-ms); width: 100%; padding: 0; list-style: none; }
 .onboarding-summary-collections .pill-button { min-height: calc(var(--icon-size-2xl) + var(--spacing-layout-md)); padding: var(--spacing-layout-md) var(--spacing-component-ms); pointer-events: none; transition: none; }
 .onboarding-summary-topics .topic-tile { pointer-events: none; transition: none; }
-.onboarding-choices--review .onboarding-people { display: flex; flex-direction: column; gap: var(--spacing-layout-xl); max-width: none; }
-.onboarding-choices--review .onboarding-person { cursor: default; }
+.onboarding-choices--review .onboarding-people { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--spacing-layout-xl) var(--spacing-layout-lg); max-width: none; }
+.onboarding-choices--review .onboarding-person { flex: 0 1 calc((100% - var(--spacing-layout-lg)) / 2); cursor: default; }
 @media (width < 960px) { .onboarding-choices--review, .onboarding-choices--review[data-groups="2"] { grid-template-columns: 1fr; max-width: var(--layout-login-width); margin-inline: auto; } }
 @media (max-width: 599px) {
   .onboarding { padding-inline: var(--spacing-layout-md); margin-block: var(--spacing-layout-xl); }
