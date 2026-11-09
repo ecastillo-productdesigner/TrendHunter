@@ -1,0 +1,50 @@
+<section id="avatars" class="ds-section">
+  <div class="ds-section-heading">
+    <p class="ds-eyebrow">Component reference</p>
+    <h2>Avatars</h2>
+    <p>Portrait sizes, shapes and selection styles used in the app. Dimensions are CSS pixels; the 140px portrait can appear 280 pixels wide in a 2× screenshot.</p>
+  </div>
+  <div class="ds-avatar-scale">
+    <figure class="ds-panel ds-avatar-size-card">
+      <div class="ds-avatar-canvas"><img class="profile-avatar profile-avatar--contributor ds-avatar-sample" style="--ds-avatar-size:var(--icon-size-lg)" src="../assets/authors/owen-brooks.webp" alt="Fictional writer Owen Brooks"></div>
+      <figcaption><strong>24 × 24px</strong><p>Story bylines, video authors and collection member stacks</p><code>--icon-size-lg</code><button class="ds-copy" type="button" data-copy="--icon-size-lg" aria-label="Copy 24px avatar token">Copy token</button></figcaption>
+    </figure>
+    <figure class="ds-panel ds-avatar-size-card">
+      <div class="ds-avatar-canvas"><img class="profile-avatar profile-avatar--contributor ds-avatar-sample" style="--ds-avatar-size:var(--icon-size-xl)" src="../assets/authors/owen-brooks.webp" alt="Fictional writer Owen Brooks"></div>
+      <figcaption><strong>32 × 32px</strong><p>Comment portraits</p><code>--icon-size-xl</code><button class="ds-copy" type="button" data-copy="--icon-size-xl" aria-label="Copy 32px avatar token">Copy token</button></figcaption>
+    </figure>
+    <figure class="ds-panel ds-avatar-size-card">
+      <div class="ds-avatar-canvas"><img class="profile-avatar profile-avatar--contributor ds-avatar-sample" style="--ds-avatar-size:var(--icon-size-2xl)" src="../assets/authors/owen-brooks.webp" alt="Fictional writer Owen Brooks"></div>
+      <figcaption><strong>48 × 48px</strong><p>People lists and follow recommendations</p><code>--icon-size-2xl</code><button class="ds-copy" type="button" data-copy="--icon-size-2xl" aria-label="Copy 48px avatar token">Copy token</button></figcaption>
+    </figure>
+    <figure class="ds-panel ds-avatar-size-card">
+      <div class="ds-avatar-canvas"><img class="profile-avatar profile-avatar--contributor ds-avatar-sample" style="--ds-avatar-size:calc(var(--avatar-size-xl) * .75)" src="../assets/authors/owen-brooks.webp" alt="Fictional writer Owen Brooks"></div>
+      <figcaption><strong>105 × 105px maximum</strong><p>Who to Follow carousel; scales down with its card</p><code>calc(var(--avatar-size-xl) * .75)</code><button class="ds-copy" type="button" data-copy-value="calc(var(--avatar-size-xl) * .75)" aria-label="Copy carousel avatar size">Copy value</button></figcaption>
+    </figure>
+    <figure class="ds-panel ds-avatar-size-card">
+      <div class="ds-avatar-canvas"><img class="profile-avatar profile-avatar--contributor ds-avatar-sample" style="--ds-avatar-size:var(--avatar-size-xl)" src="../assets/authors/owen-brooks.webp" alt="Fictional writer Owen Brooks"></div>
+      <figcaption><strong>140 × 140px</strong><p>Profile portraits and onboarding trendsetters</p><code>--avatar-size-xl</code><button class="ds-copy" type="button" data-copy="--avatar-size-xl" aria-label="Copy 140px avatar token">Copy token</button></figcaption>
+    </figure>
+  </div>
+  <div class="ds-two-column ds-spacing-detail">
+    <article class="ds-panel ds-component ds-avatar-details">
+      <h3>Portrait and identity</h3>
+      <div class="ds-avatar-identity">
+        <img class="profile-avatar profile-avatar--contributor" src="../assets/authors/daniel-reed.webp" alt="Fictional writer Daniel Reed">
+        <div class="profile-identity"><span class="profile-name">Daniel Reed</span><span class="profile-role">Lifestyle &amp; Culture Writer</span></div>
+      </div>
+      <dl><dt>Size</dt><dd><code>--avatar-size-xl</code> · 140px</dd><dt>Circle</dt><dd><code>--avatar-radius-full</code> · 100px</dd><dt>Portrait background</dt><dd><code>--color-icon-avatar</code> · #875FE7</dd><dt>Image fitting</dt><dd>Square, with <code>object-fit: cover</code></dd></dl>
+      <p>Onboarding and Great Picks place names and uppercase role titles below each portrait. The summary shows two trendsetters per row and scales portraits down when needed to fit the panel. A single or final unpaired trendsetter remains centered.</p>
+    </article>
+    <article class="ds-panel ds-component ds-avatar-details">
+      <h3>Selected in onboarding</h3>
+      <div class="ds-avatar-identity">
+        <img class="profile-avatar profile-avatar--contributor ds-avatar-selected" src="../assets/authors/owen-brooks.webp" alt="Selected fictional writer Owen Brooks">
+        <div class="profile-identity"><span class="profile-name">Owen Brooks</span><span class="profile-role">Consumer Culture Writer</span></div>
+      </div>
+      <dl><dt>Selection ring</dt><dd><code>--stroke-focus</code> · 2px</dd><dt>Ring offset</dt><dd><code>--spacing-component-xs</code> · 4px</dd><dt>Ring color</dt><dd><code>--color-border-focus</code></dd><dt>Selection indicator</dt><dd>Ring only, with no checkmark</dd></dl>
+      <p>These are static appearance samples. Actual topic and trendsetter controls expose their selected state with <code>aria-pressed</code>. Great Picks displays saved selections without selection rings or hover effects.</p>
+    </article>
+  </div>
+  <p class="ds-note">The app also defines <code>--avatar-radius-soft</code> (2px) for small rounded details, and uses <code>--radius-circle</code> (50%) for comment portraits. These previews reuse existing tokens; the 24px, 32px and 48px avatar sizes currently share the icon-size scale. Portraits are fictional prototype identities.</p>
+</section>
