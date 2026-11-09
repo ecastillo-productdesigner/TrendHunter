@@ -18,8 +18,9 @@ let storage, session;
 try { storage = localStorage; session = sessionStorage; } catch {}
 const draft = readOnboardingDraft(storage, session);
 const escapeText = text => String(text).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-let furthest = Math.max(0, STEPS.indexOf(location.hash.slice(1)));
+let furthest = Math.max(0, STEPS.indexOf(location.hash.slice(1).split('/')[0]));
 let step = 'topics';
+let editingReview = false;
 const topicTile = (topic, summary = false) => `<${summary ? 'div' : 'button'} class="topic-tile" ${summary ? '' : 'type="button"'} data-topic="${topic.id}" ${summary ? 'data-selected="true"' : `data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"`}><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></${summary ? 'div' : 'button'}>`;
 const collectionChoice = collection => `<button class="pill-button onboarding-collection" type="button" data-choice="collections" data-value="${collection.href}" aria-pressed="${draft.collections.includes(collection.href)}">${escapeText(collection.name)}</button>`;
 const creator = (person, summary = false) => `<${summary ? 'div' : 'button'} class="onboarding-person" ${summary ? '' : 'type="button"'} ${summary ? '' : `data-choice="people" data-value="${person.id}" aria-pressed="${draft.people.includes(person.id)}"`}><span class="onboarding-person-portrait"><img src="${person.image}" alt="" class="profile-avatar"></span><span class="profile-identity"><span class="profile-name">${escapeText(person.name)}</span><span class="profile-role">${escapeText(person.role)}</span></span></${summary ? 'div' : 'button'}>`;
@@ -38,19 +39,20 @@ function summary() {
   const topics = TOPICS.filter(topic => draft.topics.includes(topic.id));
   const collections = COLLECTIONS.filter(collection => draft.collections.includes(collection.href));
   choices.dataset.groups = [topics, collections, people].filter(group => group.length).length;
-  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics">${topics.map(topic => topicTile(topic, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="topics" aria-label="Add more topics">Add more</button></section>` : ''}
-  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul><button class="onboarding-summary-add" type="button" data-edit="collections" aria-label="Add more collections">Add more</button></section>` : ''}
-  ${people.length ? `<section class="onboarding-summary-group"><h2>Trend setters</h2><div class="onboarding-people">${people.map(person => creator(person, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="trend-setters" aria-label="Add more trendsetters">Add more</button></section>` : ''}
+  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics onboarding-summary-picks">${topics.map(topic => topicTile(topic, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="topics" aria-label="Add more topics">Add More</button></section>` : ''}
+  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections onboarding-summary-picks">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul><button class="onboarding-summary-add" type="button" data-edit="collections" aria-label="Add more collections">Add More</button></section>` : ''}
+  ${people.length ? `<section class="onboarding-summary-group"><h2>Trend setters</h2><div class="onboarding-people onboarding-summary-picks">${people.map(person => creator(person, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="trend-setters" aria-label="Add more trendsetters">Add More</button></section>` : ''}
   ${!people.length && !topics.length && !collections.length ? '<p class="onboarding-empty">Start exploring, and choose your interests whenever you’re ready.</p><button class="onboarding-edit" type="button" data-edit="topics">Choose interests</button>' : ''}`;
 }
 function render({ focus = true } = {}) {
-  const requested = location.hash.slice(1);
+  const [requested, mode] = location.hash.slice(1).split('/');
   step = STEPS.includes(requested) ? requested : 'topics';
+  editingReview = mode === 'edit' && requested === step && step !== 'review';
   const index = STEPS.indexOf(step);
-  furthest = Math.max(furthest, index);
+  furthest = Math.max(furthest, editingReview ? STEPS.length - 1 : index);
   app.dataset.step = step;
-  back.href = index ? `#${STEPS[index - 1]}` : 'feed.html';
-  back.setAttribute('aria-label', index ? `Back to ${['Your interests', 'Collections', 'Trend Setters'][index - 1]}` : 'Back to feed');
+  back.href = editingReview ? '#review' : index ? `#${STEPS[index - 1]}` : 'feed.html';
+  back.setAttribute('aria-label', editingReview ? 'Back to Great picks' : index ? `Back to ${['Your interests', 'Collections', 'Trend Setters'][index - 1]}` : 'Back to feed');
   const labels = ['Your interests', 'Collections', 'Trend Setters'];
   progress.innerHTML = labels.map((label, i) => {
     const complete = i < index && onboardingSelectionCount(draft, STEPS[i]) > 0;
@@ -80,11 +82,11 @@ function render({ focus = true } = {}) {
 }
 function advance() {
   saveOnboardingDraft(draft, session);
-  location.hash = STEPS[Math.min(STEPS.indexOf(step) + 1, STEPS.length - 1)];
+  location.hash = editingReview ? 'review' : STEPS[Math.min(STEPS.indexOf(step) + 1, STEPS.length - 1)];
 }
 choices.addEventListener('click', event => {
   const edit = event.target.closest('[data-edit]');
-  if (edit) { location.hash = edit.dataset.edit; return; }
+  if (edit) { location.hash = `${edit.dataset.edit}/edit`; return; }
   const button = event.target.closest('[data-choice]');
   if (!button) return;
   const values = new Set(draft[button.dataset.choice]);
@@ -95,7 +97,7 @@ choices.addEventListener('click', event => {
 });
 progress.addEventListener('click', event => {
   const button = event.target.closest('[data-step]');
-  if (button && !button.disabled) { saveOnboardingDraft(draft, session); location.hash = button.dataset.step; }
+  if (button && !button.disabled) { saveOnboardingDraft(draft, session); location.hash = `${button.dataset.step}${editingReview ? '/edit' : ''}`; }
 });
 skip.addEventListener('click', () => {
   Object.assign(draft, skipOnboardingStep(draft, step));

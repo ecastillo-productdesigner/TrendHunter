@@ -2432,7 +2432,7 @@
       "key": "button:onboarding-summary-add",
       "classes": "onboarding-summary-add",
       "tag": "button",
-      "name": "Add more",
+      "name": "Add More",
       "sources": [
         "onboarding.js",
         "onboarding.js",
