@@ -2538,6 +2538,7 @@ button.onboarding-person:hover { color: var(--color-text-primary); }
 .onboarding[data-step="review"] .onboarding-heading h1 { font: var(--type-editorial-h2); }
 .onboarding-summary-group { display: flex; flex-direction: column; min-width: 0; gap: var(--spacing-layout-lg); padding: var(--spacing-layout-lg) var(--spacing-layout-xl); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); }
 .onboarding-summary-group h2 { font: var(--type-weight-bold) var(--type-size-24) / var(--type-line-height-display-md) var(--type-font-display); color: var(--color-text-primary); text-transform: uppercase; text-align: center; }
+.onboarding-summary-add { align-self: center; width: auto; min-height: var(--icon-size-2xl); margin-top: auto; padding: var(--spacing-component-sm) var(--spacing-layout-lg); cursor: pointer; }
 .onboarding-choices--review { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-layout-md); align-items: stretch; }
 .onboarding-choices--review[data-groups="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .onboarding-choices--review:is([data-groups="0"], [data-groups="1"]) { grid-template-columns: 1fr; max-width: var(--layout-login-width); margin-inline: auto; }

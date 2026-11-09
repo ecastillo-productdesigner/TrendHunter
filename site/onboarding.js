@@ -38,9 +38,9 @@ function summary() {
   const topics = TOPICS.filter(topic => draft.topics.includes(topic.id));
   const collections = COLLECTIONS.filter(collection => draft.collections.includes(collection.href));
   choices.dataset.groups = [topics, collections, people].filter(group => group.length).length;
-  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics">${topics.map(topic => topicTile(topic, true)).join('')}</div></section>` : ''}
-  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul></section>` : ''}
-  ${people.length ? `<section class="onboarding-summary-group"><h2>Trend setters</h2><div class="onboarding-people">${people.map(person => creator(person, true)).join('')}</div></section>` : ''}
+  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics">${topics.map(topic => topicTile(topic, true)).join('')}</div><button class="pill-button onboarding-summary-add" type="button" data-edit="topics" aria-label="Add more topics">Add more</button></section>` : ''}
+  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul><button class="pill-button onboarding-summary-add" type="button" data-edit="collections" aria-label="Add more collections">Add more</button></section>` : ''}
+  ${people.length ? `<section class="onboarding-summary-group"><h2>Trend setters</h2><div class="onboarding-people">${people.map(person => creator(person, true)).join('')}</div><button class="pill-button onboarding-summary-add" type="button" data-edit="trend-setters" aria-label="Add more trendsetters">Add more</button></section>` : ''}
   ${!people.length && !topics.length && !collections.length ? '<p class="onboarding-empty">Start exploring, and choose your interests whenever you’re ready.</p><button class="onboarding-edit" type="button" data-edit="topics">Choose interests</button>' : ''}`;
 }
 function render({ focus = true } = {}) {
