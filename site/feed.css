@@ -322,6 +322,7 @@
   --radius-circle: 50%;
 
   /* Avatar sizes */
+  --size-signal-compact: 80px; /* Compact onboarding signal artwork on the 404 page. */
   --avatar-size-lg: 96px;
   --avatar-size-xl: 140px;
 
@@ -4144,6 +4145,17 @@ body:has(.edit-profile-modal[open]) {
 .site-footer--page .footer-links li {
   color: var(--color-text-dim);
 }
+
+/* Page not found — shared navigation, signal ripple and primary action. */
+.page-not-found { display: flex; flex-direction: column; min-height: 100svh; }
+.not-found-page { flex: 1; padding: calc(var(--spacing-page-2xl) + var(--spacing-layout-xl)) var(--spacing-layout-lg); }
+.not-found-content { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-layout-lg); width: 100%; max-width: var(--layout-terms-width); margin-inline: auto; text-align: center; }
+.not-found-signal { width: var(--size-signal-compact); }
+.not-found-copy { display: flex; flex-direction: column; gap: var(--spacing-component-xs); }
+.not-found-copy :is(h1, h4) { font: var(--type-page-masthead); color: var(--color-text-primary); text-transform: uppercase; }
+.not-found-copy p { font: var(--type-body); color: var(--color-text-body); }
+.not-found-action { min-height: var(--layout-auth-button-height); }
+.not-found-action:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 
 /* ===========================
    Channel page — center column content

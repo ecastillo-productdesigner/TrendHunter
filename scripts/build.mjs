@@ -26,7 +26,10 @@ export async function build() {
   for (const file of htmlFiles) {
     const relativeRoot = path.relative(path.dirname(file), outputRoot).split(path.sep).join('/');
     const prefix = relativeRoot ? `${relativeRoot}/` : '';
-    const original = await readFile(file, 'utf8');
+    let original = await readFile(file, 'utf8');
+    // GitHub Pages serves this document at the missing URL, including nested paths.
+    // Keep its assets and navigation rooted at the published project directory.
+    if (file === path.join(outputRoot, '404.html')) original = original.replace('<base href="./">', '<base href="/TrendHunter/">');
     const guarded = original
       .replace(/<html\b/i, '<html data-demo-locked')
       .replace(/<\/head>/i, `<meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="${prefix}demo-access.css"><script src="${prefix}demo-access.js"></script></head>`)

@@ -18,5 +18,9 @@ http.createServer(async (request, response) => {
     const content = await readFile(target);
     response.writeHead(200, { 'Content-Type': types[path.extname(target)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
     response.end(request.method === 'HEAD' ? undefined : content);
-  } catch { response.writeHead(404, { 'Content-Type': 'text/plain' }).end('Not found'); }
+  } catch {
+    const content = await readFile(path.join(outputRoot, '404.html')).catch(() => 'Not found');
+    response.writeHead(404, { 'Content-Type': typeof content === 'string' ? 'text/plain' : 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    response.end(request.method === 'HEAD' ? undefined : content);
+  }
 }).listen(port, '127.0.0.1', () => console.log(`TrendHunter: http://127.0.0.1:${port}/TrendHunter/`));

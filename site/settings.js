@@ -40,6 +40,17 @@ if (settingsButton && settingsPanel) {
     (await featureAnnouncement).show();
   });
 
+  const show404Page = document.createElement('button');
+  show404Page.className = 'settings-panel-item';
+  show404Page.type = 'button';
+  show404Page.dataset.setting = 'show-404-page';
+  show404Page.textContent = 'Show 404 Page';
+  settingsPanel.querySelector('[data-setting="osano"]')?.before(show404Page);
+  show404Page.addEventListener('click', () => {
+    setOpen(false);
+    location.assign('404.html');
+  });
+
   // Escape or a click anywhere else closes it
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !settingsPanel.hidden) {
