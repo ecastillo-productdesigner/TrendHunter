@@ -27,7 +27,7 @@ ROLES = {
 NAMES = {'#BEFC4F': 'Lime', '#875FE7': 'Purple', '#FFFFFF': 'White', '#F5F7F9': 'Off white', '#E5E7EB': 'Cool gray 200',
          '#D1D5DB': 'Cool gray 300', '#9AA4B2': 'Cool gray 400', '#697182': 'Slate', '#343841': 'Charcoal',
          '#0F0F0F': 'Near black', '#000000': 'Black', '#EF4444': 'Red', '#FD4D13': 'Orange', '#FDE047': 'Yellow',
-         '#A3FC03': 'Bright lime', '#517C02': 'Accessible lime green'}
+         '#A3FC03': 'Bright lime', '#669900': 'Leaf green'}
 
 
 def resolve(name, values):

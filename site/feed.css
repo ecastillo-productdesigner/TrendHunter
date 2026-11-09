@@ -9,7 +9,7 @@
   --color-background-callout: #875FE7;
   --color-background-bg-overlay: #343841;
   --color-black: #000000;
-  /* Member medals retain the same lime/forest treatment in both themes. */
+  /* Member medals use the theme accent over a fixed slate surface. */
   --badge-medal-accent: #BEFC4F;
   --badge-medal-surface: #343841;
   --size-badge-popup-icon: 144px;
@@ -44,7 +44,7 @@
   --toast-bg: #343841;
   --toast-border: rgba(255, 255, 255, 0.25); /* #FFFFFF40 */
   --toast-label: #D1D5DB;
-  --toast-icon-success: #BEFC4F; /* toast check: lime.500 in both themes */
+  --toast-icon-success: #BEFC4F; /* toast check: lime in dark theme, accent green in light theme */
   --toast-icon-close: #D1D5DB;
   /* Prototype settings button — pinned: no light-theme override, so it looks the same in both themes */
   --settings-fab-bg: #343841;
@@ -113,7 +113,7 @@
   --color-interest-falling: var(--prediction-vote-out);
   --trend-up-icon-outline: transparent; /* light theme rims up arrows on light backgrounds */
 
-  /* Saved bookmark and signed-in Profile icon. They stay lime.500 in both themes */
+  /* Saved bookmark and signed-in Profile icon. They use the theme accent */
   --bookmark-icon-active: #BEFC4F;
   --share-focus-color: var(--color-border-focus);
   --article-bookmark-active: #BEFC4F; /* saved bookmark on the story page */
@@ -128,7 +128,7 @@
   --profile-bio-more: var(--color-text-body-link);    /* More... in the contributor bio */
   --profile-bio-link: var(--color-text-body-link);    /* links in the contributor bio */
   --icon-selected-outline: transparent; /* light theme rims the selected Profile icon, saved bookmarks and the feed-complete check */
-  --body-quote-line: #BEFC4F;           /* pull quote rule: lime.500 in both themes */
+  --body-quote-line: #BEFC4F;           /* pull quote rule: lime in dark theme, accent green in light theme */
   --color-icon-inverse: #0F0F0F;
   /* Not read from a dark frame: chosen to match how these elements already look in dark */
   --color-icon-dim: #D1D5DB;
@@ -141,7 +141,7 @@
   --buttons-primary-bg-disabled: #E9FBC5;
   --buttons-primary-label-disabled: #9AA4B2;
 
-  /* Sign-in CTAs (Send me a sign-in link, Continue). Light theme swaps to a dark button with a lime label */
+  /* Sign-in CTAs (Send me a sign-in link, Continue). Light theme uses the darker green with a dark label */
   --auth-cta-bg: #BEFC4F;
   --auth-cta-label: #0F0F0F;
   --auth-link: var(--color-text-body-link); /* Resent code / Enter password instead / terms links */
@@ -194,8 +194,8 @@
   --trend-card-primary-text: #FFFFFF;
   --trend-card-secondary-text: #F5F7F9;
   --trend-card-icon: #D1D5DB; /* concrete.300 — every icon is concrete.300 in dark theme */
-  --trend-card-bookmark-active: #BEFC4F; /* saved bookmark on the card photos: lime.500 in both themes */
-  --trend-card-signal: #BEFC4F;          /* trending-up arrow on the card photos: lime.500 in both themes */
+  --trend-card-bookmark-active: #BEFC4F; /* saved bookmark on the card photos: lime in dark theme, accent green in light theme */
+  --trend-card-signal: #BEFC4F;          /* trending-up arrow on the card photos: lime in dark theme, accent green in light theme */
 
   /* Predictions */
   --prediction-card-background-card: #875FE7;
@@ -454,8 +454,8 @@
 /* Light mode — Figma variable values from the "Feed Page" frame in Light mode.
    Only tokens that change are listed; everything else inherits from :root. */
 :root[data-theme="light"] {
-  /* 4.62:1 on #F5F7F9 and 4.96:1 on white at full opacity. */
-  --color-accent-foreground: #517C02;
+  /* 3.19:1 on #F5F7F9; 3.43:1 on white. Icons / large text only meet AA. */
+  --color-accent-foreground: #669900;
   --topic-tile-background: var(--buttons-secondary-bg);
   --color-background-surface: #F5F7F9;
   --answers-page-bg: #FFFFFF;
@@ -470,7 +470,7 @@
   --color-text-dim: #343841;
 
   --color-icon-default: #697182;
-  --color-icon-signal: #BEFC4F; /* feed-complete check */
+  --color-icon-signal: var(--color-accent-foreground); /* feed-complete check */
 
   --buttons-tertiary-bg: #F5F7F9;
   --buttons-tertiary-border: #D1D5DB;
@@ -487,7 +487,15 @@
   --buttons-secondary-label: #343841;
   --buttons-secondary-bg-hover: #D1D5DB; /* not in Figma yet: one step darker than the default fill */
   --share-focus-color: var(--color-border-focus);
-  /* Exception: the primary CTAs (Go Deeper, Make Your Call) keep lime.500 in light theme */
+  /* Light-theme green controls share the theme accent. */
+  --buttons-primary-bg-default: var(--color-accent-foreground);
+  --buttons-primary-bg-hover: color-mix(in srgb, var(--color-accent-foreground) 85%, var(--color-text-on-media));
+  --buttons-primary-text-default: var(--color-icon-inverse);
+  --bookmark-icon-active: var(--color-accent-foreground);
+  --article-bookmark-active: var(--color-accent-foreground);
+  --profile-bookmark-active: var(--color-accent-foreground);
+  --nav-profile-icon-active: var(--color-accent-foreground);
+  --body-quote-line: var(--color-accent-foreground);
 
   /* From the light-mode Collection page's TrendList */
   --trend-list-background: rgba(255, 255, 255, 0.25);
@@ -498,20 +506,20 @@
 
   /* Requested light-theme colors */
   --nav-profile-icon: #697182;  /* matches color/icon/default */
-  --color-text-accent: #875FE7; /* drawer headings */
+  --color-text-accent: var(--color-accent-foreground); /* drawer headings */
 
-  --filter-tab-active: #9333EA;
-  --contributor-tab-active: #9333EA;
-  --profile-bio-more: #9333EA;
-  --profile-bio-link: #9333EA;
+  --filter-tab-active: var(--color-accent-foreground);
+  --contributor-tab-active: var(--color-accent-foreground);
+  --profile-bio-more: var(--color-accent-foreground);
+  --profile-bio-link: var(--color-accent-foreground);
   --icon-selected-outline: #343841; /* 0.5px rim, drawn by the *-stroke.svg masks */
   --trend-up-icon-outline: #343841;
   --article-link: var(--color-text-body-link);
   --article-link-underline: currentColor;
 
   /* Sign-in CTAs — from the light-mode Continue button: buttons/primary/bg and buttons/primary/label */
-  --auth-cta-bg: #0F0F0F;     /* Send me a sign-in link / Continue */
-  --auth-cta-label: #BEFC4F;  /* lime.500 */
+  --auth-cta-bg: var(--color-accent-foreground);     /* Send me a sign-in link / Continue */
+  --auth-cta-label: var(--color-icon-inverse);  /* Dark label on the light-theme green fill. */
   --auth-link: #0F0F0F;
   --buttons-primary-bg-disabled: rgba(0, 0, 0, 0.1); /* #0000001A */
 
@@ -528,22 +536,37 @@
 
   --checkbox-icon-checked: #0F0F0F;
   --checkbox-icon-default: #0F0F0F;
-  --checkbox-check-mark: #BEFC4F;    /* lime.500 check inside the black box */
+  --checkbox-check-mark: var(--color-accent-foreground);    /* lime.500 check inside the black box */
 
-  /* Lime button fills, saved bookmarks and fixed dark/media surfaces keep their
-     existing treatment. Page links, rising chevrons and focus use the darker accent. */
+  /* Page accents, green controls, saved bookmarks and quote rules use the darker green.
+     Their surfaces remain dark while accent roles follow the selected theme. */
   /* Trend card icons (bookmark outline, share) — trend-card/icon in light theme */
   --trend-card-icon: #F5F7F9;
 
-  --prediction-badge-in: #BEFC4F;
+  --prediction-badge-in: var(--color-accent-foreground);
 
-  --edit-profile-save-bg: #0F0F0F;            /* Edit Profile Save: black with a lime label in light theme */
-  --edit-profile-save-label: #BEFC4F;
-  --edit-profile-focus: #BEFC4F;              /* Name underline and cursor while typing */
+  --edit-profile-save-bg: var(--color-accent-foreground);            /* Edit Profile Save: green with a dark label in light theme. */
+  --edit-profile-save-label: var(--color-icon-inverse);
+  --edit-profile-focus: var(--color-accent-foreground);              /* Name underline and cursor while typing */
+
+  /* Light-theme accents replace the dark-theme lime, including fixed-surface controls. */
+  --badge-medal-accent: var(--color-accent-foreground);
+  --toast-icon-success: var(--color-accent-foreground);
+  --settings-fab-focus: var(--color-accent-foreground);
+  --collection-list-icon: var(--color-accent-foreground);
+  --trend-card-bookmark-active: var(--color-accent-foreground);
+  --trend-card-signal: var(--color-accent-foreground);
+  --prediction-card-button: var(--color-accent-foreground);
+  --prediction-vote-in: var(--color-accent-foreground);
+  --color-border-on-topic: var(--color-accent-foreground);
+  --color-text-on-topic: var(--color-accent-foreground);
+  --prediction-card-button-hover: var(--buttons-primary-bg-hover);
+  --prediction-card-secondary-copy: var(--color-icon-inverse);
+  --prediction-vote-in-text: var(--color-icon-inverse);
 }
 
 /* These surfaces remain dark or photographic in both themes. Their focus rings
-   and inline links retain bright lime rather than the light-page foreground. */
+   and inline links use the active theme accent. */
 :is(.prediction-card, .prediction-outcome-reveal, .member-badge-dialog--medal,
     .badge-award-stage, .auth-prompt, .edit-profile-modal, .thb2b-banner,
     .trending-video-card, .trend-card--video, .article-video) {
@@ -1588,6 +1611,7 @@ a.story-lockup:hover .story-lockup-headline {
 }
 .trend-card-media-link:focus-visible { outline-offset: calc(-1 * var(--spacing-component-xs)); }
 .trend-card-title-link:is(:hover, :focus-visible) { color: var(--trend-card-icon); }
+:root[data-theme="light"] :is(.trend-card--editorial, .bookmark-revisit-card) .trend-card-title-link:is(:hover, :focus-visible) { color: var(--color-text-body); }
 .story-share { display: grid; place-items: center; flex-shrink: 0; width: var(--layout-story-share-size); height: var(--layout-story-share-size); }
 
 .trend-card-image--retailtainment-still { object-position: center 25%; }
@@ -1776,6 +1800,8 @@ a.story-lockup:hover .story-lockup-headline {
   position: absolute;
   inset: 0;
 }
+
+:root[data-theme="light"] .feed-complete-icon { --color-icon-signal: var(--color-accent-foreground); --icon-selected-outline: var(--color-accent-foreground); }
 
 .feed-complete-icon::before {
   background-color: var(--color-icon-signal);
@@ -3553,6 +3579,8 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   align-self: flex-start;
   background-color: var(--prediction-badge-in);
 }
+
+:root[data-theme="light"] .prediction-badge--in:not(.prediction-badge--resolved) { color: var(--color-icon-inverse); }
 
 .prediction-badge--out {
   align-self: flex-start;
@@ -5723,7 +5751,7 @@ body:has(.auth-prompt[open]) {
 }
 .page-feed:not([data-feed-view="for-you"]) .trend-card-recommendation { display: none; }
 
-/* End-of-article community panel; black stays fixed in both themes. */
+/* End-of-article community panel. Light theme uses the page palette. */
 .article-members {
   display: flex;
   flex-wrap: wrap;
@@ -5736,6 +5764,7 @@ body:has(.auth-prompt[open]) {
   color: var(--toast-label);
   text-align: center;
 }
+:root[data-theme="light"] .article-members { background: var(--color-background-surface); color: var(--color-text-primary); }
 .article-members-label {
   font: var(--type-weight-bold) var(--type-size-14)/var(--type-line-height-ui-xs) var(--type-font-display);
   text-transform: uppercase;
@@ -6333,7 +6362,7 @@ body:has(.auth-prompt[open]) {
 .badge-award-dialog::before { content: ''; position: absolute; inset: var(--spacing-component-sm); border: var(--stroke-weight-6) solid var(--badge-medal-accent); border-radius: var(--radius-lg); pointer-events: none; }
 .badge-award-dialog::backdrop { background: var(--color-scrim); }
 .badge-award-card { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--spacing-layout-lg); aspect-ratio: 1; padding: var(--spacing-page-2xl) var(--spacing-layout-xl); text-align: center; }
-.badge-award-symbol { flex: none; width: var(--size-badge-popup-icon-compact); height: var(--size-badge-popup-icon-compact); font-size: var(--size-badge-popup-icon-compact); line-height: 1; color: var(--badge-medal-accent); }
+.badge-award-symbol.material-symbols-outlined { flex: none; width: var(--size-badge-popup-icon-compact); height: var(--size-badge-popup-icon-compact); font: 400 var(--size-badge-popup-icon-compact)/1 'Material Symbols Outlined'; font-feature-settings: 'liga'; color: var(--badge-medal-accent); }
 .badge-award-card h2 { margin: 0; color: inherit; font: var(--type-card-headline); text-transform: uppercase; }
 .badge-award-card p { max-width: 35ch; margin: var(--spacing-component-sm) 0 0; font: var(--type-body); }
 .badge-award-burst { position: absolute; top: 50%; left: 50%; width: 0; height: 0; pointer-events: none; }
@@ -6544,6 +6573,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-outcome-call strong[data-outcome="out"] .prediction-outcome-verified { color: inherit; }
 .prediction-outcome-analysis { align-self: center; display: inline-flex; align-items: center; justify-content: center; min-height: var(--icon-size-2xl); max-width: 100%; padding-inline: var(--spacing-layout-lg); border-radius: var(--radius-x-sm); background: var(--prediction-card-button); color: var(--prediction-button-bg); font: var(--type-button-label); text-align: center; text-transform: uppercase; text-decoration: none; }
 .prediction-outcome-analysis:hover { background: var(--prediction-card-button-hover); color: var(--prediction-button-bg); }
+:root[data-theme="light"] .prediction-outcome-analysis { color: var(--color-icon-inverse); }
 .prediction-outcome-card-footer { display: flex; justify-content: space-between; gap: var(--spacing-layout-md); }
 .prediction-outcome-card-footer[hidden] { display: none; }
 .prediction-outcome-card-footer button { position: relative; display: inline-flex; align-items: center; gap: var(--spacing-component-sm); min-height: var(--type-utility-helper-line-height); color: inherit; font: var(--type-helper); }
