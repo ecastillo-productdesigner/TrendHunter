@@ -4531,10 +4531,19 @@ body:has(.edit-profile-modal[open]) {
 .article-video .trend-card-sound {
   position: absolute;
   z-index: 2;
-  right: var(--spacing-component-xs);
-  bottom: var(--spacing-component-xs);
+  width: var(--icon-size-2xl);
+  height: var(--icon-size-2xl);
+  padding: 0;
+  /* Account for the centered 24px symbol inside its 48px tap target. */
+  right: calc(var(--spacing-component-ms) - (var(--icon-size-2xl) - var(--icon-size-lg)) / 2);
+  bottom: calc(var(--spacing-layout-lg) - (var(--icon-size-2xl) - var(--icon-size-lg)) / 2);
   margin: 0;
   filter: drop-shadow(0 1px 6px var(--color-shadow-strong));
+}
+.article-video .trend-card-sound .trend-card-video-symbol {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  font-size: var(--icon-size-lg);
 }
 .article-video .trend-card-sound:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);

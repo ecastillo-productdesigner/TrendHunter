@@ -58,7 +58,7 @@ def build_icon_reference(project, out):
         add(name, 'Sharing', '20px share-menu icon. Hover changes the label and icon to white in dark mode; no hover background.', [
             state('Default', '<span class="share-menu-item">'+span('share-menu-icon share-menu-icon--'+klass)+'</span>'),
             state('Hover', '<span class="share-menu-item ds-share-icon-hover">'+span('share-menu-icon share-menu-icon--'+klass)+'</span>')])
-    add('Volume', 'Media', '32px Material Symbols Outlined. Muted: FILL 0, bookmark gray. Sound on: FILL 1, #BEFC4F.', [
+    add('Volume', 'Media', '32px Material Symbols Outlined in general media controls; Trending Videos and article players use 24px symbols in 48px targets. Article volume symbols sit 24px above the bottom and 12px from the right. Muted: FILL 0, bookmark gray. Sound on: FILL 1, #BEFC4F.', [
         state('Inactive · muted', '<span class="trend-card-sound" data-muted="true">'+span('trend-card-video-symbol','volume_off')+'</span>', 'photo'),
         state('Active · sound on', '<span class="trend-card-sound" data-muted="false">'+span('trend-card-video-symbol','volume_up')+'</span>', 'photo')])
     add('Play and pause feedback', 'Media', '48px, FILL 1, #BEFC4F. These are transient feedback icons after a tap, rather than permanent selected states.', [

@@ -1464,7 +1464,7 @@
     {
       "name": "Volume",
       "group": "Media",
-      "note": "32px Material Symbols Outlined. Muted: FILL 0, bookmark gray. Sound on: FILL 1, #BEFC4F.",
+      "note": "32px Material Symbols Outlined in general media controls; Trending Videos and article players use 24px symbols in 48px targets. Article volume symbols sit 24px above the bottom and 12px from the right. Muted: FILL 0, bookmark gray. Sound on: FILL 1, #BEFC4F.",
       "states": [
         "Inactive \u00b7 muted",
         "Active \u00b7 sound on"
