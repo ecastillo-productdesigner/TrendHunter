@@ -322,6 +322,7 @@
   --radius-circle: 50%;
 
   /* Avatar sizes */
+  --avatar-size-lg: 96px;
   --avatar-size-xl: 140px;
 
   /* Stroke */
@@ -2554,6 +2555,7 @@ button.onboarding-person:hover { color: var(--color-text-primary); }
 .onboarding-summary-topics .topic-tile { pointer-events: none; transition: none; }
 .onboarding-choices--review .onboarding-people { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--spacing-layout-xl) var(--spacing-layout-lg); max-width: none; }
 .onboarding-choices--review .onboarding-person { flex: 0 1 calc((100% - var(--spacing-layout-lg)) / 2); cursor: default; }
+.onboarding-choices--review .onboarding-person-portrait { width: min(100%, var(--avatar-size-lg)); }
 @media (width < 960px) { .onboarding-choices--review, .onboarding-choices--review[data-groups="2"] { grid-template-columns: 1fr; max-width: var(--layout-login-width); margin-inline: auto; } }
 @media (max-width: 599px) {
   .onboarding { padding-inline: var(--spacing-layout-md); margin-block: var(--spacing-layout-xl); }
@@ -5972,7 +5974,7 @@ body:has(.auth-prompt[open]) {
 .who-to-follow-track { grid-auto-columns: 40%; gap: var(--spacing-layout-lg); }
 .who-to-follow-card { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-ms); height: 100%; text-align: center; }
 .who-to-follow-profile { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-sm); width: 100%; }
-.who-to-follow-avatar { width: min(75%, calc(var(--avatar-size-xl) * .75)); aspect-ratio: 1; border-radius: var(--radius-full); object-fit: cover; background: var(--color-icon-avatar); }
+.who-to-follow-avatar { width: min(100%, var(--avatar-size-lg)); aspect-ratio: 1; border-radius: var(--radius-full); object-fit: cover; background: var(--color-icon-avatar); }
 .who-to-follow-name { font: var(--type-editorial-h3); color: var(--color-text-primary); }
 .who-to-follow-role { font: var(--type-editorial-h6); color: var(--color-text-dim); text-transform: uppercase; }
 .who-to-follow-profile:is(:hover, :focus-visible) .who-to-follow-name { color: var(--color-icon-default); }
