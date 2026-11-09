@@ -5978,7 +5978,7 @@ body:has(.auth-prompt[open]) {
 .who-to-follow-name { font: var(--type-editorial-h3); color: var(--color-text-primary); }
 .who-to-follow-role { font: var(--type-editorial-h6); color: var(--color-text-dim); text-transform: uppercase; }
 .who-to-follow-profile:is(:hover, :focus-visible) .who-to-follow-name { color: var(--color-icon-default); }
-.who-to-follow-card .person-follow-button { margin: auto 0 0; min-height: var(--icon-size-2xl); padding: var(--spacing-component-sm) var(--spacing-layout-md); }
+.who-to-follow-card .person-follow-button { margin: auto 0 0; }
 @media (max-width: 359px) { .who-to-follow-track { grid-auto-columns: 55%; } }
 
 /* Front first, then the sheets behind it come into focus in place. */
