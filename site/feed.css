@@ -402,7 +402,7 @@
   --layout-edit-profile-width: 419px;
   --layout-avatar-badge-size: 30px;
   --layout-avatar-badge-inset: 10px;
-  --layout-settings-panel-gap: 10px;
+  --layout-settings-panel-gap: var(--spacing-layout-md);
   --layout-settings-panel-two-line-height: 14px;
   --layout-answers-input-height: 40px;
   --layout-answers-chip-height: 40px;
@@ -5365,8 +5365,8 @@ body:has(.auth-prompt[open]) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--layout-settings-panel-gap);
-  padding: var(--spacing-component-ms);
+  gap: var(--spacing-layout-md);
+  padding: var(--spacing-layout-md);
   background-color: var(--settings-panel-bg);
   border-radius: var(--radius-sm);
 }
@@ -5393,7 +5393,7 @@ body:has(.auth-prompt[open]) {
 .settings-panel > .settings-panel-item + .settings-panel-item::before {
   content: "";
   position: absolute;
-  top: calc(-1 * var(--layout-settings-panel-gap) / 2);
+  top: calc(-1 * var(--spacing-layout-md) / 2);
   left: 0;
   right: 0;
   height: var(--stroke-default);
