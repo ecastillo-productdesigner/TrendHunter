@@ -59,6 +59,8 @@
   --feature-announcement-bg: #34D399;
   --feature-announcement-text: #0F0F0F;
 
+  --hunter-digest-complete-hover: #BEFC4F; /* Fixed requested completion rollover in both themes. */
+
   /* Color — Border */
   --color-accent-foreground: #BEFC4F; /* links and meaningful accents on the theme surface */
   --color-border-default: rgba(255, 255, 255, 0.25);
@@ -1032,8 +1034,8 @@ button {
 .hunter-digest-intro { font: var(--type-helper); color: var(--color-text-dim); }
 .hunter-digest-collection { display: grid; gap: var(--spacing-component-ms); min-width: 0; }
 .hunter-digest-collection + .hunter-digest-collection { padding-top: var(--spacing-layout-lg); border-top: var(--stroke-default) solid var(--color-border-default); }
-.hunter-digest-collection-name { font: var(--type-editorial-eyebrow); letter-spacing: var(--type-editorial-eyebrow-letter-spacing); text-transform: uppercase; }
-.hunter-digest-collection-name a { color: var(--color-accent-foreground); }
+.hunter-digest-collection-name { font: var(--type-section-heading-bold); text-transform: uppercase; }
+.hunter-digest-collection-name a { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); max-width: 100%; color: var(--color-text-tertiary); }
 .hunter-digest-stories { display: grid; gap: var(--spacing-layout-lg); list-style: none; padding: 0; margin: 0; }
 .hunter-digest-story-title { font: var(--type-section-heading-bold); text-transform: uppercase; }
 .hunter-digest-story-title a { color: var(--color-text-tertiary); }
@@ -1044,10 +1046,13 @@ button {
 .hunter-digest-action { width: fit-content; display: inline-flex; align-items: center; gap: var(--spacing-component-sm); min-height: var(--icon-size-2xl); padding: 0; border: 0; border-radius: var(--radius-x-sm); background: transparent; color: var(--color-text-body-link); font: var(--type-editorial-h4); text-align: left; cursor: pointer; }
 .hunter-digest-disclosure > summary { list-style: none; }
 .hunter-digest-disclosure > summary::-webkit-details-marker { display: none; }
-.hunter-digest-open-label, .hunter-digest-close-label { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); }
-.hunter-digest-disclosure:not([open]) .hunter-digest-close-label,
-.hunter-digest-disclosure[open] .hunter-digest-open-label { display: none; }
-.hunter-digest-details { display: grid; gap: var(--spacing-layout-lg); padding-top: var(--spacing-layout-md); }
+.hunter-digest-disclosure[open] > summary { display: none; }
+.hunter-digest-details { display: grid; gap: var(--spacing-layout-lg); padding-top: var(--spacing-layout-lg); }
+.hunter-digest-details--new-collection { border-top: var(--stroke-default) solid var(--color-border-default); }
+.hunter-digest-complete { display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); padding: 0; margin-inline-start: auto; border: 0; border-radius: var(--radius-circle); background: transparent; cursor: pointer; }
+.hunter-digest-complete .feed-complete-icon::before { background-color: var(--color-background-bg-overlay); transition: background-color var(--motion-hover) ease; }
+.hunter-digest-complete .feed-complete-icon::after { background-color: transparent; }
+.hunter-digest-complete:is(:hover, :focus-visible) .feed-complete-icon::before { background-color: var(--hunter-digest-complete-hover); }
 .hunter-digest :is(a, button, summary) { transition: color var(--motion-hover) ease; }
 .hunter-digest :is(a, button, summary):hover { color: var(--color-text-primary); }
 .hunter-digest :is(a, button, summary):focus-visible, .hunter-digest:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }

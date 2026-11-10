@@ -40,6 +40,20 @@ if (settingsButton && settingsPanel) {
     (await featureAnnouncement).show();
   });
 
+  const showHunterDigest = document.createElement('button');
+  showHunterDigest.className = 'settings-panel-item';
+  showHunterDigest.type = 'button';
+  showHunterDigest.dataset.setting = 'show-hunter-digest';
+  showHunterDigest.textContent = 'Show Hunter Digest';
+  showNewFeature.before(showHunterDigest);
+  showHunterDigest.addEventListener('click', async () => {
+    const { showDigest } = await import('./hunter-digest-state.js?v=3');
+    try { showDigest(localStorage); } catch {}
+    setOpen(false);
+    if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('hunter-digest-show'));
+    else location.assign('feed.html#for-you');
+  });
+
   const show404Page = document.createElement('button');
   show404Page.className = 'settings-panel-item';
   show404Page.type = 'button';

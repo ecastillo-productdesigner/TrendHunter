@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { COLLECTIONS } from '../site/collection-data.js';
 import { COLLECTION_STORIES } from '../site/collection-story-data.js';
 import { DIGEST_EXCERPTS } from '../site/hunter-digest-data.js';
-import { DIGEST_KEY, DIGEST_PAGE_SIZE, readDigestState, digestUpdates, catchUpDigest, catchUpDigestStory, digestEdition } from '../site/hunter-digest-state.js';
+import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, catchUpDigestStory, digestEdition, dismissDigest, digestIsDismissed, showDigest } from '../site/hunter-digest-state.js';
 import { digestMarkup, digestCardMarkup } from '../site/hunter-digest-markup.js';
 
 const storage = () => {
@@ -25,7 +25,7 @@ test('digest uses only followed memberships and shows shared stories once', () =
     assert.equal(row.summary, DIGEST_EXCERPTS[row.href].summary);
     assert.ok(row.summary.split(/(?<=[.!?])\s+(?=[A-Z“])/).length >= 2, row.href);
   }
-  const first = digestUpdates(followed, { caughtUp:{} }).slice(0, DIGEST_PAGE_SIZE);
+  const first = digestUpdates(followed, { caughtUp:{} }).slice(0, 5);
   assert.equal(first.length, 5);
   assert.notEqual(first[0].collection.href, first[1].collection.href);
 });
@@ -97,6 +97,9 @@ test('one inline disclosure reveals all additional summaries without duplicating
   assert.equal((details.match(/<article>/g) || []).length, rows.length - 1);
   assert.match(details, /data-digest-disclosure\s*>/);
   assert.match(details, /<summary[^>]*>/);
+  assert.match(details, /hunter-digest-details--new-collection/);
+  const sameCollection = digestCardMarkup(rows.filter(row => row.collection.href === rows[0].collection.href), edition);
+  assert.doesNotMatch(sameCollection, /hunter-digest-details--new-collection/);
   assert.doesNotMatch(collapsed, /href="feed.html#following"|Your daily catch-up/);
   assert.match(collapsed, /See all updates/);
   assert.doesNotMatch(collapsed, /Today/);
@@ -104,9 +107,31 @@ test('one inline disclosure reveals all additional summaries without duplicating
   const full = digestCardMarkup(rows, edition, { expanded:true });
   assert.match(full, /data-digest-disclosure open/);
   assert.equal((full.match(/<article>/g) || []).length, rows.length);
-  assert.match(full, /Mark digest as caught up/);
+  assert.ok(full.indexOf('data-digest-close') > full.lastIndexOf('<article>'));
+  assert.match(full, /data-digest-hide aria-label="Hide Hunter Digest"/);
+  assert.doesNotMatch(full, /Mark digest as caught up/);
   const urls = [...full.matchAll(/class="hunter-digest-read-more" href="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, rows.length);
+});
+
+test('digest dismissal preserves unread stories and Show Hunter Digest restores visibility', () => {
+  const saved = storage();
+  const edition = digestEdition(new Date(2026,10,10));
+  const rows = digestUpdates(followed, readDigestState(saved));
+  assert.equal(digestIsDismissed(saved, rows, edition), false);
+  assert.equal(dismissDigest(saved, rows, edition), true);
+  assert.equal(digestIsDismissed(saved, rows, edition), true);
+  assert.equal(digestIsDismissed(saved, rows.slice(1), edition), true);
+  assert.deepEqual(readDigestState(saved).caughtUp, {});
+  assert.equal(digestIsDismissed(saved, [{...rows[0],revision:'changed'}], edition), false);
+  assert.equal(digestIsDismissed(saved, rows, digestEdition(new Date(2026,10,11))), false);
+  assert.equal(showDigest(saved), true);
+  assert.equal(digestIsDismissed(saved, rows, edition), false);
+  saved.setItem(DIGEST_DISMISSED_KEY, '{');
+  assert.equal(digestIsDismissed(saved, rows, edition), false);
+  const blocked = { getItem:() => null, setItem:() => {throw Error('blocked');} };
+  assert.equal(dismissDigest(blocked, rows, edition), false);
+  assert.equal(showDigest(blocked), false);
 });
 
 test('opening a story catches up just that revision, including stories shared across collections', async () => {

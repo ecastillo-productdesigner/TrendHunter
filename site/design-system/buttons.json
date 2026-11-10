@@ -1978,7 +1978,16 @@
       "key": "button:hunter-digest-action",
       "classes": "hunter-digest-action",
       "tag": "button",
-      "name": "Mark digest as caught up",
+      "name": "Close digest \u2191",
+      "sources": [
+        "hunter-digest-markup.js"
+      ]
+    },
+    {
+      "key": "button:hunter-digest-complete",
+      "classes": "hunter-digest-complete",
+      "tag": "button",
+      "name": "Hide Hunter Digest",
       "sources": [
         "hunter-digest-markup.js"
       ]

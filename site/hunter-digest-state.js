@@ -5,7 +5,7 @@ import { DIGEST_EXCERPTS } from './hunter-digest-data.js';
 // Browser-local prototype catch-up state. The edition date is not a publication
 // timestamp. A new day never re-labels unchanged sample articles as new.
 export const DIGEST_KEY = 'trendhunter.hunter-digest.v1';
-export const DIGEST_PAGE_SIZE = 5;
+export const DIGEST_DISMISSED_KEY = 'trendhunter.hunter-digest-dismissed.v1';
 
 export function readDigestState(storage) {
   try {
@@ -59,4 +59,23 @@ export function catchUpDigestStory(storage, href, now = new Date()) {
 export function digestEdition(date = new Date()) {
   const pad = value => String(value).padStart(2, '0');
   return { day: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`, label: date.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) };
+}
+
+// Dismissal hides this day's briefing without marking unopened stories read.
+// A newly eligible story or a changed revision can show the card again.
+export function dismissDigest(storage, rows, edition = digestEdition()) {
+  try {
+    storage.setItem(DIGEST_DISMISSED_KEY, JSON.stringify({ day:edition.day, revisions:Object.fromEntries(rows.map(row => [row.href, row.revision])) }));
+    return true;
+  } catch { return false; }
+}
+export function digestIsDismissed(storage, rows, edition = digestEdition()) {
+  try {
+    const saved = JSON.parse(storage.getItem(DIGEST_DISMISSED_KEY) || 'null');
+    return saved?.day === edition.day && !!saved.revisions && rows.every(row => saved.revisions[row.href] === row.revision);
+  } catch { return false; }
+}
+export function showDigest(storage) {
+  try { storage.setItem(DIGEST_DISMISSED_KEY, 'null'); return true; }
+  catch { return false; }
 }

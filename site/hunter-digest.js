@@ -1,10 +1,10 @@
+import './hunter-digest-disclosure.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
-import { DIGEST_KEY, readDigestState, digestUpdates, catchUpDigest, digestEdition } from './hunter-digest-state.js';
-import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=2';
+import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=3';
+import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=3';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
-let expanded = false, rows = [];
-const plural = (count, noun) => `${count} ${count === 1 ? noun : noun === 'story' ? 'stories' : `${noun}s`}`;
+let expanded = false, hiddenForVisit = false, rows = [];
 
 function render() {
   if (!digest) return;
@@ -17,6 +17,7 @@ function render() {
   try { followed = readFollowedCollections(localStorage); state = readDigestState(localStorage); }
   catch { state = { caughtUp: {}, lastCaughtUpAt: null }; }
   rows = digestUpdates(followed, state);
+  try { digest.hidden ||= hiddenForVisit || digestIsDismissed(localStorage, rows, edition); } catch {}
   if (!rows.length) {
     expanded = false;
     const empty = followed.length
@@ -40,17 +41,26 @@ document.addEventListener('click', event => {
     event.preventDefault();
     document.querySelector('[data-feed-tabs] [data-feed-view="collections"]')?.click();
   }
-  if (event.target.closest('[data-digest-caught-up]')) {
+  if (event.target.closest('[data-digest-hide]')) {
     if (digest.hidden || !digest.querySelector('[data-digest-disclosure]')?.open) return;
-    const visible = rows;
     let saved = false;
-    try { saved = catchUpDigest(localStorage, visible); } catch {}
-    if (!saved) { window.showToast?.('Couldn’t save your catch-up. Please try again.'); return; }
-    expanded = false; render(); digest.focus({ preventScroll:true });
-    window.showToast?.(`${plural(visible.length, 'update')} caught up. Your articles are still available to read.`);
+    try { saved = dismissDigest(localStorage, rows); } catch {}
+    hiddenForVisit = !saved;
+    digest.hidden = true;
+    document.querySelector('[data-feed-tabs] [aria-selected="true"]')?.focus({ preventScroll:true });
   }
 });
 for (const name of ['feed-view-selected','auth-change','collection-stories-rendered','following-intro-preview']) document.addEventListener(name, render);
-window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, DIGEST_KEY, null].includes(event.key)) render(); });
+window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, DIGEST_KEY, DIGEST_DISMISSED_KEY, null].includes(event.key)) { hiddenForVisit = false; render(); } });
+document.addEventListener('hunter-digest-show', () => {
+  hiddenForVisit = false;
+  expanded = false;
+  const url = new URL(location.href);
+  url.searchParams.delete('following-intro');
+  history.replaceState(history.state, '', url);
+  document.querySelector('[data-feed-tabs] [data-feed-view="for-you"]')?.click();
+  render();
+  if (!digest.hidden) requestAnimationFrame(() => { digest.scrollIntoView({ block:'start', behavior:'auto' }); digest.focus({ preventScroll:true }); });
+});
 window.addEventListener('pageshow', render);
 render();

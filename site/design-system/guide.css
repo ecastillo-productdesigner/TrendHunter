@@ -68,6 +68,7 @@
 .ds-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-xl); }
 .ds-spacing-detail { margin-top: var(--spacing-layout-xl); align-items: start; }
 .ds-spacing-detail h3, .ds-component h3 { font: var(--type-weight-bold) var(--type-size-28)/1.1 var(--type-font-display); margin-bottom: var(--spacing-layout-md); }
+.ds-component :is(.hunter-digest-collection-name, .changing-collection-heading) { font: var(--type-section-heading-bold); margin-bottom: 0; }
 .ds-spacing-detail p { font-size: var(--type-size-14); margin-bottom: var(--spacing-layout-md); }
 .ds-inset-demo { position: relative; border: var(--stroke-default) solid var(--ds-line); padding: var(--spacing-layout-xl) var(--spacing-layout-md) var(--spacing-layout-xl); text-align: center; }
 .ds-inset-demo .type-h4-caps { font-size: var(--type-size-18); line-height: var(--type-line-height-ui-lg); color: var(--predictions-panel-heading); }
