@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { COLLECTIONS } from '../site/collection-data.js';
 import { COLLECTION_STORIES } from '../site/collection-story-data.js';
 import { DIGEST_EXCERPTS } from '../site/hunter-digest-data.js';
-import { DIGEST_KEY, DIGEST_PAGE_SIZE, readDigestState, digestUpdates, catchUpDigest, digestEdition } from '../site/hunter-digest-state.js';
-import { digestMarkup } from '../site/hunter-digest-markup.js';
+import { DIGEST_KEY, DIGEST_PAGE_SIZE, readDigestState, digestUpdates, catchUpDigest, catchUpDigestStory, digestEdition } from '../site/hunter-digest-state.js';
+import { digestMarkup, digestCardMarkup } from '../site/hunter-digest-markup.js';
 
 const storage = () => {
   const values = new Map();
@@ -85,4 +86,48 @@ test('edition uses local calendar date and rendered Read more links target the e
   // This article has inherited retail copy in its sidebar; use its own body.
   assert.match(DIGEST_EXCERPTS['trend-led-skincare-lounge.html'].summary, /^Soft blue lighting/);
   assert.ok(!DIGEST_EXCERPTS['trend-led-skincare-lounge.html'].summary.includes('fitting room'));
+});
+
+test('one inline disclosure reveals all additional summaries without duplicating the preview', () => {
+  const rows = digestUpdates(followed, { caughtUp:{} });
+  const edition = digestEdition(new Date(2026,10,10));
+  const collapsed = digestCardMarkup(rows, edition);
+  const [preview, details] = collapsed.split('<details');
+  assert.equal((preview.match(/<article>/g) || []).length, 1);
+  assert.equal((details.match(/<article>/g) || []).length, rows.length - 1);
+  assert.match(details, /data-digest-disclosure\s*>/);
+  assert.match(details, /<summary[^>]*>/);
+  assert.doesNotMatch(collapsed, /href="feed.html#following"|Your daily catch-up/);
+  assert.match(collapsed, /See all updates/);
+  assert.doesNotMatch(collapsed, /Today/);
+  assert.match(preview, /November 10, 2026<\/time><span aria-hidden="true"> · <\/span>2 collections with updates · 9 stories/);
+  const full = digestCardMarkup(rows, edition, { expanded:true });
+  assert.match(full, /data-digest-disclosure open/);
+  assert.equal((full.match(/<article>/g) || []).length, rows.length);
+  assert.match(full, /Mark digest as caught up/);
+  const urls = [...full.matchAll(/class="hunter-digest-read-more" href="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(new Set(urls).size, rows.length);
+});
+
+test('opening a story catches up just that revision, including stories shared across collections', async () => {
+  const saved = storage();
+  const allFollows = COLLECTIONS.map(row => row.href);
+  const rows = digestUpdates(allFollows, readDigestState(saved));
+  const row = rows.find(story => story.collections.length > 1);
+  assert.ok(row);
+  assert.equal(catchUpDigestStory(saved, row.href, new Date('2026-11-10T20:00:00Z')), true);
+  const state = readDigestState(saved);
+  assert.deepEqual(state.caughtUp, { [row.href]:row.revision });
+  assert.equal(digestUpdates(allFollows, state).length, rows.length - 1);
+  assert.equal(digestUpdates(allFollows, state).some(story => story.href === row.href), false);
+  catchUpDigestStory(saved, row.href, new Date('2026-11-11T20:00:00Z'));
+  assert.equal(readDigestState(saved).lastCaughtUpAt, state.lastCaughtUpAt);
+  assert.equal(catchUpDigestStory(saved, 'unknown.html'), false);
+  assert.equal(catchUpDigestStory({getItem:() => null,setItem:() => {throw Error('blocked');}}, row.href), false);
+  const excerpts = {...DIGEST_EXCERPTS,[row.href]:{...DIGEST_EXCERPTS[row.href],revision:'new'}};
+  assert.equal(digestUpdates(allFollows, state, {excerpts}).find(story => story.href === row.href).kind, 'Updated story');
+  for (const story of COLLECTION_STORIES) {
+    const page = await readFile(new URL('../site/' + story.href, import.meta.url), 'utf8');
+    assert.match(page, /src="collection-updates\.js\?v=2"/);
+  }
 });

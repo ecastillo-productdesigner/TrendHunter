@@ -16,6 +16,7 @@
         "prediction-filter-options.html",
         "prediction-filter-options.html",
         "prediction-results.js",
+        "prediction-results.js",
         "prediction-results.js"
       ]
     },
@@ -1977,10 +1978,9 @@
       "key": "button:hunter-digest-action",
       "classes": "hunter-digest-action",
       "tag": "button",
-      "name": " updates`}",
+      "name": "Mark digest as caught up",
       "sources": [
-        "hunter-digest.js",
-        "hunter-digest.js"
+        "hunter-digest-markup.js"
       ]
     },
     {

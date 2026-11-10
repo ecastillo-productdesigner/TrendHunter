@@ -47,6 +47,15 @@ export function catchUpDigest(storage, visible, now = new Date()) {
   } catch { return false; }
 }
 
+// Opening a story catches up only its current excerpt revision. A later revision
+// can still appear as an update, and unrelated summaries stay unread.
+export function catchUpDigestStory(storage, href, now = new Date()) {
+  const excerpt = DIGEST_EXCERPTS[href];
+  if (!Object.hasOwn(DIGEST_EXCERPTS, href)) return false;
+  if (readDigestState(storage).caughtUp[href] === excerpt.revision) return true;
+  return catchUpDigest(storage, [{ href, revision:excerpt.revision }], now);
+}
+
 export function digestEdition(date = new Date()) {
   const pad = value => String(value).padStart(2, '0');
   return { day: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`, label: date.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) };

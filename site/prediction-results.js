@@ -15,7 +15,7 @@ function revealMarkup(result) {
   return `<section class="prediction-outcome-reveal" tabindex="-1">
     <button class="prediction-outcome-close" type="button" data-result-close aria-label="Close prediction result"><span class="drawer-close-icon" aria-hidden="true"></span></button>
     ${predictionResultContent(result)}
-    <footer class="prediction-outcome-card-footer" ${all.length<2?'hidden':''}><button type="button" data-result-previous aria-label="Previous prediction" ${index===0?'hidden disabled':''}><span class="prediction-outcome-nav-icon prediction-outcome-nav-icon--previous material-symbols-outlined" aria-hidden="true">arrow_right_alt</span> Previous</button><button type="button" data-result-next aria-label="Next prediction" ${index===all.length-1?'hidden disabled':''}>Next <span class="prediction-outcome-nav-icon material-symbols-outlined" aria-hidden="true">arrow_right_alt</span></button></footer>
+    <footer class="prediction-outcome-card-footer"><button type="button" data-result-previous aria-label="Previous prediction" ${index===0?'hidden disabled':''}><span class="prediction-outcome-nav-icon prediction-outcome-nav-icon--previous material-symbols-outlined" aria-hidden="true">arrow_right_alt</span> Previous</button>${index===all.length-1 ? '<button type="button" data-result-close>Close</button>' : '<button type="button" data-result-next aria-label="Next prediction">Next <span class="prediction-outcome-nav-icon material-symbols-outlined" aria-hidden="true">arrow_right_alt</span></button>'}</footer>
     <p class="visually-hidden" id="prediction-outcome-sample">Fictional prototype prediction result, not a live verified outcome.</p>
   </section>`;
 }
@@ -38,8 +38,8 @@ function setResultNavigationBusy(busy) {
   const all = records(), index = all.findIndex(item => item.id === currentId);
   dialog.querySelector('[data-result-previous]').hidden = index === 0;
   dialog.querySelector('[data-result-previous]').disabled = busy || index === 0;
-  dialog.querySelector('[data-result-next]').hidden = index === all.length - 1;
-  dialog.querySelector('[data-result-next]').disabled = busy || index === all.length - 1;
+  const next = dialog.querySelector('[data-result-next]');
+  if (next) next.disabled = busy;
   dialog.querySelector('section').setAttribute('aria-busy', String(busy));
 }
 function dismissResult() {
