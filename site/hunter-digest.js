@@ -1,7 +1,7 @@
-import './hunter-digest-disclosure.js';
+import './hunter-digest-disclosure.js?v=2';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
-import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=3';
-import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=3';
+import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=3';
+import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=4';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
 let expanded = false, hiddenForVisit = false, rows = [];
@@ -41,11 +41,15 @@ document.addEventListener('click', event => {
     event.preventDefault();
     document.querySelector('[data-feed-tabs] [data-feed-view="collections"]')?.click();
   }
-  if (event.target.closest('[data-digest-hide]')) {
-    if (digest.hidden || !digest.querySelector('[data-digest-disclosure]')?.open) return;
+  if (event.target.closest('[data-digest-read-all]')) {
+    if (!digest || digest.hidden || !digest.querySelector('[data-digest-disclosure]')?.open) return;
+    let caughtUp = false;
+    try { caughtUp = catchUpDigest(localStorage, rows); } catch {}
+    if (!caughtUp) { window.showToast?.('Couldn’t save your read updates. Please try again.'); return; }
     let saved = false;
     try { saved = dismissDigest(localStorage, rows); } catch {}
     hiddenForVisit = !saved;
+    expanded = false;
     digest.hidden = true;
     document.querySelector('[data-feed-tabs] [aria-selected="true"]')?.focus({ preventScroll:true });
   }

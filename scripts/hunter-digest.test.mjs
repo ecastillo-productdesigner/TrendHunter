@@ -108,7 +108,7 @@ test('one inline disclosure reveals all additional summaries without duplicating
   assert.match(full, /data-digest-disclosure open/);
   assert.equal((full.match(/<article>/g) || []).length, rows.length);
   assert.ok(full.indexOf('data-digest-close') > full.lastIndexOf('<article>'));
-  assert.match(full, /data-digest-hide aria-label="Hide Hunter Digest"/);
+  assert.match(full, /data-digest-read-all>Mark all as read<span class="feed-complete-icon" aria-hidden="true">/);
   assert.doesNotMatch(full, /Mark digest as caught up/);
   const urls = [...full.matchAll(/class="hunter-digest-read-more" href="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, rows.length);

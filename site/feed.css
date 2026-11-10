@@ -1049,10 +1049,11 @@ button {
 .hunter-digest-disclosure[open] > summary { display: none; }
 .hunter-digest-details { display: grid; gap: var(--spacing-layout-lg); padding-top: var(--spacing-layout-lg); }
 .hunter-digest-details--new-collection { border-top: var(--stroke-default) solid var(--color-border-default); }
-.hunter-digest-complete { display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); padding: 0; margin-inline-start: auto; border: 0; border-radius: var(--radius-circle); background: transparent; cursor: pointer; }
-.hunter-digest-complete .feed-complete-icon::before { background-color: var(--color-background-bg-overlay); transition: background-color var(--motion-hover) ease; }
+.hunter-digest-complete { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); min-height: var(--icon-size-2xl); padding: 0; margin-inline-start: auto; border: 0; border-radius: var(--radius-x-sm); background: transparent; color: var(--color-text-primary); font: var(--type-editorial-h4); text-align: left; cursor: pointer; }
+.hunter-digest-complete .feed-complete-icon { flex: 0 0 var(--icon-size-lg); width: var(--icon-size-lg); height: var(--icon-size-lg); }
+.hunter-digest-complete .feed-complete-icon::before { background-color: currentColor; transition: background-color var(--motion-hover) ease; }
 .hunter-digest-complete .feed-complete-icon::after { background-color: transparent; }
-.hunter-digest-complete:is(:hover, :focus-visible) .feed-complete-icon::before { background-color: var(--hunter-digest-complete-hover); }
+.hunter-digest .hunter-digest-complete:is(:hover, :focus-visible) { color: var(--hunter-digest-complete-hover); }
 .hunter-digest :is(a, button, summary) { transition: color var(--motion-hover) ease; }
 .hunter-digest :is(a, button, summary):hover { color: var(--color-text-primary); }
 .hunter-digest :is(a, button, summary):focus-visible, .hunter-digest:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }

@@ -1,7 +1,7 @@
 // Shared by the feed and its isolated DS specimen.
 document.addEventListener('click', event => {
-  // The isolated DS example demonstrates hiding without saving any app state.
-  if (event.target.closest('[data-digest-hide]') && document.body.classList.contains('ds-page')) {
+  // The isolated DS example demonstrates completion without saving app state.
+  if (event.target.closest('[data-digest-read-all]') && document.body.classList.contains('ds-page')) {
     event.target.closest('.hunter-digest')?.setAttribute('hidden', '');
     return;
   }

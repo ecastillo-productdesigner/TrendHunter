@@ -1987,7 +1987,7 @@
       "key": "button:hunter-digest-complete",
       "classes": "hunter-digest-complete",
       "tag": "button",
-      "name": "Hide Hunter Digest",
+      "name": "Mark all as read",
       "sources": [
         "hunter-digest-markup.js"
       ]
