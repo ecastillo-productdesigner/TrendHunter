@@ -1974,6 +1974,16 @@
       ]
     },
     {
+      "key": "button:hunter-digest-action",
+      "classes": "hunter-digest-action",
+      "tag": "button",
+      "name": " updates`}",
+      "sources": [
+        "hunter-digest.js",
+        "hunter-digest.js"
+      ]
+    },
+    {
       "key": "button:nav-menu",
       "classes": "nav-menu",
       "tag": "button",

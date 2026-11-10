@@ -1010,6 +1010,54 @@ button {
   outline-offset: calc(-1 * var(--spacing-component-xs));
 }
 .feed-tab-panel { min-width: 0; }
+
+/* Hunter Digest shares the feed frame and semantic DS colors in both themes. */
+.hunter-digest {
+  display: grid;
+  gap: var(--spacing-layout-lg);
+  padding: var(--spacing-layout-lg);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-top: var(--stroke-focus) solid var(--color-accent-foreground);
+  border-radius: var(--radius-x-sm);
+  background: var(--color-background-surface-raised);
+  color: var(--color-text-body);
+  scroll-margin-top: var(--spacing-layout-lg);
+}
+.hunter-digest[hidden] { display: none; }
+:root:not([data-auth="signed-in"]) :is([data-hunter-digest], [data-hunter-digest-preview]) { display: none; }
+.feed-tab-panel > .hunter-digest { margin: var(--spacing-layout-lg) var(--spacing-component-ms) 0; }
+.hunter-digest-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--spacing-component-ms); }
+.hunter-digest-title { font: var(--type-card-headline); text-transform: uppercase; color: var(--color-text-primary); }
+.hunter-digest-date { margin-top: var(--spacing-component-sm); font: var(--type-helper); color: var(--color-text-dim); }
+.hunter-digest-edition { font: var(--type-helper); color: var(--color-text-dim); text-align: right; }
+.hunter-digest-intro { font: var(--type-body); color: var(--color-text-dim); }
+.hunter-digest-intro > span { display: block; margin-top: var(--spacing-component-xs); font: var(--type-helper); }
+.hunter-digest-collection { display: grid; gap: var(--spacing-component-ms); min-width: 0; }
+.hunter-digest-collection + .hunter-digest-collection { padding-top: var(--spacing-layout-lg); border-top: var(--stroke-default) solid var(--color-border-default); }
+.hunter-digest-collection-name { font: var(--type-collection-label); text-transform: uppercase; }
+.hunter-digest-collection-name a { color: var(--color-accent-foreground); }
+.hunter-digest-stories { display: grid; gap: var(--spacing-layout-lg); list-style: none; padding: 0; margin: 0; }
+.hunter-digest-story-title { font: var(--type-section-heading-bold); text-transform: uppercase; }
+.hunter-digest-story-title a { color: var(--color-text-tertiary); }
+.hunter-digest-summary { margin-top: var(--spacing-component-sm); font: var(--type-body); overflow-wrap: break-word; }
+.hunter-digest-read-more { color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); white-space: nowrap; }
+.hunter-digest-update-label { margin-bottom: var(--spacing-component-xs); color: var(--color-text-dim); font: var(--type-helper); }
+.hunter-digest-footer { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-component-ms) var(--spacing-layout-lg); padding-top: var(--spacing-layout-md); border-top: var(--stroke-default) solid var(--color-border-default); }
+.hunter-digest-action { width: fit-content; display: inline-flex; align-items: center; gap: var(--spacing-component-sm); min-height: var(--icon-size-2xl); padding: 0; border: 0; border-radius: var(--radius-x-sm); background: transparent; color: var(--color-text-body-link); font: var(--type-editorial-h4); text-align: left; cursor: pointer; }
+.hunter-digest-all { font: var(--type-helper); color: var(--color-text-dim); }
+.hunter-digest :is(a, button) { transition: color var(--motion-hover) ease; }
+.hunter-digest :is(a, button):hover { color: var(--color-text-primary); }
+.hunter-digest :is(a, button):focus-visible, .hunter-digest:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.hunter-digest-empty-title { font: var(--type-section-heading-bold); color: var(--color-text-primary); }
+.hunter-digest--preview { gap: var(--spacing-layout-md); }
+@media (min-width: 600px) {
+  .feed-tab-panel > .hunter-digest { margin: 0 0 var(--spacing-layout-lg); }
+}
+@media (max-width: 359px) {
+  .hunter-digest { padding: var(--spacing-layout-md); }
+  .hunter-digest-header { flex-direction: column; }
+  .hunter-digest-edition { text-align: left; }
+}
 /* Inline feature announcement — fixed mint and near-black in both themes. */
 .feature-announcement {
   position: relative;
