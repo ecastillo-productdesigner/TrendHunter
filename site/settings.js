@@ -33,7 +33,7 @@ if (settingsButton && settingsPanel) {
   showNewFeature.className = 'settings-panel-item';
   showNewFeature.type = 'button';
   showNewFeature.dataset.setting = 'show-new-feature';
-  showNewFeature.textContent = 'Show new feature';
+  showNewFeature.textContent = 'Show New Feature Card';
   showBusinessBanner.before(showNewFeature);
   showNewFeature.addEventListener('click', async () => {
     setOpen(false);
@@ -75,7 +75,7 @@ if (settingsButton && settingsPanel) {
   settingsPanel.querySelector('[data-setting="deal"]').addEventListener('click', () => deal(false));
   settingsPanel.querySelector('[data-setting="deal-new-user"]').addEventListener('click', () => deal(true));
 
-  // Open Osano — the cookie consent tool isn't part of the prototype yet
+  // Show Osano — the cookie consent tool isn't part of the prototype yet
   settingsPanel.querySelector('[data-setting="osano"]').addEventListener('click', () => setOpen(false));
 
   // Reset only recommendation feedback; explicit topics and follows are retained.

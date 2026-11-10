@@ -372,3 +372,8 @@
 
 .ds-border-line { display: block; width: 100%; min-width: var(--spacing-page-2xl); }
 .ds-page .ds-navigation-hover { color: var(--color-text-primary); }
+
+.ds-settings-menu-preview .settings-panel { position: static; width: max-content; max-width: 100%; }
+
+.ds-radius > .ds-copy { margin-top: var(--spacing-component-sm); }
+.ds-radius > div[data-token="--radius-circle"] { width: calc(var(--spacing-page-2xl) * 2); margin-inline: auto; }

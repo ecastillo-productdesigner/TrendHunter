@@ -3173,7 +3173,7 @@
       "key": "button:settings-panel-item",
       "classes": "settings-panel-item",
       "tag": "button",
-      "name": "Deal predictions again",
+      "name": "Deal Predictions Again",
       "sources": [
         "answers.html",
         "answers.html",
@@ -3965,7 +3965,7 @@
       "key": "button:settings-panel-item settings-panel-item--two-line",
       "classes": "settings-panel-item settings-panel-item--two-line",
       "tag": "button",
-      "name": "Deal predictions againas a new user",
+      "name": "Deal Predictions Againas a New User",
       "sources": [
         "answers.html",
         "channel-everyday-living.html",

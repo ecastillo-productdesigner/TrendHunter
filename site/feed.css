@@ -5368,7 +5368,7 @@ body:has(.auth-prompt[open]) {
   gap: var(--layout-settings-panel-gap);
   padding: var(--spacing-component-ms);
   background-color: var(--settings-panel-bg);
-  border-radius: var(--radius-x-sm);
+  border-radius: var(--radius-sm);
 }
 
 .settings-panel[hidden] {
@@ -5376,6 +5376,8 @@ body:has(.auth-prompt[open]) {
 }
 
 .settings-panel-item {
+  position: relative;
+  width: 100%;
   font-family: var(--type-font-body);
   font-size: var(--type-size-12);
   font-weight: var(--type-weight-regular);
@@ -5384,6 +5386,19 @@ body:has(.auth-prompt[open]) {
   white-space: nowrap;
   color: var(--settings-panel-text);
   cursor: pointer;
+}
+
+
+/* Draw separators within the existing gap so the menu keeps its compact height. */
+.settings-panel > .settings-panel-item + .settings-panel-item::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--layout-settings-panel-gap) / 2);
+  left: 0;
+  right: 0;
+  height: var(--stroke-default);
+  background: var(--color-border-default);
+  pointer-events: none;
 }
 
 .settings-panel-item--two-line {
@@ -6533,8 +6548,6 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .feed-predictions-slot .prediction-stack:has(:is(.prediction-account-prompt, .prediction-results--empty)) { height: auto; }
 .predictions-panel :is(.prediction-account-prompt, .prediction-results--empty) { padding: 0; }
 .predictions-panel:has(:is(.prediction-account-prompt, .prediction-results--empty)) > .predictions-open-link { display: none; }
-[data-profile-section="following"] { position: relative; }
-[data-profile-section="following"] > .collection-updates-dot { position: absolute; top: var(--spacing-component-sm); right: 0; }
 /* Editorial prediction outcomes use the same card, body and helper roles. */
 /* Compact result announcement: copy left, a counted purple card stack right. */
 .prediction-results-alert {
@@ -6544,7 +6557,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
   gap: var(--spacing-layout-md);
   padding: var(--spacing-layout-md);
   border: var(--stroke-default) solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-x-sm);
   background: var(--color-background-surface-raised);
   color: var(--color-text-primary);
 }

@@ -110,7 +110,7 @@
           </span>
         </div>`;
     } else if (prediction.resolved) {
-      comparison = '<p class="profile-call-unavailable">No vote to compare</p>';
+      comparison = '<p class="profile-call-unavailable">You did not make the call</p>';
     } else if (isPublicProfile && isSignedIn()) {
       comparison = `
         <div class="profile-call-comparison profile-call-comparison--pending">

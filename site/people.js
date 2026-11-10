@@ -162,7 +162,7 @@ function updatePeopleSignals() {
   const ids = signedIn() ? follows() : [];
   const count = unnoticedPeopleUpdates(localStorage,ids).length;
   const pending = signedIn() && count > 0;
-  document.querySelectorAll('[data-feed-view="following"][role="tab"], [data-profile-section="following"]').forEach(tab => {
+  document.querySelectorAll('[data-feed-view="following"][role="tab"]').forEach(tab => {
     let dot=tab.querySelector('.collection-updates-dot');
     if (!dot) { dot=document.createElement('span'); dot.className='collection-updates-dot'; dot.setAttribute('aria-hidden','true');tab.append(dot); }
     dot.hidden=!pending;
