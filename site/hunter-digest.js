@@ -1,7 +1,7 @@
 import './hunter-digest-disclosure.js?v=2';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
 import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=4';
-import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=5';
+import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=6';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
 let expanded = false, hiddenForVisit = false, rows = [];

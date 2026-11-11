@@ -2413,9 +2413,6 @@ a.drawer-heading:hover {
 .answers-submit > span {
   width: var(--icon-size-sm);
   height: var(--icon-size-sm);
-  background: currentColor;
-  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
 }
 .answers-suggestions { display: grid; gap: var(--spacing-component-ms); min-width: 0; }
 .answers-suggestion-row {
@@ -2790,9 +2787,6 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   width: 1em;
   height: 1em;
   flex-shrink: 0;
-  background-color: currentColor;
-  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
   transform: rotate(-45deg);
 }
 
@@ -3170,16 +3164,6 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   white-space: nowrap;
   cursor: pointer;
 }
-.prediction-shortcut-icon.material-symbols-outlined {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
-  flex-shrink: 0;
-  font-size: var(--icon-size-sm);
-  font-weight: var(--type-weight-regular);
-  line-height: 1;
-  text-transform: none;
-  font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
-}
 .prediction-shortcut { transition: background-color var(--motion-hover) ease, color var(--motion-hover) ease; }
 .prediction-shortcut:hover, .prediction-shortcut:focus-visible { background-color: var(--prediction-shortcut-bg-hover); color: var(--prediction-shortcut-label-hover); }
 @media (prefers-reduced-motion: reduce) { .prediction-shortcut { transition: none; } }
@@ -3343,7 +3327,7 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   text-underline-offset: var(--layout-link-underline-offset);
 }
 
-/* Read more reuses the 16px prediction-shortcut-icon arrow_downward symbol. */
+/* Read more uses the shared 16px forward arrow. */
 
 .prediction-card-more:focus-visible {
   outline: var(--stroke-focus) solid var(--prediction-card-more);
@@ -4121,9 +4105,6 @@ body:has(.edit-profile-modal[open]) {
   flex-shrink: 0;
   width: var(--icon-size-xs);
   height: var(--icon-size-xs);
-  background: currentColor;
-  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
 }
 .profile-call-start[aria-expanded="true"]::after { display: none; }
 .profile-call-start:hover, .profile-call-start:focus-visible { background: transparent; color: var(--color-text-primary); }
@@ -5146,6 +5127,20 @@ body:has(.auth-prompt[open]) {
   color: var(--color-text-inverse);
 }
 
+/* All directional controls share one Google arrow_forward SVG (Outlined, 400).
+   Rotate the same drawing; size and currentColor belong to each control. */
+.icon-arrow, .nav-back-icon, .answers-submit > span, .product-card-external, .profile-call-start::after {
+  background-color: currentColor;
+  mask: url("assets/feed/icon-arrow.svg") center / contain no-repeat;
+  -webkit-mask: url("assets/feed/icon-arrow.svg") center / contain no-repeat;
+}
+.icon-arrow { display: inline-block; flex: none; width: var(--icon-size-sm); height: var(--icon-size-sm); vertical-align: middle; }
+.icon-arrow--left { transform: rotate(180deg); }
+.icon-arrow--down { transform: rotate(90deg); }
+.icon-arrow--up { transform: rotate(-90deg); }
+.icon-arrow--external { transform: rotate(-45deg); }
+.hunter-digest-action .icon-arrow, .answer-citation .icon-arrow { width: 1em; height: 1em; }
+
 /* Back — takes the place of Menu in the sign-in header */
 .nav-back { color: var(--color-icon-default); transition: color var(--motion-hover) ease; }
 .nav-back .nav-text-button { color: inherit; }
@@ -5154,9 +5149,7 @@ body:has(.auth-prompt[open]) {
   display: block;
   width: var(--icon-size-md);
   height: var(--icon-size-md);
-  background-color: currentColor;
-  mask: url("assets/auth/icon-arrow-back.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/auth/icon-arrow-back.svg") center / contain no-repeat;
+  transform: rotate(180deg);
 }
 
 /* Email sign-in form */
@@ -5715,7 +5708,7 @@ body:has(.auth-prompt[open]) {
 
 /* Question answer page — the same type, spacing, color and controls as the feed. */
 .answer-page { width: min(calc(100% - var(--spacing-layout-xl)), var(--layout-answers-page-width)); margin: var(--spacing-layout-lg) auto var(--spacing-page-2xl); padding: var(--spacing-layout-xl); border-radius: var(--radius-md); background: var(--answers-page-bg); color: var(--color-text-body); font-family: var(--type-font-body); }
-.answer-back { display: inline-block; color: var(--color-text-dim); font-size: var(--type-size-12); margin-bottom: var(--spacing-layout-lg); }
+.answer-back { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); color: var(--color-text-dim); font-size: var(--type-size-12); margin-bottom: var(--spacing-layout-lg); }
 .answer-response { scroll-margin-top: calc(var(--spacing-page-2xl) + var(--spacing-layout-xl)); }
 .answer-question { scroll-margin-top: calc(var(--spacing-page-2xl) + var(--spacing-layout-xl)); }
 .page-answers .settings-fab { bottom: calc(var(--spacing-page-2xl) + var(--spacing-layout-xl) + var(--spacing-component-sm)); }
@@ -5732,7 +5725,7 @@ body:has(.auth-prompt[open]) {
 .answer-section h2, .answer-section h3, .answer-related h2, .answer-related h3, .answer-sources h2, .answer-sources h3 { font: var(--type-weight-bold) var(--type-size-18)/var(--type-line-height-ui-lg) var(--type-font-body); margin: 0 0 var(--spacing-component-sm); }
 .answer-copy ul { padding-left: var(--spacing-layout-lg); }
 .answer-copy li + li { margin-top: var(--spacing-component-ms); }
-.answer-citation { display: block; width: max-content; max-width: 100%; margin: var(--spacing-component-sm) 0 0 auto; padding: 0 var(--spacing-component-sm); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-full); background: var(--buttons-secondary-bg); color: var(--color-text-tertiary); font-size: var(--type-size-12); line-height: var(--type-line-height-ui-xs); }
+.answer-citation { display: flex; align-items: center; gap: var(--spacing-component-xs); width: max-content; max-width: 100%; margin: var(--spacing-component-sm) 0 0 auto; padding: 0 var(--spacing-component-sm); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-full); background: var(--buttons-secondary-bg); color: var(--color-text-tertiary); font-size: var(--type-size-12); line-height: var(--type-line-height-ui-xs); }
 .answer-feedback-row { display: flex; align-items: center; gap: var(--spacing-component-sm); margin: var(--spacing-layout-md) 0; }
 .answer-icon-button { display: inline-flex; align-items: center; justify-content: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); color: var(--color-text-tertiary); border-radius: var(--radius-full); }
 .answer-icon-button svg { width: var(--icon-size-lg); height: var(--icon-size-lg); fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
@@ -6072,15 +6065,12 @@ body:has(.auth-prompt[open]) {
   font: var(--type-helper);
   color: var(--color-text-secondary);
 }
-.mover-direction.material-symbols-outlined {
+.mover-direction {
   display: block;
   flex: none;
   width: var(--icon-size-md);
   height: var(--icon-size-md);
-  font-size: var(--icon-size-md);
-  line-height: 1;
   color: inherit;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
 }
 .mover-update-text { min-width: 0; }
 .mover-update .collection-momentum { margin-left: var(--spacing-component-xs); }
@@ -6683,8 +6673,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-outcome-card-footer button:last-child { margin-inline-start: auto; }
 .prediction-outcome-card-footer button:disabled { opacity: .5; cursor: default; }
 .prediction-outcome-card-footer button:enabled:hover { opacity: .5; text-decoration: none; }
-.prediction-outcome-nav-icon.material-symbols-outlined { flex: none; width: var(--icon-size-md); font-family: 'Material Symbols Outlined'; font-size: var(--icon-size-md); font-weight: 400; line-height: 1; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
-.prediction-outcome-nav-icon--previous { transform: scaleX(-1); }
+.prediction-outcome-nav-icon { width: var(--icon-size-md); height: var(--icon-size-md); }
 .prediction-outcome-reveal :is(button,a):focus-visible { outline: var(--stroke-focus) solid var(--prediction-card-button); outline-offset: var(--spacing-component-xs); }
 .prediction-outcome-comparison { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--spacing-layout-md); font: var(--type-body); color: var(--color-text-primary); }
 .prediction-outcome-article { color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); font: var(--type-body); }

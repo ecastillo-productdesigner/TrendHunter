@@ -9,14 +9,6 @@
       "brand": false
     },
     {
-      "path": "assets/auth/icon-arrow-back.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
-      "brand": false
-    },
-    {
       "path": "assets/auth/icon-checkbox-check.svg",
       "references": [
         "feed.css"
@@ -394,6 +386,14 @@
       "brand": false
     },
     {
+      "path": "assets/feed/icon-arrow.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
       "path": "assets/feed/icon-bookmark-filled.svg",
       "references": [
         "feed.css"
@@ -755,18 +755,6 @@
       "brand": false
     },
     {
-      "path": "assets/feed/icon-sparkline-up-stroke.svg",
-      "references": [],
-      "used": false,
-      "brand": false
-    },
-    {
-      "path": "assets/feed/icon-sparkline-up.svg",
-      "references": [],
-      "used": false,
-      "brand": false
-    },
-    {
       "path": "assets/feed/icon-theme-light.svg",
       "references": [
         "trend-sunday-meal-prep.html",
@@ -1002,24 +990,6 @@
         "feed.css"
       ],
       "used": true,
-      "brand": false
-    },
-    {
-      "path": "assets/feed/icon-trending-down.svg",
-      "references": [],
-      "used": false,
-      "brand": false
-    },
-    {
-      "path": "assets/feed/icon-trending-up-stroke.svg",
-      "references": [],
-      "used": false,
-      "brand": false
-    },
-    {
-      "path": "assets/feed/icon-trending-up.svg",
-      "references": [],
-      "used": false,
       "brand": false
     },
     {
@@ -1270,14 +1240,6 @@
       "brand": false
     },
     {
-      "path": "assets/predictions/icon-arrow-forward.svg",
-      "references": [
-        "feed.css"
-      ],
-      "used": true,
-      "brand": false
-    },
-    {
       "path": "assets/predictions/icon-clock.svg",
       "references": [
         "feed.css"
@@ -1351,10 +1313,6 @@
     }
   ],
   "materialSymbols": [
-    "arrow_downward",
-    "arrow_drop_down",
-    "arrow_drop_up",
-    "arrow_right_alt",
     "bolt",
     "cancel",
     "chat",
@@ -1427,14 +1385,6 @@
       "states": [
         "Dark \u00b7 sun",
         "Light \u00b7 moon"
-      ]
-    },
-    {
-      "name": "Back",
-      "group": "Navigation and saved",
-      "note": "20px. Authentication navigation.",
-      "states": [
-        "Default"
       ]
     },
     {
@@ -1550,12 +1500,15 @@
       ]
     },
     {
-      "name": "Recent movement",
-      "group": "Predictions and signals",
-      "note": "Caught on the Move uses 20px Material Symbols Outlined arrow_drop_up and arrow_drop_down beside the time above each headline. They replace the visible Moved up/down wording and inherit the same color as the time text. The original rising/falling chevrons remain after the time in their green/red colors. Hidden text retains the direction for screen readers.",
+      "name": "Directional arrow",
+      "group": "Navigation and saved",
+      "note": "One Google Material Symbols Outlined arrow_forward SVG: weight 400, FILL 0, grade 0, optical size 24. All directions rotate assets/feed/icon-arrow.svg. Read more, Submit and Jump down use 16px; Back, prediction Previous/Next and movement indicators use 20px; compact comparison actions use 12px. Digest and citation arrows scale with their labels. Sizes, theme colors, hover states, tap targets and destinations remain owned by each control. Share, trend chevrons and the context flip retain their dedicated shapes.",
       "states": [
-        "Moved up",
-        "Moved down"
+        "Right \u00b7 Read more / Next",
+        "Left \u00b7 Back / Previous",
+        "Down \u00b7 Jump / expand",
+        "Up \u00b7 Close digest",
+        "Diagonal \u00b7 external / citation"
       ]
     },
     {
@@ -1565,15 +1518,6 @@
       "states": [
         "Get context / back",
         "Time"
-      ]
-    },
-    {
-      "name": "Forward and jump",
-      "group": "Predictions and signals",
-      "note": "Read more and Jump down share the same 16px Material Symbols Outlined arrow_downward, FILL 0. Submit retains the forward SVG.",
-      "states": [
-        "Read more / Jump down \u00b7 16px",
-        "Submit \u00b7 forward"
       ]
     },
     {
@@ -1605,13 +1549,10 @@
       ]
     },
     {
-      "name": "Text glyph controls",
+      "name": "New thread",
       "group": "Answers feedback",
-      "note": "These controls are text glyphs rather than icon files. Included so the reference covers all visible icon sources.",
+      "note": "The New thread plus is a text glyph. Directional controls use the shared arrow SVG.",
       "states": [
-        "Previous",
-        "Next",
-        "Citation",
         "New thread"
       ]
     },
@@ -1703,15 +1644,6 @@
       "states": [
         "Unselected",
         "Selected"
-      ]
-    },
-    {
-      "name": "Prediction result navigation",
-      "group": "Predictions and signals",
-      "note": "20px outlined arrow_right_alt. Previous mirrors the same glyph; color follows the footer label.",
-      "states": [
-        "Next",
-        "Previous"
       ]
     }
   ]

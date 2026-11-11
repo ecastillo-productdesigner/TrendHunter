@@ -34,7 +34,7 @@
       "key": "button:answer-outline-button",
       "classes": "answer-outline-button",
       "tag": "button",
-      "name": "\u2190",
+      "name": "Previous sources",
       "sources": [
         "answer-page.js",
         "answer-page.js",
@@ -1978,7 +1978,7 @@
       "key": "button:hunter-digest-action",
       "classes": "hunter-digest-action",
       "tag": "button",
-      "name": "Close digest \u2191",
+      "name": "Close digest",
       "sources": [
         "hunter-digest-markup.js"
       ]
@@ -2908,7 +2908,7 @@
       "key": "a:prediction-card-more",
       "classes": "prediction-card-more",
       "tag": "a",
-      "name": "Read morearrow_downward",
+      "name": "Read more",
       "sources": [
         "predictions.js"
       ]
@@ -2917,7 +2917,7 @@
       "key": "a:prediction-card-more prediction-result-more",
       "classes": "prediction-card-more prediction-result-more",
       "tag": "a",
-      "name": "Read morearrow_downward",
+      "name": "Read more",
       "sources": [
         "prediction-filter-options.html",
         "prediction-filter-options.html",

@@ -38,11 +38,11 @@ export function digestCardMarkup(rows, edition, { expanded = false, id = 'hunter
   return digestHeader(`${id}-heading`, edition, { collections:groups.length, stories:rows.length })
     + (first ? collectionMarkup({ ...first, stories:first.stories.slice(0, 1) }, 1) : '')
     + `<details class="hunter-digest-disclosure" data-digest-disclosure ${expanded ? 'open' : ''}>
-      <summary class="hunter-digest-action">See all updates <span aria-hidden="true">→</span></summary>
+      <summary class="hunter-digest-action">See all updates <span class="icon-arrow" aria-hidden="true"></span></summary>
       <div class="hunter-digest-details${!remainingFirstStories.length && groups.length > 1 ? ' hunter-digest-details--new-collection' : ''}">
         ${remainingFirstStories.length ? `<div class="hunter-digest-collection hunter-digest-collection--continuation">${storyMarkup(remainingFirstStories)}</div>` : ''}
         ${groups.slice(1).map((group, index) => collectionMarkup(group, index + 2)).join('')}
-        <footer class="hunter-digest-footer"><button class="hunter-digest-action" type="button" data-digest-close>Close digest <span aria-hidden="true">↑</span></button>${includeMarkAllRead ? '<button class="hunter-digest-complete" type="button" data-digest-read-all>Mark all as read<span class="feed-complete-icon" aria-hidden="true"></span></button>' : ''}</footer>
+        <footer class="hunter-digest-footer"><button class="hunter-digest-action" type="button" data-digest-close>Close digest <span class="icon-arrow icon-arrow--up" aria-hidden="true"></span></button>${includeMarkAllRead ? '<button class="hunter-digest-complete" type="button" data-digest-read-all>Mark all as read<span class="feed-complete-icon" aria-hidden="true"></span></button>' : ''}</footer>
       </div>
     </details>`.replace(/^[\t ]+$/gm, '');
 }

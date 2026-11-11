@@ -39,7 +39,7 @@ def button_inventory(project):
         ('badge-award-close','Close earned badge','<span class="drawer-close-icon"></span>','badge-celebration.js'),
         ('prediction-share','Share prediction','<span class="trend-card-share-icon"></span>','share.js'),
         ('profile-prediction-filter','All','All','profile-predictions.js'),
-        ('button-primary prediction-shortcut','Make your call','Make your call<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>','predictions.js'),
+        ('button-primary prediction-shortcut','Make your call','Make your call<span class="prediction-shortcut-icon icon-arrow icon-arrow--down"></span>','predictions.js'),
     ]
     for classes, name, body, source in generated:
         key = 'button:'+classes
@@ -75,7 +75,7 @@ def build_button_reference(project, out):
     pair('Follow collection', '<button class="follow-button" aria-pressed="false">Follow</button>', '<button class="follow-button" aria-pressed="true">Following</button>', 'Following')
     pair('Collection pill','<span class="pill-button">Collection__MOMENTUM_RISING__</span>','<span class="pill-button ds-pill-hover">Collection__MOMENTUM_RISING__</span>')
     pair('Story collection label','<span class="trend-card-collection">Collection__MOMENTUM_RISING__</span>','<span class="trend-card-collection ds-collection-hover">Collection__MOMENTUM_RISING__</span>')
-    shortcut='<span class="prediction-shortcut-icon material-symbols-outlined">arrow_downward</span>'
+    shortcut='<span class="prediction-shortcut-icon icon-arrow icon-arrow--down"></span>'
     pair('Make your call · sticky pill',f'<button class="button-primary prediction-shortcut ds-shortcut-example">Make your call{shortcut}</button>',f'<button class="button-primary prediction-shortcut ds-shortcut-example ds-shortcut-hover">Make your call{shortcut}</button>')
     pair('Make your call · comparison','<button class="button-primary profile-call-start">Make your call</button>','<button class="button-primary profile-call-start ds-call-start-hover">Make your call</button>')
     pair('Get context / Back to call','<span class="prediction-card-link">Get context<span class="prediction-card-link-icon"></span></span>','<span class="prediction-card-link ds-context-hover">Get context<span class="prediction-card-link-icon"></span></span>')

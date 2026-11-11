@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
-  <link rel="stylesheet" href="feed.css?v=community-142">
+  <link rel="stylesheet" href="feed.css?v=community-143">
   <script>
     // Apply the saved theme and sign-in state before first paint to avoid a flash
     try {
@@ -16,7 +16,7 @@
       if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
     } catch (e) {}
   </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_downward,arrow_right_alt,bolt,eye_tracking,fact_check,menu_book,my_location,pause_circle,play_circle,public,scuba_diving,visibility,volume_off,volume_up,wand_stars&display=block">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bolt,eye_tracking,fact_check,menu_book,my_location,pause_circle,play_circle,public,scuba_diving,visibility,volume_off,volume_up,wand_stars&display=block">
 </head>
 <body class="page-answers">
 
@@ -96,7 +96,7 @@
   </dialog>
 
   <main class="answer-page" aria-label="Trend Hunter Answers">
-    <a class="answer-back" href="feed.html">← Back to feed</a>
+    <a class="answer-back" href="feed.html"><span class="icon-arrow icon-arrow--left" aria-hidden="true"></span>Back to feed</a>
     <div id="answer-thread"></div>
     <div class="answer-new-thread"><button class="answer-outline-button" type="button" data-new-thread>+ New thread</button><p>Trend Hunter Answers</p></div>
     <form class="answers-form answer-followup" aria-label="Ask a follow-up">
@@ -118,7 +118,7 @@
 
   <script type="module" src="share.js?v=system-sharing-3"></script>
   <script src="app.js?v=collection-cards-14"></script>
-  <script src="answer-page.js?v=share-menu-1"></script>
+  <script src="answer-page.js?v=shared-arrows-2"></script>
 
   <!-- Prototype settings — fixed bottom right, same look in both themes -->
   <div class="settings-panel" id="settings-panel" hidden>
