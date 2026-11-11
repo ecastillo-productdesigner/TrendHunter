@@ -1032,7 +1032,9 @@ button {
 .hunter-digest-title { font: var(--type-card-headline); text-transform: uppercase; color: var(--color-text-primary); }
 .hunter-digest-date { margin-top: var(--spacing-component-sm); font: var(--type-helper); color: var(--color-text-dim); }
 .hunter-digest-intro { font: var(--type-helper); color: var(--color-text-dim); }
-.hunter-digest-collection { display: grid; gap: var(--spacing-component-ms); min-width: 0; }
+.hunter-digest-collection { display: grid; grid-template-columns: var(--spacing-layout-xl) minmax(0, 1fr); gap: var(--spacing-component-ms); min-width: 0; }
+.hunter-digest-collection-number { grid-column: 1; grid-row: 1 / span 2; font: var(--type-card-headline); color: var(--color-text-dim); }
+.hunter-digest-collection-name, .hunter-digest-stories { grid-column: 2; min-width: 0; }
 .hunter-digest-collection + .hunter-digest-collection { padding-top: var(--spacing-layout-lg); border-top: var(--stroke-default) solid var(--color-border-default); }
 .hunter-digest-collection-name { font: var(--type-section-heading-bold); text-transform: uppercase; }
 .hunter-digest-collection-name a { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); max-width: 100%; color: var(--color-text-tertiary); }

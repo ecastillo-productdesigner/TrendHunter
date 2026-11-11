@@ -97,7 +97,9 @@ test('one inline disclosure reveals all additional summaries without duplicating
   assert.equal((details.match(/<article>/g) || []).length, rows.length - 1);
   assert.match(details, /data-digest-disclosure\s*>/);
   assert.match(details, /<summary[^>]*>/);
-  assert.match(details, /hunter-digest-details--new-collection/);
+  assert.doesNotMatch(details, /hunter-digest-details--new-collection/);
+  const oneStoryPerCollection = digestCardMarkup(rows.slice(0, 2), edition);
+  assert.match(oneStoryPerCollection, /hunter-digest-details--new-collection/);
   const sameCollection = digestCardMarkup(rows.filter(row => row.collection.href === rows[0].collection.href), edition);
   assert.doesNotMatch(sameCollection, /hunter-digest-details--new-collection/);
   assert.doesNotMatch(collapsed, /href="feed.html#following"|Your daily catch-up/);
@@ -112,6 +114,22 @@ test('one inline disclosure reveals all additional summaries without duplicating
   assert.doesNotMatch(full, /Mark digest as caught up/);
   const urls = [...full.matchAll(/class="hunter-digest-read-more" href="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(urls).size, rows.length);
+});
+
+test('number gutter groups interleaved stories once per collection across the disclosure', () => {
+  const rows = digestUpdates([...followed, 'collection-smart-home-energy.html'], { caughtUp:{} });
+  const edition = digestEdition(new Date(2026,10,11));
+  const html = digestCardMarkup(rows, edition, { expanded:true });
+  const collections = [...new Set(rows.map(row => row.collection.href))];
+  const numbers = [...html.matchAll(/class="hunter-digest-collection-number" aria-hidden="true">(\d+)</g)].map(match => Number(match[1]));
+  assert.deepEqual(numbers, [1, 2, 3]);
+  assert.equal((html.match(/class="hunter-digest-collection-name"/g) || []).length, collections.length);
+  assert.match(html, /hunter-digest-collection--continuation/);
+  const actualOrder = [...html.matchAll(/class="hunter-digest-read-more" href="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(actualOrder, collections.flatMap(href => rows.filter(row => row.collection.href === href).map(row => row.href)));
+  assert.equal(new Set(actualOrder).size, rows.length);
+  const remaining = digestCardMarkup(rows.filter(row => row.collection.href !== collections[0]), edition);
+  assert.deepEqual([...remaining.matchAll(/class="hunter-digest-collection-number" aria-hidden="true">(\d+)</g)].map(match => Number(match[1])), [1, 2]);
 });
 
 test('digest dismissal preserves unread stories and Show Hunter Digest restores visibility', () => {
