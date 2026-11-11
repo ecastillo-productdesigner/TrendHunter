@@ -1753,7 +1753,7 @@ a.story-lockup:hover .story-lockup-headline {
 .share-sheet::backdrop { background: var(--color-scrim); }
 .share-sheet-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-component-ms); }
 .share-sheet-heading h2 { font: var(--type-weight-bold) var(--spacing-layout-md) / var(--type-line-height-ui-lg) var(--type-font-body); }
-.share-sheet-close { width: var(--icon-size-xl); height: var(--icon-size-xl); font-size: var(--type-size-28); color: var(--color-icon-default); }
+.share-sheet-close { display: grid; place-items: center; width: var(--icon-size-xl); height: var(--icon-size-xl); color: var(--color-icon-default); }
 .share-sheet-story { margin-block: var(--spacing-layout-md); font: var(--type-size-16) / var(--type-line-height-ui-lg) var(--type-font-body); }
 .share-sheet-label { display: block; margin-bottom: var(--spacing-component-sm); font: var(--type-size-14) / var(--type-line-height-ui-xs) var(--type-font-body); }
 .share-sheet input { width: 100%; min-width: 0; padding: var(--spacing-component-ms); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-sm); background: var(--buttons-secondary-bg); color: inherit; font: var(--type-size-14) / var(--type-line-height-ui-lg) var(--type-font-body); }
@@ -3170,7 +3170,7 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   white-space: nowrap;
   cursor: pointer;
 }
-.prediction-shortcut-icon {
+.prediction-shortcut-icon.material-symbols-outlined {
   width: var(--icon-size-sm);
   height: var(--icon-size-sm);
   flex-shrink: 0;
@@ -3343,16 +3343,7 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   text-underline-offset: var(--layout-link-underline-offset);
 }
 
-/* Material Symbols Rounded arrow_forward at 12px, tinted like the text */
-.prediction-card-more-icon {
-  flex-shrink: 0;
-  width: var(--icon-size-xs);
-  height: var(--icon-size-xs);
-  background-color: currentColor;
-  mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-  -webkit-mask: url("assets/predictions/icon-arrow-forward.svg") center / contain no-repeat;
-}
-
+/* Read more reuses the 16px prediction-shortcut-icon arrow_downward symbol. */
 
 .prediction-card-more:focus-visible {
   outline: var(--stroke-focus) solid var(--prediction-card-more);
@@ -5924,7 +5915,7 @@ body:has(.auth-prompt[open]) {
 /* All-open-predictions uses the existing secondary action, filters and result type. */
 .predictions-open-link { gap: var(--spacing-component-sm); text-decoration: none; }
 .predictions-open-link[hidden] { display: none; }
-.predictions-open-link .prediction-card-more-icon { flex: 0 0 var(--icon-size-xs); }
+.predictions-open-link .prediction-card-more-icon { flex: 0 0 var(--icon-size-sm); }
 .open-predictions-page {
   display: flex;
   flex-direction: column;

@@ -2908,7 +2908,7 @@
       "key": "a:prediction-card-more",
       "classes": "prediction-card-more",
       "tag": "a",
-      "name": "Read more",
+      "name": "Read morearrow_downward",
       "sources": [
         "predictions.js"
       ]
@@ -2917,7 +2917,7 @@
       "key": "a:prediction-card-more prediction-result-more",
       "classes": "prediction-card-more prediction-result-more",
       "tag": "a",
-      "name": "Read more",
+      "name": "Read morearrow_downward",
       "sources": [
         "prediction-filter-options.html",
         "prediction-filter-options.html",
@@ -4100,7 +4100,7 @@
       "key": "button:share-sheet-close",
       "classes": "share-sheet-close",
       "tag": "button",
-      "name": "\u00d7",
+      "name": "Close share options",
       "sources": [
         "share.js"
       ]

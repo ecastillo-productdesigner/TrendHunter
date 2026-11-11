@@ -74,7 +74,7 @@ def build_icon_reference(project, out):
     add('Apple and Google', 'Authentication and settings', 'Provider sign-in icons. The Apple mask follows the provider surface; Google retains its multicolor PNG. Both buttons hover to #E5E7EB.', [
         state('Apple', '<span class="ds-provider-icon">'+span('auth-apple-icon')+'</span>'),
         state('Google', '<span class="ds-provider-icon">'+image('auth/icon-google.png')+'</span>')])
-    add('Close', 'Authentication and settings', 'The app uses a 24px drawer/toast cross, a 20px auth cross and a text × in the share dialog.', [state('Drawer · 24px', span('drawer-close-icon')), state('Auth · 20px', span('auth-close-icon')), state('Share dialog · ×', '<span class="share-sheet-close">×</span>')])
+    add('Close', 'Authentication and settings', 'Shared 24px close icon for drawers, toasts and the Share dialog. Authentication retains its 20px variant. Source variants remain listed in the asset inventory.', [state('Shared · 24px', span('drawer-close-icon'))])
     for name, direction in [('In check','in'),('Out cross','out')]:
         add(name, 'Predictions and signals', 'The same glyph appears in the vote button, creator chip, resolved chip and background-free reader label. These are contexts, not invented toggle states.', [
             state('Vote button · 20px', f'<span class="prediction-vote prediction-vote--{direction}">'+span('prediction-vote-icon')+'</span>', 'dark'),
@@ -85,9 +85,9 @@ def build_icon_reference(project, out):
     add('Collection interest', 'Predictions and signals', 'Logo-inspired four-chevron indicator in a 20 × 14px box. Rising points right in DS lime; falling points left in DS red, with progressively fading chevrons. Percentages stay in accessible labels and tooltips, and keep the existing Trending sorting; they are hidden visually. Values are illustrative prototype data, not live analytics. Channel mastheads have no chevrons. Collection labels retain these chevrons; Caught on the Move places them after its time text alongside separate movement arrows.', [state('Interest rising · sample 22%', momentum_markup()), state('Interest falling · sample 20%', momentum_markup('falling'))])
     add('Recent movement', 'Predictions and signals', 'Caught on the Move uses 20px Material Symbols Outlined arrow_drop_up and arrow_drop_down beside the time above each headline. They replace the visible Moved up/down wording and inherit the same color as the time text. The original rising/falling chevrons remain after the time in their green/red colors. Hidden text retains the direction for screen readers.', [state('Moved up', '<span class="mover-direction material-symbols-outlined" data-direction="up">arrow_drop_up</span>'), state('Moved down', '<span class="mover-direction material-symbols-outlined" data-direction="down">arrow_drop_down</span>')])
     add('Prediction context and time', 'Predictions and signals', '16px flip icon for Get context / Back to call. Clock has its own 13×16px box.', [state('Get context / back',span('prediction-card-link-icon'),'prediction'),state('Time',span('prediction-clock-icon'),'prediction')])
-    add('Forward and jump', 'Predictions and signals', 'The same forward SVG supports Read more, submit and Make your call. The downward jump is Material Symbols Outlined, FILL 0.', [state('Read more',span('prediction-card-more-icon')),state('Submit', '<span class="answers-submit">'+span('answers-submit-icon')+'</span>'),state('Make your call','<span class="ds-forward-topic">'+span('prediction-card-more-icon')+'</span>'),state('Jump down',span('prediction-shortcut-icon material-symbols-outlined','arrow_downward'))])
+    add('Forward and jump', 'Predictions and signals', 'Read more and Jump down share the same 16px Material Symbols Outlined arrow_downward, FILL 0. Submit retains the forward SVG.', [state('Read more / Jump down · 16px',span('prediction-card-more-icon prediction-shortcut-icon material-symbols-outlined','arrow_downward')),state('Submit · forward', '<span class="answers-submit">'+span('answers-submit-icon')+'</span>')])
     add('Answers sparkles', 'Predictions and signals', 'The Answers symbol is reused for prompts, questions and source labels.', [state('Default',span('answers-sparkle'))])
-    add('Success checks', 'Predictions and signals', 'The complete-feed circle is 48px with a light-theme rim; toast check is 24px.', [state('Feed complete',span('feed-complete-icon')),state('Toast success',span('toast-icon'))])
+    add('Success checks', 'Predictions and signals', 'Separate SVG exports of the same filled Google Material Symbols Rounded check_circle glyph. Feed complete uses a 48px box with a light-theme rim; Toast success uses a 24px box with a more inset drawing.', [state('Feed complete',span('feed-complete-icon')),state('Toast success',span('toast-icon'))])
     for label, down in [('Helpful answer',False),('Unhelpful answer',True)]:
         graphic = f'<span class="ds-thumb-down">{thumb}</span>' if down else thumb
         add(label, 'Answers feedback', '24px inline SVG. Active feedback changes its icon color and button surface; the thumb stays outlined.', [state('Inactive',f'<span class="answer-icon-button" aria-pressed="false">{graphic}</span>'),state('Active',f'<span class="answer-icon-button" aria-pressed="true">{graphic}</span>')])
@@ -124,15 +124,9 @@ def build_icon_reference(project, out):
     for family in families:
         if family['name']=='Menu':
             family['states']=[state('Default · follows theme',image('feed/icon-menu.svg','nav-menu-icon theme-dark-only')+image('feed/icon-menu-light.svg','nav-menu-icon theme-light-only'))]
-        if family['name']=='Close':
-            family['states']=[family['states'][0],family['states'][2]]
-            family['note']='Shared close action. Drawer/toast: 24px. Authentication: 20px. Share dialog uses the text ×. Source variants remain listed in the asset inventory.'
         if family['name']=='Trend arrows':
             family['states']=family['states'][:2]
             family['note']='Green up and red down directions stay consistent per collection. Pills use 12px; mastheads use 24px up/down arrows. The up arrow has a supporting light-theme outline layer.'
-        if family['name']=='Forward and jump':
-            family['states']=[family['states'][0],family['states'][3]]
-            family['note']='Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.'
 
     for badge_name, symbol in [('Regular Hunter','my_location'),('Deep Diver','scuba_diving'),('Field Notes','menu_book'),('Sharp Eye','eye_tracking')]:
         add(badge_name + ' badge', 'Predictions and signals', 'The selected Material Symbols Outlined achievement icon.', [state('Badge symbol', span('material-symbols-outlined',symbol))])

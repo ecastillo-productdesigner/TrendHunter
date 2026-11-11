@@ -1517,10 +1517,9 @@
     {
       "name": "Close",
       "group": "Authentication and settings",
-      "note": "Shared close action. Drawer/toast: 24px. Authentication: 20px. Share dialog uses the text \u00d7. Source variants remain listed in the asset inventory.",
+      "note": "Shared 24px close icon for drawers, toasts and the Share dialog. Authentication retains its 20px variant. Source variants remain listed in the asset inventory.",
       "states": [
-        "Drawer \u00b7 24px",
-        "Share dialog \u00b7 \u00d7"
+        "Shared \u00b7 24px"
       ]
     },
     {
@@ -1571,10 +1570,10 @@
     {
       "name": "Forward and jump",
       "group": "Predictions and signals",
-      "note": "Forward is reused by Read more, submit and Make your call; its size/color come from the control. Jump down is the 16px outlined Material Symbol.",
+      "note": "Read more and Jump down share the same 16px Material Symbols Outlined arrow_downward, FILL 0. Submit retains the forward SVG.",
       "states": [
-        "Read more",
-        "Jump down"
+        "Read more / Jump down \u00b7 16px",
+        "Submit \u00b7 forward"
       ]
     },
     {
@@ -1588,7 +1587,7 @@
     {
       "name": "Success checks",
       "group": "Predictions and signals",
-      "note": "The complete-feed circle is 48px with a light-theme rim; toast check is 24px.",
+      "note": "Separate SVG exports of the same filled Google Material Symbols Rounded check_circle glyph. Feed complete uses a 48px box with a light-theme rim; Toast success uses a 24px box with a more inset drawing.",
       "states": [
         "Feed complete",
         "Toast success"

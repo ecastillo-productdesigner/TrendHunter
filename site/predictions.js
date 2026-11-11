@@ -209,7 +209,7 @@ function resultRow(prediction, call, includeReadMore = true, { resolved = false,
       <div class="prediction-result-top">
         <div class="prediction-result-copy">
           <p class="prediction-result-headline">${escapeResult(prediction.text)}</p>
-          ${includeReadMore ? `<a class="prediction-card-more prediction-result-more" href="${escapeResult(prediction.storyHref)}" aria-label="Read more about ${escapeResult(prediction.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>` : ''}
+          ${includeReadMore ? `<a class="prediction-card-more prediction-result-more" href="${escapeResult(prediction.storyHref)}" aria-label="Read more about ${escapeResult(prediction.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon prediction-shortcut-icon material-symbols-outlined" aria-hidden="true">arrow_downward</span></a>` : ''}
         </div>
         <p class="prediction-badge prediction-badge--${call}${resolved ? ' prediction-badge--resolved' : ''}"><span class="prediction-badge-icon" aria-hidden="true"></span>${escapeResult(label)}</p>
       </div>
@@ -385,7 +385,7 @@ if (stack) {
               <button class="prediction-card-link" type="button" data-flip="vote" aria-label="Back to the call"><span class="prediction-card-link-icon" aria-hidden="true"></span></button>
             </div>
             <div class="prediction-card-middle">
-              <p class="prediction-card-context">${escapeHTML(prediction.context)} <a class="prediction-card-more" href="${escapeHTML(prediction.storyHref)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a></p>
+              <p class="prediction-card-context">${escapeHTML(prediction.context)} <a class="prediction-card-more" href="${escapeHTML(prediction.storyHref)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon prediction-shortcut-icon material-symbols-outlined" aria-hidden="true">arrow_downward</span></a></p>
             </div>
             ${actions}
           </div>
@@ -994,7 +994,7 @@ document.querySelectorAll('.prediction-inline-stack').forEach((inlineStack) => {
               <div class="prediction-result-top">
                 <div class="prediction-result-copy">
                   <p class="prediction-result-headline">${escapeHTML(p.text)}</p>
-                  <a class="prediction-card-more prediction-result-more" href="${escapeHTML(p.storyHref)}" aria-label="Read more about ${escapeHTML(p.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon" aria-hidden="true"></span></a>
+                  <a class="prediction-card-more prediction-result-more" href="${escapeHTML(p.storyHref)}" aria-label="Read more about ${escapeHTML(p.text)}"><span class="prediction-card-more-label">Read more</span><span class="prediction-card-more-icon prediction-shortcut-icon material-symbols-outlined" aria-hidden="true">arrow_downward</span></a>
                 </div>
                 <p class="prediction-badge prediction-badge--${calls[p.id]}"><span class="prediction-badge-icon" aria-hidden="true"></span>${calls[p.id] === 'in' ? "You're in" : "You're out"}</p>
               </div>

@@ -27,7 +27,7 @@ import { shareWithSystem } from './system-share.js';
   sheet.className = 'share-sheet';
   sheet.setAttribute('aria-labelledby', 'share-sheet-title');
   sheet.innerHTML = `
-    <div class="share-sheet-heading"><h2 id="share-sheet-title">Share</h2><button class="share-sheet-close" type="button" aria-label="Close share options">×</button></div>
+    <div class="share-sheet-heading"><h2 id="share-sheet-title">Share</h2><button class="share-sheet-close" type="button" aria-label="Close share options"><span class="drawer-close-icon" aria-hidden="true"></span></button></div>
     <p class="share-sheet-story"></p>
     <label class="share-sheet-label" for="share-sheet-url">Link</label><input id="share-sheet-url" type="url" readonly>
     <div class="share-sheet-actions"><button class="share-sheet-copy" type="button"><span data-share-copy-label aria-live="polite" aria-atomic="true">Copy link</span></button><a class="share-sheet-email">Email</a></div>`;
