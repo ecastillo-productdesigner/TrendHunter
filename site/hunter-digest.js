@@ -1,7 +1,7 @@
 import './hunter-digest-disclosure.js?v=2';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
 import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=4';
-import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=6';
+import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=7';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
 let expanded = false, hiddenForVisit = false, rows = [];
@@ -22,7 +22,7 @@ function render() {
     expanded = false;
     if (followed.length) { digest.hidden = true; digest.innerHTML = ''; return; }
     const empty = '<h3 class="hunter-digest-empty-title">Make your next visit a catch-up</h3><p class="hunter-digest-summary">Follow collections to get a daily briefing on the stories that interest you.</p>';
-    const action = '<a class="hunter-digest-action" href="feed.html#collections" data-digest-collections>Find collections to follow</a>';
+    const action = '<a class="hunter-digest-action" href="https://ecastillo-productdesigner.github.io/TrendHunter/collection-evidence-based-beauty.html">Find collections to follow</a>';
     digest.innerHTML = digestHeader('hunter-digest-heading', edition) + `<div class="hunter-digest-empty">${empty}</div>` + action;
     return;
   }
@@ -36,10 +36,6 @@ digest?.addEventListener('toggle', event => {
 }, true);
 document.addEventListener('click', event => {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button > 0) return;
-  if (event.target.closest('[data-digest-collections]')) {
-    event.preventDefault();
-    document.querySelector('[data-feed-tabs] [data-feed-view="collections"]')?.click();
-  }
   if (event.target.closest('[data-digest-read-all]')) {
     if (!digest || digest.hidden || !digest.querySelector('[data-digest-disclosure]')?.open) return;
     let caughtUp = false;
