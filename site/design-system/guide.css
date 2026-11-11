@@ -381,3 +381,21 @@
 
 .ds-radius > .ds-copy { margin-top: var(--spacing-component-sm); }
 .ds-radius > div[data-token="--radius-circle"] { width: calc(var(--spacing-page-2xl) * 2); margin-inline: auto; }
+.ds-dialog-examples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-layout-lg); margin-top: var(--spacing-layout-lg); }
+.ds-dialog-example { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-component-ms); }
+.ds-dialog-example .answer-outline-button { margin-top: auto; }
+.ds-page .edit-profile-title { color: var(--edit-profile-heading); }
+.ds-page .edit-profile-preview { color: var(--edit-profile-value); }
+.ds-page .share-sheet-story, .ds-page .share-sheet-heading h2 { color: inherit; }
+.ds-preview-status { margin-top: var(--spacing-layout-md); color: var(--color-text-dim); font: var(--type-helper); }
+.ds-answer-example { margin-top: var(--spacing-layout-lg); }
+.ds-answer-example > summary { cursor: pointer; font: var(--type-editorial-h4); color: var(--color-text-body); padding-block: var(--spacing-component-ms); }
+.ds-answer-viewport { max-height: 700px; overflow: auto; overscroll-behavior: contain; border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-md); margin-top: var(--spacing-layout-md); }
+.ds-answer-viewport .answer-page { margin-block: 0; }
+.ds-answer-viewport .answer-section { scroll-margin: 0; }
+.ds-answer-viewport .answer-response p { margin-bottom: 0; }
+.ds-answer-viewport .answer-copy p, .ds-answer-viewport .answer-question { color: inherit; }
+.ds-answer-viewport :is(.answer-source-card, .answer-new-thread) p, .ds-answer-viewport .answer-demo { color: var(--color-text-dim); }
+.ds-answer-viewport :is(.answer-section, .answer-related, .answer-sources) :is(h2, h3) { font: var(--type-weight-bold) var(--type-size-18)/var(--type-line-height-ui-lg) var(--type-font-body); margin: 0 0 var(--spacing-component-sm); color: inherit; }
+.ds-answer-viewport .answer-followup { margin-top: var(--spacing-layout-md); }
+@media (width < 760px) { .ds-dialog-examples { grid-template-columns: 1fr; gap: var(--spacing-layout-xl); } }

@@ -186,7 +186,11 @@ iconSearch?.addEventListener('input', () => {
     group.hidden = ![...group.querySelectorAll('.ds-icon-family')].some(item => !item.hidden);
   });
   document.getElementById('ds-icon-empty').hidden = matches !== 0;
-  if(query && ![...document.querySelectorAll('.ds-icon-family')].some(item=>!item.hidden) && matches) document.getElementById('icon-assets').open=true;
+  document.querySelectorAll('[data-ds-icon-inventory]').forEach(section => {
+    const hasMatches = [...section.querySelectorAll('[data-icon-search]')].some(item => !item.hidden);
+    section.hidden = Boolean(query) && !hasMatches;
+    if (query && hasMatches) section.open = true;
+  });
 });
 
 const buttonSearch = document.getElementById('ds-button-search');

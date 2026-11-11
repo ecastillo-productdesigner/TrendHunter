@@ -10,7 +10,7 @@ ANCHOR_CLASSES = {'button-primary', 'pill-button', 'auth-button', 'nav-login', '
 def button_inventory(project):
     registry = {}
     files = sorted(list(project.glob('*.html')) + list(project.glob('*.js')))
-    thumb = re.search(r"const thumb = '(.*?)';", (project / 'answer-page.js').read_text()).group(1)
+    thumb = re.search(r"const thumb = '(.*?)';", (project / 'answer-markup.js').read_text()).group(1)
     for source in files:
         text = source.read_text()
         for tag, attrs, body in re.findall(r'<(button|a)\b([^>]*)>(.*?)</\1>', text, re.S):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import re
 from collection_momentum import momentum_markup
 import json
@@ -8,10 +10,14 @@ import subprocess
 from icon_reference import build_icon_reference
 from button_reference import build_button_reference
 from color_reference import build_color_reference
+from component_previews import build_dialog_previews, build_answer_preview
 
 PROJECT = Path(__file__).resolve().parents[1] / 'site'
 OUT = PROJECT / 'design-system'
 OUT.mkdir(parents=True, exist_ok=True)
+built_at = datetime.now(ZoneInfo('America/New_York'))
+built_date = built_at.date().isoformat()
+built_label = f'{built_at:%B} {built_at.day}, {built_at.year}'
 css = (PROJECT / 'feed.css').read_text()
 blocks = re.findall(r':root(?:\[data-theme="light"\])?\s*\{(.*?)\n\}', css, re.S)[:2]
 
@@ -39,7 +45,7 @@ def group(name):
     return 'Component colors'
 
 tokens = [{'name': n, 'default': v.strip(), 'light': light.get(n, v).strip(), 'group': group(n), 'themeOverride': n in light} for n,v in base.items()]
-(OUT / 'tokens.json').write_text(json.dumps({'source': '../feed.css', 'updated': '2026-11-05', 'tokens':tokens}, indent=2) + '\n')
+(OUT / 'tokens.json').write_text(json.dumps({'source': '../feed.css', 'updated': built_date, 'tokens':tokens}, indent=2) + '\n')
 
 def table(headers, rows):
     return '<div class="ds-table-scroll"><table><thead><tr>'+''.join('<th scope="col">'+h+'</th>' for h in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+str(x)+'</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table></div>'
@@ -60,10 +66,22 @@ type_rows = [
 ('Helper copy', 'ds-helper-sample', 'Saved to your profile', 'Inter', '12 / 20px', '400'),
 ]
 type_tokens = ['--type-page-masthead','--type-card-headline','--type-section-heading','--type-section-heading-bold','--type-mobile-prediction-heading','--type-body','--type-button-label','--type-collection-label','--type-helper']
-types = ''.join(f'<div class="ds-type-row"><div><h4>{name}</h4><p>{font}<br>{metrics} · Weight {weight}</p><div class="ds-type-token"><code>{token}</code><button class="ds-copy" data-copy="{token}" aria-label="Copy {token}">Copy</button></div></div><div class="ds-type-sample {klass}" style="font:var({token})">{text}</div></div>' for (name,klass,text,font,metrics,weight),token in zip(type_rows,type_tokens))
-
 def type_token_copy(token):
     return f'<div class="ds-type-token"><code>{token}</code><button class="ds-copy" data-copy="{token}" aria-label="Copy {token}">Copy</button></div>'
+
+# One specimen for identical styles; every semantic role remains copyable.
+shared_type_roles = {
+    '--type-section-heading': ('Section heading / Mobile prediction heading', ['--type-mobile-prediction-heading']),
+    '--type-helper': ('Helper / Utility helper', ['--type-utility-helper']),
+    '--type-editorial-body': ('Editorial body / Utility', ['--type-utility']),
+}
+types = ''
+for (name, klass, sample, font, metrics, weight), token in zip(type_rows, type_tokens):
+    if token == '--type-mobile-prediction-heading':
+        continue
+    name, aliases = shared_type_roles.get(token, (name, []))
+    copies = ''.join(type_token_copy(role) for role in [token, *aliases])
+    types += f'<div class="ds-type-row"><div><h4>{name}</h4><p>{font}<br>{metrics} · Weight {weight}</p>{copies}</div><div class="ds-type-sample {klass}" style="font:var({token})">{sample}</div></div>'
 
 type_families = table(['Family', 'Token', 'Sample'], [
     (label, type_token_copy(token), f'<span style="font-family:var({token})">{sample}</span>')
@@ -84,12 +102,11 @@ reference_type_rows = [
     ('Detail H1', '--type-detail-h1', 'The next big thing', 'Barlow Condensed · 40px · Weight 800 · Line height not supplied; normal', None),
     ('Detail prediction', '--type-detail-prediction', 'Are you in or out?', 'Barlow Condensed · 54px · Weight 800 · Line height not supplied; normal', None),
     ('Detail button', '--type-detail-button', 'MAKE YOUR CALL', 'Barlow Condensed · 16px · Weight 900 · Line height not supplied; normal', None),
-    ('Utility', '--type-utility', 'Updated 2hrs ago', 'Inter · 16 / 19px · Weight 400', None),
-    ('Utility helper', '--type-utility-helper', 'Saved to your profile', 'Inter · 12 / 20px · Weight 400 · Alias of --type-helper', None),
 ]
 reference_types = ''
 for label, token, sample, description, tracking in reference_type_rows:
-    copies = type_token_copy(token)
+    label, aliases = shared_type_roles.get(token, (label, []))
+    copies = ''.join(type_token_copy(role) for role in [token, *aliases])
     sample_style = f'font:var({token})'
     if tracking:
         copies += type_token_copy(tracking)
@@ -107,7 +124,7 @@ type_foundations = table(['Property', 'Value', 'Token'], [
 types = ('<h3 class="ds-type-group-heading">Font families</h3>' + type_families
     + '<h3 class="ds-type-group-heading">App typography roles</h3><div class="ds-panel ds-type-list">' + types + '</div>'
     + '<h3 class="ds-type-group-heading">Editorial, detail and utility reference</h3>'
-    + '<p class="ds-note">These styles transcribe the supplied typography variables. Display styles use Barlow Condensed; body and utility styles use Inter. Line heights absent from the screenshots use CSS normal. The two tracking values are represented in em (−1% and 2%) and applied with letter-spacing separately from the font token. Existing app roles remain available.</p>'
+    + '<p class="ds-note">These styles transcribe the supplied typography variables. Display styles use Barlow Condensed; body and utility styles use Inter. Line heights absent from the screenshots use CSS normal. The two tracking values are represented in em (−1% and 2%) and applied with letter-spacing separately from the font token. Matching styles share a single specimen; every semantic token stays available and copyable.</p>'
     + '<div class="ds-panel ds-type-list">' + reference_types + '</div>'
     + '<h3 class="ds-type-group-heading">Partially specified reference styles</h3><p class="ds-note">Only the visible property is defined for these two styles. The previews inherit the guide’s other typography values.</p>' + partial_types
     + '<h3 class="ds-type-group-heading">Additional typography primitives</h3>' + type_foundations)
@@ -148,12 +165,12 @@ layout = table(['Viewport', 'Feed layout', 'Outer spacing'], [
 motion = table(['Token','Value','Used for'], [(f'<code>{n}</code>',base[n],note) for n,note in [('--motion-card-enter','Prediction stack entrance'),('--motion-card-enter-stagger','Prediction cards enter one after another'),('--motion-card-enter-blur','Initial blur, resolving to sharp artwork'),('--motion-ease-card-enter','Card focus reveal easing'),('--motion-momentum-change','Quiet chevron strength fade'),('--motion-momentum-refresh','Staggered sample collection updates'),('--motion-account-setup','Account setup expanding-ring loop'),('--motion-hover','Shared hover feedback · 15 component rules'),('--motion-toast-enter','Toast entrance'),('--motion-toast-exit','Toast dismissal'),('--motion-feature-dismiss','Feature announcement puff dismissal'),('--motion-feature-dismiss-scale','Feature announcement puff expansion'),('--motion-feature-dismiss-blur','Feature announcement puff softness'),('--motion-drawer','Menu drawer'),('--motion-sheet','Article sheet'),('--motion-card-settle','Prediction card spring back'),('--motion-card-fly','Prediction card dismissal'),('--motion-card-flip','Prediction context flip'),('--motion-results-fade','Prediction results entrance'),('--motion-answers-ticker','Answers suggestion ticker loop'),('--motion-comparison-enter','Creator prediction rows appear'),('--motion-comparison-split','Creator prediction split bars reveal'),('--motion-comparison-stagger','Creator prediction row stagger')]])
 
 template = '''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="The readable design reference for Trend Hunter B2C. Browse spacing, color, typography, components, and design tokens."><title>Trend Hunter B2C Design System</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bolt,chat,checkroom,directions_bike,eye_tracking,fact_check,family_restroom,flight,head_mounted_device,health_and_beauty,home,info,local_bar,menu_book,my_location,pause_circle,play_circle,public,scuba_diving,spa,thumb_down,thumb_up,visibility,volume_off,volume_up,wand_stars"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block"><link rel="stylesheet" href="../feed.css?v=community-143"><link rel="stylesheet" href="guide.css?v=recommendation-3"><link rel="stylesheet" href="previews.css"><script type="module" src="../collection-momentum.js?v=4"></script><script src="../comparison-motion.js?v=entrance-1" defer></script><script src="../prediction-entrance.js?v=4" defer></script><script src="guide.js?v=live-hover-1" defer></script><script type="module" src="../hunter-digest-disclosure.js?v=2"></script><script src="../answers.js?v=comments-2" defer></script><script type="module" src="../share.js?v=system-sharing-3"></script><script type="module" src="badge-celebration-preview.js?v=5"></script><script src="../feed-video.js?v=autoplay-2" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="The readable design reference for Trend Hunter B2C. Browse spacing, color, typography, components, and design tokens."><title>Trend Hunter B2C Design System</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bolt,chat,checkroom,directions_bike,eye_tracking,fact_check,family_restroom,flight,head_mounted_device,health_and_beauty,home,info,local_bar,menu_book,my_location,pause_circle,play_circle,public,scuba_diving,spa,thumb_down,thumb_up,visibility,volume_off,volume_up,wand_stars"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block"><link rel="stylesheet" href="../feed.css?v=community-143"><link rel="stylesheet" href="guide.css?v=complete-reference-4"><link rel="stylesheet" href="previews.css"><script type="module" src="../collection-momentum.js?v=4"></script><script src="../comparison-motion.js?v=entrance-1" defer></script><script src="../prediction-entrance.js?v=4" defer></script><script src="guide.js?v=complete-reference-2" defer></script><script type="module" src="component-previews.js?v=1"></script><script type="module" src="../hunter-digest-disclosure.js?v=2"></script><script src="../answers.js?v=comments-2" defer></script><script type="module" src="../share.js?v=system-sharing-3"></script><script type="module" src="badge-celebration-preview.js?v=5"></script><script src="../feed-video.js?v=autoplay-2" defer></script></head>
 <body class="ds-page"><a class="ds-skip" href="#overview">Skip to reference</a>
 <header class="ds-header"><a href="#overview" class="ds-brand"><img class="theme-dark-only" src="../assets/feed/wordmark.svg" alt="Trend Hunter"><img class="theme-light-only" src="../assets/feed/wordmark-light.svg?v=3" alt="Trend Hunter"><span>Design system</span></a><div class="ds-header-actions"><button id="ds-theme" class="ds-theme-button" type="button" aria-pressed="false">Light theme</button></div></header>
 <nav class="ds-nav" aria-label="Guide sections"><a href="#overview">Overview</a><a href="#spacing">Spacing</a><a href="#colors">Colors</a><a href="#typography">Typography</a><a href="#shape">Shape</a><a href="#radius">Radius</a><a href="#borders">Borders</a><a href="#icons">Icons</a><a href="#avatars">Avatars</a><a href="#buttons">Buttons</a><a href="#layout">Layout</a><a href="#components">Components</a><a href="#motion">Motion</a><a href="#tokens">All tokens</a></nav>
 <main class="ds-main">
-<section id="overview" class="ds-hero"><p class="ds-eyebrow">Trend Hunter B2C · October 2026</p><h1>Design system</h1><p class="ds-intro">A reference for the colors, typography, spacing, and components in Trend Hunter B2C. See the values, understand where they are used, and switch themes to compare them.</p><div class="ds-hero-actions"><a class="button-primary" href="../feed.html">Open prototype</a><a class="ds-text-link" href="tokens.json" download>Download token JSON <span class="icon-arrow icon-arrow--down" aria-hidden="true"></span></a></div><div class="ds-metrics"><div><strong>__COUNT__</strong><span>named design tokens</span></div><div><strong>2</strong><span>color themes</span></div><div><strong>7</strong><span>spacing steps</span></div></div><p class="ds-source-note">Connected to the product stylesheet <a href="../feed.css">feed.css</a>. The source labels its core tokens as coming from Figma’s Feed Page; comments also identify prototype additions and theme exceptions.</p></section>
+<section id="overview" class="ds-hero"><p class="ds-eyebrow">Trend Hunter B2C · __GENERATED_MONTH__</p><h1>Design system</h1><p class="ds-intro">A reference for the colors, typography, spacing, and components in Trend Hunter B2C. See the values, understand where they are used, and switch themes to compare them.</p><div class="ds-hero-actions"><a class="button-primary" href="../feed.html">Open prototype</a><a class="ds-text-link" href="tokens.json" download>Download token JSON <span class="icon-arrow icon-arrow--down" aria-hidden="true"></span></a></div><div class="ds-metrics"><div><strong>__COUNT__</strong><span>named design tokens</span></div><div><strong>2</strong><span>color themes</span></div><div><strong>7</strong><span>spacing steps</span></div></div><p class="ds-source-note">Connected to the product stylesheet <a href="../feed.css">feed.css</a>. The source labels its core tokens as coming from Figma’s Feed Page; comments also identify prototype additions and theme exceptions.</p></section>
 
 <section id="spacing" class="ds-section"><div class="ds-section-heading"><p class="ds-eyebrow">01 · Foundations</p><h2>Spacing</h2><p>Seven shared steps for padding and gaps. After 24px comes 32px, then 48px.</p><p>Editorial feed actions use --spacing-layout-xl (32px) between the visible Share and Bookmark artwork. Each 48px tap target extends outward from the icon pair without overlap; the bookmark artwork keeps the 24px right inset. Trending Videos rails use 4px gaps; other portrait story rails retain 24px gaps.</p><p>Desktop Trend Detail pages use separate article, shopping, Answers and More Stories panels with 24px padding and 24px gaps. On mobile articles, channels and collections, More Stories keeps its 1px default-border divider with 32px of space above and below.</p><p>On mobile articles, use 32px between the prediction cards and the next divider, the divider and product heading, product cards and the Answers divider, that divider and Trend Hunter Answers, and the final question pills and the More Stories divider.</p></div><div class="ds-panel">__SPACING__</div><div class="ds-two-column ds-spacing-detail"><div><h3>Predict the Next Trend heading</h3><p>The mobile heading and prediction deck are centered together inside the card, with a <strong>24px gap</strong> between them and at least 32px of vertical padding. The outer top and bottom gaps are 0px. The card’s 1px border sits outside its padding.</p><p>Use <code>--spacing-layout-xl</code> for the group’s minimum vertical padding and <code>--spacing-layout-lg</code> for its heading-to-deck gap.</p></div><div class="ds-inset-demo"><div class="ds-inset-ruler"><span>32px top padding</span></div><h4 class="type-h4-caps">Predict the Next Trend</h4><p>Inside the card</p></div></div></section>
 
@@ -180,7 +197,7 @@ __BUTTONS__
 <section id="motion" class="ds-section"><div class="ds-section-heading"><p class="ds-eyebrow">07 · Behavior</p><h2>Motion</h2><p>Use <code>var(--motion-hover)</code> (150ms, ease) for shared hover feedback. The 15 rules cover pills, primary buttons, feed navigation tabs, Now Trending headlines, drawer links, topic tiles, product CTAs, the prediction shortcut, vote buttons, Edit Profile, profile Make Your Call, channel buttons, article collection links, contributor names and the prototype settings button.</p><p>Shared timings keep entrances, transitions, and prediction gestures consistent.</p></div><div class="ds-panel ds-table-panel">__MOTION__</div><p class="ds-note">These timing tokens are documented in the source as prototype definitions and sandbox deck values. The stylesheet includes reduced-motion rules for drawers, sheets, toasts, and prediction effects.</p></section>
 
 <section id="tokens" class="ds-section"><div class="ds-section-heading"><p class="ds-eyebrow">08 · Reference</p><h2>All design tokens</h2><p>Search by name or value. The active value reflects the selected theme and this viewport.</p></div><div class="ds-token-controls"><label>Search tokens<input id="ds-search" type="search" placeholder="Try spacing, 48px, or prediction"></label><label>Category<select id="ds-filter"><option value="">All categories</option></select></label><span id="ds-result-count" role="status"></span></div><details id="ds-inventory" class="ds-inventory"><summary>Browse all design tokens</summary><div class="ds-panel ds-token-table"><table><thead><tr><th scope="col">Token</th><th scope="col">Dark</th><th scope="col">Light</th><th scope="col">Active</th><th scope="col"><span class="visually-hidden">Copy</span></th></tr></thead><tbody id="ds-token-rows"></tbody></table></div></details><p id="ds-empty" hidden>No tokens match this search.</p></section>
-<footer class="ds-footer"><p>Trend Hunter B2C Design System</p><p>Reference generated October 30 2026 · <a href="../feed.css">Product stylesheet</a> · <a href="tokens.json" download>Token JSON</a></p></footer>
+<footer class="ds-footer"><p>Trend Hunter B2C Design System</p><p>Reference generated __GENERATED_DATE__ · <a href="../feed.css">Product stylesheet</a> · <a href="tokens.json" download>Token JSON</a></p></footer>
 </main><div id="ds-copy-status" class="ds-copy-status" role="status" hidden></div></body></html>'''
 explore = re.search(r'<section class="feed-explore".*?</section>', feed, re.S).group(0)
 explore = explore.replace('feed-explore-heading', 'ds-explore-heading').replace('href="channel.html', 'href="../channel.html')
@@ -204,7 +221,8 @@ product_component = '<article id="shopping-module" class="ds-panel ds-component"
 template = template.replace('<article class="ds-panel ds-component"><h3>Trend Hunter Answers</h3>', product_component + '<article class="ds-panel ds-component"><h3>Trend Hunter Answers</h3>')
 
 
-answer_page_component = (Path(__file__).parent / 'components' / 'answer-page.html').read_text()
+answer_page_component = (Path(__file__).parent / 'components' / 'answer-page.html').read_text().replace('__ANSWER_PREVIEW__', build_answer_preview(PROJECT))
+answer_page_component += build_dialog_previews(PROJECT)
 results_component = (Path(__file__).parent / 'components' / 'prediction-results.html').read_text()
 comparison_component = (Path(__file__).parent / 'components' / 'profile-call-comparison.html').read_text()
 profile_component = (Path(__file__).parent / 'components' / 'profile-predictions.html').read_text()
@@ -309,7 +327,7 @@ template = template.replace('<article class="ds-panel ds-component"><h3>Fields a
 
 template = template.replace('__MOMENTUM_RISING__', momentum_markup()).replace('__MOMENTUM_FALLING__', momentum_markup('falling'))
 
-replacements = {'TRENDING':trending, 'EXPLORE':explore, 'COUNT':str(len(tokens)), 'SPACING':spacing, 'PALETTE':palette, 'TYPES':types, 'RADIUS':radius, 'STROKES':strokes, 'ICONS':icon_gallery, 'AVATARS':(Path(__file__).parent / 'components' / 'avatars.html').read_text(), 'BUTTONS':button_gallery, 'LAYOUT':layout, 'MOTION':motion, 'CARD':card}
+replacements = {'GENERATED_DATE':built_label, 'GENERATED_MONTH':built_at.strftime('%B %Y'), 'TRENDING':trending, 'EXPLORE':explore, 'COUNT':str(len(tokens)), 'SPACING':spacing, 'PALETTE':palette, 'TYPES':types, 'RADIUS':radius, 'STROKES':strokes, 'ICONS':icon_gallery, 'AVATARS':(Path(__file__).parent / 'components' / 'avatars.html').read_text(), 'BUTTONS':button_gallery, 'LAYOUT':layout, 'MOTION':motion, 'CARD':card}
 for key,value in replacements.items(): template = template.replace('__'+key+'__',value)
 (OUT / 'index.html').write_text(template)
 print(f'Built guide with {len(tokens)} tokens, {len(light)} light overrides, and {icon_families} icon families and {icon_previews} state previews')

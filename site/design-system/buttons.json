@@ -26,8 +26,8 @@
       "tag": "button",
       "name": "Helpful answer",
       "sources": [
-        "answer-page.js",
-        "answer-page.js"
+        "answer-markup.js",
+        "answer-markup.js"
       ]
     },
     {
@@ -36,8 +36,8 @@
       "tag": "button",
       "name": "Previous sources",
       "sources": [
-        "answer-page.js",
-        "answer-page.js",
+        "answer-markup.js",
+        "answer-markup.js",
         "answers.html"
       ]
     },
@@ -47,7 +47,7 @@
       "tag": "button",
       "name": "Share",
       "sources": [
-        "answer-page.js"
+        "answer-markup.js"
       ]
     },
     {
