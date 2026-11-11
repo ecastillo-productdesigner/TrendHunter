@@ -75,7 +75,16 @@ export function digestIsDismissed(storage, rows, edition = digestEdition()) {
     return saved?.day === edition.day && !!saved.revisions && rows.every(row => saved.revisions[row.href] === row.revision);
   } catch { return false; }
 }
-export function showDigest(storage) {
-  try { storage.setItem(DIGEST_DISMISSED_KEY, 'null'); return true; }
+// Explicit prototype replay: restore the current followed collections' sample
+// summaries, while retaining unrelated digest and article/Following history.
+export function showDigest(storage, followed = []) {
+  const previous = readDigestState(storage);
+  const replay = new Set(digestUpdates(followed, { caughtUp:{} }).map(row => row.href));
+  const caughtUp = Object.fromEntries(Object.entries(previous.caughtUp).filter(([href]) => !replay.has(href)));
+  try {
+    storage.setItem(DIGEST_KEY, JSON.stringify({ ...previous, caughtUp }));
+    storage.setItem(DIGEST_DISMISSED_KEY, 'null');
+    return true;
+  }
   catch { return false; }
 }

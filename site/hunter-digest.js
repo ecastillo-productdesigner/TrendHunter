@@ -1,6 +1,6 @@
 import './hunter-digest-disclosure.js?v=2';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
-import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=3';
+import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=4';
 import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=5';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
@@ -20,10 +20,9 @@ function render() {
   try { digest.hidden ||= hiddenForVisit || digestIsDismissed(localStorage, rows, edition); } catch {}
   if (!rows.length) {
     expanded = false;
-    const empty = followed.length
-      ? '<h3 class="hunter-digest-empty-title">You’re caught up</h3><p class="hunter-digest-summary">No new story updates in the collections you follow. Your next digest will appear when there’s something new.</p>'
-      : '<h3 class="hunter-digest-empty-title">Make your next visit a catch-up</h3><p class="hunter-digest-summary">Follow collections to get a daily briefing on the stories that interest you.</p>';
-    const action = `<a class="hunter-digest-action" href="feed.html#collections" data-digest-collections>${followed.length ? 'Explore your collections' : 'Find collections to follow'}</a>`;
+    if (followed.length) { digest.hidden = true; digest.innerHTML = ''; return; }
+    const empty = '<h3 class="hunter-digest-empty-title">Make your next visit a catch-up</h3><p class="hunter-digest-summary">Follow collections to get a daily briefing on the stories that interest you.</p>';
+    const action = '<a class="hunter-digest-action" href="feed.html#collections" data-digest-collections>Find collections to follow</a>';
     digest.innerHTML = digestHeader('hunter-digest-heading', edition) + `<div class="hunter-digest-empty">${empty}</div>` + action;
     return;
   }

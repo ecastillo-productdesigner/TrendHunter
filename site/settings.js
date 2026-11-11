@@ -47,8 +47,13 @@ if (settingsButton && settingsPanel) {
   showHunterDigest.textContent = 'Show Hunter Digest';
   showNewFeature.before(showHunterDigest);
   showHunterDigest.addEventListener('click', async () => {
-    const { showDigest } = await import('./hunter-digest-state.js?v=3');
-    try { showDigest(localStorage); } catch {}
+    const [{ showDigest }, { readFollowedCollections }] = await Promise.all([
+      import('./hunter-digest-state.js?v=4'),
+      import('./collection-follow-state.js')
+    ]);
+    let refreshed = false;
+    try { refreshed = showDigest(localStorage, readFollowedCollections(localStorage)); } catch {}
+    if (!refreshed) { window.showToast?.('Couldn’t load a fresh digest. Please try again.'); return; }
     setOpen(false);
     if (document.body.classList.contains('page-feed')) document.dispatchEvent(new Event('hunter-digest-show'));
     else location.assign('feed.html#for-you');

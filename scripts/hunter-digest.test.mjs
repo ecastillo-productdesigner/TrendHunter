@@ -143,13 +143,37 @@ test('digest dismissal preserves unread stories and Show Hunter Digest restores 
   assert.deepEqual(readDigestState(saved).caughtUp, {});
   assert.equal(digestIsDismissed(saved, [{...rows[0],revision:'changed'}], edition), false);
   assert.equal(digestIsDismissed(saved, rows, digestEdition(new Date(2026,10,11))), false);
-  assert.equal(showDigest(saved), true);
+  assert.equal(showDigest(saved, followed), true);
   assert.equal(digestIsDismissed(saved, rows, edition), false);
   saved.setItem(DIGEST_DISMISSED_KEY, '{');
   assert.equal(digestIsDismissed(saved, rows, edition), false);
   const blocked = { getItem:() => null, setItem:() => {throw Error('blocked');} };
   assert.equal(dismissDigest(blocked, rows, edition), false);
   assert.equal(showDigest(blocked), false);
+});
+
+test('Show Hunter Digest replays followed collections after completion without resetting other history', () => {
+  const saved = storage();
+  const allRows = digestUpdates(COLLECTIONS.map(row => row.href), { caughtUp:{} });
+  const freshRows = digestUpdates(followed, { caughtUp:{} });
+  const eligible = new Set(freshRows.map(row => row.href));
+  saved.setItem('trendhunter.collection-stories-viewed.v1', '["unchanged"]');
+  saved.setItem('trendhunter.people-updates-seen.v1', 'unchanged');
+  catchUpDigest(saved, allRows);
+  dismissDigest(saved, freshRows);
+  assert.deepEqual(digestUpdates(followed, readDigestState(saved)), []);
+  assert.equal(showDigest(saved, followed), true);
+  assert.deepEqual(digestUpdates(followed, readDigestState(saved)), freshRows);
+  assert.equal(digestIsDismissed(saved, freshRows), false);
+  for (const row of allRows.filter(row => !eligible.has(row.href))) {
+    assert.equal(readDigestState(saved).caughtUp[row.href], row.revision);
+  }
+  assert.equal(saved.getItem('trendhunter.collection-stories-viewed.v1'), '["unchanged"]');
+  assert.equal(saved.getItem('trendhunter.people-updates-seen.v1'), 'unchanged');
+  catchUpDigest(saved, freshRows);
+  assert.deepEqual(digestUpdates(followed, readDigestState(saved)), []);
+  assert.equal(showDigest(saved, followed), true);
+  assert.equal(digestUpdates(followed, readDigestState(saved)).length, freshRows.length);
 });
 
 test('opening a story catches up just that revision, including stories shared across collections', async () => {
