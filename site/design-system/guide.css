@@ -274,6 +274,9 @@
 .ds-icon-state-grid figure { min-width: 0; margin: 0; }
 .ds-icon-state-grid figcaption { font-size: var(--type-size-12); line-height: var(--type-line-height-ui-xs); text-align: center; margin-top: var(--spacing-component-sm); color: var(--ds-muted); }
 .ds-icon-canvas { display: grid; place-items: center; min-height: calc(var(--spacing-layout-xl) * 2 + var(--spacing-component-sm)); padding: var(--spacing-component-sm); border-radius: var(--radius-sm); background: var(--buttons-secondary-bg); color: var(--color-icon-default); overflow: hidden; }
+.ds-icon-state-grid:has(.ds-icon-canvas--recommendation) { grid-template-columns: minmax(0, 1fr); }
+.ds-icon-canvas--recommendation .trend-card-recommendation { width: 100%; justify-content: space-between; margin: 0; }
+.ds-icon-canvas--recommendation .recommendation-inline-actions { flex: none; margin-inline-end: 0; }
 .ds-icon-canvas--photo, .ds-icon-canvas--dark { background: #0F0F0F; }
 .ds-icon-canvas--photo { --color-icon-default: var(--trend-card-icon); }
 .ds-icon-canvas--light { background: #F5F7F9; }
