@@ -1,26 +1,27 @@
-// Versioned dismissal applies only to this feature announcement in this browser.
-const dismissalKey = 'feature-announcement-following-v1-dismissed';
+// This card is a manual prototype preview, never an automatic sign-in notice.
+const previewKey = 'trendhunter.feature-announcement-preview.v1';
 
 export function installFeatureAnnouncement() {
   const announcement = document.querySelector('[data-feature-announcement]');
-  let dismissed = false;
+  let requested = false;
   let closing = false, closeVersion = 0;
-  const readDismissal = () => {
-    try { dismissed = localStorage.getItem(dismissalKey) === 'true'; } catch {}
-  };
-  readDismissal();
+  if (announcement) {
+    try {
+      requested = window.isSignedIn?.() === true && sessionStorage.getItem(previewKey) === 'true';
+      sessionStorage.removeItem(previewKey);
+    } catch {}
+  }
 
   const sync = () => {
     if (!announcement) return;
-    announcement.hidden = window.isSignedIn?.() !== true || (dismissed && !closing) || document.body.dataset.feedView !== 'for-you';
+    announcement.hidden = window.isSignedIn?.() !== true || (!requested && !closing) || document.body.dataset.feedView !== 'for-you';
   };
 
   announcement?.querySelector('button').addEventListener('click', async () => {
     if (closing) return;
     closing = true;
     const version = ++closeVersion;
-    dismissed = true;
-    try { localStorage.setItem(dismissalKey, 'true'); } catch {}
+    requested = false;
     announcement.dataset.dismissing = 'true';
     const puff = announcement.getAnimations().find(animation => animation.animationName === 'feature-announcement-puff');
     try { await puff?.finished; } catch { /* A restored banner cancels dismissal. */ }
@@ -48,22 +49,26 @@ export function installFeatureAnnouncement() {
     tab?.click(); tab?.focus({ preventScroll: true });
   });
   document.addEventListener('feed-view-selected', sync);
-  document.addEventListener('auth-change', sync);
-  window.addEventListener('pageshow', () => { readDismissal(); sync(); });
-  window.addEventListener('storage', event => {
-    if (event.key === dismissalKey || event.key === null) { readDismissal(); sync(); }
+  document.addEventListener('auth-change', () => {
+    if (window.isSignedIn?.() !== true) requested = false;
+    sync();
   });
+  window.addEventListener('pageshow', sync);
   sync();
 
   return {
     show() {
+      if (window.isSignedIn?.() !== true) return;
       closeVersion++;
       closing = false;
       announcement?.getAnimations().filter(animation => animation.animationName === 'feature-announcement-puff').forEach(animation => animation.cancel());
       if (announcement) delete announcement.dataset.dismissing;
-      dismissed = false;
-      try { localStorage.removeItem(dismissalKey); } catch {}
-      if (!announcement) { location.assign('feed.html#for-you'); return; }
+      requested = true;
+      if (!announcement) {
+        try { sessionStorage.setItem(previewKey, 'true'); } catch { return; }
+        location.assign('feed.html#for-you');
+        return;
+      }
       document.querySelector('[data-feed-tabs] [data-feed-view="for-you"]')?.click();
       sync();
       if (announcement.hidden) return;

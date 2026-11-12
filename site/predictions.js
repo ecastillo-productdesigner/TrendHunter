@@ -832,10 +832,12 @@ if (predictionsPanel && thirdTrendCard) {
   };
 
   const placePanel = () => {
-    const guest = window.isSignedIn?.() !== true;
-    const home = inFeed.matches || guest ? slot : rail;
-    if (predictionsPanel.parentElement !== home) home.append(predictionsPanel);
-    slot.hidden = !inFeed.matches && !guest;
+    const home = inFeed.matches ? slot : rail;
+    if (predictionsPanel.parentElement !== home) {
+      if (home === rail) rail.insertBefore(predictionsPanel, rail.querySelector('.feed-discovery-rail'));
+      else slot.append(predictionsPanel);
+    }
+    slot.hidden = !inFeed.matches;
     fitStack();
   };
   inFeed.addEventListener('change', placePanel);

@@ -2009,15 +2009,6 @@
       ]
     },
     {
-      "key": "button:guest-topics-clear",
-      "classes": "guest-topics-clear",
-      "tag": "button",
-      "name": "Clear topics",
-      "sources": [
-        "feed-topics.js"
-      ]
-    },
-    {
       "key": "button:hunter-digest-action",
       "classes": "hunter-digest-action",
       "tag": "button",
@@ -2166,15 +2157,6 @@
       "name": "Back",
       "sources": [
         "onboarding.html"
-      ]
-    },
-    {
-      "key": "button:nav-menu video-viewer-menu",
-      "classes": "nav-menu video-viewer-menu",
-      "tag": "button",
-      "name": "Menu",
-      "sources": [
-        "feed-video.js"
       ]
     },
     {

@@ -1,8 +1,10 @@
 import { TOPIC_STORAGE_KEY, readSelectedTopics } from './feed-personalization.js?v=topics-9';
 import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback } from './recommendation-feedback.js';
 
-// Account preferences survive sign-out, but Discover never reads or writes them.
-// Guest choices are explicit, tab-local, and are never promoted into an account.
+// Discover never reads or writes account preferences. Explicit Log Out clears
+// both stores through logout-reset.js for a fresh prototype session.
+// Guest feedback is tab-local and is never promoted into an account.
+// The legacy guest topic key remains isolated but no longer personalizes Discover.
 export const GUEST_TOPIC_STORAGE_KEY = 'trendhunter.guest-topics.v1';
 export const GUEST_FEEDBACK_STORAGE_KEY = 'trendhunter.guest-recommendation-feedback.v1';
 const guestKeys = {
@@ -24,5 +26,5 @@ export function feedPreferenceStorage(signedIn = globalThis.isSignedIn?.() === t
 
 export function readFeedPreferences(signedIn, stores) {
   const storage = feedPreferenceStorage(signedIn, stores);
-  return { topics: readSelectedTopics(storage), feedback: readRecommendationFeedback(storage) };
+  return { topics: signedIn ? readSelectedTopics(storage) : [], feedback: readRecommendationFeedback(storage) };
 }

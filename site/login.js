@@ -53,14 +53,24 @@ if (firstBack) {
   } catch (e) {}
 }
 
-function finishSignIn({ onboarding = false } = {}) {
+async function finishSignIn({ onboarding = false } = {}) {
   let returnTo = 'feed.html';
   try {
-    sessionStorage.setItem('signed-in', 'true');
     returnTo = sessionStorage.getItem(RETURN_KEY) || returnTo;
+    // An already-open login page can still hold activity from before logout in
+    // another tab. Clear it before accepting a new local prototype sign-in.
+    const { synchronizePrototypeActivity } = await import('./logout-reset.js?v=2');
+    if (!synchronizePrototypeActivity()) throw new Error('Activity reset failed');
+    sessionStorage.setItem('signed-in', 'true');
     sessionStorage.removeItem(RETURN_KEY);
     sessionStorage.removeItem(CHALLENGE_KEY);
-  } catch (e) {}
+  } catch {
+    const message = document.createElement('p');
+    message.setAttribute('role', 'alert');
+    message.textContent = 'Couldn’t start a fresh session. Please reload and try again.';
+    document.querySelector('main').append(message);
+    return;
+  }
   if (onboarding && window.navigateWithAccountSetup) window.navigateWithAccountSetup('onboarding.html#topics');
   else window.location.href = onboarding ? 'onboarding.html#topics' : returnTo;
 }

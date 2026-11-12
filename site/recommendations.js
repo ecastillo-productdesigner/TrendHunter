@@ -1,5 +1,5 @@
 import { readRecommendationFeedback, saveRecommendationFeedback } from './recommendation-feedback.js';
-import { feedPreferenceStorage } from './feed-preferences.js';
+import { feedPreferenceStorage } from './feed-preferences.js?v=2';
 
 // Feedback remains on the card so either thumb can be toggled without moving it.
 function syncFeedback() {

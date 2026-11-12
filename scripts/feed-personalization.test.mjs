@@ -102,7 +102,7 @@ const memoryStorage = () => {
   const values = new Map();
   return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) };
 };
-test('signing out excludes account interests and feedback without deleting them', () => {
+test('guest preference reads exclude account choices without mutating their storage', () => {
   const stores = { member: memoryStorage(), guest: memoryStorage() };
   const account = feedPreferenceStorage(true, stores);
   saveSelectedTopics(['travel'], account);
@@ -112,9 +112,9 @@ test('signing out excludes account interests and feedback without deleting them'
   assert.deepEqual(member.topics, ['travel']);
   assert.deepEqual(member.feedback.hiddenStories, ['trend.html']);
   assert.deepEqual(readFeedPreferences(false, stores).topics, []);
-  assert.deepEqual(readFeedPreferences(true, stores), member, 'signing back in restores the same account choices');
+  assert.deepEqual(readFeedPreferences(true, stores), member, 'reading guest preferences does not itself reset account choices');
 });
-test('explicit guest choices persist for the visit and cannot overwrite account preferences', () => {
+test('legacy guest topics are ignored while guest feedback stays isolated from account preferences', () => {
   const stores = { member: memoryStorage(), guest: memoryStorage() };
   saveSelectedTopics(['travel'], feedPreferenceStorage(true, stores));
   saveRecommendationFeedback('member.html', 'collection-longevity.html', 'more', feedPreferenceStorage(true, stores));
@@ -122,7 +122,7 @@ test('explicit guest choices persist for the visit and cannot overwrite account 
   const guest = feedPreferenceStorage(false, stores);
   saveSelectedTopics(['fitness'], guest);
   saveRecommendationFeedback('guest.html', 'collection-peptides.html', 'less', guest);
-  assert.deepEqual(readFeedPreferences(false, stores).topics, ['fitness']);
+  assert.deepEqual(readFeedPreferences(false, stores).topics, [], 'a removed guest picker cannot leave hidden topic ranking');
   assert.deepEqual(readFeedPreferences(false, stores).feedback.hiddenStories, ['guest.html']);
   assert.ok(stores.guest.getItem(GUEST_TOPIC_STORAGE_KEY));
   assert.ok(stores.guest.getItem(GUEST_FEEDBACK_STORAGE_KEY));
@@ -138,15 +138,15 @@ test('blocked guest storage falls back to public discovery rather than account p
   const guest = { getItem() { throw Error('Blocked'); } };
   assert.deepEqual(readFeedPreferences(false, { member, guest }), { topics: [], feedback: { hiddenStories: [], preferredCollections: [] } });
 });
-test('guest feed leads with stories, collections, optional topics, video, predictions, then writers', () => {
+test('guest feed leads with stories, collections, video, predictions, then writers', () => {
   const stories = Array.from({ length: 19 }, (_, i) => ({ kind: 'story', id: i }));
-  const modules = ['complete', 'writers', 'other', 'videos', 'predictions', 'topics', 'collections', 'account'].map(kind => ({ kind }));
+  const modules = ['complete', 'writers', 'other', 'videos', 'predictions', 'collections', 'account'].map(kind => ({ kind }));
   const items = [...modules, ...stories];
   const result = guestFeedOrder(items, item => item.kind);
-  assert.deepEqual(result.slice(0, 5), [...stories.slice(0, 3), modules[6], modules[5]]);
+  assert.deepEqual(result.slice(0, 4), [...stories.slice(0, 3), modules[5]]);
   assert.ok(result.indexOf(modules[3]) < result.indexOf(modules[4]));
   assert.ok(result.indexOf(modules[4]) < result.indexOf(modules[1]));
-  assert.ok(result.indexOf(modules[1]) < result.indexOf(modules[7]));
+  assert.ok(result.indexOf(modules[1]) < result.indexOf(modules[6]));
   assert.equal(result.at(-1), modules[0]);
   assert.equal(new Set(result).size, items.length, 'live modules must appear exactly once');
   assert.deepEqual(result.filter(item => item.kind === 'story'), stories);

@@ -760,6 +760,14 @@
       "brand": false
     },
     {
+      "path": "assets/feed/icon-summarize.svg",
+      "references": [
+        "feed.css"
+      ],
+      "used": true,
+      "brand": false
+    },
+    {
       "path": "assets/feed/icon-theme-light.svg",
       "references": [
         "trend-sunday-meal-prep.html",
@@ -1631,11 +1639,20 @@
       ]
     },
     {
+      "name": "Your Digest",
+      "group": "Navigation and saved",
+      "note": "24px Google Material Symbols Outlined summarize SVG beside the Your Digest heading. Uses --icon-size-lg, a 12px gap and the heading\u2019s primary text color in both themes. Source: https://raw.githubusercontent.com/google/material-design-icons/master/symbols/web/summarize/materialsymbolsoutlined/summarize_24px.svg",
+      "states": [
+        "Digest heading \u00b7 24px"
+      ]
+    },
+    {
       "name": "Article comments",
       "group": "Community",
-      "note": "20px Material Symbols Outlined chat icon beside the collapsed Comments heading.",
+      "note": "Shared Material Symbols Outlined chat icon: 20px beside the collapsed article Comments heading; 16px beside the count in What readers are saying.",
       "states": [
-        "Comments"
+        "Article heading \u00b7 20px",
+        "Feed comment count \u00b7 16px"
       ]
     },
     {

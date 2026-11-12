@@ -428,6 +428,17 @@ export const COLLECTION_STORIES = [
     ]
   },
   {
+    "href": "trend-single-ingredient-cat-treats.html",
+    "id": "single-ingredient-cat-treats",
+    "title": "Single-Ingredient Cat Treats Make the Label the Starting Point",
+    "image": "assets/products/turkey-crumbles.webp",
+    "authorId": "marcus-bennett",
+    "author": "Marcus Bennett",
+    "collections": [
+      "collection-everyday-living.html"
+    ]
+  },
+  {
     "href": "trend-led-skincare-lounge.html",
     "id": "led-skincare-lounge",
     "title": "LED Mask Lounges Are Turning Skincare Into a Social Ritual",

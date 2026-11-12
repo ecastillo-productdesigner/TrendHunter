@@ -81,7 +81,7 @@
     const slot = document.createElement('li');
     slot.className = 'feed-products-slot';
     const products = document.createElement('section');
-    products.className = 'product-recommendations';
+    products.className = 'product-recommendations product-recommendations--feed';
     products.setAttribute('aria-labelledby', 'feed-products-heading');
     products.innerHTML = productRecommendationsTemplate
       .replaceAll('product-recommendations-heading', 'feed-products-heading')
@@ -95,9 +95,9 @@
     ];
     products.querySelectorAll('.product-card').forEach((card, index) => {
       const link = document.createElement('a');
-      link.className = 'button-primary product-card-context';
+      link.className = 'product-card-context';
       link.href = productStories[index];
-      link.textContent = 'Why is trending';
+      link.textContent = 'Why is Trending';
       card.append(link);
     });
     slot.append(products);

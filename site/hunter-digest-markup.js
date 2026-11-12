@@ -3,7 +3,7 @@ import { escapeText } from './story-card.js?v=2';
 
 const link = (href, text) => `<a href="${escapeText(href)}">${escapeText(text)}</a>`;
 export function digestHeader(id, edition, counts) {
-  return `<header class="hunter-digest-header"><div><h2 id="${id}" class="hunter-digest-title">Your Digest</h2><p class="hunter-digest-date"><time datetime="${edition.day}">${edition.label}</time>${counts ? `<span aria-hidden="true"> · </span>${plural(counts.collections, 'collection')} with updates · ${plural(counts.stories, 'story')}` : ''}</p></div></header>`;
+  return `<header class="hunter-digest-header"><div><h2 id="${id}" class="hunter-digest-title"><span class="hunter-digest-icon" aria-hidden="true"></span><span>Your Digest</span></h2><p class="hunter-digest-date"><time datetime="${edition.day}">${edition.label}</time>${counts ? `<span aria-hidden="true"> · </span>${plural(counts.collections, 'collection')} with updates · ${plural(counts.stories, 'story')}` : ''}</p></div></header>`;
 }
 function collectionEyebrow(collection) {
   const direction = collection.direction === 'falling' ? 'falling' : 'rising';

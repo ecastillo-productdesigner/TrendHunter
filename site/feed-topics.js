@@ -1,5 +1,5 @@
-import { readSelectedTopics, saveSelectedTopics } from './feed-personalization.js?v=topics-9';
-import { feedPreferenceStorage } from './feed-preferences.js';
+import { saveSelectedTopics } from './feed-personalization.js?v=topics-9';
+import { feedPreferenceStorage } from './feed-preferences.js?v=2';
 
 // Feed and collection interests. Choices are browser-local prototype preferences, not collection follows.
 (() => {
@@ -30,7 +30,7 @@ import { feedPreferenceStorage } from './feed-preferences.js';
   slot.className = 'feed-topics-slot';
   slot.hidden = window.isSignedIn?.() !== true;
   const picker = document.createElement('section');
-  picker.className = 'feed-topic-picker' + (compact ? ' feed-topic-picker--compact' : '');
+  picker.className = 'feed-topic-picker' + (compact ? ' feed-topic-picker--compact' : ' feed-topic-picker--carousel');
   picker.setAttribute('aria-labelledby', 'feed-topics-heading');
   picker.innerHTML = topicPickerTemplate;
   slot.append(picker);
@@ -40,38 +40,29 @@ import { feedPreferenceStorage } from './feed-preferences.js';
     .filter(item => item.querySelector(':scope > .trend-card'));
   if (!compact) (followingStories[2] || anchor).after(slot);
 
-  // Guest discovery is optional and collapsed, separate from Hunt What You Like.
-  // Its tab-local choices never read or overwrite signed-in interests.
-  let guestSlot, guestPicker;
-  if (!compact) {
-    guestSlot = document.createElement('li');
-    guestSlot.className = 'feed-guest-topics-slot';
-    guestSlot.hidden = window.isSignedIn?.() === true;
-    guestPicker = document.createElement('details');
-    guestPicker.className = 'feed-topic-picker feed-guest-topic-picker';
-    guestPicker.innerHTML = '<summary class="type-h4-caps">Explore by topic <span class="topic-picker-disclosure"><span class="topic-picker-optional">Optional</span><span class="icon-arrow icon-arrow--down" aria-hidden="true"></span></span></summary>' + topicPickerTemplate
-      .replace(/feed-topics-/g, 'guest-topics-')
-      .replace(/<header[\s\S]*?<\/header>/, '<p class="topic-picker-helper" id="guest-topics-helper">Choose topics for this visit. These choices stay separate from your account.</p>')
-      .replace('Update My Feed', 'Explore These Topics')
-      .replace('<p class="visually-hidden" data-topic-status', '<button class="guest-topics-clear" type="button" data-clear-topics>Clear topics</button><p class="visually-hidden" data-topic-status');
-    guestSlot.append(guestPicker);
-    (document.querySelector('.feed-explore-slot') || slot).after(guestSlot);
-  }
-
-  function bindPicker(picker, guest = false) {
-
+  function bindPicker(picker) {
+    if (!compact) {
+      const track = picker.querySelector('.topic-grid');
+      track.tabIndex = 0;
+      track.setAttribute('aria-label', 'Choose topics. Use left and right arrow keys to browse.');
+      track.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        const tile = track.querySelector('.topic-tile');
+        const step = tile.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
+        track.scrollBy({ left: (event.key === 'ArrowRight' ? 1 : -1) * step, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      });
+    }
     const buttons = [...picker.querySelectorAll('[data-topic]')];
     const submit = picker.querySelector('.topic-picker-submit');
     const status = picker.querySelector('[data-topic-status]');
-    // Account drafts start empty; guests see their explicit choices from this visit.
-    const selected = new Set(guest ? readSelectedTopics(feedPreferenceStorage(false)) : []);
+    // Account drafts start empty. Topic selection is a signed-in feature.
+    const selected = new Set();
 
     function sync() {
       buttons.forEach(button => button.setAttribute('aria-pressed', String(selected.has(button.dataset.topic))));
       submit.disabled = selected.size === 0;
       status.textContent = selected.size === 0 ? 'No topics selected' : `${selected.size} topic${selected.size === 1 ? '' : 's'} selected`;
-      const clear = picker.querySelector('[data-clear-topics]');
-      if (clear) clear.hidden = !selected.size && !readSelectedTopics(feedPreferenceStorage(false)).length;
     }
     buttons.forEach(button => button.addEventListener('click', () => {
       const id = button.dataset.topic;
@@ -81,31 +72,23 @@ import { feedPreferenceStorage } from './feed-preferences.js';
     }));
     picker.querySelector('form').addEventListener('submit', event => {
       event.preventDefault();
-      if (!selected.size || (window.isSignedIn?.() === true) === guest) return;
-      if (saveSelectedTopics([...selected], feedPreferenceStorage(!guest)) === null) {
+      if (!selected.size || window.isSignedIn?.() !== true) return;
+      if (saveSelectedTopics([...selected], feedPreferenceStorage(true)) === null) {
         window.showToast('Your topics could not be saved. Please try again.');
         return;
       }
-      if (!guest) selected.clear();
+      selected.clear();
       sync();
       if (compact) { location.href = 'feed.html?topics-updated=1#for-you'; return; }
       document.dispatchEvent(new Event('feed-topics-updated'));
-      window.showToast(guest ? 'Discover updated for this visit only.' : 'Your feed has been updated.');
-    });
-    picker.querySelector('[data-clear-topics]')?.addEventListener('click', () => {
-      if (saveSelectedTopics([], feedPreferenceStorage(false)) === null) { window.showToast('Your topics could not be cleared. Please try again.'); return; }
-      selected.clear(); sync();
-      document.dispatchEvent(new Event('feed-topics-updated'));
-      window.showToast('Showing all topics.');
+      window.showToast('Your feed has been updated.');
     });
     sync();
   }
   bindPicker(picker);
-  if (guestPicker) bindPicker(guestPicker, true);
   const syncVisibility = () => {
     const signedIn = window.isSignedIn?.() === true;
     slot.hidden = !signedIn;
-    if (guestSlot) guestSlot.hidden = signedIn;
   };
   document.addEventListener('auth-change', syncVisibility);
   window.addEventListener('pageshow', syncVisibility);

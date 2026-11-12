@@ -114,7 +114,6 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   viewer.setAttribute('aria-label', 'Trending Videos viewer');
   viewer.innerHTML = `
     <header class="video-viewer-header">
-      <button class="nav-menu video-viewer-menu" type="button" aria-label="Menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false"><span class="nav-text-button">Menu</span></button>
       <a class="video-viewer-logo" href="feed.html" aria-label="Trend Hunter"><img src="assets/feed/wordmark.svg" alt="Trend Hunter"></a>
       <a class="video-viewer-login" href="login.html">Log In</a>
     </header>
@@ -131,8 +130,6 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   const previous = viewer.querySelector('[data-video-previous]');
   const next = viewer.querySelector('[data-video-next]');
   const status = viewer.querySelector('[data-viewer-status]');
-  const menu = viewer.querySelector('.video-viewer-menu');
-  const drawer = document.querySelector('#site-drawer');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let active = null, marker = null, trigger = null, index = 0;
   let wasPaused = true, lastWheel = 0, pointerStart = null, suppressClick = false;
@@ -224,11 +221,6 @@ document.querySelectorAll('[data-feed-video]').forEach(card => {
   });
   previous.addEventListener('click', () => showCard(index - 1));
   next.addEventListener('click', () => showCard(index + 1));
-  menu.addEventListener('click', () => {
-    active?.querySelector('video').pause();
-    drawer.showModal(); menu.setAttribute('aria-expanded', 'true');
-  });
-  drawer.addEventListener('close', () => { menu.setAttribute('aria-expanded', 'false'); if (viewer.open) menu.focus({preventScroll:true}); });
   viewer.addEventListener('keydown', event => {
     if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
     event.preventDefault(); showCard(index + (event.key === 'ArrowDown' ? 1 : -1));

@@ -7,7 +7,6 @@ export function guestFeedOrder(items, kindFor) {
   const module = kind => items.filter(item => kindFor(item) === kind).forEach(add);
   stories.slice(0, 3).forEach(add);
   module('collections');
-  module('topics');
   stories.slice(3, 5).forEach(add);
   module('videos');
   module('predictions');

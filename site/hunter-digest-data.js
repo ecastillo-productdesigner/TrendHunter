@@ -120,6 +120,10 @@ export const DIGEST_EXCERPTS = {
     "summary": "A washing machine turns while the rest of the home gets ready for another week. This fictional trend story imagines the laundry reset as a small household ritual: one useful sequence that makes a recurring chore easier to finish.",
     "revision": "7b8134d3e76aea2e"
   },
+  "trend-single-ingredient-cat-treats.html": {
+    "summary": "Farm to Pet Turkey Crumbles and Chicken Crumbles are the two cat-treat examples in Trending Products. This sample story explores the appeal of packaging that puts one recognizable ingredient and a familiar treat format at the center.",
+    "revision": "14aab656275cc9eb"
+  },
   "trend-led-skincare-lounge.html": {
     "summary": "Soft blue lighting, a timed appointment and a glowing mask turn a treatment room into a place to switch off. This fictional concept explores the experience of a skincare lounge, focusing on the setting and service rather than promising a skin result.",
     "revision": "fb754028d5426e42"

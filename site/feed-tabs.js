@@ -3,8 +3,9 @@ import { TOPIC_STORAGE_KEY, personalizeStorySlots } from './feed-personalization
 import { RECOMMENDATION_FEEDBACK_KEY, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
 import { bindChangingCollections } from './changing-collections.js?v=4';
-import { readFeedPreferences, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY } from './feed-preferences.js';
-import { guestFeedOrder } from './guest-feed-order.js';
+import { readFeedPreferences, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY } from './feed-preferences.js?v=2';
+import { guestFeedOrder } from './guest-feed-order.js?v=2';
+import { mountFeedComments } from './feed-comments.js';
 
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
@@ -14,6 +15,7 @@ import { guestFeedOrder } from './guest-feed-order.js';
 
   const tabs = [...navigation.querySelectorAll('[role="tab"]')];
   const list = panel.querySelector('.feed-list');
+  mountFeedComments(list);
   const directory = panel.querySelector('.feed-collection-directory');
   const changingDirectory = panel.querySelector('[data-changing-directory]');
   const changing = bindChangingCollections(changingDirectory);
@@ -68,7 +70,7 @@ import { guestFeedOrder } from './guest-feed-order.js';
   const kindFor = item => {
     if (item.querySelector(':scope > .trend-card')) return 'story';
     if (item.querySelector(':scope > .feed-complete')) return 'complete';
-    return Object.entries({ 'feed-explore-slot':'collections', 'feed-guest-topics-slot':'topics', 'feed-videos-slot':'videos', 'feed-predictions-slot':'predictions', 'feed-who-to-follow-slot':'writers', 'feed-guest-account-slot':'account' }).find(([name]) => item.classList.contains(name))?.[1] || 'other';
+    return Object.entries({ 'feed-explore-slot':'collections', 'feed-videos-slot':'videos', 'feed-predictions-slot':'predictions', 'feed-who-to-follow-slot':'writers', 'feed-guest-account-slot':'account' }).find(([name]) => item.classList.contains(name))?.[1] || 'other';
   };
 
   function select(view, { updateUrl = false, resetScroll = true } = {}) {

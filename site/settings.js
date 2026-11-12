@@ -4,7 +4,7 @@
 const settingsButton = document.querySelector('.settings-fab');
 const settingsPanel = document.querySelector('.settings-panel');
 const businessBanner = import('./thb2b-banner.js').then(({ installBusinessBanner }) => installBusinessBanner());
-const featureAnnouncement = import('./feature-announcement.js?v=5').then(({ installFeatureAnnouncement }) => installFeatureAnnouncement());
+const featureAnnouncement = import('./feature-announcement.js?v=6').then(({ installFeatureAnnouncement }) => installFeatureAnnouncement());
 
 if (settingsButton && settingsPanel) {
   // Fetch the cancel icon now, so it's ready the first time the panel opens
@@ -105,7 +105,7 @@ if (settingsButton && settingsPanel) {
   // Reset only recommendation feedback; explicit topics and follows are retained.
   settingsPanel.querySelector('[data-setting="reset-recommendations"]')?.addEventListener('click', async () => {
     const { resetRecommendationFeedback } = await import('./recommendation-feedback.js');
-    const { feedPreferenceStorage } = await import('./feed-preferences.js');
+    const { feedPreferenceStorage } = await import('./feed-preferences.js?v=2');
     if (!resetRecommendationFeedback(feedPreferenceStorage())) {
       window.showToast?.('Recommendations could not be reset. Please try again.');
       return;

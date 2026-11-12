@@ -55,15 +55,17 @@ if (accountTrigger) {
     <button class="drawer-close" type="button" aria-label="Close account menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
     <nav class="drawer-nav" aria-label="Account">
       <header class="account-menu-header">
-        <button class="account-menu-badge" type="button" data-account-badge data-earned="false" aria-label="First Call badge. Not yet collected. How to collect" aria-expanded="false" aria-controls="account-badge-help"><span class="badge-medal" aria-hidden="true"><span class="material-symbols-outlined">bolt</span></span></button>
+        <div class="account-menu-identity">
+          <button class="account-menu-badge" type="button" data-account-badge data-earned="false" aria-label="First Call badge. Not yet collected. How to collect" aria-expanded="false" aria-controls="account-badge-help"><span class="badge-medal" aria-hidden="true"><span class="material-symbols-outlined">bolt</span></span></button>
+          <h2 class="account-menu-greeting" data-account-greeting>Hello, Clementine</h2>
+        </div>
         <div class="account-menu-badge-help" id="account-badge-help" data-account-badge-help hidden>
           <h2 data-account-badge-name>First Call</h2>
           <p data-account-badge-criterion>Earn your first badge: Vote on your first prediction.</p>
           <a href="predictions.html" data-account-collect>Start collecting badges</a>
         </div>
-        <h2 class="account-menu-greeting" data-account-greeting>Hello, Clementine</h2>
         <hr class="drawer-divider">
-        <a class="account-menu-edit" href="userprofile.html?edit=1">Edit Your Profile</a>
+        <a class="account-menu-edit" href="userprofile.html">Your Profile</a>
       </header>
       <hr class="drawer-divider">
       <ul class="drawer-links">
@@ -128,24 +130,73 @@ toast.querySelector('.toast-close').addEventListener('click', hideToast);
 // so the prototype is easy to test again from a signed-out start
 // ===========================
 const AUTH_KEY = 'signed-in';
+const ACTIVITY_RESET_KEY = 'trendhunter.activity-reset.v1';
+
+function activityResetPending() {
+  try { return localStorage.getItem(ACTIVITY_RESET_KEY) !== sessionStorage.getItem(ACTIVITY_RESET_KEY); }
+  catch { return false; }
+}
 
 function isSignedIn() {
-  try { return sessionStorage.getItem(AUTH_KEY) === 'true'; } catch (e) { return false; }
+  try { return sessionStorage.getItem(AUTH_KEY) === 'true' && !activityResetPending(); } catch (e) { return false; }
 }
 
-function signIn() {
-  try { sessionStorage.setItem(AUTH_KEY, 'true'); } catch (e) {}
+async function signIn() {
+  try {
+    const { synchronizePrototypeActivity } = await import('./logout-reset.js?v=2');
+    if (!synchronizePrototypeActivity()) throw new Error('Activity reset failed');
+    sessionStorage.setItem(AUTH_KEY, 'true');
+  } catch {
+    showToast('Couldn’t start a fresh session. Please reload and try again.');
+    return false;
+  }
   document.documentElement.dataset.auth = 'signed-in';
   document.dispatchEvent(new Event('auth-change'));
+  return true;
 }
 
-function signOut() {
+async function signOut() {
+  try {
+    const { resetPrototypeActivity } = await import('./logout-reset.js?v=2');
+    if (!resetPrototypeActivity()) throw new Error('Activity reset failed');
+  } catch {
+    showToast('Couldn’t clear saved activity. Please try logging out again.');
+    return false;
+  }
   try { sessionStorage.removeItem(AUTH_KEY); } catch (e) {}
   delete document.documentElement.dataset.auth;
   document.dispatchEvent(new Event('auth-change'));
+  return true;
 }
 
 if (isSignedIn()) document.documentElement.dataset.auth = 'signed-in';
+
+let synchronizingLogout = false;
+async function syncLogoutFromOtherTab() {
+  if (synchronizingLogout || !activityResetPending()) return;
+  synchronizingLogout = true;
+  let hadMemberSession = false;
+  try { hadMemberSession = sessionStorage.getItem(AUTH_KEY) === 'true'; } catch {}
+  // Revoke the old session immediately, before asynchronous cleanup or any
+  // activity listeners can re-award a badge from this tab's previous calls.
+  try { sessionStorage.removeItem(AUTH_KEY); } catch {}
+  delete document.documentElement.dataset.auth;
+  document.dispatchEvent(new Event('auth-change'));
+  try {
+    const { synchronizePrototypeActivity } = await import('./logout-reset.js?v=2');
+    if (!synchronizePrototypeActivity()) throw new Error('Tab reset failed');
+    if (hadMemberSession) location.replace('feed.html');
+    else location.reload(); // Keep a fresh guest's direct article or collection URL.
+  } catch {
+    synchronizingLogout = false;
+    showToast('Couldn’t clear saved activity. Please reload to try again.');
+  }
+}
+window.addEventListener('storage', event => {
+  if (event.key === ACTIVITY_RESET_KEY || event.key === null) syncLogoutFromOtherTab();
+});
+window.addEventListener('pageshow', syncLogoutFromOtherTab);
+syncLogoutFromOtherTab();
 
 // Article community cue — illustrative readers have separate public, read-only profiles.
 // Fixed collection-level sample totals; these are not live presence measurements.
@@ -213,10 +264,11 @@ document.querySelectorAll('.nav-login, .auth-prompt-email, .article-members-join
   });
 });
 
-// Log out (only in the account drawer) — signs out and returns to the feed
-document.querySelectorAll('.drawer-logout').forEach(button => button.addEventListener('click', () => {
-  signOut();
-  window.location.href = 'feed.html';
+// Explicit prototype logout clears activity before returning to fresh discovery.
+document.querySelectorAll('.drawer-logout').forEach(button => button.addEventListener('click', async () => {
+  button.disabled = true;
+  if (await signOut()) window.location.href = 'feed.html';
+  else button.disabled = false;
 }));
 
 // ===========================
@@ -412,8 +464,8 @@ function saveBookmark(bookmark) {
 authPrompt.querySelector('.auth-close').addEventListener('click', () => authPrompt.close());
 
 authPrompt.querySelectorAll('[data-auth]').forEach((provider) => {
-  provider.addEventListener('click', () => {
-    signIn();
+  provider.addEventListener('click', async () => {
+    if (!await signIn()) return;
     syncBookmarks(); // reveal the account's existing saves on this page
     const bookmark = pendingBookmark;
     authPrompt.close();

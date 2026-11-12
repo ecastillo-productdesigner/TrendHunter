@@ -99,7 +99,7 @@ function setupComments(article) {
     identity.textContent = signedIn() ? `Commenting as ${readerName()}` : '';
     section.querySelector('.comments-composer').innerHTML = signedIn()
       ? formMarkup('post', '', draft(''))
-      : '<div class="comments-sign-in"><p>Join the conversation</p><p>Share your take or reply to the community.</p><a class="comments-login" href="login.html">Sign in or create an account</a></div>';
+      : '<div class="comments-sign-in"><p>Join the conversation</p><p class="comments-sign-in-message"><a class="comments-login" href="login.html">Sign in or create an account</a> to share your take to the community.</p></div>';
   }
   sortControl.addEventListener('click', () => {
     sortIndex = (sortIndex + 1) % sortModes.length;
