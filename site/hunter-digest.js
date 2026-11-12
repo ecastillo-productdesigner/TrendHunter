@@ -1,7 +1,7 @@
 import './hunter-digest-disclosure.js?v=2';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
 import { DIGEST_KEY, DIGEST_DISMISSED_KEY, readDigestState, digestUpdates, catchUpDigest, dismissDigest, digestIsDismissed, digestEdition } from './hunter-digest-state.js?v=4';
-import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=7';
+import { digestHeader, digestCardMarkup } from './hunter-digest-markup.js?v=8';
 
 const digest = document.querySelector('[data-hunter-digest-preview]');
 let expanded = false, hiddenForVisit = false, rows = [];
@@ -52,6 +52,7 @@ document.addEventListener('click', event => {
 for (const name of ['feed-view-selected','auth-change','collection-stories-rendered','following-intro-preview']) document.addEventListener(name, render);
 window.addEventListener('storage', event => { if ([FOLLOWED_COLLECTIONS_KEY, DIGEST_KEY, DIGEST_DISMISSED_KEY, null].includes(event.key)) { hiddenForVisit = false; render(); } });
 document.addEventListener('hunter-digest-show', () => {
+  if (window.isSignedIn?.() !== true) { render(); return; }
   hiddenForVisit = false;
   expanded = false;
   const url = new URL(location.href);

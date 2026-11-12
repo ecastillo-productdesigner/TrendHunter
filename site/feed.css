@@ -427,6 +427,8 @@
   --motion-momentum-refresh: 10000ms; /* Staggered prototype trend updates. */
   --motion-account-setup: 4000ms; /* Expanding-ring account preparation loop. */
   --motion-video-feedback: 900ms;
+  --motion-video-navigation: 650ms; /* Full-height video slide, with no opacity or blur. */
+  --motion-ease-video-navigation: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-badge-celebration: 2500ms;
   --motion-toast-enter: 450ms;
   --motion-toast-exit: 200ms;
@@ -1013,7 +1015,7 @@ button {
 }
 .feed-tab-panel { min-width: 0; }
 
-/* Hunter Digest shares the feed frame and semantic DS colors in both themes. */
+/* Your Digest shares the feed frame and semantic DS colors in both themes. */
 .hunter-digest {
   display: grid;
   gap: var(--spacing-layout-lg);
@@ -1340,6 +1342,37 @@ a.story-lockup:hover .story-lockup-headline {
   overflow: hidden;
   isolation: isolate;
   border-radius: var(--radius-md);
+}
+/* Immersive viewer stays dark in both themes, like the media controls. */
+.video-viewer { position: fixed; inset: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; background: var(--color-black); color: var(--auth-prompt-heading); overflow: hidden; }
+.video-viewer::backdrop { background: var(--color-black); }
+.video-viewer-open, .video-viewer-open body { overflow: hidden; }
+.video-viewer-header { position: absolute; z-index: 4; top: 0; inset-inline: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--spacing-component-ms); min-height: var(--layout-nav-height); padding: env(safe-area-inset-top) var(--spacing-layout-lg) 0; background: linear-gradient(var(--color-black), transparent); pointer-events: none; }
+.video-viewer-header > * { pointer-events: auto; }
+.video-viewer .video-viewer-menu { justify-self: start; min-width: var(--icon-size-2xl); min-height: var(--icon-size-2xl); justify-content: center; color: var(--auth-prompt-heading); }
+.video-viewer-logo img { display: block; width: calc(var(--layout-wordmark-height) * 4); height: var(--layout-wordmark-height); }
+.video-viewer-login { justify-self: end; display: flex; align-items: center; min-height: var(--icon-size-2xl); font: var(--type-editorial-h4); color: var(--auth-prompt-heading); }
+.video-viewer-close { position: absolute; z-index: 5; top: calc(var(--layout-nav-height) + env(safe-area-inset-top)); right: var(--spacing-layout-lg); width: var(--icon-size-2xl); height: var(--icon-size-2xl); display: grid; place-items: center; background: transparent; color: var(--auth-prompt-heading); cursor: pointer; }
+.video-viewer-close .drawer-close-icon { background-color: currentColor; }
+.video-viewer :is(.video-viewer-login, .video-viewer-close, .video-viewer-menu):hover { color: var(--auth-prompt-footer-text); }
+.video-viewer-stage { position: relative; height: 100%; overflow: hidden; }
+.video-viewer .trending-video-card { position: absolute; inset: 0; margin-inline: auto; width: min(100vw, calc(100dvh * 9 / 16)); height: 100%; max-width: 100%; border-radius: 0; background: var(--color-black); }
+.video-viewer-stage.is-changing { pointer-events: none; }
+.video-viewer .trending-video-copy { bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom)); }
+.video-viewer .trending-video-title { font: var(--type-section-heading-bold); }
+.video-viewer .trending-video-story-actions { bottom: calc(var(--spacing-layout-lg) + env(safe-area-inset-bottom)); }
+.video-viewer [data-video-playback] { touch-action: pan-x; }
+.video-viewer-navigation { position: absolute; z-index: 3; right: max(var(--spacing-layout-lg), calc((100vw - 100dvh * 9 / 16) / 2 - var(--icon-size-2xl) - var(--spacing-layout-lg))); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: var(--spacing-layout-md); }
+.video-viewer-navigation button { display: grid; place-items: center; width: var(--icon-size-2xl); height: var(--icon-size-2xl); border: var(--stroke-default) solid var(--color-white-10); border-radius: var(--radius-circle); background: var(--color-overlay-video); color: var(--auth-prompt-heading); cursor: pointer; }
+.video-viewer-navigation button:disabled { opacity: .35; cursor: default; }
+.video-viewer-navigation .icon-arrow { width: var(--icon-size-lg); height: var(--icon-size-lg); }
+.video-viewer-placeholder { width: 100%; aspect-ratio: 9 / 16; }
+.video-viewer :is(button, a):focus-visible { outline: var(--stroke-focus) solid var(--color-icon-signal); outline-offset: calc(-1 * var(--spacing-component-xs)); }
+@media (max-width: 599px) {
+  .video-viewer-header { padding-inline: var(--spacing-component-ms); }
+  .video-viewer .video-viewer-menu .nav-text-button { display: none; }
+  .video-viewer-close { right: var(--spacing-component-ms); }
+  .video-viewer-navigation { right: var(--spacing-component-ms); }
 }
 .trending-video-play {
   position: absolute;
@@ -2098,6 +2131,24 @@ a.story-lockup:hover .story-lockup-headline {
   translate: 100% 0;
 }
 .drawer--account .drawer-close { margin-left: auto; }
+.account-menu-header { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-component-ms); padding-inline: var(--layout-drawer-item-indent); }
+/* Add to the header gap so both sides of this divider total 24px. */
+.account-menu-header > .drawer-divider { margin-block: calc(var(--spacing-layout-lg) - var(--spacing-component-ms)); }
+.account-menu-badge { padding: 0; border: 0; border-radius: var(--radius-md); background: transparent; cursor: pointer; }
+.account-menu-badge .badge-medal { width: var(--icon-size-2xl); height: var(--icon-size-2xl); }
+.account-menu-badge[data-earned="false"] .badge-medal { --badge-color: var(--color-text-tertiary); }
+.account-menu-badge:hover { filter: brightness(1.15); }
+.account-menu-badge:focus-visible, .account-menu-edit:focus-visible, .account-menu-badge-help a:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.account-menu-greeting { font: var(--type-editorial-h3); color: var(--color-text-primary); overflow-wrap: anywhere; }
+.account-menu-edit, .account-menu-badge-help a { font: var(--type-editorial-h4); color: var(--color-text-primary); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); }
+.account-menu-edit { text-decoration: none; }
+.account-menu-edit { transition: color var(--motion-hover) ease; }
+.account-menu-edit:hover { color: var(--color-text-tertiary); }
+.account-menu-badge-help a:hover { color: var(--color-text-body-link); }
+.account-menu-badge-help { display: flex; flex-direction: column; gap: var(--spacing-component-sm); }
+.account-menu-badge-help h2 { font: var(--type-editorial-eyebrow); color: var(--color-text-primary); }
+.account-menu-badge-help p { font: var(--type-helper); color: var(--color-text-secondary); }
+.account-menu-badge[hidden], .account-menu-badge-help[hidden], .account-menu-badge-help a[hidden] { display: none; }
 @starting-style { .drawer--account[open] { translate: 100% 0; } }
 
 .drawer::backdrop {
@@ -2507,6 +2558,26 @@ a.drawer-heading:hover {
 
 /* Mobile interest selection, immediately after Trend Hunter Answers. */
 .feed-topics-slot { display: list-item; }
+.feed-topics-slot[hidden], .page-collection .feed-topics-slot[hidden], .feed-guest-topics-slot[hidden] { display: none; }
+html:not([data-auth="signed-in"]) .feed-topics-slot,
+html:not([data-auth="signed-in"]) .page-feed .feed-featured-video-slot,
+html[data-auth="signed-in"] .feed-guest-topics-slot,
+html[data-auth="signed-in"] .feed-guest-account-slot { display: none; }
+html:not([data-auth="signed-in"]) .page-feed .feed-explore-slot { display: list-item; }
+.feed-guest-topic-picker > summary { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-component-ms); cursor: pointer; list-style: none; }
+.feed-guest-topic-picker > summary::-webkit-details-marker { display: none; }
+.topic-picker-optional { font: var(--type-helper); text-transform: none; color: var(--color-text-dim); }
+.topic-picker-disclosure { display: flex; align-items: center; gap: var(--spacing-component-sm); }
+.topic-picker-disclosure .icon-arrow { color: var(--color-text-dim); }
+.feed-guest-topic-picker[open] .topic-picker-disclosure .icon-arrow { transform: rotate(-90deg); }
+.feed-guest-topic-picker[open] > summary { margin-bottom: var(--spacing-layout-md); }
+.feed-guest-topic-picker > .topic-picker-helper { margin-bottom: var(--spacing-layout-md); }
+.guest-topics-clear { align-self: center; min-height: var(--icon-size-2xl); color: var(--color-text-body-link); font: var(--type-editorial-h4); cursor: pointer; }
+.guest-topics-clear[hidden] { display: none; }
+.feed-guest-account { display: flex; flex-direction: column; gap: var(--spacing-layout-md); padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); }
+.feed-guest-account p { font: var(--type-body); color: var(--color-text-dim); }
+.feed-guest-account > a { align-self: flex-start; }
+.feed-guest-topic-picker :is(summary, button):focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .feed-topic-picker {
   display: flex;
   flex-direction: column;
@@ -2704,6 +2775,15 @@ html:not([data-auth="signed-in"]) body:not(.ds-page) .article-members { display:
   line-height: var(--type-line-height-ui-lg);
   text-transform: uppercase;
 }
+html:not([data-auth="signed-in"]) .feed-products-slot { display: none; }
+.feed-products-slot > .product-recommendations:not([hidden]) {
+  margin: 0;
+  padding: var(--spacing-layout-lg);
+  border: var(--stroke-default) solid var(--color-border-default);
+  border-radius: var(--radius-x-sm);
+}
+.feed-products-slot .feed-products-heading { font: var(--type-section-heading); text-transform: uppercase; }
+.product-card-context { width: 100%; min-height: var(--icon-size-2xl); padding-inline: var(--spacing-component-ms); text-align: center; }
 .product-card-grid {
   position: relative;
   display: grid;
@@ -3910,6 +3990,8 @@ body:has(.edit-profile-modal[open]) {
   mask: url("assets/profile/icon-edit.svg") center / contain no-repeat;
   -webkit-mask: url("assets/profile/icon-edit.svg") center / contain no-repeat;
 }
+.edit-profile-photo-status, .edit-profile-photo-error { font: var(--type-helper); color: var(--edit-profile-value); text-align: center; }
+.edit-profile-photo-status:empty, .edit-profile-photo-error[hidden], .edit-profile-photo-input[hidden] { display: none; }
 
 .edit-profile-preview {
   font-family: var(--type-font-display);

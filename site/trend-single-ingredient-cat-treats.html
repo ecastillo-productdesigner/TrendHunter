@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <!-- Illustrative editorial copy for the local prototype. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Single-Ingredient Cat Treats Make the Label the Starting Point — Trend Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;700;800;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel&display=block">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=bolt,chat,eye_tracking,fact_check,menu_book,my_location,public,scuba_diving,thumb_down,thumb_up,visibility,wand_stars&display=block">
+  <link rel="stylesheet" href="feed.css?v=community-151">
+  <script>
+    // Apply the saved theme and sign-in state before first paint to avoid a flash
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light';
+      if (sessionStorage.getItem('signed-in') === 'true') document.documentElement.dataset.auth = 'signed-in';
+      // Opened from a prediction card's Read more...: show only the article
+      if (location.hash === '#sheet') document.documentElement.dataset.view = 'sheet';
+    } catch (e) {}
+  </script>
+</head>
+<body class="page-trend">
+
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary">
+      <button class="nav-menu" aria-haspopup="dialog" aria-controls="site-drawer" aria-expanded="false">
+        <img class="nav-menu-icon theme-dark-only" src="assets/feed/icon-menu.svg" alt="">
+        <img class="nav-menu-icon theme-light-only" src="assets/feed/icon-menu-light.svg" alt="">
+        <span class="nav-text-button">Menu</span>
+      </button>
+      <a href="feed.html" class="nav-wordmark">
+        <img class="theme-dark-only" src="assets/feed/wordmark.svg" alt="Trend Hunter">
+        <img class="theme-light-only" src="assets/feed/wordmark-light.svg?v=3" alt="Trend Hunter">
+      </a>
+      <div class="nav-utilities">
+        <a class="nav-predictions" href="predictions.html" aria-label="Predict the Next Trend"><span class="nav-predictions-icon material-symbols-outlined" aria-hidden="true">bolt</span></a>
+        <button class="theme-toggle" aria-label="Switch to light theme">
+          <img class="nav-utility-icon theme-dark-only" src="assets/feed/icon-theme.svg" alt="">
+          <img class="nav-utility-icon theme-light-only" src="assets/feed/icon-theme-light.svg" alt="">
+        </button>
+        <a href="login.html" class="nav-text-button nav-login">Login</a>
+        <button class="nav-profile" aria-label="Account menu" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="account-drawer"><span class="nav-profile-icon" aria-hidden="true"></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Drawer — opened by the Menu button -->
+  <dialog class="drawer" id="site-drawer" aria-label="Menu">
+    <button class="drawer-close" aria-label="Close menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
+    <nav class="drawer-nav" aria-label="Site">
+      <section class="drawer-group" aria-labelledby="drawer-channels">
+        <h2 class="drawer-heading" id="drawer-channels">Explore Channels</h2>
+        <ul class="drawer-links">
+          <li><a href="channel.html" class="drawer-link">Mind-Body</a></li>
+          <li><a href="channel-everyday-living.html" class="drawer-link">Everyday Living</a></li>
+          <li><a href="channel-experiences.html" class="drawer-link">Experiences</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <section class="drawer-group" aria-labelledby="drawer-business">
+        <h2 class="drawer-heading" id="drawer-business">Trend Hunter for Business</h2>
+        <ul class="drawer-links">
+          <li><a href="#" class="drawer-link">Trends &amp; Insights</a></li>
+          <li><a href="#" class="drawer-link">Solutions</a></li>
+          <li><a href="#" class="drawer-link">Events</a></li>
+        </ul>
+      </section>
+      <hr class="drawer-divider">
+      <div class="drawer-group">
+        <a href="#" class="drawer-heading">Trend Hunter Shop</a>
+      </div>
+    </nav>
+  </dialog>
+
+  <!-- Legacy authentication prompt; Bookmark now navigates directly to login. -->
+  <dialog class="auth-prompt" aria-labelledby="auth-title">
+    <button class="auth-close" aria-label="Close"><span class="auth-close-icon" aria-hidden="true"></span></button>
+    <div class="auth-main">
+      <header class="auth-header">
+        <img class="theme-dark-only" src="assets/auth/logo-mark.svg" alt="" width="16" height="30"><img class="theme-light-only" src="assets/auth/logo-mark-light.svg?v=2" alt="" width="16" height="30">
+        <h2 class="auth-title" id="auth-title">Stay ahead</h2>
+        <p class="auth-subtitle">Create a free account to follow topics, save stories, and get updates on the trends that matter to you</p>
+      </header>
+      <div class="auth-providers">
+        <button class="auth-button auth-button--provider" data-auth="apple"><span class="auth-button-icon" aria-hidden="true"><span class="auth-apple-icon"></span></span>Continue with Apple</button>
+        <button class="auth-button auth-button--provider" data-auth="google"><span class="auth-button-icon" aria-hidden="true"><img src="assets/auth/icon-google.png" alt=""></span>Continue with Google</button>
+      </div>
+      <a class="auth-button auth-button--email auth-prompt-email" href="login-email.html"><span class="auth-button-icon" aria-hidden="true"><span class="auth-email-icon"></span></span>Send me a sign-in link</a>
+    </div>
+    <footer class="auth-footer">
+      <ul class="footer-links">
+        <li><a href="#">Copyright</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </footer>
+  </dialog>
+
+  <div class="page-layout">
+
+    <!-- Left rail: Context Card + Collection List -->
+    <aside class="rail-left rail-left--trend" aria-label="Context and recommended collections">
+      <section class="context-card" aria-labelledby="context-heading">
+        <h2 id="context-heading" class="context-card-label">Here’s the context</h2>
+        <p>A celebrity-inspired routine can start a wider conversation about the end of the day. This sample feature focuses on the appeal of a recognizable ritual rather than inventing results or recommending a supplement.</p>
+      </section>
+
+      <section class="side-panel" aria-labelledby="recommended-heading">
+        <h2 id="recommended-heading" class="type-h4-caps">Recommended for you</h2>
+        <ul class="collection-list">
+          <li><a href="collection-back-to-school-transitions.html" class="pill-button">Back-to-School Transitions <span class="collection-momentum collection-momentum--falling" data-level="1" role="img" aria-label="Interest falling 20%" title="Interest falling 20%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">20%</span></span></a></li>
+          <li><a href="collection.html" class="pill-button">Group &amp; Friend Events <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 23%" title="Interest rising 23%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">23%</span></span></a></li>
+          <li><a href="collection-biohackers-body.html" class="pill-button">Biohacker's Body <span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 26%" title="Interest rising 26%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">26%</span></span></a></li>
+          <li><a href="collection-fitness-reset.html" class="pill-button">Fitness Reset <span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 19%" title="Interest rising 19%"><span class="collection-momentum-track" aria-hidden="true"><span class="collection-momentum-fill"></span></span><span class="collection-momentum-value" aria-hidden="true">19%</span></span></a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Center: Trend detail -->
+    <main class="feed-column">
+      <div class="channel-content">
+
+        <article class="article">
+<header class="article-masthead"><a href="collection-everyday-living.html" class="article-collection">Everyday Living</a><h1 class="masthead-title">Single-Ingredient Cat Treats Make the Label the Starting Point</h1><div class="article-meta"><div class="article-byline-group"><p class="contributor-byline"><a href="contributor-marcus-bennett.html" class="avatar avatar--contributor" aria-label="View Marcus Bennett’s profile"><img src="assets/authors/marcus-bennett.webp" alt="" width="256" height="256"></a><span class="contributor-credit"><span class="contributor-by">By</span><span class="contributor-name">Marcus Bennett</span></span></p></div><div class="article-actions"><button class="bookmark-button" aria-label="Bookmark" aria-pressed="false" data-story="single-ingredient-cat-treats" data-title="Single-Ingredient Cat Treats Make the Label the Starting Point" data-image="assets/products/turkey-crumbles.webp" data-href="trend-single-ingredient-cat-treats.html"><span class="bookmark-icon" aria-hidden="true"></span></button><button class="article-share" aria-label="Share"><span class="article-share-icon" aria-hidden="true"></span></button></div></div></header>
+<figure class="body-image"><img src="assets/products/turkey-crumbles.webp" alt="Farm to Pet Turkey Crumbles cat treats"><figcaption class="caption-credit">Product image · Sample editorial story</figcaption></figure>
+<!-- Fictional prototype product context; not measured popularity or a nutritional claim. -->
+<div class="article-body"><p>Farm to Pet Turkey Crumbles and Chicken Crumbles are the two cat-treat examples in Trending Products. This sample story explores the appeal of packaging that puts one recognizable ingredient and a familiar treat format at the center.</p><h2>What’s Happening</h2><p>Both products use a named protein and a crumbled format. The turkey and chicken versions show how the same product idea can be offered as a small, easy-to-compare range.</p><h2>Why It’s Interesting</h2><p>A simple front-of-pack message gives a shopper a clear starting point. Instead of comparing a long list of promises, someone can begin with the ingredient, the format and how the treat fits an existing routine.</p><figure class="body-quote"><blockquote><p>A clearer label can become part of the product experience.</p></blockquote><figcaption>Trend Hunter perspective</figcaption></figure><h2>The Products in the Feed</h2><p><strong>Turkey Crumbles:</strong> the orange pack presents turkey as the central ingredient. <strong>Chicken Crumbles:</strong> the blue pack carries the same idea into a second protein.</p><figure class="body-image"><img src="assets/products/chicken-crumbles.webp" alt="Farm to Pet Chicken Crumbles cat treats" loading="lazy"><figcaption class="caption-credit">Product image · Sample editorial story</figcaption></figure><h2>What Could Be Next</h2><p>Product ranges could build on this approach with clearer ingredient information and consistent packaging that makes alternatives easier to compare. This is a prototype exploration of the product format, rather than a report of measured sales or popularity.</p></div></article>
+
+        <!-- Trend Card List -->
+        <section class="trend-card-list" aria-labelledby="stories-heading"><h2 id="stories-heading" class="type-h4-caps">More Stories</h2><ol class="feed-list"><li><article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-somatic-sleep.html" aria-label="Read: Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape"><img class="trend-card-image" src="assets/feed/trend-14.png" alt="" loading="lazy"></a>
+    <a href="collection-sleep-medicine.html" class="trend-card-collection"><span class="trend-card-collection-label">Sleep Medicine</span><span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 27%" title="Interest rising 27%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-somatic-sleep.html">Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-owen-brooks.html" aria-label="View Owen Brooks’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/owen-brooks.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Owen Brooks</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="somatic-sleep-protocols-might-be-pulling-wellness-buyers-away-from-melato" data-title="Somatic Sleep Routines Are Giving the Bedtime Ritual a New Shape" data-image="assets/feed/trend-14.png" data-href="trend-somatic-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article></li><li><article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-smart-ring-sleep.html" aria-label="Read: How Smart Rings Could Help You Catch Sleep Apnea Symptoms You Might Otherwise Overlook"><img class="trend-card-image" src="assets/contributor/post-4.png" alt="" loading="lazy"></a>
+    <a href="collection-health-technology.html" class="trend-card-collection"><span class="trend-card-collection-label">Health Technology</span><span class="collection-momentum collection-momentum--rising" data-level="2" role="img" aria-label="Interest rising 32%" title="Interest rising 32%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-smart-ring-sleep.html">How Smart Rings Could Help You Catch Sleep Apnea Symptoms You Might Otherwise Overlook</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-marcus-bennett.html" aria-label="View Marcus Bennett’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/marcus-bennett.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Marcus Bennett</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="smart-ring-sleep" data-title="How Smart Rings Could Help You Catch Sleep Apnea Symptoms You Might Otherwise Overlook" data-image="assets/contributor/post-4.png" data-href="trend-smart-ring-sleep.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article></li><li><article class="trend-card trend-card--editorial trend-card--followed">
+
+
+    <a class="trend-card-media trend-card-media-link" href="trend-weekend-training-apps.html" aria-label="Read: How Weekend Athletes Are Using Training Apps to Make Their Routine Work"><img class="trend-card-image" src="assets/profile/saved-3.png" alt="" loading="lazy"></a>
+    <a href="collection-longevity.html" class="trend-card-collection"><span class="trend-card-collection-label">Longevity</span><span class="collection-momentum collection-momentum--rising" data-level="1" role="img" aria-label="Interest rising 17%" title="Interest rising 17%"><span class="collection-momentum-track" aria-hidden="true"></span></span></a>
+    <div class="trend-card-content"><h2 class="trend-card-headline"><a class="trend-card-title-link" href="trend-weekend-training-apps.html">How Weekend Athletes Are Using Training Apps to Make Their Routine Work</a></h2></div>
+    <footer class="trend-card-footer">
+      <a class="contributor-byline trend-card-author" href="contributor-nadia-patel.html" aria-label="View Nadia Patel’s profile"><span class="avatar avatar--contributor" aria-hidden="true"><img src="assets/authors/nadia-patel.webp" alt="" width="24" height="24" loading="lazy"></span><span class="contributor-name">Nadia Patel</span></a>
+      <div class="trend-card-actions"><button class="trend-card-action story-share" type="button" data-story-share aria-label="Share story"><span class="trend-card-share-icon" aria-hidden="true"></span></button><button class="trend-card-action bookmark-button" type="button" aria-label="Bookmark" aria-pressed="false" data-story="weekend-athletes" data-title="How Weekend Athletes Are Using Training Apps to Make Their Routine Work" data-image="assets/profile/saved-3.png" data-href="trend-weekend-training-apps.html"><span class="bookmark-icon" aria-hidden="true"></span></button></div>
+    </footer>
+  </article></li></ol></section>
+
+      </div>
+
+      <footer class="site-footer">
+        <ul class="footer-links">
+          <li>©2026 Trend Hunter</li>
+          <li><a href="#">Copyright</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Preferences</a></li>
+          <li><a href="#">Your Privacy Choices</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Trend Hunter for Business</a></li>
+          <li><a href="#">Trend Hunter Shop</a></li>
+        </ul>
+      </footer>
+    </main>
+
+    <!-- Right rail: Predictions Panel -->
+    <aside class="rail-right" aria-label="Predict the Next Trend">
+      <section class="predictions-panel" aria-labelledby="predictions-heading">
+        <h2 id="predictions-heading" class="type-h4-caps">Predict the Next Trend</h2>
+        <div class="prediction-stack">
+          <div class="prediction-card prediction-card--onboarding">
+            <p class="prediction-onboarding-copy">
+              <span>Experts Predict The Next Trend.</span>
+              <span>Are you in or out?</span>
+            </p>
+            <a href="#" class="button-primary prediction-onboarding-button">Make Your Call</a>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+  </div>
+
+  <!-- Toast — stays until dismissed -->
+  <div class="toast" role="status" aria-live="polite" hidden>
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true"></span>
+      <p class="toast-message"></p>
+    </div>
+    <button class="toast-close" aria-label="Dismiss"><span class="toast-close-icon" aria-hidden="true"></span></button>
+  </div>
+
+  <script type="module" src="share.js?v=system-sharing-3"></script>
+  <script src="app.js?v=collection-cards-16"></script>
+  <script src="prediction-entrance.js?v=4"></script>
+  <script src="predictions.js?v=results-13"></script>
+  <script src="answers.js?v=comments-4"></script>
+
+  <!-- Prototype settings — fixed bottom right, same look in both themes -->
+  <div class="settings-panel" id="settings-panel" hidden>
+    <button class="settings-panel-item" type="button" data-setting="deal">Deal Predictions Again</button>
+    <button class="settings-panel-item settings-panel-item--two-line" type="button" data-setting="deal-new-user">Deal Predictions Again<br>as a New User</button>
+
+    <button class="settings-panel-item" type="button" data-setting="reset-recommendations">Reset Recommendations</button>
+    <button class="settings-panel-item" type="button" data-setting="show-new-collections">Show New Content in Collections Tab</button>
+    <button class="settings-panel-item" type="button" data-setting="reset-collection-updates">Reset Collection Updates</button>
+    <button class="settings-panel-item" type="button" data-setting="show-new-following">Show New Content in Following Tab</button>
+    <button class="settings-panel-item" type="button" data-setting="show-prediction-results">Show Prediction Results Card</button>
+    <button class="settings-panel-item" type="button" data-setting="reset-badges">Reset Badges</button>
+    <button class="settings-panel-item" type="button" data-setting="osano">Show Osano</button>
+  </div>
+  <button class="settings-fab" type="button" aria-label="Prototype settings" aria-expanded="false" aria-controls="settings-panel">
+    <span class="settings-fab-icon" aria-hidden="true"></span>
+    <span class="settings-fab-close material-symbols-rounded" aria-hidden="true">cancel</span>
+  </button>
+  <script src="settings.js?v=21"></script>
+
+  <script type="module" src="collection-updates.js?v=2"></script>
+  <script type="module" src="badges.js?v=21"></script>
+  <script type="module" src="comments.js?v=5"></script>
+<script type="module" src="prediction-results.js?v=21"></script>
+</body>
+</html>

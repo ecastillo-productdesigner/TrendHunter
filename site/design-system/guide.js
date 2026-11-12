@@ -9,6 +9,7 @@ document.addEventListener('click', event => {
 
 const accountExample = document.getElementById('ds-account-drawer');
 const accountExampleTrigger = document.querySelector('[data-ds-account-open]');
+if (accountExample) import('../account-menu.js?v=2').then(({ installAccountMenu }) => installAccountMenu(accountExample));
 accountExampleTrigger?.addEventListener('click', () => {
   accountExample.showModal();
   accountExampleTrigger.setAttribute('aria-expanded', 'true');

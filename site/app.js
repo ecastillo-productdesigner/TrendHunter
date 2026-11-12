@@ -54,14 +54,25 @@ if (accountTrigger) {
   accountDrawer.innerHTML = `
     <button class="drawer-close" type="button" aria-label="Close account menu"><span class="drawer-close-icon" aria-hidden="true"></span></button>
     <nav class="drawer-nav" aria-label="Account">
+      <header class="account-menu-header">
+        <button class="account-menu-badge" type="button" data-account-badge data-earned="false" aria-label="First Call badge. Not yet collected. How to collect" aria-expanded="false" aria-controls="account-badge-help"><span class="badge-medal" aria-hidden="true"><span class="material-symbols-outlined">bolt</span></span></button>
+        <div class="account-menu-badge-help" id="account-badge-help" data-account-badge-help hidden>
+          <h2 data-account-badge-name>First Call</h2>
+          <p data-account-badge-criterion>Earn your first badge: Vote on your first prediction.</p>
+          <a href="predictions.html" data-account-collect>Start collecting badges</a>
+        </div>
+        <h2 class="account-menu-greeting" data-account-greeting>Hello, Clementine</h2>
+        <hr class="drawer-divider">
+        <a class="account-menu-edit" href="userprofile.html?edit=1">Edit Your Profile</a>
+      </header>
+      <hr class="drawer-divider">
       <ul class="drawer-links">
-        <li><a class="drawer-link" href="userprofile.html">Your Profile</a></li>
-        <li aria-hidden="true"><hr class="drawer-divider"></li>
         <li><button class="drawer-link drawer-logout" type="button">Log Out</button></li>
       </ul>
     </nav>`;
   document.body.append(accountDrawer);
   bindDrawer(accountDrawer, accountTrigger);
+  import('./account-menu.js?v=2').then(({ installAccountMenu }) => installAccountMenu(accountDrawer));
 }
 
 // ===========================
@@ -474,8 +485,7 @@ if (bioMore) {
 }
 
 // ===========================
-// Edit Profile — the modal on the Profile page. Save turns on once the name changes;
-// the new name shows on the page and is kept for this tab.
+// Edit Profile — name and a locally selected photo save for this browser tab.
 // ===========================
 const editProfileModal = document.querySelector('.edit-profile-modal');
 
@@ -485,35 +495,102 @@ if (editProfileModal) {
   const nameInput = editProfileModal.querySelector('.edit-profile-input');
   const preview = editProfileModal.querySelector('.edit-profile-preview');
   const saveButton = editProfileModal.querySelector('.edit-profile-save');
+  const pageAvatar = document.querySelector('.profile-avatar');
+  const photoPreview = editProfileModal.querySelector('.edit-profile-avatar-image');
+  const photoInput = editProfileModal.querySelector('.edit-profile-photo-input');
+  const photoStatus = editProfileModal.querySelector('.edit-profile-photo-status');
+  const photoError = editProfileModal.querySelector('.edit-profile-photo-error');
+  const PHOTO_KEY = 'profile-photo';
+  let draftPhoto = '', loadingPhoto = false, photoVersion = 0;
+  const syncProfileSave = () => {
+    const name = nameInput.value.trim();
+    saveButton.disabled = !name || loadingPhoto || (name === pageName.textContent && !draftPhoto);
+  };
 
   try {
     const stored = sessionStorage.getItem(NAME_KEY);
     if (stored) pageName.textContent = stored;
+    const photo = sessionStorage.getItem(PHOTO_KEY);
+    if (photo?.startsWith('data:image/jpeg;base64,')) pageAvatar.src = photo;
   } catch (e) {}
 
   // Each time it opens, the field starts from the saved name
-  document.querySelector('.edit-profile-button').addEventListener('click', () => {
+  function openProfileEditor() {
     nameInput.value = pageName.textContent;
     preview.textContent = pageName.textContent;
+    photoVersion++;
+    draftPhoto = '';
+    loadingPhoto = false;
+    photoPreview.src = pageAvatar.src;
+    photoInput.value = '';
+    photoStatus.textContent = '';
+    photoError.hidden = true;
     saveButton.disabled = true;
     editProfileModal.showModal();
-  });
+  }
+  document.querySelector('.edit-profile-button').addEventListener('click', openProfileEditor);
+  // The account drawer's edit link opens the actual editor on arrival.
+  if (new URLSearchParams(location.search).get('edit') === '1' && isSignedIn()) {
+    openProfileEditor();
+    const url = new URL(location.href);
+    url.searchParams.delete('edit');
+    history.replaceState(null, '', url);
+  }
 
   // The name under the avatar follows what's typed
   nameInput.addEventListener('input', () => {
     const name = nameInput.value.trim();
     preview.textContent = name || pageName.textContent;
-    saveButton.disabled = !name || name === pageName.textContent;
+    syncProfileSave();
+  });
+
+  editProfileModal.querySelector('.edit-profile-avatar-edit').addEventListener('click', () => {
+    photoInput.value = '';
+    photoInput.click();
+  });
+  photoInput.addEventListener('change', async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    const version = ++photoVersion;
+    photoError.hidden = true;
+    photoStatus.textContent = 'Preparing photo…';
+    loadingPhoto = true;
+    syncProfileSave();
+    try {
+      const { prepareProfilePhoto } = await import('./profile-photo.js');
+      const image = await prepareProfilePhoto(file);
+      if (version !== photoVersion || !editProfileModal.open) return;
+      draftPhoto = image;
+      photoPreview.src = image;
+      photoStatus.textContent = 'Photo ready. Save to update your profile.';
+    } catch (error) {
+      if (version !== photoVersion || !editProfileModal.open) return;
+      photoStatus.textContent = '';
+      photoError.textContent = error.message || 'This photo could not be opened. Please choose another image.';
+      photoError.hidden = false;
+    } finally {
+      if (version === photoVersion) { loadingPhoto = false; syncProfileSave(); }
+    }
   });
 
   editProfileModal.querySelector('.edit-profile-form').addEventListener('submit', (event) => {
     event.preventDefault();
     const name = nameInput.value.trim();
-    if (!name) return;
+    if (!name || loadingPhoto) return;
+    try {
+      if (draftPhoto) sessionStorage.setItem(PHOTO_KEY, draftPhoto);
+      sessionStorage.setItem(NAME_KEY, name);
+    } catch {
+      photoError.textContent = 'Your profile could not be saved in this browser. Please try again.';
+      photoError.hidden = false;
+      return;
+    }
     pageName.textContent = name;
-    try { sessionStorage.setItem(NAME_KEY, name); } catch (e) {}
+    if (draftPhoto) pageAvatar.src = draftPhoto;
+    document.dispatchEvent(new Event('profile-change'));
     editProfileModal.close();
   });
+  editProfileModal.addEventListener('close', () => { photoVersion++; draftPhoto = ''; loadingPhoto = false; });
 
   editProfileModal.querySelector('.edit-profile-close').addEventListener('click', () => editProfileModal.close());
 

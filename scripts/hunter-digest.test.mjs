@@ -132,7 +132,7 @@ test('number gutter groups interleaved stories once per collection across the di
   assert.deepEqual([...remaining.matchAll(/class="hunter-digest-collection-number" aria-hidden="true">(\d+)</g)].map(match => Number(match[1])), [1, 2]);
 });
 
-test('digest dismissal preserves unread stories and Show Hunter Digest restores visibility', () => {
+test('digest dismissal preserves unread stories and Show Your Digest restores visibility', () => {
   const saved = storage();
   const edition = digestEdition(new Date(2026,10,10));
   const rows = digestUpdates(followed, readDigestState(saved));
@@ -152,7 +152,7 @@ test('digest dismissal preserves unread stories and Show Hunter Digest restores 
   assert.equal(showDigest(blocked), false);
 });
 
-test('Show Hunter Digest replays followed collections after completion without resetting other history', () => {
+test('Show Your Digest replays followed collections after completion without resetting other history', () => {
   const saved = storage();
   const allRows = digestUpdates(COLLECTIONS.map(row => row.href), { caughtUp:{} });
   const freshRows = digestUpdates(followed, { caughtUp:{} });

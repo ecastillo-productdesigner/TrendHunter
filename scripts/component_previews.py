@@ -13,7 +13,7 @@ def scoped(markup, prefix):
     ids = re.findall(r'\bid="([^"]+)"', markup)
     # Label/fragment references must stay with their isolated specimen.
     for identifier in sorted(set(ids), key=len, reverse=True):
-        for attribute in ('id', 'for', 'aria-labelledby', 'aria-describedby'):
+        for attribute in ('id', 'for', 'aria-labelledby', 'aria-describedby', 'aria-controls'):
             markup = markup.replace(f'{attribute}="{identifier}"', f'{attribute}="{prefix}-{identifier}"')
         markup = markup.replace(f'href="#{identifier}"', f'href="#{prefix}-{identifier}"')
     return relative_assets(markup)
@@ -24,9 +24,6 @@ def build_dialog_previews(project):
                         (project / 'userprofile.html').read_text(), re.S).group()
     profile = scoped(profile, 'ds')
     profile = profile.replace('maxlength="40" required', 'maxlength="40" value="Clementine" required')
-    # The app's photo button is a visual placeholder, not a photo editor.
-    profile = profile.replace('aria-label="Change profile photo"',
-                              'aria-label="Change profile photo (not implemented in prototype)" disabled')
     auth = re.search(r'<dialog class="auth-prompt".*?</dialog>',
                      (project / 'trend.html').read_text(), re.S).group()
     auth = scoped(auth, 'ds-legacy')
@@ -41,7 +38,7 @@ def build_dialog_previews(project):
     share = share.replace('class="share-sheet-email"', 'class="share-sheet-email" href="#ds-dialog-previews"')
     share = f'<dialog id="ds-share-fallback" class="share-sheet" aria-labelledby="ds-share-sheet-title">{share}</dialog>'
     examples = [
-        ('Edit Profile', 'ds-edit-profile-modal', 'Edit the example name to enable Save. The preview updates its name locally and resets when reopened; it never changes your profile.'),
+        ('Edit Profile', 'ds-edit-profile-modal', 'Edit the example name or choose a photo from your computer. JPG, PNG, WebP and GIF files up to 10 MB get a centered square preview. The app saves a 512px photo for this browser tab only, without uploading it to a server. This example resets on close and never changes your profile.'),
         ('Sign-in prompt · legacy', 'ds-auth-prompt', 'Retained authentication popup, with provider buttons, email action and policy footer. Current signed-out bookmark actions open the sign-in page instead. Authentication actions are presentation-only here.'),
         ('Share fallback', 'ds-share-fallback', 'The copyable-link dialog used when native sharing is unavailable. Copy link works on this example URL; Email is presentation-only. Closing restores focus to its preview button.'),
     ]

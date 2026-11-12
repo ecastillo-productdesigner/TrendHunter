@@ -75,6 +75,37 @@
     });
   }
 
+  // Reuse the article's product cards and browsing behavior in the signed-in feed.
+  const feedList = document.querySelector('.page-feed .feed-list');
+  if (feedList) {
+    const slot = document.createElement('li');
+    slot.className = 'feed-products-slot';
+    const products = document.createElement('section');
+    products.className = 'product-recommendations';
+    products.setAttribute('aria-labelledby', 'feed-products-heading');
+    products.innerHTML = productRecommendationsTemplate
+      .replaceAll('product-recommendations-heading', 'feed-products-heading')
+      .replace('product-card-track', 'feed-product-card-track')
+      .replace('You might be interested in', 'Trending Products');
+    const productStories = [
+      'trend-evening-wellness-rituals.html#product-context',
+      'trend-single-ingredient-cat-treats.html',
+      'trend-skin-longevity.html#product-context',
+      'trend-single-ingredient-cat-treats.html',
+    ];
+    products.querySelectorAll('.product-card').forEach((card, index) => {
+      const link = document.createElement('a');
+      link.className = 'button-primary product-card-context';
+      link.href = productStories[index];
+      link.textContent = 'Why is trending';
+      card.append(link);
+    });
+    slot.append(products);
+    const stories = [...feedList.children].filter(item => item.querySelector(':scope > .trend-card'));
+    (stories[7] || stories.at(-1))?.after(slot);
+    setupProductCarousel(products);
+  }
+
   const rail = document.querySelector('.rail-right');
   const predictionPanel = document.querySelector('.predictions-panel');
   let liveAnswers = null;

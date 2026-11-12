@@ -1,8 +1,10 @@
-import { TOPIC_STORAGE_KEY, readSelectedTopics, personalizeStorySlots } from './feed-personalization.js?v=topics-9';
+import { TOPIC_STORAGE_KEY, personalizeStorySlots } from './feed-personalization.js?v=topics-9';
 
-import { RECOMMENDATION_FEEDBACK_KEY, readRecommendationFeedback, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
+import { RECOMMENDATION_FEEDBACK_KEY, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
 import { bindChangingCollections } from './changing-collections.js?v=4';
+import { readFeedPreferences, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY } from './feed-preferences.js';
+import { guestFeedOrder } from './guest-feed-order.js';
 
 // Feed views reuse existing stories and the single live prediction deck.
 (() => {
@@ -52,8 +54,7 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
       meta.append(collection, update);
     }
   });
-  let preferences = readSelectedTopics();
-  let feedback = readRecommendationFeedback();
+  let preferences = [], feedback = { hiddenStories: [], preferredCollections: [] };
   let currentOrder = '';
   const topicsFor = item => {
     const story = item.querySelector(':scope > .trend-card');
@@ -64,9 +65,15 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
     return story ? { recommended: Boolean(story.querySelector('.recommendation-inline')), story:story.querySelector('.bookmark-button')?.dataset.href, collection:story.querySelector('.trend-card-collection')?.getAttribute('href') } : null;
   };
   const viewFromUrl = () => location.hash.slice(1);
+  const kindFor = item => {
+    if (item.querySelector(':scope > .trend-card')) return 'story';
+    if (item.querySelector(':scope > .feed-complete')) return 'complete';
+    return Object.entries({ 'feed-explore-slot':'collections', 'feed-guest-topics-slot':'topics', 'feed-videos-slot':'videos', 'feed-predictions-slot':'predictions', 'feed-who-to-follow-slot':'writers', 'feed-guest-account-slot':'account' }).find(([name]) => item.classList.contains(name))?.[1] || 'other';
+  };
 
   function select(view, { updateUrl = false, resetScroll = true } = {}) {
     const signedIn = window.isSignedIn?.() === true;
+    ({ topics: preferences, feedback } = readFeedPreferences(signedIn));
     const names = feedViews(signedIn);
     view = resolveFeedView(view, signedIn);
     navigation.hidden = false;
@@ -82,6 +89,8 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
     }
     panel.setAttribute('aria-labelledby', selected.id);
     heading.textContent = view === 'for-you' && signedIn ? 'Your feed' : names[view];
+    panel.querySelector('#feed-complete-heading').textContent = signedIn ? "That's your feed for today" : 'Keep exploring.';
+    panel.querySelector('.feed-complete-text').innerHTML = signedIn ? 'Your next hunt drops tomorrow. In the meantime,<br>explore a Collection.' : 'Explore a Collection to find more stories.';
     list.hidden = view !== 'for-you';
     panel.querySelector('[data-people-feed]').hidden = view !== 'following';
     directory.hidden = view !== 'collections';
@@ -97,9 +106,14 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
     sortControl.setAttribute('aria-label', `Filter by ${sortLabel} first. Switch to ${nextSortLabel.toLowerCase()} first`);
     if (moving) changing.sort(sort);
 
-    const order = moving ? `${view}:${sort}` : view === 'for-you' ? `personalized:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
+    const order = moving ? `${view}:${sort}` : view === 'for-you' ? `${signedIn ? 'member' : 'guest'}:${preferences.join(',')}:${JSON.stringify(feedback)}` : 'original';
     if (order !== currentOrder) {
-      const items = view === 'for-you' ? placeRecommendations(rankRecommendationSlots(personalizeStorySlots(originalItems, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null), recommendationFor) : originalItems;
+      // Modules can be inserted by the prediction, Answers and topics scripts.
+      // Retain those nodes when switching between the guest and signed-in layouts.
+      const base = [...originalItems];
+      for (const item of list.children) if (!base.includes(item)) base.push(item);
+      const ranked = placeRecommendations(rankRecommendationSlots(personalizeStorySlots(base, preferences, topicsFor), feedback, item => item.querySelector(':scope > .trend-card .trend-card-collection')?.getAttribute('href') ?? null), recommendationFor);
+      const items = view === 'for-you' ? (signedIn ? ranked : guestFeedOrder(ranked, kindFor)) : base;
       // Move the existing nodes so saved controls and the single deck keep their state.
       items.forEach((item, index) => {
         if (list.children[index] !== item) list.insertBefore(item, list.children[index] || null);
@@ -159,12 +173,10 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
     });
   }
   document.addEventListener('feed-topics-updated', () => {
-    preferences = readSelectedTopics();
     select('for-you', { updateUrl: true });
     if (!navigation.hidden) tabs[0].focus({ preventScroll: true });
   });
   document.addEventListener('feed-recommendations-updated', event => {
-    feedback = readRecommendationFeedback();
     // Keep the current card and scroll position while feedback is reversible.
     // Apply ranking/hiding when the visitor next opens For You or resets it.
     if (event.detail?.reset) {
@@ -172,17 +184,14 @@ import { bindChangingCollections } from './changing-collections.js?v=4';
     } else if (!event.detail?.deferReorder) select(viewFromUrl(), { resetScroll: false });
   });
   window.addEventListener('storage', event => {
-    if (![TOPIC_STORAGE_KEY, RECOMMENDATION_FEEDBACK_KEY].includes(event.key)) return;
-    feedback = readRecommendationFeedback();
-    preferences = readSelectedTopics();
+    if (![TOPIC_STORAGE_KEY, RECOMMENDATION_FEEDBACK_KEY, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY, null].includes(event.key)) return;
     select(viewFromUrl(), { resetScroll: false });
   });
   window.addEventListener('pageshow', () => {
-    feedback = readRecommendationFeedback();
-    preferences = readSelectedTopics();
     select(viewFromUrl(), { resetScroll: false });
   });
   document.addEventListener('auth-change', () => select(viewFromUrl(), {resetScroll:false}));
+  document.addEventListener('feed-modules-ready', () => { currentOrder = ''; select(viewFromUrl(), {resetScroll:false}); });
   window.addEventListener('hashchange', () => select(viewFromUrl()));
   select(viewFromUrl(), { resetScroll: false });
 })();

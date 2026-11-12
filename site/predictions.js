@@ -832,12 +832,14 @@ if (predictionsPanel && thirdTrendCard) {
   };
 
   const placePanel = () => {
-    const home = inFeed.matches ? slot : rail;
+    const guest = window.isSignedIn?.() !== true;
+    const home = inFeed.matches || guest ? slot : rail;
     if (predictionsPanel.parentElement !== home) home.append(predictionsPanel);
-    slot.hidden = !inFeed.matches;
+    slot.hidden = !inFeed.matches && !guest;
     fitStack();
   };
   inFeed.addEventListener('change', placePanel);
+  document.addEventListener('auth-change', placePanel);
   window.addEventListener('resize', placePanel);
   placePanel();
 }

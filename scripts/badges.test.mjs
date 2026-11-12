@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readBadgeState, recordBadgeActivity, badgeProgress, setBadgeVisible, resetBadgeProgress } from '../site/badge-state.js';
 import { MEMBER_BADGES, currentMemberBadge } from '../site/badge-catalog.js';
+import { accountMenuBadge } from '../site/account-menu.js';
 import { readdir, readFile } from 'node:fs/promises';
 
 test('every badge-enabled page loads all five symbol glyphs instead of displaying ligature text', async () => {
@@ -19,6 +20,16 @@ test('the current avatar medal is the most recently earned visible badge', () =>
   assert.equal(currentMemberBadge(earned,['deep-diver']).id,'first-call');
   assert.equal(currentMemberBadge({},[]),null);
   assert.equal(currentMemberBadge(earned,Object.keys(earned)),null);
+});
+test('account menu offers First Call only to new collectors and respects the worn badge', () => {
+  assert.deepEqual(accountMenuBadge({ earned: {}, hidden: [] }), { badge: MEMBER_BADGES[0], earned: false });
+  const state = { earned: { 'first-call': '2026-11-01', 'deep-diver': '2026-11-02' }, hidden: [] };
+  assert.equal(accountMenuBadge(state).badge.id, 'deep-diver');
+  assert.equal(accountMenuBadge(state).earned, true);
+  state.hidden = ['deep-diver'];
+  assert.equal(accountMenuBadge(state).badge.id, 'first-call');
+  state.hidden.push('first-call');
+  assert.equal(accountMenuBadge(state), null);
 });
 test('reset clears awards and progress while preserving old calls as a no-reaward baseline', () => {
   const storage=memory();

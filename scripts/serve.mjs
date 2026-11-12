@@ -9,7 +9,12 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
 http.createServer(async (request, response) => {
   try {
     if (!['GET', 'HEAD'].includes(request.method)) { response.writeHead(405).end(); return; }
-    let pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
+    const url = new URL(request.url, 'http://localhost');
+    let pathname = decodeURIComponent(url.pathname);
+    // Keep previously shared local preview URLs working after the project rename.
+    if (pathname === '/TrendHunterB2C' || pathname.startsWith('/TrendHunterB2C/')) {
+      response.writeHead(302, { Location: '/TrendHunter' + pathname.slice('/TrendHunterB2C'.length) + url.search }).end(); return;
+    }
     if (pathname === '/TrendHunter') { response.writeHead(302, { Location: '/TrendHunter/' }).end(); return; }
     if (pathname.startsWith('/TrendHunter/')) pathname = pathname.slice('/TrendHunter'.length);
     let target = path.resolve(outputRoot, '.' + pathname);

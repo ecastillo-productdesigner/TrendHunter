@@ -44,9 +44,14 @@ if (settingsButton && settingsPanel) {
   showHunterDigest.className = 'settings-panel-item';
   showHunterDigest.type = 'button';
   showHunterDigest.dataset.setting = 'show-hunter-digest';
-  showHunterDigest.textContent = 'Show Hunter Digest';
+  showHunterDigest.textContent = 'Show Your Digest';
   showNewFeature.before(showHunterDigest);
   showHunterDigest.addEventListener('click', async () => {
+    if (document.documentElement.dataset.auth !== 'signed-in') {
+      setOpen(false);
+      window.showToast?.('Sign in to view Your Digest.');
+      return;
+    }
     const [{ showDigest }, { readFollowedCollections }] = await Promise.all([
       import('./hunter-digest-state.js?v=4'),
       import('./collection-follow-state.js')
@@ -100,7 +105,8 @@ if (settingsButton && settingsPanel) {
   // Reset only recommendation feedback; explicit topics and follows are retained.
   settingsPanel.querySelector('[data-setting="reset-recommendations"]')?.addEventListener('click', async () => {
     const { resetRecommendationFeedback } = await import('./recommendation-feedback.js');
-    if (!resetRecommendationFeedback()) {
+    const { feedPreferenceStorage } = await import('./feed-preferences.js');
+    if (!resetRecommendationFeedback(feedPreferenceStorage())) {
       window.showToast?.('Recommendations could not be reset. Please try again.');
       return;
     }

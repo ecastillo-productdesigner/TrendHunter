@@ -1,4 +1,5 @@
 import { answerResponseMarkup } from '../answer-markup.js?v=1';
+import { prepareProfilePhoto } from '../profile-photo.js';
 
 const status = document.querySelector('[data-ds-dialog-status]');
 const triggers = new Map();
@@ -16,13 +17,41 @@ dialogs.forEach(dialog => {
   dialog.addEventListener('close', () => triggers.get(dialog)?.focus({ preventScroll: true }));
 });
 const edit = document.getElementById('ds-edit-profile-modal');
-const nameInput = edit.querySelector('input');
+const nameInput = edit.querySelector('.edit-profile-input');
 const namePreview = edit.querySelector('.edit-profile-preview');
 const save = edit.querySelector('.edit-profile-save');
+const photoInput = edit.querySelector('.edit-profile-photo-input');
+const photoPreview = edit.querySelector('.edit-profile-avatar-image');
+const originalPhoto = photoPreview.src;
+const photoStatus = edit.querySelector('.edit-profile-photo-status');
+const photoError = edit.querySelector('.edit-profile-photo-error');
+let hasPhoto = false, loadingPhoto = false, photoVersion = 0;
+function syncSave() { save.disabled = loadingPhoto || !nameInput.value.trim() || (nameInput.value.trim() === 'Clementine' && !hasPhoto); }
 nameInput.addEventListener('input', () => {
   const name = nameInput.value.trim();
   namePreview.textContent = name || 'Clementine';
-  save.disabled = !name || name === 'Clementine';
+  syncSave();
+});
+edit.querySelector('.edit-profile-avatar-edit').addEventListener('click', () => { photoInput.value = ''; photoInput.click(); });
+photoInput.addEventListener('change', async () => {
+  if (!photoInput.files[0]) return;
+  const version = ++photoVersion;
+  loadingPhoto = true;
+  photoError.hidden = true;
+  photoStatus.textContent = 'Preparing photo…';
+  syncSave();
+  try {
+    const image = await prepareProfilePhoto(photoInput.files[0]);
+    if (version !== photoVersion || !edit.open) return;
+    photoPreview.src = image;
+    hasPhoto = true;
+    photoStatus.textContent = 'Photo ready. Save to preview your changes.';
+  } catch (error) {
+    if (version !== photoVersion || !edit.open) return;
+    photoStatus.textContent = '';
+    photoError.textContent = error.message;
+    photoError.hidden = false;
+  } finally { if (version === photoVersion) { loadingPhoto = false; syncSave(); } }
 });
 edit.querySelector('form').addEventListener('submit', event => {
   event.preventDefault();
@@ -30,7 +59,15 @@ edit.querySelector('form').addEventListener('submit', event => {
   status.textContent = `Preview saved as ${nameInput.value.trim()}. Your profile is unchanged.`;
   edit.close();
 });
-edit.addEventListener('close', () => { nameInput.value = 'Clementine'; namePreview.textContent = 'Clementine'; save.disabled = true; });
+edit.addEventListener('close', () => {
+  photoVersion++;
+  hasPhoto = loadingPhoto = false;
+  photoPreview.src = originalPhoto;
+  photoInput.value = '';
+  photoStatus.textContent = '';
+  photoError.hidden = true;
+  nameInput.value = 'Clementine'; namePreview.textContent = 'Clementine'; save.disabled = true;
+});
 document.getElementById('ds-auth-prompt').addEventListener('click', event => {
   if (!event.target.closest('.auth-providers button, a')) return;
   event.preventDefault();
