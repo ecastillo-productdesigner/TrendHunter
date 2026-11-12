@@ -103,7 +103,9 @@ test('one inline disclosure reveals all additional summaries without duplicating
   const sameCollection = digestCardMarkup(rows.filter(row => row.collection.href === rows[0].collection.href), edition);
   assert.doesNotMatch(sameCollection, /hunter-digest-details--new-collection/);
   assert.doesNotMatch(collapsed, /href="feed.html#following"|Your daily catch-up/);
-  assert.match(collapsed, /See all updates/);
+  assert.ok(collapsed.includes(`See all ${rows.length} updates`));
+  assert.match(digestCardMarkup(rows.slice(0, 1), edition), /See 1 update/);
+  assert.ok(digestCardMarkup(rows.slice(1), edition).includes(`See all ${rows.length - 1} updates`));
   assert.doesNotMatch(collapsed, /Today/);
   assert.match(preview, /November 10, 2026<\/time><span aria-hidden="true"> · <\/span>2 collections with updates · 9 stories/);
   const full = digestCardMarkup(rows, edition, { expanded:true });

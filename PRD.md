@@ -52,7 +52,7 @@ The statuses below describe the **prototype**, not production readiness:
 | Name | Status | Summary | Where it appears |
 | --- | --- | --- | --- |
 | Personalized dated briefing | Partially working | Your Digest gathers eligible stories from followed collections, shows the current edition date and counts, and previews the first story. Summaries are curated text attached to catalog stories, not generated daily by a backend; the digest is shown only in signed-in For You. | Top of For You feed |
-| Expandable numbered collection groups | Fully interactive | See all updates expands the same card into numbered collection groups separated by lines, with story titles, short summaries, and Read more links to the corresponding articles. Close digest at the end collapses the expanded content without marking it read. | Your Digest card |
+| Expandable numbered collection groups | Fully interactive | See all [count] updates shows the unread story-update count and expands the same card into numbered collection groups separated by lines, with story titles, short summaries, and Read more links to the corresponding articles. Close digest at the end collapses the expanded content without marking it read. | Your Digest card |
 | Story catch-up and Mark all as read | Fully interactive | Opening an article catches up that story’s current digest revision so it is omitted on a later visit; a changed revision can become eligible again. Mark all as read at the end catches up the current eligible set and hides the digest, and no caught-up confirmation card is shown when nothing remains. | Your Digest and linked article pages |
 
 ### Predictions

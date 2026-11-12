@@ -38,7 +38,7 @@ export function digestCardMarkup(rows, edition, { expanded = false, id = 'hunter
   return digestHeader(`${id}-heading`, edition, { collections:groups.length, stories:rows.length })
     + (first ? collectionMarkup({ ...first, stories:first.stories.slice(0, 1) }, 1) : '')
     + `<details class="hunter-digest-disclosure" data-digest-disclosure ${expanded ? 'open' : ''}>
-      <summary class="hunter-digest-action">See all updates</summary>
+      <summary class="hunter-digest-action">${rows.length === 1 ? 'See 1 update' : `See all ${rows.length} updates`}</summary>
       <div class="hunter-digest-details${!remainingFirstStories.length && groups.length > 1 ? ' hunter-digest-details--new-collection' : ''}">
         ${remainingFirstStories.length ? `<div class="hunter-digest-collection hunter-digest-collection--continuation">${storyMarkup(remainingFirstStories)}</div>` : ''}
         ${groups.slice(1).map((group, index) => collectionMarkup(group, index + 2)).join('')}
