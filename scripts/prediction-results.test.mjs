@@ -26,13 +26,14 @@ test('empty preview uses separate sample records and failed storage never claims
  assert.equal(previewPredictionResults({setItem(){throw Error('blocked');}}),false);
  assert.deepEqual(readPredictionResults({getItem(){return 'broken';}}),[]);
 });
-test('feed and stacked sidebar alerts count only unread results and link the first unread outcome',()=>{
+test('feed and horizontal sidebar alerts count only unread results and link the first unread outcome',()=>{
  const storage=memory();previewPredictionResults(storage);
  for(const sidebar of [false,true]){
   const first=predictionResultAlert(readPredictionResults(storage),{sidebar});
   assert.match(first,/3 of your predictions have results/);
   assert.equal((first.match(/class="prediction-results-art-sheet"/g)||[]).length,3);
   assert.equal(first.includes('prediction-results-alert--sidebar'),sidebar);
+  assert.match(first,/<div class="prediction-results-copy"><h2[^>]*>.*?<\/h2><button/);
   assert.match(first,/aria-haspopup="dialog"/);
   assert.match(first,/prototype sample/);
  }

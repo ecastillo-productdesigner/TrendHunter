@@ -2,7 +2,7 @@ import { TOPIC_STORAGE_KEY, personalizeStorySlots } from './feed-personalization
 
 import { RECOMMENDATION_FEEDBACK_KEY, rankRecommendationSlots, placeRecommendations } from './recommendation-feedback.js';
 import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
-import { bindChangingCollections } from './changing-collections.js?v=4';
+import { bindChangingCollections } from './changing-collections.js?v=5';
 import { readFeedPreferences, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY } from './feed-preferences.js?v=2';
 import { guestFeedOrder } from './guest-feed-order.js?v=2';
 import { mountFeedComments } from './feed-comments.js';

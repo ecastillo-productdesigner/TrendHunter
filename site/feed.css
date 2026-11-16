@@ -349,6 +349,7 @@
   /* Image sizes */
   --size-image-thumbnail-width: 128px;
   --size-image-thumbnail-height: 125px;
+  --size-image-story-compact: 48px;
   --layout-image-thumbnail-ratio: 128 / 125;
 
   /* Layout — measured from the Figma frame */
@@ -6409,7 +6410,9 @@ body:has(.auth-prompt[open]) {
 .changing-collection-story-heading { margin-bottom: var(--spacing-layout-md); font: var(--type-section-heading); color: var(--color-text-dim); text-transform: uppercase; }
 .changing-collection-story-list { display: grid; gap: var(--spacing-component-sm); list-style: none; padding: 0; }
 .changing-collection-story-list > li[hidden] { display: none; }
-.changing-collection-story-link { display: flex; align-items: flex-start; min-height: var(--icon-size-2xl); padding-block: var(--spacing-component-sm); font: var(--type-section-heading-bold); text-transform: uppercase; color: var(--color-text-tertiary); transition: color var(--motion-hover) ease; }
+.changing-collection-story-link { display: grid; grid-template-columns: var(--size-image-story-compact) minmax(0, 1fr); align-items: start; gap: var(--spacing-component-ms); min-height: var(--icon-size-2xl); padding-block: var(--spacing-component-sm); font: var(--type-section-heading-bold); text-transform: uppercase; color: var(--color-text-tertiary); transition: color var(--motion-hover) ease; }
+.changing-collection-story-image { display: block; width: var(--size-image-story-compact); height: var(--size-image-story-compact); object-fit: cover; border-radius: var(--radius-x-sm); }
+.changing-collection-story-title { min-width: 0; overflow-wrap: anywhere; }
 .changing-collection-story-link:hover, .changing-collection-story-link:focus-visible { color: var(--color-text-primary); }
 .changing-collection-more { display: block; min-height: var(--icon-size-2xl); margin-top: var(--spacing-component-xs); padding: 0; border: 0; background: transparent; color: var(--color-text-body-link); font: var(--type-editorial-h4); cursor: pointer; }
 .changing-collection-more:hover { color: var(--color-text-primary); }
@@ -6728,22 +6731,12 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-art-sheet:last-child { position: relative; inset: auto; aspect-ratio: var(--layout-prediction-art-ratio); transform: none; }
 .prediction-results-art-number { font: var(--type-detail-prediction); color: var(--prediction-card-button); }
 .prediction-results-art-label { font: var(--type-editorial-h6); text-transform: uppercase; text-align: center; white-space: nowrap; }
-/* Non-feed desktop rails use the selected centered, stacked announcement. */
+/* Non-feed desktop rails keep Answers, the compact results alert and the live deck. */
 .predictions-panel[hidden], .prediction-results-alert-slot[hidden] { display: none; }
-.prediction-results-alert--sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--spacing-layout-lg) + var(--spacing-component-xs));
-  padding: var(--spacing-layout-lg);
-  text-align: center;
-}
-.prediction-results-alert--sidebar .trend-card-headline { width: 100%; font: var(--type-card-headline); }
-.prediction-results-alert--sidebar .prediction-results-art { width: calc(var(--avatar-size-lg) + var(--spacing-layout-xl)); }
+.prediction-results-alert-slot--sidebar { margin-bottom: var(--spacing-layout-lg); }
+.prediction-results-alert-slot--sidebar:not([hidden]) + .predictions-panel { border-color: transparent; }
 .prediction-results-alert--sidebar .prediction-results-art-number { color: var(--prediction-results-art-accent); }
 .prediction-results-alert--sidebar .button-primary {
-  width: 100%;
-  min-width: 0;
-  min-height: var(--icon-size-2xl);
   background: var(--buttons-primary-bg-default);
   color: var(--buttons-primary-text-default);
 }

@@ -63,7 +63,14 @@ export function bindChangingCollections(container) {
       storyItem.hidden = index >= collection.stories.length;
       const storyLink = make('a', 'changing-collection-story-link');
       storyLink.href = story.href;
-      storyLink.append(make('span', 'changing-collection-story-title', story.title));
+      const image = make('img', 'changing-collection-story-image');
+      image.src = story.image;
+      image.alt = '';
+      image.width = 48;
+      image.height = 48;
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      storyLink.append(image, make('span', 'changing-collection-story-title', story.title));
       storyItem.append(storyLink);
       storyList.append(storyItem);
     }

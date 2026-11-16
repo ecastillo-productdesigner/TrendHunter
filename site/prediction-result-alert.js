@@ -12,7 +12,5 @@ export function predictionResultAlert(results, { sidebar = false } = {}) {
   const heading = singular ? 'Your prediction result is in' : `${count} of your predictions have results`;
   const button = `<button class="button-primary" type="button" data-result-reveal="${esc(unread[0].id)}" aria-haspopup="dialog">See ${singular ? 'result' : 'results'}</button>`;
   const art = `<div class="prediction-results-art" aria-hidden="true">${sheets}</div>`;
-  return `<section class="prediction-results-alert${sidebar ? ' prediction-results-alert--sidebar' : ''}" aria-label="Prediction results, prototype sample">${sidebar
-    ? `<h2 class="trend-card-headline">${heading}</h2>${art}${button}`
-    : `<div class="prediction-results-copy"><h2 class="trend-card-headline">${heading}</h2>${button}</div>${art}`}</section>`;
+  return `<section class="prediction-results-alert${sidebar ? ' prediction-results-alert--sidebar' : ''}" aria-label="Prediction results, prototype sample"><div class="prediction-results-copy"><h2 class="trend-card-headline">${heading}</h2>${button}</div>${art}</section>`;
 }

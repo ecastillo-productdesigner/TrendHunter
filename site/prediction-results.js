@@ -1,5 +1,5 @@
 import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=3';
-import { predictionResultAlert } from './prediction-result-alert.js';
+import { predictionResultAlert } from './prediction-result-alert.js?v=2';
 import { medalBurst } from './badge-celebration.js?v=4';
 import { closeBadgeDialog } from './badge-dialog-motion.js';
 import { predictionResultContent, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-4';
@@ -105,12 +105,12 @@ function renderSidebarAlert(results, available) {
   if (!slot) {
     slot = document.createElement('div');
     slot.className = 'prediction-results-alert-slot prediction-results-alert-slot--sidebar';
-    if (panel.parentElement === rail) panel.before(slot);
-    else rail.append(slot);
+    rail.append(slot);
   }
+  // Keep the announcement below Answers and immediately above the live deck,
+  // including when responsive layout moves the deck back into the rail.
+  if (panel.parentElement === rail && slot.nextElementSibling !== panel) panel.before(slot);
   const show = available && results.some(result => !result.seen) && !mobileNavigation.matches;
-  // Keep the initialized voting deck intact, including its mobile article placement.
-  panel.hidden = show;
   slot.hidden = !show;
   if (!show) return;
   const signature = results.filter(result => !result.seen).map(result => result.id).join('|');
