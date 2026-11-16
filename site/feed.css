@@ -6716,7 +6716,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
   background: var(--color-background-surface-raised);
   color: var(--color-text-primary);
 }
-.prediction-results-copy { display: grid; justify-items: start; gap: var(--spacing-component-ms); min-width: 0; }
+.prediction-results-copy { display: grid; align-self: center; justify-items: start; gap: var(--spacing-component-ms); min-width: 0; }
 .prediction-results-alert .trend-card-headline { color: var(--color-text-primary); }
 .prediction-results-alert .button-primary { min-inline-size: calc(var(--spacing-page-2xl) * 3); background: var(--prediction-card-button); color: var(--prediction-button-bg); }
 .prediction-results-alert .button-primary:hover { background: var(--prediction-card-button-hover); }
