@@ -1045,7 +1045,9 @@ button {
 .hunter-digest-collection-name a { display: inline-flex; align-items: center; gap: var(--spacing-component-sm); max-width: 100%; color: var(--color-text-tertiary); }
 .hunter-digest-stories { display: grid; gap: var(--spacing-layout-lg); list-style: none; padding: 0; margin: 0; }
 .hunter-digest-story-title { font: var(--type-section-heading-bold); text-transform: uppercase; }
-.hunter-digest-story-title a { color: var(--color-text-tertiary); }
+.hunter-digest-story-title a { display: flex; align-items: flex-start; gap: var(--spacing-component-ms); color: var(--color-text-tertiary); }
+.hunter-digest-story-title a > span { min-width: 0; overflow-wrap: anywhere; }
+.hunter-digest-story-image { flex: 0 0 var(--size-image-story-compact); }
 .hunter-digest-summary { margin-top: var(--spacing-component-sm); font: var(--type-body); overflow-wrap: break-word; }
 .hunter-digest-read-more { color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--spacing-component-xs); white-space: nowrap; }
 .hunter-digest-update-label { margin-bottom: var(--spacing-component-xs); color: var(--color-text-dim); font: var(--type-helper); }
@@ -6411,7 +6413,7 @@ body:has(.auth-prompt[open]) {
 .changing-collection-story-list { display: grid; gap: var(--spacing-component-sm); list-style: none; padding: 0; }
 .changing-collection-story-list > li[hidden] { display: none; }
 .changing-collection-story-link { display: grid; grid-template-columns: var(--size-image-story-compact) minmax(0, 1fr); align-items: start; gap: var(--spacing-component-ms); min-height: var(--icon-size-2xl); padding-block: var(--spacing-component-sm); font: var(--type-section-heading-bold); text-transform: uppercase; color: var(--color-text-tertiary); transition: color var(--motion-hover) ease; }
-.changing-collection-story-image { display: block; width: var(--size-image-story-compact); height: var(--size-image-story-compact); object-fit: cover; border-radius: var(--radius-x-sm); }
+.changing-collection-story-image, .hunter-digest-story-image { display: block; width: var(--size-image-story-compact); height: var(--size-image-story-compact); object-fit: cover; border-radius: var(--radius-x-sm); }
 .changing-collection-story-title { min-width: 0; overflow-wrap: anywhere; }
 .changing-collection-story-link:hover, .changing-collection-story-link:focus-visible { color: var(--color-text-primary); }
 .changing-collection-more { display: block; min-height: var(--icon-size-2xl); margin-top: var(--spacing-component-xs); padding: 0; border: 0; background: transparent; color: var(--color-text-body-link); font: var(--type-editorial-h4); cursor: pointer; }

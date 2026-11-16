@@ -82,7 +82,7 @@ test('edition uses local calendar date and rendered Read more links target the e
   }
   const escaped = digestMarkup([{ ...rows[0], title:'<script>bad</script>', summary:'<img onerror="bad">' }]);
   assert.ok(!escaped.includes('<script>'));
-  assert.ok(!escaped.includes('<img'));
+  assert.ok(!escaped.includes('<img onerror='));
   // This article has inherited retail copy in its sidebar; use its own body.
   assert.match(DIGEST_EXCERPTS['trend-led-skincare-lounge.html'].summary, /^Soft blue lighting/);
   assert.ok(!DIGEST_EXCERPTS['trend-led-skincare-lounge.html'].summary.includes('fitting room'));

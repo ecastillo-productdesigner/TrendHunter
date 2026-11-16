@@ -1,7 +1,7 @@
 import { interestLevel } from './collection-data.js';
 import { escapeText } from './story-card.js?v=2';
 
-const link = (href, text) => `<a href="${escapeText(href)}">${escapeText(text)}</a>`;
+const link = (href, text, image) => `<a href="${escapeText(href)}">${image ? `<img class="hunter-digest-story-image" src="${escapeText(image)}" alt="" width="48" height="48" loading="lazy" decoding="async">` : ''}<span>${escapeText(text)}</span></a>`;
 export function digestHeader(id, edition, counts) {
   return `<header class="hunter-digest-header"><div><h2 id="${id}" class="hunter-digest-title"><span class="hunter-digest-icon" aria-hidden="true"></span><span>Your Digest</span></h2><p class="hunter-digest-date"><time datetime="${edition.day}">${edition.label}</time>${counts ? `<span aria-hidden="true"> · </span>${plural(counts.collections, 'collection')} with updates · ${plural(counts.stories, 'story')}` : ''}</p></div></header>`;
 }
@@ -19,7 +19,7 @@ function groupCollections(rows) {
   return [...groups.values()];
 }
 function storyMarkup(stories) {
-  return `<ol class="hunter-digest-stories">${stories.map(row => `<li><article>${row.kind === 'Updated story' ? '<p class="hunter-digest-update-label">Updated story</p>' : ''}<h4 class="hunter-digest-story-title">${link(row.href, row.title)}</h4><p class="hunter-digest-summary">${escapeText(row.summary)} <a class="hunter-digest-read-more" href="${escapeText(row.href)}" aria-label="Read more: ${escapeText(row.title)}">Read more</a></p></article></li>`).join('')}</ol>`;
+  return `<ol class="hunter-digest-stories">${stories.map(row => `<li><article>${row.kind === 'Updated story' ? '<p class="hunter-digest-update-label">Updated story</p>' : ''}<h4 class="hunter-digest-story-title">${link(row.href, row.title, row.image)}</h4><p class="hunter-digest-summary">${escapeText(row.summary)} <a class="hunter-digest-read-more" href="${escapeText(row.href)}" aria-label="Read more: ${escapeText(row.title)}">Read more</a></p></article></li>`).join('')}</ol>`;
 }
 function collectionMarkup({ collection, stories }, number) {
   return `<section class="hunter-digest-collection"><span class="hunter-digest-collection-number" aria-hidden="true">${number}</span><h3 class="hunter-digest-collection-name"><span class="visually-hidden">${number}. </span>${collectionEyebrow(collection)}</h3>${storyMarkup(stories)}</section>`;
