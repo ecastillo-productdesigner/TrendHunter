@@ -1,5 +1,5 @@
 import { RESULT_STATE_KEY, RESULT_CATALOG, readPredictionResults, markPredictionResultSeen } from './prediction-result-state.js?v=3';
-import { escapeText as esc } from './story-card.js';
+import { predictionResultAlert } from './prediction-result-alert.js';
 import { medalBurst } from './badge-celebration.js?v=4';
 import { closeBadgeDialog } from './badge-dialog-motion.js';
 import { predictionResultContent, resolvedPredictionRow } from './prediction-result-card.js?v=outcome-4';
@@ -64,7 +64,7 @@ function reveal(id,origin) {
     dialog.addEventListener('animationend',event=>{if(event.target===dialog&&event.animationName==='badge-coin-reveal'&&!flipping)celebrateVisibleResult();});
     dialog.addEventListener('click',event=>{if(event.target===dialog||event.target.closest('[data-result-close]'))dismissResult();});
     dialog.addEventListener('cancel',event=>{event.preventDefault();dismissResult();});
-    dialog.addEventListener('close',()=>{ flipVersion++; flipAnimation?.cancel(); flipping=false; pendingCelebration=null; clearConfetti(); const target=trigger?.isConnected?trigger:document.querySelector('.feed-navigation-tab[aria-selected="true"]');target?.focus({preventScroll:true}); });
+    dialog.addEventListener('close',()=>{ flipVersion++; flipAnimation?.cancel(); flipping=false; pendingCelebration=null; clearConfetti(); const target=trigger?.isConnected&&!trigger.closest('[hidden]')?trigger:document.querySelector('.prediction-results-alert-slot:not([hidden]) [data-result-reveal], .feed-navigation-tab[aria-selected="true"], .nav-predictions, .nav-profile, .settings-fab');target?.focus({preventScroll:true}); });
   }
   dialog.innerHTML=revealMarkup(result);
   if(!dialog.open)dialog.showModal();
@@ -96,6 +96,28 @@ async function flipResult(direction) {
   } catch { /* Dismissing during a turn cancels it without revealing another result. */ }
   finally { if (version === flipVersion) { flipAnimation = null; flipping = false; setResultNavigationBusy(false); } }
 }
+function renderSidebarAlert(results, available) {
+  if (document.body.matches('.page-feed, .page-predictions, .ds-page')) return;
+  const panel = document.querySelector('.predictions-panel');
+  const rail = document.querySelector('.rail-right');
+  if (!panel || !rail) return;
+  let slot = rail.querySelector('.prediction-results-alert-slot--sidebar');
+  if (!slot) {
+    slot = document.createElement('div');
+    slot.className = 'prediction-results-alert-slot prediction-results-alert-slot--sidebar';
+    if (panel.parentElement === rail) panel.before(slot);
+    else rail.append(slot);
+  }
+  const show = available && results.some(result => !result.seen) && !mobileNavigation.matches;
+  // Keep the initialized voting deck intact, including its mobile article placement.
+  panel.hidden = show;
+  slot.hidden = !show;
+  if (!show) return;
+  const signature = results.filter(result => !result.seen).map(result => result.id).join('|');
+  if (slot.dataset.resultsSignature === signature) return;
+  slot.dataset.resultsSignature = signature;
+  slot.innerHTML = predictionResultAlert(results, { sidebar: true });
+}
 function renderAlert(){
   const results=records(),unread=results.filter(item=>!item.seen);
   const available=signedIn()||results.length>0; // Preview records are explicitly labeled sample data.
@@ -112,6 +134,7 @@ function renderAlert(){
     }
     else {bolt.href='predictions.html';delete bolt.dataset.resultReveal;bolt.removeAttribute('aria-haspopup');bolt.setAttribute('aria-label',available&&unread.length?`Predict the Next Trend, ${unread.length} new result${unread.length===1?'':'s'}`:'Predict the Next Trend');}
   });
+  renderSidebarAlert(results, available);
   const predictionPage = document.body.classList.contains('page-predictions');
   const list = document.querySelector('.page-feed .feed-tab-panel > .feed-list') || document.querySelector('.page-predictions .predictions-page');
   if (!list) return;
@@ -125,11 +148,7 @@ function renderAlert(){
   const signature = alertResults.map(result => result.id).join('|');
   if (slot.dataset.resultsSignature === signature) return;
   slot.dataset.resultsSignature = signature;
-  // These records remain fictional prototype results; the reveal and analysis label them as samples.
-  const singular = alertResults.length === 1;
-  const sheetCount = Math.min(alertResults.length, 3);
-  const sheets = Array.from({length: sheetCount}, (_, index) => `<span class="prediction-results-art-sheet">${index === sheetCount - 1 ? `<strong class="prediction-results-art-number">${alertResults.length}</strong><span class="prediction-results-art-label">Verified</span>` : ''}</span>`).join('');
-  slot.innerHTML=`<section class="prediction-results-alert" aria-label="Prediction results, prototype sample"><div class="prediction-results-copy"><h2 class="trend-card-headline">${singular?'Your prediction result is in':`${alertResults.length} of your predictions have results`}</h2><button class="button-primary" type="button" data-result-reveal="${(unread[0] || alertResults[0]).id}">See ${singular?'result':'results'}</button></div><div class="prediction-results-art" aria-hidden="true">${sheets}</div></section>`;
+  slot.innerHTML = predictionResultAlert(alertResults);
 }
 document.addEventListener('click',event=>{
   const revealButton=event.target.closest('[data-result-reveal]');if(revealButton){
@@ -169,5 +188,6 @@ document.addEventListener('auth-change',refresh);
 document.addEventListener('feed-view-selected',renderAlert);
 document.addEventListener('profile-results-rendered',()=>requestAnimationFrame(watchProfileResults));
 window.addEventListener('storage',event=>{if(event.key===RESULT_STATE_KEY)refresh();});
+window.addEventListener('pageshow',refresh);
 window.addEventListener('hashchange',()=>requestAnimationFrame(watchProfileResults));
 redirectLegacyArticle();refresh();

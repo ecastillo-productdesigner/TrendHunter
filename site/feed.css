@@ -60,6 +60,7 @@
   --feature-announcement-text: #0F0F0F;
 
   --hunter-digest-complete-hover: #BEFC4F; /* Fixed requested completion rollover in both themes. */
+  --prediction-results-art-accent: #BEFC4F; /* Selected sidebar illustration stays lime on purple in both themes. */
 
   /* Color — Border */
   --color-accent-foreground: #BEFC4F; /* links and meaningful accents on the theme surface */
@@ -6727,6 +6728,26 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-art-sheet:last-child { position: relative; inset: auto; aspect-ratio: var(--layout-prediction-art-ratio); transform: none; }
 .prediction-results-art-number { font: var(--type-detail-prediction); color: var(--prediction-card-button); }
 .prediction-results-art-label { font: var(--type-editorial-h6); text-transform: uppercase; text-align: center; white-space: nowrap; }
+/* Non-feed desktop rails use the selected centered, stacked announcement. */
+.predictions-panel[hidden], .prediction-results-alert-slot[hidden] { display: none; }
+.prediction-results-alert--sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-layout-lg) + var(--spacing-component-xs));
+  padding: var(--spacing-layout-lg);
+  text-align: center;
+}
+.prediction-results-alert--sidebar .trend-card-headline { width: 100%; font: var(--type-card-headline); }
+.prediction-results-alert--sidebar .prediction-results-art { width: calc(var(--avatar-size-lg) + var(--spacing-layout-xl)); }
+.prediction-results-alert--sidebar .prediction-results-art-number { color: var(--prediction-results-art-accent); }
+.prediction-results-alert--sidebar .button-primary {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--icon-size-2xl);
+  background: var(--buttons-primary-bg-default);
+  color: var(--buttons-primary-text-default);
+}
+.prediction-results-alert--sidebar .button-primary:hover { background: var(--buttons-primary-bg-hover); }
 @media (max-width: 599px) {
   .prediction-results-alert { gap: var(--spacing-component-ms); }
   .prediction-results-art { width: calc(var(--icon-size-2xl) * 2); padding: var(--spacing-component-xs); }

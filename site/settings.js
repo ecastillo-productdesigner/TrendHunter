@@ -138,6 +138,10 @@ if (settingsButton && settingsPanel) {
     if(!previewPredictionResults(localStorage,calls)){window.showToast?.('Results could not be shown.');return;}
     setOpen(false);
     if(document.body.classList.contains('page-feed')){location.hash='for-you';document.dispatchEvent(new Event('prediction-results-preview'));}
+    else if(document.body.classList.contains('page-predictions') || (matchMedia('(min-width: 960px)').matches && document.querySelector('.rail-right .predictions-panel'))){
+      document.dispatchEvent(new Event('prediction-results-preview'));
+      document.querySelector('.prediction-results-alert-slot:not([hidden]) [data-result-reveal]')?.focus();
+    }
     else location.assign('feed.html#for-you');
   });
   settingsPanel.querySelector('[data-setting="reset-badges"]')?.addEventListener('click', async () => {

@@ -851,7 +851,7 @@
         "account-setup.js",
         "article-feedback.js",
         "following-intro.js",
-        "prediction-results.js"
+        "prediction-result-alert.js"
       ]
     },
     {

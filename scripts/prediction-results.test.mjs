@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {RESULT_STATE_KEY,RESULT_CATALOG,readPredictionResults,previewPredictionResults,markPredictionResultSeen} from '../site/prediction-result-state.js';
 import {unnoticedPeopleUpdates,acknowledgePeopleUpdates,showPeopleUpdatesPreview,peoplePreviewPending} from '../site/people-update-state.js';
+import { predictionResultAlert } from '../site/prediction-result-alert.js';
 const memory=()=>{const values=new Map();return {getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};};
 test('preview preserves actual call direction and acknowledging retains resolved history',()=>{
  const storage=memory();assert.deepEqual(readPredictionResults(storage),[]);
@@ -24,6 +25,33 @@ test('empty preview uses separate sample records and failed storage never claims
  const storage=memory();previewPredictionResults(storage);assert.equal(readPredictionResults(storage).length,3);assert.ok(readPredictionResults(storage).some(result=>result.call==='out'));
  assert.equal(previewPredictionResults({setItem(){throw Error('blocked');}}),false);
  assert.deepEqual(readPredictionResults({getItem(){return 'broken';}}),[]);
+});
+test('feed and stacked sidebar alerts count only unread results and link the first unread outcome',()=>{
+ const storage=memory();previewPredictionResults(storage);
+ for(const sidebar of [false,true]){
+  const first=predictionResultAlert(readPredictionResults(storage),{sidebar});
+  assert.match(first,/3 of your predictions have results/);
+  assert.equal((first.match(/class="prediction-results-art-sheet"/g)||[]).length,3);
+  assert.equal(first.includes('prediction-results-alert--sidebar'),sidebar);
+  assert.match(first,/aria-haspopup="dialog"/);
+  assert.match(first,/prototype sample/);
+ }
+ markPredictionResultSeen(storage,'retail-events');
+ const remaining=predictionResultAlert(readPredictionResults(storage),{sidebar:true});
+ assert.match(remaining,/2 of your predictions have results/);
+ assert.match(remaining,/data-result-reveal="skin-longevity"/);
+ assert.equal((remaining.match(/class="prediction-results-art-sheet"/g)||[]).length,2);
+ markPredictionResultSeen(storage,'skin-longevity');
+ const last=predictionResultAlert(readPredictionResults(storage),{sidebar:true});
+ assert.match(last,/Your prediction result is in/);
+ assert.match(last,/>See result<\/button>/);
+ assert.match(last,/prediction-results-art-number">1</);
+ markPredictionResultSeen(storage,'dollar-stores');
+ assert.equal(predictionResultAlert(readPredictionResults(storage),{sidebar:true}),'');
+ assert.equal(predictionResultAlert(readPredictionResults(storage)),'');
+ assert.equal(readPredictionResults(storage).length,3);
+ previewPredictionResults(storage);
+ assert.match(predictionResultAlert(readPredictionResults(storage),{sidebar:true}),/3 of your predictions have results/);
 });
 test('each outcome links to a complete fictional article with the normal page panels',async()=>{
  for(const result of RESULT_CATALOG){
