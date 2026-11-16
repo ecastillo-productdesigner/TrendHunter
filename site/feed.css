@@ -6708,7 +6708,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-alert {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  align-items: start;
   gap: var(--spacing-layout-md);
   padding: var(--spacing-layout-md);
   border: var(--stroke-default) solid var(--color-border-default);
@@ -6720,7 +6720,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-alert .trend-card-headline { color: var(--color-text-primary); }
 .prediction-results-alert .button-primary { min-inline-size: calc(var(--spacing-page-2xl) * 3); background: var(--prediction-card-button); color: var(--prediction-button-bg); }
 .prediction-results-alert .button-primary:hover { background: var(--prediction-card-button-hover); }
-.prediction-results-art { position: relative; width: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-md)); padding: var(--spacing-component-sm); }
+.prediction-results-art { position: relative; width: calc(var(--icon-size-2xl) * 2 + var(--spacing-component-sm)); margin-top: var(--spacing-component-xs); padding: var(--spacing-component-sm); }
 .prediction-results-art-sheet {
   position: absolute;
   inset: var(--spacing-component-sm);
@@ -6752,7 +6752,7 @@ html:not([data-auth="signed-in"]) .page-feed .feed-navigation-tab:is([data-feed-
 .prediction-results-alert--sidebar .button-primary:hover { background: var(--buttons-primary-bg-hover); }
 @media (max-width: 599px) {
   .prediction-results-alert { gap: var(--spacing-component-ms); }
-  .prediction-results-art { width: calc(var(--icon-size-2xl) * 2); padding: var(--spacing-component-xs); }
+  .prediction-results-art { width: calc(var(--icon-size-2xl) * 2); margin-top: var(--spacing-component-sm); padding: var(--spacing-component-xs); }
   .prediction-results-art-number { font: var(--type-detail-h1); }
   .prediction-results-art-sheet { gap: var(--spacing-component-xs); inset: var(--spacing-component-xs); }
   .prediction-results-art-label { font-size: var(--type-size-14); }
