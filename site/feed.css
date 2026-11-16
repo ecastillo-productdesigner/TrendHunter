@@ -2960,7 +2960,6 @@ html:not([data-auth="signed-in"]) .feed-products-slot { display: none; }
 @media (max-width: 959px) {
   .predictions-page > #predictions-heading { margin-bottom: var(--spacing-layout-xl); text-align: center; color: var(--predictions-panel-heading); }
   .predictions-page .prediction-page-calls { border: 0; padding: 0; }
-  .prediction-results-alert .trend-card-headline { font: var(--type-section-heading-bold); }
 }
 @media (min-width: 960px) {
   .nav-primary .nav-predictions { display: none; }
