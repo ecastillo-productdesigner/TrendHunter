@@ -1,4 +1,4 @@
-// Desktop articles use separate panels; mobile articles keep shopping and Answers inline.
+// Desktop pages keep Answers at the top of the right rail; mobile articles and sheets keep it inline.
 // Move the existing sections so carousel position and question input survive resizing.
 (() => {
   const answerPageUrl = new URL('answers.html', document.currentScript?.src || location.href);
@@ -143,18 +143,16 @@
     const leftRail = document.querySelector('.rail-left');
 
     const placeModules = () => {
-      liveAnswers.classList.toggle('trend-answers--inline', Boolean(article));
-      if (article) {
-        const separatePanels = desktop.matches && document.documentElement.dataset.view !== 'sheet';
-        if (separatePanels) article.after(liveAnswers);
-        else article.append(liveAnswers);
-      }
+      const inlineArticle = article && (!desktop.matches || document.documentElement.dataset.view === 'sheet');
+      liveAnswers.classList.toggle('trend-answers--inline', Boolean(inlineArticle));
+      if (inlineArticle) article.append(liveAnswers);
       else if (desktop.matches || !mobileSlot) rail.prepend(liveAnswers);
       else if (mobileSlot) mobileSlot.append(liveAnswers);
       if (mobileSlot) mobileSlot.hidden = desktop.matches;
       if (productRecommendations) {
         productRecommendations.hidden = false;
-        liveAnswers.before(productRecommendations);
+        if (inlineArticle) liveAnswers.before(productRecommendations);
+        else article.after(productRecommendations);
       }
       if (discovery && leftRail) {
         const home = desktop.matches && !wideDesktop.matches ? rail : leftRail;

@@ -800,6 +800,16 @@ if (stack) {
 
 if (document.body.classList.contains('page-predictions')) {
   const pagePanel = document.querySelector('.predictions-panel');
+  const page = pagePanel.parentElement;
+  const heading = pagePanel.querySelector('#predictions-heading');
+  const mobilePage = window.matchMedia('(max-width: 959px)');
+  const placePageHeading = () => {
+    // Mobile page title precedes the results announcement, without duplicating it.
+    if (mobilePage.matches) page.prepend(heading);
+    else pagePanel.prepend(heading);
+  };
+  mobilePage.addEventListener('change', placePageHeading);
+  placePageHeading();
   const stackWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--layout-predictions-stack-width'));
   const fitPageStack = () => pagePanel.style.setProperty('--prediction-stack-zoom', String(Math.min(1, pagePanel.clientWidth / stackWidth)));
   window.addEventListener('resize', fitPageStack);

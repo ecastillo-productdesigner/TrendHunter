@@ -136,15 +136,17 @@ function renderAlert(){
   });
   renderSidebarAlert(results, available);
   const predictionPage = document.body.classList.contains('page-predictions');
-  const list = document.querySelector('.page-feed .feed-tab-panel > .feed-list') || document.querySelector('.page-predictions .predictions-page');
+  const list = document.querySelector('.page-feed .feed-tab-panel') || document.querySelector('.page-predictions .predictions-page');
   if (!list) return;
   // Both banners and the bolt dot represent unread results, not saved history.
   const alertResults = unread;
   let slot=list.querySelector('.prediction-results-alert-slot');
-  if(!slot){slot=document.createElement(predictionPage ? 'div' : 'li');slot.className='prediction-results-alert-slot';list.prepend(slot);}
+  if(!slot){slot=document.createElement('div');slot.className='prediction-results-alert-slot';list.prepend(slot);}
   slot.hidden=!available||!alertResults.length;
   if(!alertResults.length)return;
-  list.prepend(slot);
+  const pageHeading = predictionPage && mobileNavigation.matches && list.querySelector(':scope > #predictions-heading');
+  if (pageHeading) pageHeading.after(slot);
+  else list.prepend(slot); // On the feed, unread results precede the digest and announcements.
   const signature = alertResults.map(result => result.id).join('|');
   if (slot.dataset.resultsSignature === signature) return;
   slot.dataset.resultsSignature = signature;
