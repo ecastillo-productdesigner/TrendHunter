@@ -12,7 +12,7 @@ import { createCommentStore, sampleComments } from '../site/comments-state.js';
 import { readArticleFeedback, saveArticleFeedback } from '../site/article-feedback-state.js';
 import { digestUpdates, readDigestState, catchUpDigest } from '../site/hunter-digest-state.js';
 import { viewedCollectionStories, markCollectionStoryViewed } from '../site/collection-update-state.js';
-import { readOnboardingDraft, saveOnboardingDraft, readOnboardingAnswers, ONBOARDING_ANSWERS_KEY, readOnboardingFocus, ONBOARDING_FOCUS_KEY } from '../site/onboarding-state.js';
+import { readOnboardingDraft, saveOnboardingDraft, readOnboardingAnswers, ONBOARDING_ANSWERS_KEY } from '../site/onboarding-state.js';
 
 function memoryStorage() {
   const values = new Map();
@@ -31,8 +31,8 @@ test('logout resets saved member activity and returns real state readers to empt
   setCollectionFollowed(local, 'collection-evidence-based-beauty.html', true);
   setPersonFollowed(local, 'maya-chen', true);
   saveSelectedTopics(['beauty'], local);
-  local.setItem(ONBOARDING_ANSWERS_KEY, JSON.stringify({ energy: 'cozy' }));
-  local.setItem(ONBOARDING_FOCUS_KEY, JSON.stringify({ text: 'New weekend adventures', prompt: 'here-to' }));
+  local.setItem(ONBOARDING_ANSWERS_KEY, JSON.stringify({ 'mind-body-style': 'feel-good' }));
+  local.setItem('trendhunter.onboarding-focus.v1', JSON.stringify({ text: 'New weekend adventures', prompt: 'here-to' }));
   saveRecommendationFeedback('trend.html', 'collection-longevity.html', 'less', local);
   recordBadgeActivity(local, { type: 'call', id: 'retail-events', call: 'in' }, '2026-11-12');
   previewPredictionResults(local, { 'retail-events': 'in' });
@@ -40,7 +40,7 @@ test('logout resets saved member activity and returns real state readers to empt
   const rows = digestUpdates(readFollowedCollections(local), readDigestState(local));
   assert.ok(rows.length);
   catchUpDigest(local, rows);
-  saveOnboardingDraft({ topics: ['beauty'], collections: ['collection-evidence-based-beauty.html'], people: ['maya-chen'], answers: { energy: 'cozy' } }, session);
+  saveOnboardingDraft({ topics: ['beauty'], collections: ['collection-evidence-based-beauty.html'], answers: { 'mind-body-style': 'feel-good' } }, session);
   session.setItem('saved-stories', '[{"id":"trt","href":"trend.html"}]');
   session.setItem('prediction-calls', '{"retail-events":"in","skin-longevity":"out"}');
   session.setItem('prediction-deck', '{"coverDone":true,"skipped":["telehealth-trt"],"flipped":"ai-holidays"}');
@@ -53,7 +53,7 @@ test('logout resets saved member activity and returns real state readers to empt
   assert.equal(resetPrototypeActivity(storage), true);
   assert.deepEqual(readFollowing(local), []);
   assert.deepEqual(readOnboardingAnswers(local), {});
-  assert.deepEqual(readOnboardingFocus(local), { text: '', prompt: '' });
+  assert.equal(local.getItem('trendhunter.onboarding-focus.v1'), null, 'logout still removes legacy free-text responses');
   assert.deepEqual(readFollowedCollections(local), []);
   assert.deepEqual(readFeedPreferences(true, { member: local }), { topics: [], feedback: { hiddenStories: [], preferredCollections: [] } });
   assert.deepEqual(readBadgeState(local).earned, {});
@@ -61,7 +61,7 @@ test('logout resets saved member activity and returns real state readers to empt
   assert.deepEqual(readPredictionResults(local), []);
   assert.deepEqual(viewedCollectionStories(local), []);
   assert.deepEqual(readDigestState(local).caughtUp, {});
-  assert.deepEqual(readOnboardingDraft(local, session), { topics: [], collections: [], people: [], answers: {}, focus: { text: '', prompt: '' } });
+  assert.deepEqual(readOnboardingDraft(local, session), { topics: [], collections: [], answers: {} });
   for (const key of ['saved-stories', 'prediction-calls', 'prediction-deck', 'profile-comparison-example-calls', 'predictions-return']) assert.equal(session.getItem(key), null, key);
   assert.deepEqual(comments.read('trend.html'), sampleComments('trend.html'), 'only fictional public comments remain');
   assert.equal(readArticleFeedback(local, 'trend.html'), null);

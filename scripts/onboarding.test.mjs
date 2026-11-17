@@ -1,30 +1,30 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ONBOARDING_DRAFT_KEY, ONBOARDING_FOCUS_KEY, ONBOARDING_FOCUS_PROMPTS, ONBOARDING_FOCUS_MAX_LENGTH, readOnboardingFocus, ONBOARDING_ANSWERS_KEY, ONBOARDING_QUESTIONS, TOPICS, readOnboardingAnswers, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, skipOnboardingQuestion, onboardingHasPicks, readOnboardingRoute, onboardingStepHash } from '../site/onboarding-state.js';
+import { ONBOARDING_DRAFT_KEY, ONBOARDING_ANSWERS_KEY, ONBOARDING_QUESTION_GROUPS, TOPICS, cleanDraft, readOnboardingAnswers, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingHasPicks, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from '../site/onboarding-state.js';
 import { TOPIC_STORAGE_KEY, readSelectedTopics } from '../site/feed-personalization.js';
 import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from '../site/collection-follow-state.js';
 import { PEOPLE_FOLLOW_KEY, readFollowing } from '../site/people-follow-state.js';
 const memory = () => { const values = new Map(); return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) }; };
 test('back/reload retains draft choices without applying unfinished follows', () => {
   const storage = memory(), session = memory();
-  const draft = { topics: ['tech'], collections: ['collection-ai-everyday-life.html'], people: ['nadia-patel'], answers: {}, focus: { text: '', prompt: '' } };
+  const draft = { topics: ['tech'], collections: ['collection-ai-everyday-life.html'], answers: {} };
   assert.equal(saveOnboardingDraft(draft, session), true);
   assert.deepEqual(readOnboardingDraft(storage, session), draft);
   assert.deepEqual(readSelectedTopics(storage), []);
   assert.deepEqual(readFollowing(storage), []);
 });
-test('completion feeds the existing topic, collection and people stores and preserves calls', () => {
+test('completion applies topics and collections while preserving existing writer follows and calls', () => {
   const storage = memory(), session = memory();
   storage.setItem(PEOPLE_FOLLOW_KEY, '["jamie-park"]');
   session.setItem('prediction-calls', '{"retail-events":"in"}');
   const draft = readOnboardingDraft(storage, session);
-  assert.deepEqual(draft, { topics: [], collections: [], people: [], answers: {}, focus: { text: '', prompt: '' } });
-  draft.topics.push('beauty'); draft.collections.push('collection-evidence-based-beauty.html'); draft.people.push('nadia-patel');
+  assert.deepEqual(draft, { topics: [], collections: [], answers: {} });
+  draft.topics.push('beauty'); draft.collections.push('collection-evidence-based-beauty.html');
   saveOnboardingDraft(draft, session);
   assert.equal(completeOnboarding(draft, storage, session), true);
   assert.deepEqual(readSelectedTopics(storage), ['beauty']);
   assert.deepEqual(readFollowedCollections(storage), ['collection-evidence-based-beauty.html']);
-  assert.deepEqual(readFollowing(storage), ['jamie-park', 'nadia-patel']);
+  assert.deepEqual(readFollowing(storage), ['jamie-park']);
   assert.equal(session.getItem('prediction-calls'), '{"retail-events":"in"}');
   assert.equal(session.getItem(ONBOARDING_DRAFT_KEY), null);
 });
@@ -34,7 +34,7 @@ test('fresh onboarding has no preselected values and skipping preserves existing
   storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
   storage.setItem(PEOPLE_FOLLOW_KEY, '["nadia-patel"]');
   const draft = readOnboardingDraft(storage, session);
-  assert.deepEqual(draft, { topics: [], collections: [], people: [], answers: {}, focus: { text: '', prompt: '' } });
+  assert.deepEqual(draft, { topics: [], collections: [], answers: {} });
   assert.equal(completeOnboarding(draft, storage, session), true);
   assert.deepEqual(readSelectedTopics(storage), ['travel']);
   assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
@@ -43,13 +43,12 @@ test('fresh onboarding has no preselected values and skipping preserves existing
 test('skipping clears only that step, survives reload and preserves other picks and saved follows', () => {
   const storage = memory(), session = memory();
   storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
-  const draft = { topics: ['beauty'], collections: ['collection-evidence-based-beauty.html'], people: ['owen-brooks'], answers: {}, focus: { text: '', prompt: '' } };
+  const draft = { topics: ['beauty'], collections: ['collection-evidence-based-beauty.html'], answers: {} };
   const skipped = skipOnboardingStep(draft, 'collections');
   saveOnboardingDraft(skipped, session);
   const restored = readOnboardingDraft(storage, session);
   assert.equal(onboardingSelectionCount(restored, 'collections'), 0);
   assert.equal(onboardingSelectionCount(restored, 'topics'), 1);
-  assert.equal(onboardingSelectionCount(restored, 'trend-setters'), 1);
   assert.deepEqual(draft.collections, ['collection-evidence-based-beauty.html']);
   assert.equal(completeOnboarding(restored, storage, session), true);
   assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
@@ -57,7 +56,7 @@ test('skipping clears only that step, survives reload and preserves other picks 
 test('skipping every step permits an empty completion and corrupt draft values are filtered', () => {
   const storage = memory(), session = memory();
   session.setItem(ONBOARDING_DRAFT_KEY, '{"topics":["nope","tech","tech"],"people":["unknown"]}');
-  assert.deepEqual(readOnboardingDraft(storage, session), { topics: ['tech'], collections: [], people: [], answers: {}, focus: { text: '', prompt: '' } });
+  assert.deepEqual(readOnboardingDraft(storage, session), { topics: ['tech'], collections: [], answers: {} });
   assert.equal(completeOnboarding({}, storage, session), true);
   assert.deepEqual(readSelectedTopics(storage), []);
 });
@@ -65,9 +64,9 @@ test('a failed follow save rolls all preferences back and retains the retry draf
   const storage = memory(), session = memory();
   storage.setItem(TOPIC_STORAGE_KEY, '["travel"]');
   storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
-  const draft = { topics: ['tech'], collections: [], people: ['nadia-patel'], answers: {}, focus: { text: '', prompt: '' } };
+  const draft = { topics: ['tech'], collections: [], answers: {} };
   saveOnboardingDraft(draft, session);
-  const faulty = { ...storage, setItem(key, value) { if (key === PEOPLE_FOLLOW_KEY) throw new Error('full'); storage.setItem(key, value); } };
+  const faulty = { ...storage, setItem(key, value) { if (key === FOLLOWED_COLLECTIONS_KEY) throw new Error('full'); storage.setItem(key, value); } };
   assert.equal(completeOnboarding(draft, faulty, session), false);
   assert.deepEqual(readSelectedTopics(storage), ['travel']);
   assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
@@ -78,13 +77,12 @@ test('suggestions use unique real collections and preserve selected choices when
   assert.equal(result[0].href, 'collection-ai-everyday-life.html');
   assert.equal(new Set(result.map(value => value.href)).size, result.length);
   assert.ok(result.some(value => value.href === 'collection-solo-travel.html'));
-  assert.ok(onboardingCreators(['jamie-park']).every(person => person.kind === 'creators'));
 });
 
 test('current interests cover home and family and retain a retry draft until navigation succeeds', () => {
   const storage = memory(), session = memory();
   assert.deepEqual(TOPICS.map(topic => topic.name), ['Health & Wellness', 'Beauty & Skincare', 'Food & Drink', 'Fitness', 'Home & Living', 'Tech & AI', 'Family & Parenting', 'Culture & Experiences', 'Travel']);
-  const draft = { topics: ['home-living', 'family-parenting'], collections: ['collection-smart-home-energy.html'], people: ['owen-brooks'], answers: {}, focus: { text: '', prompt: '' } };
+  const draft = { topics: ['home-living', 'family-parenting'], collections: ['collection-smart-home-energy.html'], answers: {} };
   saveOnboardingDraft(draft, session);
   assert.equal(completeOnboarding(draft, storage, session, { keepDraft: true }), true);
   assert.deepEqual(readSelectedTopics(storage), draft.topics);
@@ -102,156 +100,116 @@ test('personalized collection suggestions contain matches only and balance multi
   assert.ok(onboardingCollections(['culture']).some(item => item.href === 'collection.html'));
   assert.equal(onboardingCollections([]).length, 8);
 });
-test('only a completely empty onboarding bypasses the summary, including after clearing edits', () => {
-  assert.equal(onboardingHasPicks({ topics: [], collections: [], people: [], answers: {}, focus: { text: '', prompt: '' } }), false);
-  for (const draft of [{ topics: ['tech'] }, { collections: ['collection-solo-travel.html'] }, { people: ['owen-brooks'], answers: {}, focus: { text: '', prompt: '' } }]) assert.equal(onboardingHasPicks(draft), true);
-  const cleared = skipOnboardingStep({ people: ['owen-brooks'], answers: {}, focus: { text: '', prompt: '' } }, 'trend-setters');
+test('only current topic, answer and collection picks reach review; removed writer drafts are ignored', () => {
+  assert.equal(onboardingHasPicks({ topics: [], collections: [], answers: {} }), false);
+  assert.equal(onboardingHasPicks({ topics: ['tech'] }), true);
+  assert.equal(onboardingHasPicks({ collections: ['collection-solo-travel.html'] }), true);
+  assert.equal(onboardingHasPicks({ people: ['owen-brooks'] }), false);
+  const cleared = skipOnboardingStep({ topics: ['tech'] }, 'topics');
   assert.equal(onboardingHasPicks(cleared), false);
-  assert.equal(onboardingHasPicks({ people: ['jamie-park'], answers: {}, focus: { text: '', prompt: '' } }), false);
 });
 
-test('vibe answers survive reload without applying incomplete preferences and only accept known options', () => {
-  const storage = memory(), session = memory();
-  assert.equal(ONBOARDING_QUESTIONS.length, 5);
-  assert.ok(ONBOARDING_QUESTIONS.every(question => question.options.length === 3));
-  saveOnboardingDraft({ answers: { intent: 'rabbit-hole', energy: 'cozy', soundtrack: 'invalid', unknown: 'spa' }, focus: { text: '', prompt: '' } }, session);
-  const draft = readOnboardingDraft(storage, session);
-  assert.deepEqual(draft.answers, { intent: 'rabbit-hole', energy: 'cozy' });
-  assert.equal(onboardingSelectionCount(draft, 'vibe'), 2);
-  assert.equal(onboardingHasPicks(draft), true, 'answers alone must reach review');
-  assert.deepEqual(readOnboardingAnswers(storage), {}, 'draft answers are not committed yet');
-  assert.equal(onboardingHasPicks(skipOnboardingStep(draft, 'vibe')), false);
-  assert.deepEqual(draft.answers, { intent: 'rabbit-hole', energy: 'cozy' }, 'Skip does not mutate the source draft');
+test('every interest maps to exactly one of the supplied question groups', () => {
+  const expected = {
+    wellness: 'mind-body-style', beauty: 'mind-body-style', fitness: 'mind-body-style',
+    'food-drink': 'everyday-treat', 'home-living': 'everyday-treat', tech: 'everyday-treat', 'family-parenting': 'everyday-treat',
+    culture: 'experiences-style', travel: 'experiences-style',
+  };
+  assert.deepEqual(ONBOARDING_QUESTION_GROUPS.flatMap(group => group.topics).sort(), TOPICS.map(topic => topic.id).sort());
+  for (const [topic, id] of Object.entries(expected)) {
+    const question = onboardingQuestion([topic]);
+    assert.equal(question.id, id, topic);
+    assert.ok(question.options.length >= 2 && question.options.length <= 3);
+  }
 });
 
-test('older drafts remain compatible and skipping vibe clears only its draft answers', () => {
+test('multiple interests produce just one stable question; majority wins and ties honor first selection', () => {
+  assert.equal(onboardingQuestion(['wellness', 'travel', 'tech', 'home-living']).id, 'everyday-treat');
+  assert.equal(onboardingQuestion(['travel', 'wellness']).id, 'experiences-style');
+  assert.equal(onboardingQuestion(['wellness', 'travel']).id, 'mind-body-style');
+  assert.equal(onboardingQuestion(['tech', 'tech', 'wellness', 'fitness', 'unknown']).id, 'mind-body-style', 'duplicates cannot inflate a group');
+  const topics = ['travel', 'wellness', 'tech'];
+  assert.deepEqual(onboardingQuestion(topics), onboardingQuestion(JSON.parse(JSON.stringify(topics))), 'reload cannot reroll the question');
+  assert.equal(onboardingQuestion([]), null);
+  assert.equal(onboardingQuestion(['unknown']), null);
+});
+
+test('one About you page replaces both old pages and is bypassed when interests are skipped', () => {
+  assert.deepEqual(onboardingSteps(['wellness']), ['topics', 'about-you', 'collections', 'review']);
+  assert.deepEqual(onboardingSteps([]), ['topics', 'collections', 'review']);
+  assert.deepEqual(readOnboardingRoute('#about-you/edit'), { step: 'about-you', editingReview: true });
+  for (const route of ['#vibe', '#vibe/energy', '#focus']) assert.deepEqual(readOnboardingRoute(route), { step: 'about-you', editingReview: false });
+  for (const route of ['#vibe/edit', '#vibe/energy/edit', '#focus/edit']) assert.deepEqual(readOnboardingRoute(route), { step: 'about-you', editingReview: true });
+  assert.deepEqual(readOnboardingRoute('#unknown/edit'), { step: 'topics', editingReview: false });
+  for (const step of onboardingSteps(['travel'])) for (const editingReview of [false, true]) {
+    assert.deepEqual(readOnboardingRoute(onboardingStepHash(step, { editingReview })), { step, editingReview: step !== 'review' && editingReview });
+  }
+});
+
+test('only the applicable answer survives draft reload; removed vibe and free-text fields cannot leak into review', () => {
   const storage = memory(), session = memory();
-  session.setItem(ONBOARDING_DRAFT_KEY, JSON.stringify({ topics: ['beauty'], collections: [], people: [] }));
-  const draft = readOnboardingDraft(storage, session);
-  assert.deepEqual(draft.answers, {});
-  draft.answers = { 'free-hour': 'spa' };
-  const skipped = skipOnboardingStep(draft, 'vibe');
-  saveOnboardingDraft(skipped, session);
+  saveOnboardingDraft({ topics: ['beauty'], answers: { 'mind-body-style': 'feel-good', 'everyday-treat': 'guilty', energy: 'cozy' }, focus: { text: 'Old free text', prompt: 'here-to' } }, session);
+  assert.deepEqual(readOnboardingDraft(storage, session), { topics: ['beauty'], collections: [], answers: { 'mind-body-style': 'feel-good' } });
+  assert.equal(onboardingSelectionCount(readOnboardingDraft(storage, session), 'about-you'), 1);
+  assert.deepEqual(readOnboardingAnswers(storage), {}, 'unfinished answers are not committed');
+  session.setItem(ONBOARDING_DRAFT_KEY, '{"topics":["tech"],"answers":{"energy":"cozy"},"focus":{"text":"Old response"}}');
   assert.deepEqual(readOnboardingDraft(storage, session).answers, {});
-  assert.deepEqual(readOnboardingDraft(storage, session).topics, ['beauty']);
 });
 
-test('completion updates answered questions and preserves skipped existing answers', () => {
+test('changing the winning interest group clears a stale answer, while compatible edits retain it', () => {
+  const draft = { topics: ['wellness'], answers: { 'mind-body-style': 'optimize' } };
+  assert.deepEqual(cleanDraft({ ...draft, topics: ['wellness', 'fitness'] }).answers, draft.answers);
+  assert.deepEqual(cleanDraft({ ...draft, topics: ['tech'] }).answers, {});
+  assert.deepEqual(cleanDraft({ ...draft, topics: [] }).answers, {});
+  assert.deepEqual(cleanDraft({ topics: ['travel'], answers: { 'experiences-style': 'invalid' } }).answers, {});
+});
+
+test('Skip question clears only its draft response; skipping interests also discards the dependent response', () => {
+  const draft = { topics: ['wellness'], collections: ['collection-longevity.html'], answers: { 'mind-body-style': 'optimize' } };
+  const skipped = skipOnboardingStep(draft, 'about-you');
+  assert.deepEqual(skipped, { ...draft, answers: {} });
+  assert.deepEqual(draft.answers, { 'mind-body-style': 'optimize' }, 'skip does not mutate the previous draft');
+  assert.deepEqual(skipOnboardingStep(draft, 'topics'), { ...draft, topics: [], answers: {} });
+  assert.equal(onboardingHasPicks({ answers: draft.answers }), false, 'a response without matching interests cannot create a review panel');
+});
+
+test('completion persists one relevant answer, supports a changed group, and preserves a skipped matching answer', () => {
   const storage = memory(), session = memory();
-  storage.setItem(ONBOARDING_ANSWERS_KEY, JSON.stringify({ energy: 'new-me', 'free-hour': 'spa', unexpected: 'ignore' }));
-  assert.equal(completeOnboarding({ answers: { energy: 'cozy', intent: 'rabbit-hole' }, focus: { text: '', prompt: '' } }, storage, session), true);
-  assert.deepEqual(readOnboardingAnswers(storage), { intent: 'rabbit-hole', energy: 'cozy', 'free-hour': 'spa' });
-  assert.equal(completeOnboarding({}, storage, session), true);
-  assert.deepEqual(readOnboardingAnswers(storage), { intent: 'rabbit-hole', energy: 'cozy', 'free-hour': 'spa' });
+  assert.equal(completeOnboarding({ topics: ['wellness'], answers: { 'mind-body-style': 'optimize' } }, storage, session), true);
+  assert.deepEqual(readOnboardingAnswers(storage), { 'mind-body-style': 'optimize' });
+  assert.equal(completeOnboarding({ topics: ['fitness'] }, storage, session), true);
+  assert.deepEqual(readOnboardingAnswers(storage), { 'mind-body-style': 'optimize' });
+  assert.equal(completeOnboarding({ topics: ['travel'], answers: { 'experiences-style': 'planner' } }, storage, session), true);
+  assert.deepEqual(readOnboardingAnswers(storage), { 'experiences-style': 'planner' });
+  assert.equal(completeOnboarding({ topics: ['tech'] }, storage, session), true);
+  assert.deepEqual(readOnboardingAnswers(storage), {}, 'a skipped different-group question cannot retain an unrelated answer');
+  storage.setItem(ONBOARDING_ANSWERS_KEY, '{not json');
+  assert.deepEqual(readOnboardingAnswers(storage), {});
 });
 
-test('failed answer persistence rolls back prior preference writes and retains the retry draft', () => {
+test('failed answer persistence rolls back topics and follows and retains the applicable retry answer', () => {
   const storage = memory(), session = memory();
   storage.setItem(TOPIC_STORAGE_KEY, '["travel"]');
   storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
-  storage.setItem(ONBOARDING_ANSWERS_KEY, '{"energy":"cozy"}');
-  const draft = { topics: ['beauty'], collections: [], people: [], answers: { energy: 'new-me' }, focus: { text: '', prompt: '' } };
+  storage.setItem(ONBOARDING_ANSWERS_KEY, '{"experiences-style":"anything"}');
+  const draft = { topics: ['beauty'], collections: [], answers: { 'mind-body-style': 'feel-good' } };
   saveOnboardingDraft(draft, session);
   const faulty = { ...storage, setItem(key, value) { if (key === ONBOARDING_ANSWERS_KEY) throw Error('full'); storage.setItem(key, value); } };
   assert.equal(completeOnboarding(draft, faulty, session), false);
   assert.deepEqual(readSelectedTopics(storage), ['travel']);
   assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
   assert.deepEqual(readFollowing(storage), []);
-  assert.deepEqual(readOnboardingAnswers(storage), { energy: 'cozy' });
+  assert.deepEqual(readOnboardingAnswers(storage), { 'experiences-style': 'anything' });
   assert.deepEqual(readOnboardingDraft(storage, session), draft);
 });
 
-test('free-text focus and its prompt survive reload and commit only on completion', () => {
+test('removed Trendsetters links return to Collections and old draft writers cannot be followed by completion', () => {
+  assert.deepEqual(readOnboardingRoute('#trend-setters'), { step: 'collections', editingReview: false });
   const storage = memory(), session = memory();
-  const focus = { text: '  Creative weekend plans  ', prompt: 'daily-trend' };
-  saveOnboardingDraft({ focus }, session);
-  const draft = readOnboardingDraft(storage, session);
-  assert.deepEqual(draft.focus, focus, 'typing whitespace is preserved in the draft');
-  assert.deepEqual(readOnboardingFocus(storage), { text: '', prompt: '' });
-  assert.equal(onboardingSelectionCount(draft, 'focus'), 1);
-  assert.equal(onboardingHasPicks(draft), true, 'a focus-only response still reaches review');
-  assert.equal(completeOnboarding(draft, storage, session), true);
-  assert.deepEqual(readOnboardingFocus(storage), { text: 'Creative weekend plans', prompt: 'daily-trend' });
-});
-
-test('blank text or a prompt alone is not a focus response; Skip clears only that draft step', () => {
-  const storage = memory(), session = memory();
-  assert.equal(onboardingHasPicks({ focus: { text: ' \t ', prompt: 'here-to' } }), false);
-  const draft = { topics: ['tech'], answers: { energy: 'cozy' }, focus: { text: 'Something new', prompt: 'here-to' } };
-  const skipped = skipOnboardingStep(draft, 'focus');
-  assert.deepEqual(skipped.focus, { text: '', prompt: '' });
-  assert.deepEqual(skipped.topics, ['tech']);
-  assert.deepEqual(skipped.answers, { energy: 'cozy' });
-  assert.equal(draft.focus.text, 'Something new', 'Skip does not mutate the previous draft');
-  storage.setItem(ONBOARDING_FOCUS_KEY, '{"text":"Existing focus","prompt":"talk-for-hours"}');
-  assert.equal(completeOnboarding(skipped, storage, session), true);
-  assert.deepEqual(readOnboardingFocus(storage), { text: 'Existing focus', prompt: 'talk-for-hours' });
-});
-
-test('focus normalizes old or invalid drafts and prompt labels remain two or three words', () => {
-  const storage = memory(), session = memory();
-  session.setItem(ONBOARDING_DRAFT_KEY, '{"topics":["tech"]}');
-  assert.deepEqual(readOnboardingDraft(storage, session).focus, { text: '', prompt: '' });
-  saveOnboardingDraft({ focus: { text: 'x'.repeat(ONBOARDING_FOCUS_MAX_LENGTH + 100), prompt: 'unknown' } }, session);
-  const focus = readOnboardingDraft(storage, session).focus;
-  assert.equal(focus.text.length, ONBOARDING_FOCUS_MAX_LENGTH);
-  assert.equal(focus.prompt, '');
-  storage.setItem(ONBOARDING_FOCUS_KEY, '{not json');
-  assert.deepEqual(readOnboardingFocus(storage), { text: '', prompt: '' });
-  assert.equal(ONBOARDING_FOCUS_PROMPTS.length, 4);
-  assert.ok(ONBOARDING_FOCUS_PROMPTS.every(prompt => [2, 3].includes(prompt.label.split(/\s+/).length)));
-});
-
-test('a failed focus save rolls back every preference and keeps the typed response for retry', () => {
-  const storage = memory(), session = memory();
-  storage.setItem(TOPIC_STORAGE_KEY, '["travel"]');
-  storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
   storage.setItem(PEOPLE_FOLLOW_KEY, '["maya-chen"]');
-  storage.setItem(ONBOARDING_ANSWERS_KEY, '{"energy":"cozy"}');
-  storage.setItem(ONBOARDING_FOCUS_KEY, '{"text":"Original focus","prompt":"here-to"}');
+  session.setItem(ONBOARDING_DRAFT_KEY, '{"topics":["wellness"],"people":["nadia-patel"]}');
   const draft = readOnboardingDraft(storage, session);
-  draft.topics = ['tech']; draft.people = ['nadia-patel']; draft.answers = { energy: 'new-me' };
-  draft.focus = { text: 'New inspiration', prompt: 'weekly-needs' };
-  saveOnboardingDraft(draft, session);
-  const faulty = { ...storage, setItem(key, value) { if (key === ONBOARDING_FOCUS_KEY) throw Error('full'); storage.setItem(key, value); } };
-  assert.equal(completeOnboarding(draft, faulty, session), false);
-  assert.deepEqual(readSelectedTopics(storage), ['travel']);
-  assert.deepEqual(readFollowedCollections(storage), ['collection-solo-travel.html']);
+  assert.equal(Object.hasOwn(draft, 'people'), false);
+  assert.equal(completeOnboarding(draft, storage, session), true);
   assert.deepEqual(readFollowing(storage), ['maya-chen']);
-  assert.deepEqual(readOnboardingAnswers(storage), { energy: 'cozy' });
-  assert.deepEqual(readOnboardingFocus(storage), { text: 'Original focus', prompt: 'here-to' });
-  assert.deepEqual(readOnboardingDraft(storage, session), draft);
-});
-
-
-test('question routes preserve current position and review edits across reload, including legacy links', () => {
-  assert.deepEqual(readOnboardingRoute('#vibe'), { step: 'vibe', questionIndex: 0, editingReview: false });
-  assert.deepEqual(readOnboardingRoute('#vibe/edit'), { step: 'vibe', questionIndex: 0, editingReview: true });
-  assert.deepEqual(readOnboardingRoute('#focus/edit'), { step: 'focus', questionIndex: 0, editingReview: true });
-  for (let questionIndex = 0; questionIndex < ONBOARDING_QUESTIONS.length; questionIndex++) {
-    for (const editingReview of [false, true]) {
-      const route = onboardingStepHash('vibe', { questionIndex, editingReview });
-      assert.deepEqual(readOnboardingRoute(route), { step: 'vibe', questionIndex, editingReview });
-    }
-  }
-  assert.deepEqual(readOnboardingRoute('#vibe/unknown'), { step: 'vibe', questionIndex: 0, editingReview: false });
-  assert.deepEqual(readOnboardingRoute('#unknown'), { step: 'topics', questionIndex: 0, editingReview: false });
-  assert.equal(onboardingStepHash('review', { editingReview: true }), '#review');
-});
-
-test('skipping a single question preserves other answers, follows and focus across reload', () => {
-  const storage = memory(), session = memory();
-  const draft = {
-    topics: ['tech'], collections: ['collection-ai-everyday-life.html'], people: ['nadia-patel'],
-    answers: { intent: 'rabbit-hole', energy: 'cozy', soundtrack: 'hype-track' },
-    focus: { text: 'Creative weekends', prompt: 'here-to' },
-  };
-  const skipped = skipOnboardingQuestion(draft, 1);
-  saveOnboardingDraft(skipped, session);
-  assert.deepEqual(readOnboardingDraft(storage, session), { ...draft, answers: { intent: 'rabbit-hole', soundtrack: 'hype-track' } });
-  assert.equal(draft.answers.energy, 'cozy', 'skipping does not mutate the previous draft');
-  assert.deepEqual(skipOnboardingQuestion(skipped, 1), skipped, 'unanswered questions can be skipped');
-  assert.deepEqual(skipOnboardingQuestion(draft, 100), draft, 'an invalid position cannot clear another answer');
-  const allSkipped = ONBOARDING_QUESTIONS.reduce((result, _, index) => skipOnboardingQuestion(result, index), { answers: draft.answers });
-  assert.equal(onboardingHasPicks(allSkipped), false, 'skipping all questions remains optional');
 });
