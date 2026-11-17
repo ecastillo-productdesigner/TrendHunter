@@ -2493,6 +2493,15 @@
       ]
     },
     {
+      "key": "button:onboarding-answer",
+      "classes": "onboarding-answer",
+      "tag": "button",
+      "name": "onboarding-answer",
+      "sources": [
+        "onboarding.js"
+      ]
+    },
+    {
       "key": "button:onboarding-edit",
       "classes": "onboarding-edit",
       "tag": "button",

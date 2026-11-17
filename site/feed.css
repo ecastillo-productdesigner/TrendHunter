@@ -2678,13 +2678,11 @@ html[data-auth="signed-in"] .feed-guest-account-slot { display: none; }
 .onboarding-question legend:focus { outline: none; }
 .onboarding-answer-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-component-ms); }
 .onboarding-answer-options[data-options="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.onboarding-answer { position: relative; min-width: 0; cursor: pointer; }
-.onboarding-answer-surface { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: var(--spacing-layout-md); height: 100%; min-height: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-lg)); padding: var(--spacing-layout-md); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-sm); background: var(--topic-tile-background); color: var(--color-text-secondary); font: var(--type-body); transition: background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease; }
-.onboarding-answer-indicator { display: block; position: relative; flex: none; width: var(--icon-size-sm); height: var(--icon-size-sm); border: var(--stroke-default) solid currentColor; border-radius: var(--radius-circle); }
+.onboarding-answer { display: flex; position: relative; min-width: 0; border-radius: var(--radius-sm); text-align: left; cursor: pointer; }
+.onboarding-answer-surface { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; align-items: flex-start; gap: var(--spacing-layout-md); height: 100%; min-height: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-lg)); padding: var(--spacing-layout-md); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-sm); background: var(--topic-tile-background); color: var(--color-text-secondary); font: var(--type-body); transition: background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease; }
 .onboarding-answer:hover .onboarding-answer-surface { border-color: var(--color-border-focus); }
-.onboarding-answer input:checked + .onboarding-answer-surface { border-color: var(--buttons-primary-bg-default); background: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
-.onboarding-answer input:checked + .onboarding-answer-surface .onboarding-answer-indicator::after { content: ''; position: absolute; inset: var(--spacing-component-xs); border-radius: var(--radius-circle); background: currentColor; }
-.onboarding-answer input:focus-visible + .onboarding-answer-surface { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+.onboarding-answer[aria-pressed="true"] .onboarding-answer-surface { border-color: var(--buttons-primary-bg-default); background: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
+.onboarding-answer:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .onboarding-collections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-lg) var(--spacing-page-2xl); }
 .onboarding-collection { position: relative; cursor: pointer; }
 .onboarding-collection[aria-pressed="true"] { background: var(--buttons-primary-bg-default); border-color: var(--buttons-primary-bg-default); color: var(--buttons-primary-text-default); }
@@ -2692,6 +2690,7 @@ html[data-auth="signed-in"] .feed-guest-account-slot { display: none; }
 .onboarding-actions { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-layout-lg); max-width: var(--layout-login-width); margin-inline: auto; }
 .onboarding-continue { min-height: var(--layout-auth-button-height); gap: var(--spacing-component-ms); }
 .onboarding-skip, .onboarding-edit { display: inline-flex; justify-content: center; align-items: center; min-height: var(--icon-size-2xl); font: var(--type-body); color: var(--color-text-body-link); text-decoration: underline; text-underline-offset: var(--stroke-weight-2); cursor: pointer; }
+.onboarding-skip { text-decoration: none; }
 .onboarding-skip:hover, .onboarding-edit:hover { color: var(--color-text-primary); }
 .onboarding-note { max-width: var(--layout-login-width); }
 .onboarding-secondary { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-component-sm); }

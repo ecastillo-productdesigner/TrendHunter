@@ -32,11 +32,12 @@ mobileSummary.addEventListener('change', placeSummaryAction);
 const topicTile = (topic, summary = false) => `<${summary ? 'div' : 'button'} class="topic-tile" ${summary ? '' : 'type="button"'} data-topic="${topic.id}" ${summary ? 'data-selected="true"' : `data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"`}><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></${summary ? 'div' : 'button'}>`;
 const collectionChoice = collection => `<button class="pill-button onboarding-collection" type="button" data-choice="collections" data-value="${collection.href}" aria-pressed="${draft.collections.includes(collection.href)}">${escapeText(collection.name)}</button>`;
 const answerLabel = question => escapeText(question.options.find(([id]) => id === draft.answers[question.id])?.[1] || '');
-// Reuse one native radio-tile component for every question group.
-const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => `<label class="onboarding-answer"><input class="visually-hidden" type="radio" name="onboarding-answer" value="${value}" data-onboarding-answer="${question.id}" ${draft.answers[question.id] === value ? 'checked' : ''}><span class="onboarding-answer-surface"><span class="onboarding-answer-indicator" aria-hidden="true"></span><span>${escapeText(label)}</span></span></label>`).join('')}</div></fieldset>`;
+// Reuse the selectable-tile button pattern: one answer, with click-again deselection.
+const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => `<button class="onboarding-answer" type="button" value="${value}" data-onboarding-answer="${question.id}" aria-pressed="${draft.answers[question.id] === value}"><span class="onboarding-answer-surface"><span>${escapeText(label)}</span></span></button>`).join('')}</div></fieldset>`;
 
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));
+  for (const button of choices.querySelectorAll('[data-onboarding-answer]')) button.setAttribute('aria-pressed', String(draft.answers[button.dataset.onboardingAnswer] === button.value));
   if (step === 'review') return;
   const count = onboardingSelectionCount(draft, step);
   next.disabled = count === 0;
@@ -87,7 +88,7 @@ function render({ focus = true } = {}) {
   subtitle.hidden = !copy[1];
   progress.closest('nav').hidden = step === 'review';
   skip.hidden = step === 'review';
-  skip.textContent = step === 'about-you' ? 'Skip question' : 'Skip';
+  skip.textContent = 'Skip';
   note.hidden = true;
   document.querySelector('[data-onboarding-secondary]').hidden = step === 'review';
   error.hidden = true;
@@ -114,6 +115,14 @@ function advance() {
 choices.addEventListener('click', event => {
   const edit = event.target.closest('[data-edit]');
   if (edit) { location.hash = onboardingStepHash(edit.dataset.edit, { editingReview: true }); return; }
+  const answer = event.target.closest('[data-onboarding-answer]');
+  if (answer) {
+    const question = answer.dataset.onboardingAnswer;
+    draft.answers = draft.answers[question] === answer.value ? {} : { [question]: answer.value };
+    saveOnboardingDraft(draft, session);
+    syncChoices();
+    return;
+  }
   const button = event.target.closest('[data-choice]');
   if (!button) return;
   const values = new Set(draft[button.dataset.choice]);
@@ -121,13 +130,6 @@ choices.addEventListener('click', event => {
   draft[button.dataset.choice] = [...values];
   // A different interest group must not inherit an answer to another question.
   Object.assign(draft, cleanDraft(draft));
-  saveOnboardingDraft(draft, session);
-  syncChoices();
-});
-choices.addEventListener('change', event => {
-  const input = event.target.closest('[data-onboarding-answer]');
-  if (!input?.checked) return;
-  draft.answers = { [input.dataset.onboardingAnswer]: input.value };
   saveOnboardingDraft(draft, session);
   syncChoices();
 });
