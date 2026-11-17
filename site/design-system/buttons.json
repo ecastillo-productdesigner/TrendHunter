@@ -873,6 +873,15 @@
       ]
     },
     {
+      "key": "button:button-primary onboarding-focus-next",
+      "classes": "button-primary onboarding-focus-next",
+      "tag": "button",
+      "name": "Next",
+      "sources": [
+        "onboarding.js"
+      ]
+    },
+    {
       "key": "a:button-primary prediction-onboarding-button",
       "classes": "button-primary prediction-onboarding-button",
       "tag": "a",
@@ -2529,6 +2538,8 @@
       "sources": [
         "onboarding.js",
         "onboarding.js",
+        "onboarding.js",
+        "onboarding.js",
         "onboarding.js"
       ]
     },
@@ -2932,6 +2943,15 @@
       "classes": "pill-button onboarding-collection",
       "tag": "button",
       "name": "pill-button onboarding-collection",
+      "sources": [
+        "onboarding.js"
+      ]
+    },
+    {
+      "key": "button:pill-button onboarding-focus-prompt",
+      "classes": "pill-button onboarding-focus-prompt",
+      "tag": "button",
+      "name": "pill-button onboarding-focus-prompt",
       "sources": [
         "onboarding.js"
       ]

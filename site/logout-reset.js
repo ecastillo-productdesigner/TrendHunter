@@ -5,6 +5,8 @@ const localKeys = [
   'trendhunter.followed-collections.v1',
   'trendhunter.followed-people.v1',
   'trendhunter.selected-topics.v1',
+  'trendhunter.onboarding-answers.v1',
+  'trendhunter.onboarding-focus.v1',
   'trendhunter.recommendation-feedback.v1',
   'trendhunter.member-achievements.v1',
   'trendhunter.prediction-results-demo.v1',
