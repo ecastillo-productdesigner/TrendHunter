@@ -2,23 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
+import { FEED_URL } from '../site/onboarding-destinations.js';
 const code = readFileSync(new URL('../site/account-setup.js', import.meta.url), 'utf8');
-const key = 'trendhunter.account-setup-next.v1';
-function browser({ now = 0, deadline, blocked = false } = {}) {
-  let time = now, nextTimer = 0;
-  const timers = new Map(), handlers = new Map(), values = new Map();
-  const dialogs = [], location = { pathname: '/feed.html', href: 'https://prototype.test/feed.html', origin: 'https://prototype.test', assign(url) { location.assigned = url; }, reload() {} };
-  if (deadline !== undefined) values.set(key, JSON.stringify({ path: '/feed.html', visibleUntil: deadline }));
-  const sessionStorage = { getItem: k => values.get(k) ?? null, setItem(k, v) { if (blocked) throw Error('blocked'); values.set(k, v); }, removeItem: k => values.delete(k) };
-  const document = { readyState: 'loading', documentElement: { dataset: {} }, body: { append: dialog => dialogs.push(dialog) }, createElement() {
-    const elements = new Map();
+function browser({ preview = false } = {}) {
+  let time = 0, nextTimer = 0;
+  const timers = new Map(), handlers = new Map(), elements = new Map(), dialogs = [];
+  const location = { href: `https://onboarding.test/${preview ? '?preview=account-setup' : ''}`, assign(url) { location.assigned = url; } };
+  const document = { documentElement: { dataset: {} }, body: { append: dialog => dialogs.push(dialog) }, createElement() {
     return { visible: false, setAttribute() {}, showModal() { this.visible = true; }, remove() { this.visible = false; }, addEventListener() {}, querySelector(selector) {
-      if (!elements.has(selector)) elements.set(selector, { hidden: true, addEventListener() {} });
+      if (!elements.has(selector)) elements.set(selector, { hidden: true, addEventListener(name, fn) { this[name] = fn; } });
       return elements.get(selector);
     } };
-  }, addEventListener(name, listener) { handlers.set(name, listener); } };
-  const window = { addEventListener(name, listener) { handlers.set(name, listener); } };
-  vm.runInNewContext(code, { window, document, location, sessionStorage, URL, Date: { now: () => time }, requestAnimationFrame: fn => fn(), setTimeout: (fn, delay) => { const id = ++nextTimer; timers.set(id, { at: time + delay, fn }); return id; }, clearTimeout: id => timers.delete(id) });
+  } };
+  const window = { addEventListener: (name, fn) => handlers.set(name, fn), dispatchEvent(event) { handlers.get(event.type)?.(event); } };
+  // No sessionStorage: the local timed handoff must work with browser storage blocked.
+  vm.runInNewContext(code, { window, document, location, URL, Event, setTimeout: (fn, delay) => { const id = ++nextTimer; timers.set(id, { at: time + delay, fn }); return id; }, clearTimeout: id => timers.delete(id) });
   const advance = amount => {
     const target = time + amount;
     while (true) {
@@ -28,36 +26,44 @@ function browser({ now = 0, deadline, blocked = false } = {}) {
     }
     time = target;
   };
-  return { advance, document, values, location, window, visible: () => dialogs.some(dialog => dialog.visible), load() { document.readyState = 'complete'; handlers.get('load')(); } };
+  return { advance, document, elements, location, window, visible: () => dialogs.some(dialog => dialog.visible) };
 }
-test('a fast feed stays covered for the full eight seconds', () => {
-  const page = browser({ deadline: 8000 });
-  page.advance(100); page.load();
-  page.advance(7899); assert.equal(page.visible(), true);
-  page.advance(1); assert.equal(page.visible(), false);
-  assert.equal(page.document.documentElement.dataset.accountSetup, undefined);
-});
-test('the handoff carries elapsed time instead of restarting eight seconds on the feed', () => {
-  const page = browser({ now: 3000, deadline: 8000 });
-  page.values.set('trendhunter.onboarding-draft.v2', '{}');
-  page.load(); page.advance(4999);
-  assert.equal(page.visible(), true);
-  assert.equal(page.values.has('trendhunter.onboarding-draft.v2'), true);
-  page.advance(1); assert.equal(page.visible(), false);
-  assert.equal(page.values.has('trendhunter.onboarding-draft.v2'), false);
-});
-test('a slower page waits for readiness and the Terms handoff has no eight-second minimum', () => {
-  const slow = browser({ deadline: 8000 });
-  slow.advance(9000); assert.equal(slow.visible(), true);
-  slow.load(); assert.equal(slow.visible(), false);
-  const terms = browser({ deadline: 0 });
-  terms.load(); assert.equal(terms.visible(), false);
-});
-test('blocked session storage preserves the eight-second transition before navigation', () => {
-  const page = browser({ blocked: true });
-  page.load();
-  page.window.navigateWithAccountSetup('feed.html#for-you', { minimumDuration: 8000 });
+test('standalone feed handoff stays local for eight seconds, then opens the existing main app', () => {
+  const page = browser();
+  page.window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
   assert.equal(page.visible(), true);
   page.advance(7999); assert.equal(page.location.assigned, undefined);
-  page.advance(1); assert.equal(page.location.assigned, 'https://prototype.test/feed.html#for-you');
+  page.advance(1); assert.equal(page.location.assigned, FEED_URL);
+  assert.equal(page.document.documentElement.dataset.accountSetup, 'loading');
+});
+test('stalled navigation offers retry and Back; Back cancels navigation and restores onboarding', () => {
+  const page = browser(); let cancelled = false;
+  page.window.addEventListener('onboarding-setup-cancel', () => { cancelled = true; });
+  page.window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
+  page.advance(10000);
+  assert.equal(page.elements.get('.account-setup-recovery').hidden, false);
+  page.elements.get('[data-setup-retry]').click();
+  assert.equal(page.location.assigned, FEED_URL);
+  page.elements.get('[data-setup-back]').click();
+  assert.equal(page.visible(), false);
+  assert.equal(cancelled, true);
+  assert.equal(page.document.documentElement.dataset.accountSetup, undefined);
+});
+test('back/forward restoration cancels pending timers and allows another handoff', () => {
+  const page = browser();
+  page.window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
+  page.window.dispatchEvent({ type: 'pageshow', persisted: true });
+  page.advance(10000);
+  assert.equal(page.visible(), false);
+  assert.equal(page.location.assigned, undefined);
+  page.window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
+  page.advance(8000); assert.equal(page.location.assigned, FEED_URL);
+});
+test('unknown exits are rejected and the setup preview stays on onboarding', () => {
+  const page = browser({ preview: true });
+  assert.equal(page.visible(), true);
+  assert.throws(() => page.window.navigateWithAccountSetup('https://other.test/'), /Unknown onboarding exit/);
+  page.advance(20000); assert.equal(page.location.assigned, undefined);
+  page.elements.get('[data-setup-preview-close]').click();
+  assert.equal(page.location.assigned, './#topics');
 });

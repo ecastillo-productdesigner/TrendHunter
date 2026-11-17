@@ -1,14 +1,13 @@
 {
-  "name": "trendhunter-prototype",
+  "name": "trendhunter-onboarding",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Trend Hunter B2C prototype and design system",
+  "description": "Standalone Trend Hunter onboarding prototype",
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "dev": "node scripts/build.mjs && node scripts/serve.mjs",
-    "start": "node scripts/serve.mjs",
-    "design-system:build": "python3 scripts/build-collection-story-data.py && node scripts/build-prediction-outcome-pages.mjs && node scripts/build-badge-guide.mjs && python3 scripts/build-design-guide.py"
+    "start": "node scripts/serve.mjs"
   }
 }

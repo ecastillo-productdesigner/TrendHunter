@@ -1,56 +1,51 @@
+import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { build, filesIn, outputRoot, projectRoot } from './build.mjs';
+import { COLLECTIONS, COLLECTION_STORIES } from '../site/onboarding-data.js';
+import { articleUrl, FEED_URL, PROTOTYPE_BASE } from '../site/onboarding-destinations.js';
 
 await build();
 const failures = [];
-const shareAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/system-share.test.mjs')], { encoding: 'utf8' });
-if (shareAudit.status !== 0) failures.push(shareAudit.stdout + shareAudit.stderr);
-else console.log('Native sharing routing, cancellation and fallback passed');
-const arrivalAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/prediction-arrival.test.mjs')], { encoding: 'utf8' });
-if (arrivalAudit.status !== 0) failures.push(arrivalAudit.stdout + arrivalAudit.stderr);
-else console.log('Read More arrival matching, deck order and reload coverage passed');
-const followAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/collection-follow.test.mjs')], { encoding: 'utf8' });
-if (followAudit.status !== 0) failures.push(followAudit.stdout + followAudit.stderr);
-else console.log('Collection follow persistence, empty state data and recommendations passed');
-const personalizationAudit = spawnSync(process.execPath, ['--test', path.join(projectRoot, 'scripts/feed-personalization.test.mjs')], { encoding: 'utf8' });
-if (personalizationAudit.status !== 0) failures.push(personalizationAudit.stdout + personalizationAudit.stderr);
-else console.log('Feed interest ranking, module cadence and preference persistence passed');
-for (const test of ['article-feedback', 'feature-announcement', 'feed-views', 'hunter-digest', 'people-follow', 'following-intro', 'badges', 'badge-dialog-motion', 'comments', 'feed-comments', 'prediction-results', 'onboarding', 'account-setup', 'collection-momentum', 'profile-photo', 'logout-reset']) {
-  const audit = spawnSync(process.execPath, ['--test', path.join(projectRoot, `scripts/${test}.test.mjs`)], { encoding: 'utf8' });
-  if (audit.status !== 0) failures.push(audit.stdout + audit.stderr);
-  else console.log(`${test} behavior passed`);
+const tests = spawnSync(process.execPath, ['--test', 'scripts/onboarding.test.mjs', 'scripts/account-setup.test.mjs'], { cwd: projectRoot, encoding: 'utf8' });
+console.log(tests.stdout);
+if (tests.status !== 0) failures.push(tests.stderr || 'Onboarding tests failed');
+const files = await filesIn(outputRoot);
+const pages = files.filter(file => file.endsWith('.html')).map(file => path.relative(outputRoot, file)).sort();
+assert.deepEqual(pages, ['index.html', 'onboarding.html'], 'Only onboarding and its compatibility alias may be built');
+async function checkReference(file, reference) {
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(reference)) return;
+  const pathname = decodeURIComponent(reference.split(/[?#]/)[0]);
+  if (!pathname) return;
+  const target = path.resolve(path.dirname(file), pathname);
+  if (!target.startsWith(outputRoot + path.sep)) { failures.push(`Reference outside website: ${reference}`); return; }
+  try { await access(target); } catch { failures.push(`Missing file in ${path.relative(outputRoot, file)}: ${reference}`); }
 }
-const inventoryAudit = spawnSync('python3', [path.join(projectRoot, 'scripts/audit-design-system.py')], { encoding: 'utf8' });
-if (inventoryAudit.status !== 0) failures.push(inventoryAudit.stderr || 'Design-system inventory audit failed');
-else console.log(inventoryAudit.stdout.trim());
-for (const file of await filesIn(outputRoot)) {
+for (const file of files) {
+  if (!/\.(html|css|js)$/.test(file)) continue;
+  const text = await readFile(file, 'utf8');
   if (file.endsWith('.js')) {
     const result = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8' });
     if (result.status !== 0) failures.push(result.stderr);
+    for (const [, reference] of text.matchAll(/\bfrom\s+['"]([^'"]+)['"]/g)) await checkReference(file, reference);
   }
+  if (file.endsWith('.css')) for (const [, reference] of text.matchAll(/url\(['"]?([^)'"\s]+)/g)) await checkReference(file, reference);
   if (!file.endsWith('.html')) continue;
-  const html = await readFile(file, 'utf8');
-  if (!/<html\b[^>]*data-demo-locked/.test(html) || !/src="(?:\.\.\/)*demo-access\.js"/.test(html)) {
-    failures.push(`Missing demo gate: ${path.relative(projectRoot, file)}`);
-  }
-  for (const [, reference] of html.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) {
-    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(reference)) continue;
-    const pathname = decodeURIComponent(reference.split(/[?#]/)[0]);
-    if (!pathname) continue;
-    const target = pathname.startsWith('/TrendHunter/')
-      ? path.resolve(outputRoot, '.' + pathname.slice('/TrendHunter'.length))
-      : path.resolve(path.dirname(file), pathname);
-    if (target !== outputRoot && !target.startsWith(outputRoot + path.sep)) {
-      failures.push(`Reference outside website: ${path.relative(outputRoot, file)} → ${reference}`);
-      continue;
-    }
-    try { await access(target); }
-    catch { failures.push(`Missing file: ${path.relative(outputRoot, file)} → ${reference}`); }
-  }
+  if (!/<html\b[^>]*data-demo-locked/.test(text) || !/src="demo-access\.js"/.test(text)) failures.push('Missing demo gate');
+  for (const [, reference] of text.matchAll(/\b(?:href|src)=["']([^"']+)["']/g)) await checkReference(file, reference);
 }
-if (failures.length) {
-  console.error(failures.join('\n'));
-  process.exitCode = 1;
-} else console.log('JavaScript, page references and password-gate coverage passed');
+const known = new Set(COLLECTIONS.map(collection => collection.href));
+for (const story of COLLECTION_STORIES) {
+  assert.ok(story.collections.every(href => known.has(href)), 'Article associations must use known collections');
+  await checkReference(path.join(outputRoot, 'index.html'), story.image);
+  const url = new URL(articleUrl(story.href));
+  assert.ok(url.href.startsWith(PROTOTYPE_BASE) && /^trend(?:-[a-z0-9-]+)?\.html$/.test(story.href), 'Articles must exit to the existing main app');
+}
+assert.equal(FEED_URL, PROTOTYPE_BASE + 'feed.html#for-you');
+const styles = await readFile(path.join(outputRoot, 'onboarding.css'), 'utf8');
+const gateStyles = await readFile(path.join(outputRoot, 'demo-access.css'), 'utf8');
+const defined = new Set([...styles.matchAll(/(--[\w-]+)\s*:/g)].map(match => match[1]));
+for (const [, name] of (styles + gateStyles).matchAll(/var\((--[\w-]+)/g)) if (!defined.has(name)) failures.push(`Undefined DS token: ${name}`);
+if (failures.length) { console.error([...new Set(failures)].join('\n')); process.exitCode = 1; }
+else console.log('Standalone page scope, JavaScript, imports, assets, DS tokens and demo gate passed');

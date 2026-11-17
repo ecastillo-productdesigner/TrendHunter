@@ -20,16 +20,14 @@ export async function build() {
     recursive: true,
     filter: file => !/(?:^|\/)(?:\.DS_Store|node_modules|\.git)$|\.(?:orig|rej)$/.test(file),
   });
-  await copyFile(path.join(outputRoot, 'feed.html'), path.join(outputRoot, 'index.html'));
+  // Keep previously shared onboarding.html preview links working without a second source page.
+  await copyFile(path.join(outputRoot, 'index.html'), path.join(outputRoot, 'onboarding.html'));
   await cp(path.join(projectRoot, 'access'), outputRoot, { recursive: true });
   const htmlFiles = (await filesIn(outputRoot)).filter(file => file.endsWith('.html'));
   for (const file of htmlFiles) {
     const relativeRoot = path.relative(path.dirname(file), outputRoot).split(path.sep).join('/');
     const prefix = relativeRoot ? `${relativeRoot}/` : '';
-    let original = await readFile(file, 'utf8');
-    // GitHub Pages serves this document at the missing URL, including nested paths.
-    // Keep its assets and navigation rooted at the published project directory.
-    if (file === path.join(outputRoot, '404.html')) original = original.replace('<base href="./">', '<base href="/TrendHunter/">');
+    const original = await readFile(file, 'utf8');
     const guarded = original
       .replace(/<html\b/i, '<html data-demo-locked')
       .replace(/<\/head>/i, `<meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="${prefix}demo-access.css"><script src="${prefix}demo-access.js"></script></head>`)

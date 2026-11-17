@@ -1,6 +1,6 @@
-import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=16';
-import { COLLECTION_STORIES } from './collection-story-data.js';
-import { answerUrl } from './answer-markup.js?v=1';
+import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=standalone-1';
+import { COLLECTION_STORIES } from './onboarding-data.js';
+import { answerUrl } from './onboarding-destinations.js';
 
 // Curated prompts open the existing fictional Answers prototype; no live AI service is implied.
 const pools = {

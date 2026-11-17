@@ -1,5 +1,6 @@
-import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=16';
-import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=2';
+import { FEED_URL, articleUrl } from './onboarding-destinations.js';
+import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=standalone-1';
+import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=standalone-1';
 
 const app = document.querySelector('[data-onboarding]');
 const progress = document.querySelector('[data-onboarding-progress]');
@@ -41,7 +42,7 @@ function syncChoices() {
   status.textContent = `${count} ${noun}${count === 1 ? '' : 's'} selected`;
 }
 function suggestedHunts() {
-  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}"><span class="answers-sparkle" aria-hidden="true"></span><span>${escapeText(hunt.question)}</span></a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(story.href)}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
+  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}"><span class="answers-sparkle" aria-hidden="true"></span><span>${escapeText(hunt.question)}</span></a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(articleUrl(story.href))}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
 }
 function render({ focus = true } = {}) {
   ({ step, editingReview } = readOnboardingRoute(location.hash));
@@ -149,7 +150,7 @@ document.querySelector('[data-onboarding-form]').addEventListener('submit', even
   }
   finishing = true;
   next.disabled = true;
-  window.navigateWithAccountSetup('feed.html#for-you', { minimumDuration: 8000 });
+  window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
 });
 document.querySelector('[data-onboarding-restart]').addEventListener('click', () => {
   Object.assign(draft, resetOnboardingDraft(session));
@@ -162,3 +163,5 @@ document.querySelector('[data-onboarding-restart]').addEventListener('click', ()
 window.addEventListener('hashchange', () => render());
 render({ focus: false });
 window.addEventListener('pageshow', event => { if (event.persisted) { finishing = false; render({ focus: false }); } });
+
+window.addEventListener('onboarding-setup-cancel', () => { finishing = false; render({ focus: false }); next.focus(); });

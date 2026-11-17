@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ONBOARDING_DRAFT_KEY, ONBOARDING_ANSWERS_KEY, ONBOARDING_QUESTION_GROUPS, TOPICS, cleanDraft, resetOnboardingDraft, readOnboardingAnswers, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from '../site/onboarding-state.js';
 import { onboardingHunts, onboardingArticles } from '../site/onboarding-hunts.js';
-import { COLLECTIONS } from '../site/collection-data.js';
-import { TOPIC_STORAGE_KEY, readSelectedTopics } from '../site/feed-personalization.js';
-import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from '../site/collection-follow-state.js';
-import { PEOPLE_FOLLOW_KEY, readFollowing } from '../site/people-follow-state.js';
+import { COLLECTIONS } from '../site/onboarding-data.js';
+import { TOPIC_STORAGE_KEY, readSelectedTopics, FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from '../site/onboarding-preferences.js';
+const PEOPLE_FOLLOW_KEY = 'trendhunter.followed-people.v1';
+const readFollowing = storage => JSON.parse(storage.getItem(PEOPLE_FOLLOW_KEY) || '[]');
 const memory = () => { const values = new Map(); return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) }; };
 test('back/reload retains draft choices without applying unfinished follows', () => {
   const storage = memory(), session = memory();
@@ -269,8 +269,8 @@ test('Suggested Hunts replaces Great picks with four unique safe links for all a
     assert.equal(new Set(hunts.map(hunt => hunt.question)).size, 4);
     for (const hunt of hunts) {
       const url = new URL(hunt.href, 'https://prototype.test/');
-      assert.equal(url.origin, 'https://prototype.test');
-      assert.equal(url.pathname, '/answers.html');
+      assert.equal(url.origin, 'https://ecastillo-productdesigner.github.io');
+      assert.equal(url.pathname, '/TrendHunter/answers.html');
       assert.equal(url.searchParams.get('q'), hunt.question);
     }
   }

@@ -1,6 +1,5 @@
-import { COLLECTIONS } from './collection-data.js';
-import { TOPIC_STORAGE_KEY, readSelectedTopics } from './feed-personalization.js?v=topics-9';
-import { FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './collection-follow-state.js';
+import { COLLECTIONS } from './onboarding-data.js';
+import { TOPIC_STORAGE_KEY, readSelectedTopics, FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './onboarding-preferences.js';
 
 // Curated prototype suggestions; no live popularity claims.
 export const ONBOARDING_DRAFT_KEY = 'trendhunter.onboarding-draft.v2';
