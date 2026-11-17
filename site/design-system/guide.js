@@ -114,10 +114,11 @@ document.querySelector('[data-ds-view-votes]')?.addEventListener('click', event 
   if (event.detail === 0) otherVotes.querySelector('a')?.focus({ preventScroll: true });
 }, { once: true });
 window.addEventListener('resize', updateThemeValues);
-for (const group of document.querySelectorAll('[data-ds-profile-filters], [data-ds-onboarding-answers]')) {
+for (const group of document.querySelectorAll('[data-ds-profile-filters], [data-ds-onboarding-answers], [data-ds-onboarding-collections]')) {
   group.addEventListener('click', event => {
     const selected = event.target.closest('button');
     if (!selected) return;
+    if (group.hasAttribute('data-ds-onboarding-collections')) { selected.setAttribute('aria-pressed', String(selected.getAttribute('aria-pressed') !== 'true')); return; }
     const clear = group.hasAttribute('data-ds-onboarding-answers') && selected.getAttribute('aria-pressed') === 'true';
     for (const button of group.querySelectorAll('button')) button.setAttribute('aria-pressed', String(button === selected && !clear));
   });

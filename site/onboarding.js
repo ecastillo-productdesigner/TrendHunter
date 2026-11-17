@@ -1,5 +1,5 @@
-import { TOPICS, STEPS, cleanDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingHasPicks, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=12';
-import { COLLECTIONS } from './collection-data.js';
+import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=16';
+import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=2';
 
 const app = document.querySelector('[data-onboarding]');
 const progress = document.querySelector('[data-onboarding-progress]');
@@ -21,24 +21,16 @@ let furthest = Math.max(0, STEPS.indexOf(readOnboardingRoute(location.hash).step
 let step = 'topics';
 let editingReview = false;
 let finishing = false;
-const labels = { topics: 'Your interests', 'about-you': 'About you', collections: 'Collections' };
-const mobileSummary = window.matchMedia('(max-width: 959px)');
-function placeSummaryAction() {
-  const actions = document.querySelector('.onboarding-actions');
-  if (step === 'review' && mobileSummary.matches) choices.before(actions);
-  else choices.after(actions);
-}
-mobileSummary.addEventListener('change', placeSummaryAction);
-const topicTile = (topic, summary = false) => `<${summary ? 'div' : 'button'} class="topic-tile" ${summary ? '' : 'type="button"'} data-topic="${topic.id}" ${summary ? 'data-selected="true"' : `data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"`}><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></${summary ? 'div' : 'button'}>`;
-const collectionChoice = collection => `<button class="pill-button onboarding-collection" type="button" data-choice="collections" data-value="${collection.href}" aria-pressed="${draft.collections.includes(collection.href)}">${escapeText(collection.name)}</button>`;
-const answerLabel = question => escapeText(question.options.find(([id]) => id === draft.answers[question.id])?.[1] || '');
+const labels = { topics: 'Your interests', 'about-you': 'About you', collections: 'Collections', 'suggested-hunts': 'Suggested Hunts' };
+const topicTile = topic => `<button class="topic-tile" type="button" data-topic="${topic.id}" data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></button>`;
+const collectionChoice = collection => `<button class="pill-button onboarding-collection" type="button" data-choice="collections" data-value="${collection.href}" aria-pressed="${draft.collections.includes(collection.href)}"><span class="onboarding-collection-label">${escapeText(collection.name)}</span><span class="onboarding-collection-check" aria-hidden="true"></span></button>`;
 // Reuse the selectable-tile button pattern: one answer, with click-again deselection.
-const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => `<button class="onboarding-answer" type="button" value="${value}" data-onboarding-answer="${question.id}" aria-pressed="${draft.answers[question.id] === value}"><span class="onboarding-answer-surface"><span>${escapeText(label)}</span></span></button>`).join('')}</div></fieldset>`;
+const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => `<button class="onboarding-answer" type="button" value="${value}" data-onboarding-answer="${question.id}" aria-pressed="${draft.answers[question.id] === value}"><span class="onboarding-answer-surface"><span class="onboarding-answer-check" aria-hidden="true"></span><span>${escapeText(label)}</span></span></button>`).join('')}</div></fieldset>`;
 
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));
   for (const button of choices.querySelectorAll('[data-onboarding-answer]')) button.setAttribute('aria-pressed', String(draft.answers[button.dataset.onboardingAnswer] === button.value));
-  if (step === 'review') return;
+  if (step === 'suggested-hunts') return;
   const count = onboardingSelectionCount(draft, step);
   next.disabled = count === 0;
   if (step === 'about-you') {
@@ -48,77 +40,81 @@ function syncChoices() {
   const noun = step === 'topics' ? 'topic' : 'collection';
   status.textContent = `${count} ${noun}${count === 1 ? '' : 's'} selected`;
 }
-function summary() {
-  const topics = TOPICS.filter(topic => draft.topics.includes(topic.id));
-  const collections = COLLECTIONS.filter(collection => draft.collections.includes(collection.href));
-  const question = onboardingQuestion(draft.topics);
-  choices.dataset.groups = [topics, collections].filter(group => group.length).length;
-  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics onboarding-summary-picks">${topics.map(topic => topicTile(topic, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="topics" aria-label="Add more topics">Add More</button></section>` : ''}
-  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections onboarding-summary-picks">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul><button class="onboarding-summary-add" type="button" data-edit="collections" aria-label="Add more collections">Add More</button></section>` : ''}
-  ${question && draft.answers[question.id] ? `<section class="onboarding-summary-group onboarding-summary-answer"><h2>Your answer</h2><dl class="onboarding-summary-answers onboarding-summary-picks"><div><dt>${escapeText(question.question)}</dt><dd>${answerLabel(question)}</dd></div></dl><button class="onboarding-summary-add" type="button" data-edit="about-you">Change answer</button></section>` : ''}
-  ${!onboardingHasPicks(draft) ? '<p class="onboarding-empty">Start exploring, and choose your interests whenever you’re ready.</p><button class="onboarding-edit" type="button" data-edit="topics">Choose interests</button>' : ''}`;
+function suggestedHunts() {
+  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}"><span class="answers-sparkle" aria-hidden="true"></span><span>${escapeText(hunt.question)}</span></a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(story.href)}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
 }
 function render({ focus = true } = {}) {
   ({ step, editingReview } = readOnboardingRoute(location.hash));
   if (step === 'about-you' && !onboardingQuestion(draft.topics)) {
-    location.replace(onboardingStepHash(editingReview ? 'review' : 'collections'));
+    location.replace(onboardingStepHash(editingReview ? 'suggested-hunts' : 'collections'));
     return;
   }
   const canonicalHash = onboardingStepHash(step, { editingReview });
   if (location.hash !== canonicalHash) history.replaceState(null, '', canonicalHash);
-  placeSummaryAction();
   const steps = onboardingSteps(draft.topics);
   const index = steps.indexOf(step);
   furthest = Math.max(furthest, editingReview ? STEPS.length - 1 : STEPS.indexOf(step));
   app.dataset.step = step;
   const previous = steps[index - 1];
-  back.href = editingReview ? '#review' : index ? onboardingStepHash(previous) : 'feed.html';
-  back.setAttribute('aria-label', editingReview ? 'Back to Great picks' : index ? `Back to ${labels[previous]}` : 'Back to feed');
-  progress.innerHTML = steps.filter(item => item !== 'review').map(item => {
-    const complete = steps.indexOf(item) < index && onboardingSelectionCount(draft, item) > 0;
-    return `<li><button type="button" class="onboarding-step" data-step="${item}" ${STEPS.indexOf(item) > furthest ? 'disabled' : ''} ${item === step ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${labels[item]}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
+  back.hidden = step === 'topics';
+  back.href = editingReview ? '#suggested-hunts' : onboardingStepHash(previous || 'topics');
+  back.setAttribute('aria-label', editingReview ? 'Back to Suggested Hunts' : index ? `Back to ${labels[previous]}` : 'Back');
+  progress.innerHTML = STEPS.map(item => {
+    const complete = STEPS.indexOf(item) < STEPS.indexOf(step) && onboardingSelectionCount(draft, item) > 0;
+    return `<li><button type="button" class="onboarding-step" data-step="${item}" ${STEPS.indexOf(item) > furthest || (item === 'about-you' && !onboardingQuestion(draft.topics)) ? 'disabled' : ''} ${item === step ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${labels[item]}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
   }).join('');
   const copy = {
-    topics: ['What topics interest you?', 'Your picks shape the stories and predictions you see.'],
-    'about-you': ['A little more you', ''],
-    collections: ['Collections you will like', 'Based on your interests, here are collections to follow.'],
-    review: ['Great picks', 'Review your picks before you start exploring.'],
+    topics: ['What topics interest you?', 'Pick as many as you like'],
+    'about-you': ['Make this Hunt a Little More About You', ''],
+    collections: ['Collections you will like', onboardingSelectionCount(draft, 'about-you') ? 'Based on your answer' : 'Based on your interests'],
+    'suggested-hunts': ['Suggested Hunts', 'Pick a question to start exploring'],
   }[step];
   [heading.textContent, subtitle.textContent] = copy;
   subtitle.hidden = !copy[1];
-  progress.closest('nav').hidden = step === 'review';
-  skip.hidden = step === 'review';
+  progress.closest('nav').hidden = false;
+  skip.hidden = step === 'suggested-hunts';
   skip.textContent = 'Skip';
   note.hidden = true;
-  document.querySelector('[data-onboarding-secondary]').hidden = step === 'review';
+  document.querySelector('[data-onboarding-secondary]').hidden = step === 'suggested-hunts';
   error.hidden = true;
-  next.textContent = step === 'review' ? 'See your feed' : 'Continue';
+  next.textContent = step === 'suggested-hunts' ? 'Take me to the Feed' : 'Continue';
+  next.hidden = false;
   next.disabled = false;
   choices.className = `onboarding-choices onboarding-choices--${step}`;
   if (step === 'topics') choices.innerHTML = `<div class="topic-grid" role="group" aria-label="Choose topics">${TOPICS.map(topic => topicTile(topic)).join('')}</div>`;
   else if (step === 'about-you') choices.innerHTML = questionChoices(onboardingQuestion(draft.topics));
-  else if (step === 'collections') choices.innerHTML = `<div class="onboarding-collections" role="group" aria-label="Choose collections">${onboardingCollections(draft.topics, draft.collections).map(collectionChoice).join('')}</div>`;
-  else { choices.innerHTML = summary(); status.textContent = 'Review your selected topics, answer and collections.'; }
+  else if (step === 'collections') {
+    const suggestions = onboardingCollections(draft.topics, draft.answers);
+    subtitle.hidden = !suggestions.length;
+    choices.innerHTML = suggestions.length ? `<div class="onboarding-collections" role="group" aria-label="Choose collections">${suggestions.map(collectionChoice).join('')}</div>` : '<p class="onboarding-empty">No matching collections for this answer yet. You can skip to continue.</p>';
+  }
+  else { choices.innerHTML = suggestedHunts(); status.textContent = 'Choose one of four suggested hunts to open its answer.'; }
   syncChoices();
-  if (step === 'review' && !onboardingHasPicks(draft) && finish()) return;
   if (focus) { (step === 'about-you' ? choices.querySelector('legend') : heading).focus({ preventScroll: true }); app.scrollIntoView({ block: 'start' }); }
 }
 function advance() {
   saveOnboardingDraft(draft, session);
   const steps = onboardingSteps(draft.topics);
-  // Changing interests in review asks the new question only if its answer is missing.
+  // Changing interests from Suggested Hunts asks the new question only if its answer is missing.
   const needsAnswer = step === 'topics' && onboardingQuestion(draft.topics) && !onboardingSelectionCount(draft, 'about-you');
-  const destination = editingReview ? needsAnswer ? 'about-you' : 'review' : steps[Math.min(steps.indexOf(step) + 1, steps.length - 1)];
-  if (destination === 'review' && !onboardingHasPicks(draft) && finish()) return;
-  location.hash = onboardingStepHash(destination, { editingReview: editingReview && destination !== 'review' });
+  const destination = editingReview ? needsAnswer ? 'about-you' : 'suggested-hunts' : steps[Math.min(steps.indexOf(step) + 1, steps.length - 1)];
+  location.hash = onboardingStepHash(destination, { editingReview: editingReview && destination !== 'suggested-hunts' });
 }
 choices.addEventListener('click', event => {
-  const edit = event.target.closest('[data-edit]');
-  if (edit) { location.hash = onboardingStepHash(edit.dataset.edit, { editingReview: true }); return; }
+  const hunt = event.target.closest('[data-onboarding-hunt], [data-onboarding-article]');
+  if (hunt) {
+    if (!completeOnboarding(draft, storage, session)) {
+      event.preventDefault();
+      error.textContent = 'Your choices could not be saved. Please try again.';
+      error.hidden = false;
+    }
+    return;
+  }
   const answer = event.target.closest('[data-onboarding-answer]');
   if (answer) {
     const question = answer.dataset.onboardingAnswer;
     draft.answers = draft.answers[question] === answer.value ? {} : { [question]: answer.value };
+    Object.assign(draft, cleanDraft(draft));
     saveOnboardingDraft(draft, session);
     syncChoices();
     return;
@@ -144,20 +140,25 @@ skip.addEventListener('click', () => {
 document.querySelector('[data-onboarding-form]').addEventListener('submit', event => {
   event.preventDefault();
   if (next.disabled) return;
-  if (step !== 'review') { advance(); return; }
-  finish();
-});
-function finish() {
-  if (finishing) return true;
+  if (step !== 'suggested-hunts') { advance(); return; }
+  if (finishing) return;
   if (!completeOnboarding(draft, storage, session, { keepDraft: true })) {
-    error.textContent = 'Your choices could not be saved. Please try again.'; error.hidden = false; return false;
+    error.textContent = 'Your choices could not be saved. Please try again.';
+    error.hidden = false;
+    return;
   }
   finishing = true;
   next.disabled = true;
-  // Keep any prediction calls, bookmarks and profile data already in this session.
   window.navigateWithAccountSetup('feed.html#for-you', { minimumDuration: 8000 });
-  return true;
-}
+});
+document.querySelector('[data-onboarding-restart]').addEventListener('click', () => {
+  Object.assign(draft, resetOnboardingDraft(session));
+  furthest = 0;
+  finishing = false;
+  history.replaceState(null, '', '#topics');
+  render();
+  window.scrollTo({ top: 0 });
+});
 window.addEventListener('hashchange', () => render());
 render({ focus: false });
 window.addEventListener('pageshow', event => { if (event.persisted) { finishing = false; render({ focus: false }); } });
