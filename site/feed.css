@@ -2577,6 +2577,24 @@ html[data-auth="signed-in"] .feed-guest-account-slot { display: none; }
 .feed-guest-account p { font: var(--type-body); color: var(--color-text-dim); }
 .feed-guest-account > a { align-self: flex-start; }
 
+/* About you in the feed — the same question and answer component as onboarding. */
+.feed-interest-card { min-width: 0; padding: var(--spacing-layout-lg); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-x-sm); background: var(--color-background-surface); color: var(--color-text-body); }
+.feed-interest-card [hidden] { display: none !important; }
+.feed-interest-header { text-align: center; }
+.feed-interest-header :is(h2, h4) { font: var(--type-card-headline); text-transform: uppercase; color: var(--color-text-primary); }
+.feed-interest-form { margin-top: var(--spacing-layout-xl); }
+.feed-interest-card .onboarding-answer-options { gap: var(--spacing-layout-md); }
+.feed-interest-submit { display: flex; width: 100%; max-width: var(--layout-login-width); min-height: var(--layout-auth-button-height); margin: var(--spacing-layout-lg) auto 0; }
+.feed-interest-submit:disabled { background: var(--buttons-primary-bg-disabled); color: var(--buttons-primary-label-disabled); cursor: not-allowed; }
+.feed-interest-error { margin-top: var(--spacing-component-ms); text-align: center; }
+.feed-interest-result { display: grid; justify-items: center; gap: var(--spacing-component-ms); margin-top: var(--spacing-layout-xl); text-align: center; }
+.feed-interest-result h3 { font: var(--type-editorial-h3); color: var(--color-text-primary); }
+.feed-interest-response, .feed-interest-result-copy { font: var(--type-body); overflow-wrap: anywhere; }
+.feed-interest-result-copy { color: var(--color-text-dim); }
+.feed-interest-edit { min-height: var(--icon-size-2xl); font: var(--type-body); color: var(--color-text-body-link); cursor: pointer; }
+.feed-interest-edit:hover { color: var(--color-text-primary); }
+.feed-interest-card :is(button, a):focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
+@media (max-width: 599px) { .feed-interest-card { padding: var(--spacing-layout-md); } }
 .feed-topic-picker {
   display: flex;
   flex-direction: column;

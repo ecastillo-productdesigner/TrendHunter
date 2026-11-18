@@ -8,6 +8,7 @@ export function guestFeedOrder(items, kindFor) {
   stories.slice(0, 3).forEach(add);
   module('collections');
   stories.slice(3, 5).forEach(add);
+  module('interest');
   module('videos');
   module('predictions');
   stories.slice(5, 7).forEach(add);

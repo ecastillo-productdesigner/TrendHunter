@@ -864,6 +864,15 @@
       ]
     },
     {
+      "key": "button:button-primary feed-interest-submit",
+      "classes": "button-primary feed-interest-submit",
+      "tag": "button",
+      "name": "Tune feed",
+      "sources": [
+        "feed.html"
+      ]
+    },
+    {
       "key": "a:button-primary not-found-action",
       "classes": "button-primary not-found-action",
       "tag": "a",
@@ -1893,6 +1902,15 @@
       ]
     },
     {
+      "key": "button:feed-interest-edit",
+      "classes": "feed-interest-edit",
+      "tag": "button",
+      "name": "Change answer",
+      "sources": [
+        "feed.html"
+      ]
+    },
+    {
       "key": "button:feed-navigation-tab",
       "classes": "feed-navigation-tab",
       "tag": "button",
@@ -2493,15 +2511,6 @@
       ]
     },
     {
-      "key": "button:onboarding-brand",
-      "classes": "onboarding-brand",
-      "tag": "button",
-      "name": "Restart onboarding",
-      "sources": [
-        "onboarding.html"
-      ]
-    },
-    {
       "key": "button:onboarding-skip",
       "classes": "onboarding-skip",
       "tag": "button",
@@ -2923,6 +2932,15 @@
       "name": "pill-button onboarding-collection ${className}",
       "sources": [
         "onboarding.js"
+      ]
+    },
+    {
+      "key": "button:pill-button onboarding-collection onboarding-answer",
+      "classes": "pill-button onboarding-collection onboarding-answer",
+      "tag": "button",
+      "name": "pill-button onboarding-collection onboarding-answer",
+      "sources": [
+        "about-you-question.js"
       ]
     },
     {

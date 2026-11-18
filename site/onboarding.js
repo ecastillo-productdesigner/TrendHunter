@@ -1,5 +1,6 @@
 import { FEED_URL, articleUrl } from './onboarding-destinations.js';
-import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=main-onboarding-11';
+import { aboutYouQuestionMarkup } from './about-you-question.js?v=1';
+import { TOPICS, STEPS, cleanDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=main-onboarding-11';
 import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=main-onboarding-11';
 
 const app = document.querySelector('[data-onboarding]');
@@ -32,12 +33,9 @@ const collectionChevrons = collection => {
   return `<span class="collection-momentum collection-momentum--${direction}" data-level="${level}" role="img" aria-label="Interest ${direction} ${percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span></span>`;
 };
 const collectionChoice = collection => choicePill(collection.name, draft.collections.includes(collection.href), `data-choice="collections" data-value="${escapeText(collection.href)}"`, { trailing: collectionChevrons(collection) });
-// Reuse collection pills while keeping one answer and click-again deselection.
-const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-collections onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, { className: 'onboarding-answer' })).join('')}</div></fieldset>`;
-
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));
-  for (const button of choices.querySelectorAll('[data-onboarding-answer]')) button.setAttribute('aria-pressed', String(draft.answers[button.dataset.onboardingAnswer] === button.value));
+  for (const button of choices.querySelectorAll('[data-about-you-answer]')) button.setAttribute('aria-pressed', String(draft.answers[button.dataset.aboutYouAnswer] === button.value));
   if (step === 'suggested-hunts') return;
   const count = onboardingSelectionCount(draft, step);
   next.disabled = count === 0;
@@ -100,7 +98,10 @@ function render({ focus = true } = {}) {
   next.disabled = false;
   choices.className = `onboarding-choices onboarding-choices--${step}`;
   if (step === 'topics') choices.innerHTML = `<div class="topic-grid" role="group" aria-label="Choose topics">${TOPICS.map(topic => topicTile(topic)).join('')}</div>`;
-  else if (step === 'about-you') choices.innerHTML = questionChoices(onboardingQuestion(draft.topics));
+  else if (step === 'about-you') {
+    const question = onboardingQuestion(draft.topics);
+    choices.innerHTML = aboutYouQuestionMarkup(question, draft.answers[question.id]);
+  }
   else if (step === 'collections') {
     const suggestions = onboardingCollections(draft.topics, draft.answers);
     choices.innerHTML = suggestions.length ? `<div class="onboarding-collections" role="group" aria-label="Choose collections">${suggestions.map(collectionChoice).join('')}</div>` : '<p class="onboarding-empty">No matching collections for this answer yet. You can skip to continue.</p>';
@@ -127,9 +128,9 @@ choices.addEventListener('click', event => {
     }
     return;
   }
-  const answer = event.target.closest('[data-onboarding-answer]');
+  const answer = event.target.closest('[data-about-you-answer]');
   if (answer) {
-    const question = answer.dataset.onboardingAnswer;
+    const question = answer.dataset.aboutYouAnswer;
     draft.answers = draft.answers[question] === answer.value ? {} : { [question]: answer.value };
     Object.assign(draft, cleanDraft(draft));
     saveOnboardingDraft(draft, session);
@@ -167,14 +168,6 @@ document.querySelector('[data-onboarding-form]').addEventListener('submit', even
   finishing = true;
   next.disabled = true;
   window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
-});
-document.querySelector('[data-onboarding-restart]').addEventListener('click', () => {
-  Object.assign(draft, resetOnboardingDraft(session));
-  furthest = 0;
-  finishing = false;
-  history.replaceState(null, '', '#topics');
-  render();
-  window.scrollTo({ top: 0 });
 });
 window.addEventListener('hashchange', () => render());
 render({ focus: false });

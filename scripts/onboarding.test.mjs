@@ -336,7 +336,7 @@ test('article alternatives reuse real matching stories and prioritize selected c
 });
 
 
-test('logo restart clears the onboarding draft and completion marker and survives reload', () => {
+test('explicit draft reset clears the onboarding draft and completion marker and survives reload', () => {
   const storage = memory(), session = memory();
   storage.setItem(FOLLOWED_COLLECTIONS_KEY, '["collection-solo-travel.html"]');
   saveOnboardingDraft({ topics: ['wellness'], answers: { 'wellness-try': 'sleep-tape' }, collections: ['collection-sleep-medicine.html'] }, session);
