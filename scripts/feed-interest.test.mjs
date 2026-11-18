@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MEMBER_INTEREST_KEY, GUEST_INTEREST_KEY, GUEST_ANSWERS_KEY, readFeedInterest, saveFeedInterest, readFeedQuestion, saveFeedAnswer, rankInterestStories, countInterestMatches, feedStoryInterestText } from '../site/feed-interest-state.js';
+import { MEMBER_INTEREST_KEY, GUEST_INTEREST_KEY, GUEST_ANSWERS_KEY, VIBE_ANSWERS_KEY, readFeedInterest, saveFeedInterest, readFeedQuestion, showNextFeedQuestion, dismissFeedQuestion, saveFeedAnswer, rankInterestStories, countInterestMatches, feedStoryInterestText } from '../site/feed-interest-state.js';
 import { readOnboardingFocus, readOnboardingAnswers, ONBOARDING_ANSWERS_KEY } from '../site/onboarding-state.js';
 import { TOPIC_STORAGE_KEY } from '../site/feed-personalization.js';
 import { guestFeedOrder } from '../site/guest-feed-order.js';
@@ -126,4 +126,53 @@ test('failed answer writes roll back both the saved answer and ranking interest'
   const blocked = { getItem() { throw Error('blocked'); }, setItem() { throw Error('blocked'); } };
   assert.equal(readFeedQuestion(true, { member: blocked }).answer, '');
   assert.equal(saveFeedAnswer('planner', true, { member: blocked }), null);
+});
+
+test('Show Vibe Questions rotates through the relevant group without immediate repeats or preselection', () => {
+  const stores = { member: memory(), guest: memory(), ui: memory() };
+  stores.member.setItem(TOPIC_STORAGE_KEY, '["wellness"]');
+  const initial = readFeedQuestion(true, stores);
+  const seen = [initial.question.id];
+  for (let i = 0; i < 2; i++) {
+    const fresh = showNextFeedQuestion(true, stores);
+    assert.equal(fresh.hidden, false);
+    assert.equal(fresh.answer, '');
+    assert.ok(fresh.question.options.length >= 4);
+    assert.equal(fresh.question.group, 'Mind & Body');
+    seen.push(fresh.question.id);
+  }
+  assert.equal(new Set(seen).size, 3);
+  assert.equal(showNextFeedQuestion(true, stores).question.id, initial.question.id);
+  stores.member.setItem(TOPIC_STORAGE_KEY, '["travel"]');
+  const changed = readFeedQuestion(true, stores);
+  assert.notEqual(showNextFeedQuestion(true, stores).question.id, changed.question.id, 'a changed topic group must also produce a fresh question');
+});
+
+test('successful dismissal survives reload; reopening shows a different question and keeps prior answers', () => {
+  const stores = { member: memory(), guest: memory(), ui: memory() };
+  stores.member.setItem(TOPIC_STORAGE_KEY, '["wellness"]');
+  assert.ok(saveFeedAnswer('sleep-tape', true, stores));
+  assert.equal(dismissFeedQuestion(true, 'wellness-try', stores), true);
+  assert.equal(readFeedQuestion(true, stores).hidden, true);
+  assert.equal(readFeedQuestion(false, stores).hidden, false, 'guest visibility is independent');
+  const fresh = showNextFeedQuestion(true, stores);
+  assert.equal(fresh.question.id, 'mind-body-style');
+  assert.equal(readFeedQuestion(true, stores).hidden, false);
+  assert.ok(saveFeedAnswer('feel-good', true, stores));
+  const history = JSON.parse(stores.member.getItem(VIBE_ANSWERS_KEY));
+  assert.equal(history['wellness-try'], 'sleep-tape');
+  assert.equal(history['mind-body-style'], 'feel-good');
+  assert.deepEqual(readOnboardingAnswers(stores.member), { 'wellness-try': 'sleep-tape' }, 'follow-up questions preserve the matching onboarding answer');
+});
+
+test('a failed follow-up history save rolls back ranking and does not dismiss the question', () => {
+  const member = memory(), ui = memory();
+  member.setItem(TOPIC_STORAGE_KEY, '["wellness"]');
+  member.setItem(MEMBER_INTEREST_KEY, '{"text":"Travel","prompt":""}');
+  const failing = { ...member, setItem(key, value) { if (key === VIBE_ANSWERS_KEY) throw Error('full'); member.setItem(key, value); } };
+  const stores = { member: failing, ui };
+  assert.equal(saveFeedAnswer('sleep-tape', true, stores), null);
+  assert.equal(readFeedInterest(true, stores).text, 'Travel');
+  assert.equal(readFeedQuestion(true, stores).hidden, false);
+  assert.equal(member.getItem(ONBOARDING_ANSWERS_KEY), null);
 });

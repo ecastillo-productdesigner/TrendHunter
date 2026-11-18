@@ -2584,15 +2584,7 @@ html[data-auth="signed-in"] .feed-guest-account-slot { display: none; }
 .feed-interest-header :is(h2, h4) { font: var(--type-card-headline); text-transform: uppercase; color: var(--color-text-primary); }
 .feed-interest-form { margin-top: var(--spacing-layout-xl); }
 .feed-interest-card .onboarding-answer-options { gap: var(--spacing-layout-md); }
-.feed-interest-submit { display: flex; width: 100%; max-width: var(--layout-login-width); min-height: var(--layout-auth-button-height); margin: var(--spacing-layout-lg) auto 0; }
-.feed-interest-submit:disabled { background: var(--buttons-primary-bg-disabled); color: var(--buttons-primary-label-disabled); cursor: not-allowed; }
 .feed-interest-error { margin-top: var(--spacing-component-ms); text-align: center; }
-.feed-interest-result { display: grid; justify-items: center; gap: var(--spacing-component-ms); margin-top: var(--spacing-layout-xl); text-align: center; }
-.feed-interest-result h3 { font: var(--type-editorial-h3); color: var(--color-text-primary); }
-.feed-interest-response, .feed-interest-result-copy { font: var(--type-body); overflow-wrap: anywhere; }
-.feed-interest-result-copy { color: var(--color-text-dim); }
-.feed-interest-edit { min-height: var(--icon-size-2xl); font: var(--type-body); color: var(--color-text-body-link); cursor: pointer; }
-.feed-interest-edit:hover { color: var(--color-text-primary); }
 .feed-interest-card :is(button, a):focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 @media (max-width: 599px) { .feed-interest-card { padding: var(--spacing-layout-md); } }
 .feed-topic-picker {
@@ -5556,6 +5548,9 @@ body:has(.auth-prompt[open]) {
   padding: var(--spacing-layout-md);
   background-color: var(--settings-panel-bg);
   border-radius: var(--radius-sm);
+  max-height: calc(100dvh - var(--layout-settings-fab-size) - var(--spacing-layout-lg) * 2 - var(--spacing-component-sm) - env(safe-area-inset-bottom, 0px));
+  max-width: calc(100vw - var(--spacing-layout-lg) * 2 - env(safe-area-inset-right, 0px));
+  overflow-y: auto;
 }
 
 .settings-panel[hidden] {
@@ -5564,13 +5559,14 @@ body:has(.auth-prompt[open]) {
 
 .settings-panel-item {
   position: relative;
+  flex-shrink: 0;
   width: 100%;
   font-family: var(--type-font-body);
   font-size: var(--type-size-12);
   font-weight: var(--type-weight-regular);
   line-height: var(--type-utility-helper-line-height);
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
   color: var(--settings-panel-text);
   cursor: pointer;
 }

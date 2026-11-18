@@ -6,6 +6,7 @@ const localKeys = [
   'trendhunter.followed-people.v1',
   'trendhunter.selected-topics.v1',
   'trendhunter.onboarding-answers.v1',
+  'trendhunter.vibe-answers.v1',
   'trendhunter.onboarding-focus.v1',
   'trendhunter.recommendation-feedback.v1',
   'trendhunter.member-achievements.v1',
@@ -38,6 +39,7 @@ const sessionKeys = [
   'trendhunter.guest-topics.v1',
   'trendhunter.guest-focus.v1',
   'trendhunter.guest-about-you.v1',
+  'trendhunter.vibe-question-state.v1',
   'trendhunter.guest-recommendation-feedback.v1',
 ];
 const localPrefixes = ['trendhunter.comments.v1:', 'trendhunter.article-feedback.v1:'];

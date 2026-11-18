@@ -1,9 +1,11 @@
-import { ONBOARDING_FOCUS_KEY, ONBOARDING_ANSWERS_KEY, TOPICS, cleanOnboardingFocus, cleanOnboardingAnswers, onboardingQuestion, onboardingCollections } from './onboarding-state.js?v=main-onboarding-11';
+import { ONBOARDING_FOCUS_KEY, ONBOARDING_ANSWERS_KEY, ONBOARDING_QUESTION_GROUPS, TOPICS, cleanOnboardingFocus, cleanOnboardingAnswers, onboardingQuestion, onboardingCollections } from './onboarding-state.js?v=main-onboarding-11';
 import { readSelectedTopics } from './feed-personalization.js?v=topics-9';
 
 export { ONBOARDING_FOCUS_KEY as MEMBER_INTEREST_KEY };
 export const GUEST_INTEREST_KEY = 'trendhunter.guest-focus.v1';
 export const GUEST_ANSWERS_KEY = 'trendhunter.guest-about-you.v1';
+export const VIBE_ANSWERS_KEY = 'trendhunter.vibe-answers.v1';
+export const VIBE_QUESTION_STATE_KEY = 'trendhunter.vibe-question-state.v1';
 
 function interestStore(signedIn, stores) {
   return signedIn
@@ -27,20 +29,56 @@ export function saveFeedInterest(value, signedIn, stores = {}) {
   } catch { return null; }
 }
 
-export function readFeedQuestion(signedIn, stores = {}) {
+const readObject = (storage, key) => {
+  try {
+    const value = JSON.parse(storage.getItem(key) || '{}');
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+  } catch { return {}; }
+};
+function questionContext(signedIn, stores) {
   let storage;
   try { ({ storage } = interestStore(signedIn, stores)); } catch {}
   const topics = signedIn ? readSelectedTopics(storage) : [];
-  // A general social-style question is the curated fallback, not an inferred topic preference.
-  const question = onboardingQuestion(topics) || onboardingQuestion(['culture']);
-  let answers = {};
-  try { answers = JSON.parse(storage.getItem(signedIn ? ONBOARDING_ANSWERS_KEY : GUEST_ANSWERS_KEY) || '{}'); } catch {}
-  return { question, answer: cleanOnboardingAnswers(answers, question)[question.id] || '' };
+  // This fallback chooses a general question, not an inferred topic preference.
+  const initial = onboardingQuestion(topics) || onboardingQuestion(['culture']);
+  const group = ONBOARDING_QUESTION_GROUPS.find(group => group.label === initial.group);
+  const pool = group.questions.map(question => ({ ...question, group: group.label }));
+  let ui;
+  try { ui = stores.ui ?? stores.guest ?? globalThis.sessionStorage; } catch {}
+  const scope = signedIn ? 'member' : 'guest';
+  const states = readObject(ui, VIBE_QUESTION_STATE_KEY);
+  return { storage, topics, initial, pool, ui, scope, states, state: states[scope] || {} };
 }
-
-export function saveFeedAnswer(value, signedIn, stores = {}) {
-  const { question } = readFeedQuestion(signedIn, stores);
-  const option = question.options.find(([id]) => id === value);
+function writeQuestionState(context, state) {
+  try { context.ui.setItem(VIBE_QUESTION_STATE_KEY, JSON.stringify({ ...context.states, [context.scope]: state })); return true; }
+  catch { return false; }
+}
+export function readFeedQuestion(signedIn, stores = {}) {
+  const context = questionContext(signedIn, stores);
+  const { storage, initial, pool, state } = context;
+  const question = pool.find(question => question.id === state.id) || initial;
+  const history = readObject(storage, signedIn ? VIBE_ANSWERS_KEY : GUEST_ANSWERS_KEY);
+  const answers = signedIn ? { ...readObject(storage, ONBOARDING_ANSWERS_KEY), ...history } : history;
+  return { question, answer: state.fresh ? '' : cleanOnboardingAnswers(answers, question)[question.id] || '', hidden: state.hidden === true };
+}
+export function showNextFeedQuestion(signedIn, stores = {}) {
+  const context = questionContext(signedIn, stores);
+  const currentId = context.pool.some(question => question.id === context.state.id) ? context.state.id : context.initial.id;
+  const current = context.pool.findIndex(question => question.id === currentId);
+  const question = context.pool[(current + 1) % context.pool.length];
+  writeQuestionState(context, { id: question.id, hidden: false, fresh: true });
+  return { question, answer: '', hidden: false };
+}
+export function dismissFeedQuestion(signedIn, questionId, stores = {}) {
+  const context = questionContext(signedIn, stores);
+  return writeQuestionState(context, { id: questionId, hidden: true, fresh: false });
+}
+export function saveFeedAnswer(value, signedIn, stores = {}, displayedQuestion) {
+  const context = questionContext(signedIn, stores);
+  const question = displayedQuestion
+    ? context.pool.find(question => question.id === displayedQuestion.id)
+    : readFeedQuestion(signedIn, stores).question;
+  const option = question?.options.find(([id]) => id === value);
   if (!option) return null;
   const answers = { [question.id]: value };
   const collections = onboardingCollections(question.topics, answers);
@@ -48,7 +86,11 @@ export function saveFeedAnswer(value, signedIn, stores = {}) {
   const interest = { text: [option[1], ...collections.map(collection => collection.name)].join(', '), prompt: '' };
   let storage, key;
   try { ({ storage, key } = interestStore(signedIn, stores)); } catch { return null; }
-  const writes = [[key, interest], [signedIn ? ONBOARDING_ANSWERS_KEY : GUEST_ANSWERS_KEY, answers]];
+  const historyKey = signedIn ? VIBE_ANSWERS_KEY : GUEST_ANSWERS_KEY;
+  const history = { ...readObject(storage, historyKey), ...answers };
+  const writes = [[key, interest], [historyKey, history]];
+  // Preserve the onboarding response when answering a different follow-up question.
+  if (signedIn && onboardingQuestion(context.topics)?.id === question.id) writes.push([ONBOARDING_ANSWERS_KEY, answers]);
   const previous = new Map();
   try {
     for (const [name] of writes) previous.set(name, storage.getItem(name));

@@ -13,7 +13,7 @@ import { readArticleFeedback, saveArticleFeedback } from '../site/article-feedba
 import { digestUpdates, readDigestState, catchUpDigest } from '../site/hunter-digest-state.js';
 import { viewedCollectionStories, markCollectionStoryViewed } from '../site/collection-update-state.js';
 import { readOnboardingDraft, saveOnboardingDraft, readOnboardingAnswers, ONBOARDING_ANSWERS_KEY, readOnboardingFocus, ONBOARDING_FOCUS_KEY } from '../site/onboarding-state.js';
-import { saveFeedInterest, readFeedInterest, saveFeedAnswer, GUEST_ANSWERS_KEY } from '../site/feed-interest-state.js';
+import { saveFeedInterest, readFeedInterest, saveFeedAnswer, dismissFeedQuestion, GUEST_ANSWERS_KEY, VIBE_ANSWERS_KEY, VIBE_QUESTION_STATE_KEY } from '../site/feed-interest-state.js';
 
 function memoryStorage() {
   const values = new Map();
@@ -36,6 +36,8 @@ test('logout resets saved member activity and returns real state readers to empt
   local.setItem(ONBOARDING_FOCUS_KEY, JSON.stringify({ text: 'New weekend adventures', prompt: 'here-to' }));
   saveFeedInterest({ text: 'Guest interests', prompt: 'daily-trend' }, false, { guest: session });
   saveFeedAnswer('planner', false, { guest: session });
+  dismissFeedQuestion(false, 'experiences-style', { guest: session });
+  local.setItem(VIBE_ANSWERS_KEY, '{"mind-body-style":"feel-good"}');
   saveRecommendationFeedback('trend.html', 'collection-longevity.html', 'less', local);
   recordBadgeActivity(local, { type: 'call', id: 'retail-events', call: 'in' }, '2026-11-12');
   previewPredictionResults(local, { 'retail-events': 'in' });
@@ -59,6 +61,8 @@ test('logout resets saved member activity and returns real state readers to empt
   assert.deepEqual(readOnboardingFocus(local), { text: '', prompt: '' });
   assert.deepEqual(readFeedInterest(false, { guest: session }), { text: '', prompt: '' });
   assert.equal(session.getItem(GUEST_ANSWERS_KEY), null);
+  assert.equal(session.getItem(VIBE_QUESTION_STATE_KEY), null);
+  assert.equal(local.getItem(VIBE_ANSWERS_KEY), null);
   assert.deepEqual(readFollowedCollections(local), []);
   assert.deepEqual(readFeedPreferences(true, { member: local }), { topics: [], feedback: { hiddenStories: [], preferredCollections: [] } });
   assert.deepEqual(readBadgeState(local).earned, {});

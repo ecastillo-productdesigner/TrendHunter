@@ -18,6 +18,11 @@ if (settingsButton && settingsPanel) {
 
   settingsButton.addEventListener('click', () => setOpen(settingsPanel.hidden));
 
+  settingsPanel.querySelector('[data-setting="show-vibe-questions"]')?.addEventListener('click', () => {
+    setOpen(false);
+    document.dispatchEvent(new Event('vibe-questions-show'));
+  });
+
   const showBusinessBanner = document.createElement('button');
   showBusinessBanner.className = 'settings-panel-item';
   showBusinessBanner.type = 'button';

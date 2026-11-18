@@ -5,7 +5,7 @@ import { feedViews, resolveFeedView } from './feed-view-state.js?v=2';
 import { bindChangingCollections } from './changing-collections.js?v=5';
 import { readFeedPreferences, GUEST_TOPIC_STORAGE_KEY, GUEST_FEEDBACK_STORAGE_KEY } from './feed-preferences.js?v=2';
 import { guestFeedOrder } from './guest-feed-order.js?v=3';
-import { MEMBER_INTEREST_KEY, GUEST_INTEREST_KEY, readFeedInterest, rankInterestStories, feedStoryInterestText } from './feed-interest-state.js?v=about-you-2';
+import { MEMBER_INTEREST_KEY, GUEST_INTEREST_KEY, readFeedInterest, rankInterestStories, feedStoryInterestText } from './feed-interest-state.js?v=vibe-questions-3';
 import { mountFeedComments } from './feed-comments.js';
 
 // Feed views reuse existing stories and the single live prediction deck.
@@ -183,6 +183,7 @@ import { mountFeedComments } from './feed-comments.js';
     if (!navigation.hidden) tabs[0].focus({ preventScroll: true });
   });
   document.addEventListener('feed-interest-updated', () => select(viewFromUrl(), { resetScroll: false }));
+  document.addEventListener('feed-interest-show', () => select('for-you', { updateUrl: true, resetScroll: false }));
   document.addEventListener('feed-recommendations-updated', event => {
     // Keep the current card and scroll position while feedback is reversible.
     // Apply ranking/hiding when the visitor next opens For You or resets it.

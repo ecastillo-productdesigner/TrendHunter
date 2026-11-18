@@ -864,15 +864,6 @@
       ]
     },
     {
-      "key": "button:button-primary feed-interest-submit",
-      "classes": "button-primary feed-interest-submit",
-      "tag": "button",
-      "name": "Tune feed",
-      "sources": [
-        "feed.html"
-      ]
-    },
-    {
       "key": "a:button-primary not-found-action",
       "classes": "button-primary not-found-action",
       "tag": "a",
@@ -1897,15 +1888,6 @@
       "classes": "feature-announcement-link",
       "tag": "a",
       "name": "Try it.",
-      "sources": [
-        "feed.html"
-      ]
-    },
-    {
-      "key": "button:feed-interest-edit",
-      "classes": "feed-interest-edit",
-      "tag": "button",
-      "name": "Change answer",
       "sources": [
         "feed.html"
       ]
@@ -3628,6 +3610,7 @@
         "contributor.html",
         "contributor.html",
         "contributor.html",
+        "feed.html",
         "feed.html",
         "feed.html",
         "feed.html",
