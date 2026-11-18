@@ -6,10 +6,10 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 | --- | --- |
 | Page spacing | `--spacing-page-2xl` (48px), `--spacing-layout-xl` (32px), `--spacing-layout-lg` (24px), `--spacing-layout-md` (16px) |
 | Choice spacing | `--spacing-component-ms` (12px), `--spacing-component-sm` (8px), `--spacing-component-xs` (4px) |
-| Topic tiles | Nine existing topic colors; `aria-pressed` buttons, multiple selection |
-| Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime outline without a checkmark; three choices, single selection, click again to clear; three columns desktop, stacked on mobile |
-| Collection pills | Dark surface, gray border; selected lime border and right-side plain lime tick; multiple selection |
-| Question pills | Existing Answers suggestion style, gray collection border, lime sparkle; two columns desktop, one mobile |
+| Topic tiles | Unselected background matches the collection pills; nine existing selected topic colors; `aria-pressed` buttons, multiple selection |
+| Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime outline without a checkmark; at least four choices, single selection, click again to clear; two columns desktop, stacked on mobile |
+| Collection pills | Dark surface, gray border; selected lime outline without a checkmark; multiple selection |
+| Question pills | Existing Answers suggestion style, gray collection border, lime sparkle and text centered together; two columns desktop, one mobile |
 | Article alternatives | Existing compact story link: 48px square thumbnail plus uppercase Barlow Condensed headline; two columns desktop, stacked mobile |
 | Primary CTA | Existing lime primary button, Take me to the Feed below articles |
 
@@ -19,7 +19,7 @@ Your interests → About you → Collections → Suggested Hunts. Skipping inter
 
 The About you and Collections headings use the full onboarding content width so they stay on one line on desktop. On smaller screens they wrap naturally at the existing type size. The Collections heading is “Collections you’ll want to explore” with no subheading.
 
-Mind & Body maps to Health/Beauty/Fitness; Everyday Living to Food/Home/Tech/Family; Experiences to Culture/Travel. The largest selected group wins, with ties resolved by first selected interest. The first topic within that group chooses one stable question; Culture plus Travel chooses the say-yes question. All ten questions have exactly three answers. Topic or answer changes prune stale answers and unrelated collection selections.
+Mind & Body maps to Health/Beauty/Fitness; Everyday Living to Food/Home/Tech/Family; Experiences to Culture/Travel. The largest selected group wins, with ties resolved by first selected interest. The first topic within that group chooses one stable question; Culture plus Travel chooses the say-yes question. All ten questions have at least four answers; curated fourth options retain the original choices and map to related collections. Topic or answer changes prune stale answers and unrelated collection selections.
 
 Collections lists direct answer matches first and fills with curated neighboring collections to a minimum of four. Skipped answers use topics; skipped interests use curated defaults. Metadata represents prototype recommendations, not measured popularity.
 

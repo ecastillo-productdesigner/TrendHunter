@@ -1,6 +1,6 @@
 import { FEED_URL, articleUrl } from './onboarding-destinations.js';
-import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=standalone-1';
-import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=standalone-1';
+import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=four-answers-5';
+import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=four-answers-5';
 
 const app = document.querySelector('[data-onboarding]');
 const progress = document.querySelector('[data-onboarding-progress]');
@@ -24,10 +24,10 @@ let editingReview = false;
 let finishing = false;
 const labels = { topics: 'Your interests', 'about-you': 'About you', collections: 'Collections', 'suggested-hunts': 'Suggested Hunts' };
 const topicTile = topic => `<button class="topic-tile" type="button" data-topic="${topic.id}" data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></button>`;
-const choicePill = (label, pressed, attributes, className = '', showCheck = true) => `<button class="pill-button onboarding-collection ${className}" type="button" ${attributes} aria-pressed="${pressed}"><span class="onboarding-collection-label">${escapeText(label)}</span>${showCheck ? '<span class="onboarding-collection-check" aria-hidden="true"></span>' : ''}</button>`;
+const choicePill = (label, pressed, attributes, className = '') => `<button class="pill-button onboarding-collection ${className}" type="button" ${attributes} aria-pressed="${pressed}"><span class="onboarding-collection-label">${escapeText(label)}</span></button>`;
 const collectionChoice = collection => choicePill(collection.name, draft.collections.includes(collection.href), `data-choice="collections" data-value="${escapeText(collection.href)}"`);
 // Reuse collection pills while keeping one answer and click-again deselection.
-const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, 'onboarding-answer', false)).join('')}</div></fieldset>`;
+const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-collections onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, 'onboarding-answer')).join('')}</div></fieldset>`;
 
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));

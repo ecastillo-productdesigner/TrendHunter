@@ -5,7 +5,8 @@ import { TOPIC_STORAGE_KEY, readSelectedTopics, FOLLOWED_COLLECTIONS_KEY, readFo
 export const ONBOARDING_DRAFT_KEY = 'trendhunter.onboarding-draft.v2';
 export const ONBOARDING_COMPLETE_KEY = 'trendhunter.onboarding-complete.v1';
 export const ONBOARDING_ANSWERS_KEY = 'trendhunter.onboarding-answers.v1';
-// Supplied question bank; topic pairings choose one stable question from the winning group.
+// Supplied questions with curated extra answers to keep at least four options per question.
+// Topic pairings choose one stable question from the winning group.
 // Option tuples contain [stored value, visible label, matching prototype collection slugs].
 export const ONBOARDING_QUESTION_GROUPS = [
   { id: 'mind-body', label: 'Mind & Body', topics: ['wellness', 'beauty', 'fitness'], questions: [
@@ -13,16 +14,19 @@ export const ONBOARDING_QUESTION_GROUPS = [
       ['cold-plunge', 'Cold plunge', ['biohackers-body', 'nervous-system-gym']],
       ['red-light', 'Red light therapy', ['evidence-based-beauty', 'health-technology']],
       ['sleep-tape', 'Sleep tape', ['sleep-medicine']],
+      ['breathwork', 'Breathwork', ['nervous-system-gym', 'the-intuitive-body']],
     ] },
     { id: 'mind-body-style', topics: ['beauty'], question: 'Do you optimize everything, or just do what feels good?', options: [
       ['optimize', 'Optimize everything', ['wellness-maxxing', 'biohackers-body', 'health-technology']],
       ['feel-good', 'Do what feels good', ['the-intuitive-body', 'nervous-system-gym']],
       ['balanced', 'A bit of both', ['longevity', 'the-intuitive-body']],
+      ['keep-simple', 'Keep it simple', ['preventive-health', 'the-intuitive-body', 'regulated-living']],
     ] },
     { id: 'morning-routine', topics: ['fitness'], question: 'Are your mornings a sacred ritual or snooze-button survival?', options: [
       ['ritual', 'Sacred ritual', ['fitness-reset', 'modern-hydration-caffeine', 'nervous-system-gym']],
       ['snooze', 'Snooze-button survival', ['sleep-medicine', 'modern-hydration-caffeine']],
       ['in-between', 'Somewhere in between', ['fitness-reset', 'modern-hydration-caffeine']],
+      ['early-workout', 'Straight into a workout', ['fitness-reset', 'biohackers-body', 'cardio-and-its-health']],
     ] },
   ] },
   { id: 'everyday-living', label: 'Everyday Living', topics: ['food-drink', 'home-living', 'tech', 'family-parenting'], questions: [
@@ -30,21 +34,25 @@ export const ONBOARDING_QUESTION_GROUPS = [
       ['home-upgrade', 'A home upgrade', ['tactile-home-design', 'smart-home-energy']],
       ['useful-gadget', 'A useful gadget', ['ai-everyday-life', 'smart-home-energy']],
       ['everyday-essential', 'An everyday essential', ['everyday-living', 'budgeted-living']],
+      ['memorable-experience', 'A memorable experience', ['group-friend-events', 'food-as-an-experience']],
     ] },
     { id: 'dinner-style', topics: ['food-drink'], question: 'For dinner, are you a meal-prep hero, takeout loyalist, or “I’ll figure it out at 7pm”?', options: [
       ['meal-prep', 'Meal-prep hero', ['protein-forward-eating', 'metabolic-life']],
       ['takeout', 'Takeout loyalist', ['food-as-an-experience']],
       ['figure-it-out', 'I’ll figure it out at 7pm', ['food-as-an-experience', 'everyday-living']],
+      ['new-recipe', 'Trying a new recipe', ['food-as-an-experience', 'protein-forward-eating']],
     ] },
     { id: 'open-tabs', topics: ['tech'], question: 'How many tabs do you have open right now?', options: [
       ['few', '0–5 tabs', ['ai-everyday-life']],
       ['several', '6–20 tabs', ['ai-everyday-life']],
       ['many', '21+ tabs', ['ai-everyday-life']],
+      ['lost-count', 'I’ve lost count', ['ai-everyday-life', 'regulated-living']],
     ] },
     { id: 'everyday-treat', topics: ['family-parenting'], question: 'A little treat makes you feel: guilty, ready for the day, or not for me?', options: [
       ['guilty', 'Guilty', ['budgeted-living']],
       ['ready', 'Ready for the day', ['food-as-an-experience', 'modern-hydration-caffeine']],
       ['not-for-me', 'Not for me', ['everyday-living', 'regulated-living']],
+      ['celebrating', 'Like celebrating', ['group-friend-events', 'food-as-an-experience']],
     ] },
   ] },
   { id: 'experiences', label: 'Experiences', topics: ['culture', 'travel'], questions: [
@@ -52,16 +60,19 @@ export const ONBOARDING_QUESTION_GROUPS = [
       ['adventure', 'Big adventure', ['adventure-active-travel']],
       ['relaxation', 'Total relaxation', ['solo-travel']],
       ['food-trip', 'Eating my way through', ['food-as-an-experience', 'adventure-active-travel', 'solo-travel']],
+      ['culture-discovery', 'Culture & discovery', ['adventure-active-travel', 'group-friend-events', 'food-as-an-experience']],
     ] },
     { id: 'experiences-style', topics: ['culture'], question: 'Your friends would call you: the planner, the wildcard, or down for anything?', options: [
       ['planner', 'The planner', ['group-friend-events']],
       ['wildcard', 'The wildcard', ['adventure-active-travel', 'group-friend-events']],
       ['anything', 'Down for anything', ['group-friend-events', 'food-as-an-experience']],
+      ['homebody', 'The homebody', ['tactile-home-design', 'everyday-living']],
     ] },
     { id: 'say-yes', topics: ['culture', 'travel'], question: 'What do you want to say yes to more?', options: [
       ['learning', 'Learning & reading', ['group-friend-events', 'everyday-living', 'tactile-home-design', 'food-as-an-experience']],
       ['travel', 'Travel', ['adventure-active-travel', 'solo-travel']],
       ['social-plans', 'Social plans & GNO', ['group-friend-events', 'food-as-an-experience']],
+      ['rest-recharge', 'Rest & recharge', ['sleep-medicine', 'nervous-system-gym']],
     ] },
   ] },
 ];

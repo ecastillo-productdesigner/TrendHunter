@@ -1,4 +1,4 @@
-import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=standalone-1';
+import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=four-answers-5';
 import { COLLECTION_STORIES } from './onboarding-data.js';
 import { answerUrl } from './onboarding-destinations.js';
 

@@ -3,7 +3,7 @@
 The `Onboarding` branch is a standalone prototype. It starts at **Your interests** and contains only this journey:
 
 1. **Your interests** — choose any of nine topics, or Skip
-2. **About you** — answer one topic-matched question with exactly three choices, or Skip
+2. **About you** — answer one topic-matched question with at least four choices, or Skip
 3. **Collections** — follow matching collections; at least four direct or related suggestions
 4. **Suggested Hunts** — four questions, two article alternatives and a **Take me to the Feed** CTA
 

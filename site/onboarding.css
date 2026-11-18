@@ -321,7 +321,7 @@ button {
   padding: var(--spacing-component-ms);
   border: var(--stroke-default) solid var(--color-border-default);
   border-radius: var(--radius-x-sm);
-  background: var(--topic-tile-background);
+  background: var(--buttons-tertiary-bg);
   color: var(--color-text-tertiary);
   text-align: left;
   cursor: pointer;
@@ -392,12 +392,9 @@ button {
 .onboarding-question { min-width: 0; margin: 0; padding: 0; border: 0; }
 .onboarding-question legend { width: 100%; margin-bottom: var(--spacing-layout-lg); padding: 0; font: var(--type-editorial-h3); color: var(--color-text-primary); text-align: center; }
 .onboarding-question legend:focus { outline: none; }
-.onboarding-answer-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-component-ms); }
 .onboarding-collections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-lg) var(--spacing-page-2xl); }
-.onboarding-collection { display: grid; grid-template-columns: var(--icon-size-md) minmax(0, 1fr) var(--icon-size-md); position: relative; cursor: pointer; }
-.onboarding-collection-label { grid-column: 2; }
-.onboarding-collection-check { grid-column: 3; width: var(--icon-size-md); height: var(--icon-size-md); color: var(--color-border-focus); background: currentColor; mask: url("assets/predictions/check.svg") center / contain no-repeat; -webkit-mask: url("assets/predictions/check.svg") center / contain no-repeat; visibility: hidden; }
-.onboarding-collection[aria-pressed="true"] .onboarding-collection-check { visibility: visible; }
+.onboarding-collection { position: relative; text-align: center; cursor: pointer; }
+.onboarding-collection-label { min-width: 0; }
 .onboarding-collection[aria-pressed="true"] { background: var(--buttons-tertiary-bg); border-color: var(--color-border-focus); color: var(--color-text-secondary); }
 .onboarding :is(button, a, [tabindex="0"]):focus-visible, .account-setup button:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .onboarding-actions { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-layout-lg); max-width: var(--layout-login-width); margin-inline: auto; }
@@ -410,7 +407,7 @@ button {
 .onboarding[data-step="suggested-hunts"] .onboarding-choices { margin-top: var(--spacing-page-2xl); }
 .onboarding-hunts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-md); list-style: none; }
 .onboarding-hunts li { min-width: 0; }
-.onboarding-hunts .answers-suggestion { border-color: var(--buttons-tertiary-border); width: 100%; height: 100%; min-height: calc(var(--icon-size-2xl) + var(--spacing-layout-lg)); padding: var(--spacing-layout-md) var(--spacing-layout-lg); white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.onboarding-hunts .answers-suggestion { border-color: var(--buttons-tertiary-border); width: 100%; height: 100%; min-height: calc(var(--icon-size-2xl) + var(--spacing-layout-lg)); padding: var(--spacing-layout-md) var(--spacing-layout-lg); white-space: normal; overflow-wrap: anywhere; justify-content: center; text-align: center; }
 .onboarding-hunts .answers-sparkle { flex: none; }
 .onboarding-articles-section { margin-top: var(--spacing-page-2xl); }
 .onboarding-articles-heading { margin-bottom: var(--spacing-layout-md); font: var(--type-body); text-align: center; color: var(--color-text-tertiary); }
@@ -425,7 +422,6 @@ button {
 .onboarding-step { font: var(--type-editorial-eyebrow); }
 .onboarding-collections { grid-template-columns: 1fr; gap: var(--spacing-layout-md); }
 .onboarding-choices { margin-block: var(--spacing-layout-xl); }
-.onboarding-answer-options { grid-template-columns: 1fr; gap: var(--spacing-layout-md); }
 }
 html[data-account-setup] body > :not(.account-setup) { visibility: hidden; }
 .account-setup { position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: var(--spacing-layout-lg); border: 0; background: var(--color-background-surface); color: var(--color-text-primary); overflow-y: auto; }

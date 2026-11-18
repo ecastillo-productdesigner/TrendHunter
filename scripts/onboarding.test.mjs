@@ -113,7 +113,7 @@ test('every interest maps to exactly one of the supplied question groups', () =>
   for (const [topic, id] of Object.entries(expected)) {
     const question = onboardingQuestion([topic]);
     assert.equal(question.id, id, topic);
-    assert.equal(question.options.length, 3);
+    assert.ok(question.options.length >= 4, 'each question has at least four answers');
   }
 });
 
@@ -212,7 +212,11 @@ test('removed Trendsetters links return to Collections and old draft writers can
 test('all ten supplied questions are reachable and every answer maps only to existing collections', () => {
   assert.deepEqual(ONBOARDING_QUESTION_GROUPS.map(group => group.questions.length), [3, 4, 3]);
   const questions = ONBOARDING_QUESTION_GROUPS.flatMap(group => group.questions);
-  assert.ok(questions.every(question => question.options.length === 3), 'every question always offers exactly three choices');
+  assert.ok(questions.every(question => question.options.length >= 4), 'every question always offers at least four choices');
+  for (const question of questions) {
+    assert.equal(new Set(question.options.map(([value]) => value)).size, question.options.length, 'answer values are unique');
+    assert.equal(new Set(question.options.map(([, label]) => label)).size, question.options.length, 'visible answers are distinct');
+  }
   const reached = new Set();
   for (const group of ONBOARDING_QUESTION_GROUPS) {
     for (let mask = 1; mask < 2 ** group.topics.length; mask++) {
