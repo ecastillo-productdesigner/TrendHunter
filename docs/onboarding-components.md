@@ -7,7 +7,7 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 | Page spacing | `--spacing-page-2xl` (48px), `--spacing-layout-xl` (32px), `--spacing-layout-lg` (24px), `--spacing-layout-md` (16px) |
 | Choice spacing | `--spacing-component-ms` (12px), `--spacing-component-sm` (8px), `--spacing-component-xs` (4px) |
 | Topic tiles | Nine existing topic colors; `aria-pressed` buttons, multiple selection |
-| Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime border and right-side plain lime tick; three choices, single selection, click again to clear; three columns desktop, stacked on mobile |
+| Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime outline without a checkmark; three choices, single selection, click again to clear; three columns desktop, stacked on mobile |
 | Collection pills | Dark surface, gray border; selected lime border and right-side plain lime tick; multiple selection |
 | Question pills | Existing Answers suggestion style, gray collection border, lime sparkle; two columns desktop, one mobile |
 | Article alternatives | Existing compact story link: 48px square thumbnail plus uppercase Barlow Condensed headline; two columns desktop, stacked mobile |
@@ -16,6 +16,8 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 ## Journey and matching
 
 Your interests → About you → Collections → Suggested Hunts. Skipping interests bypasses About you. Back/progress controls stay within onboarding. Clicking the logo clears the draft and completion marker, resets progress and returns to Your interests without deleting previously committed preferences.
+
+The About you heading uses the full onboarding content width so it stays on one line on desktop. On smaller screens it wraps naturally at the existing type size.
 
 Mind & Body maps to Health/Beauty/Fitness; Everyday Living to Food/Home/Tech/Family; Experiences to Culture/Travel. The largest selected group wins, with ties resolved by first selected interest. The first topic within that group chooses one stable question; Culture plus Travel chooses the say-yes question. All ten questions have exactly three answers. Topic or answer changes prune stale answers and unrelated collection selections.
 
