@@ -67,12 +67,18 @@ function render({ focus = true } = {}) {
   back.hidden = step === 'topics';
   back.href = editingReview ? '#suggested-hunts' : onboardingStepHash(previous || 'topics');
   back.setAttribute('aria-label', editingReview ? 'Back to Suggested Hunts' : index ? `Back to ${labels[previous]}` : 'Back');
-  progress.innerHTML = STEPS.map(item => {
-    const complete = STEPS.indexOf(item) < STEPS.indexOf(step) && onboardingSelectionCount(draft, item) > 0;
-    return `<li><button type="button" class="onboarding-step" data-step="${item}" ${STEPS.indexOf(item) > furthest || (item === 'about-you' && !onboardingQuestion(draft.topics)) ? 'disabled' : ''} ${item === step ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${labels[item]}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
+  progress.innerHTML = STEPS.map((item, position) => {
+    const current = item === step;
+    const passed = position < STEPS.indexOf(step);
+    const complete = passed && onboardingSelectionCount(draft, item) > 0;
+    const skipped = passed && !complete;
+    const state = current ? 'current' : complete ? 'complete' : skipped ? 'skipped' : 'upcoming';
+    const description = current ? 'Current step' : complete ? 'Completed' : skipped ? 'Skipped' : 'Upcoming step';
+    const disabled = position > furthest || (item === 'about-you' && !onboardingQuestion(draft.topics));
+    return `<li data-state="${state}" data-complete="${complete}"><button type="button" class="onboarding-step" data-step="${item}" ${disabled ? 'disabled' : ''} ${current ? 'aria-current="step"' : ''} data-complete="${complete}" aria-label="${labels[item]}, ${description}"><span class="onboarding-step-node" aria-hidden="true">${complete ? '<span class="onboarding-progress-check"></span>' : position + 1}</span><span class="onboarding-step-label">${labels[item]}</span></button></li>`;
   }).join('');
   const copy = {
-    topics: ['What topics interest you?', 'Pick as many as you like'],
+    topics: ['Pick the topics you’re curious about', ''],
     'about-you': ['Make this Hunt a Little More About You', ''],
     collections: ['Collections you’ll want to explore', ''],
     'suggested-hunts': ['Start with a hunt', ''],
