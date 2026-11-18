@@ -383,7 +383,7 @@ button {
 .onboarding-step:disabled { cursor: default; }
 .onboarding-progress-check { width: var(--icon-size-xs); height: var(--icon-size-xs); flex: none; background: currentColor; mask: url("assets/feed/icon-check.svg?v=2") center / contain no-repeat; -webkit-mask: url("assets/feed/icon-check.svg?v=2") center / contain no-repeat; }
 .onboarding-heading { display: flex; flex-direction: column; gap: var(--spacing-component-xs); align-items: center; text-align: center; max-width: var(--layout-login-width); margin-inline: auto; }
-.onboarding[data-step="about-you"] .onboarding-heading { max-width: var(--layout-answers-page-width); }
+.onboarding:is([data-step="about-you"], [data-step="collections"]) .onboarding-heading { max-width: var(--layout-answers-page-width); }
 .onboarding-heading h1 { font: var(--type-card-headline); text-transform: uppercase; color: var(--color-text-primary); }
 .onboarding-heading h1:focus { outline: none; }
 .onboarding-heading p, .onboarding-note, .onboarding-empty { font: var(--type-body); color: var(--color-text-tertiary); text-align: center; }

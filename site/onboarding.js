@@ -68,7 +68,7 @@ function render({ focus = true } = {}) {
   const copy = {
     topics: ['What topics interest you?', 'Pick as many as you like'],
     'about-you': ['Make this Hunt a Little More About You', ''],
-    collections: ['Collections you will like', onboardingSelectionCount(draft, 'about-you') ? 'Based on your answer' : 'Based on your interests'],
+    collections: ['Collections you’ll want to explore', ''],
     'suggested-hunts': ['Suggested Hunts', 'Pick a question to start exploring'],
   }[step];
   [heading.textContent, subtitle.textContent] = copy;
@@ -87,7 +87,6 @@ function render({ focus = true } = {}) {
   else if (step === 'about-you') choices.innerHTML = questionChoices(onboardingQuestion(draft.topics));
   else if (step === 'collections') {
     const suggestions = onboardingCollections(draft.topics, draft.answers);
-    subtitle.hidden = !suggestions.length;
     choices.innerHTML = suggestions.length ? `<div class="onboarding-collections" role="group" aria-label="Choose collections">${suggestions.map(collectionChoice).join('')}</div>` : '<p class="onboarding-empty">No matching collections for this answer yet. You can skip to continue.</p>';
   }
   else { choices.innerHTML = suggestedHunts(); status.textContent = 'Choose one of four suggested hunts to open its answer.'; }

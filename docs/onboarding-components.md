@@ -17,7 +17,7 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 
 Your interests → About you → Collections → Suggested Hunts. Skipping interests bypasses About you. Back/progress controls stay within onboarding. Clicking the logo clears the draft and completion marker, resets progress and returns to Your interests without deleting previously committed preferences.
 
-The About you heading uses the full onboarding content width so it stays on one line on desktop. On smaller screens it wraps naturally at the existing type size.
+The About you and Collections headings use the full onboarding content width so they stay on one line on desktop. On smaller screens they wrap naturally at the existing type size. The Collections heading is “Collections you’ll want to explore” with no subheading.
 
 Mind & Body maps to Health/Beauty/Fitness; Everyday Living to Food/Home/Tech/Family; Experiences to Culture/Travel. The largest selected group wins, with ties resolved by first selected interest. The first topic within that group chooses one stable question; Culture plus Travel chooses the say-yes question. All ten questions have exactly three answers. Topic or answer changes prune stale answers and unrelated collection selections.
 
