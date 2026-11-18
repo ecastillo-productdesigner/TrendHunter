@@ -424,7 +424,9 @@ button {
 .onboarding-hunts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-md); list-style: none; }
 .onboarding-hunts li { min-width: 0; }
 .onboarding-hunts .answers-suggestion { border-color: var(--buttons-tertiary-border); width: 100%; height: 100%; min-height: calc(var(--icon-size-2xl) + var(--spacing-layout-lg)); padding: var(--spacing-layout-md) var(--spacing-layout-lg); white-space: normal; overflow-wrap: anywhere; justify-content: center; text-align: center; }
-.onboarding-hunts .answers-sparkle { flex: none; }
+.onboarding-hunt-label { min-width: 0; }
+.onboarding-hunt-lead { white-space: nowrap; }
+.onboarding-hunts .answers-sparkle { margin-inline-end: var(--spacing-component-sm); }
 .onboarding-articles-section { margin-top: var(--spacing-page-2xl); }
 .onboarding-articles-heading { margin-bottom: var(--spacing-layout-md); font: var(--type-body); text-align: center; color: var(--color-text-tertiary); }
 .onboarding .onboarding-articles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-lg); }

@@ -10,7 +10,7 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 | Topic tiles | Unselected background and gray hover treatment match collection pills; nine existing selected topic colors remain on hover; `aria-pressed` buttons, multiple selection |
 | Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime outline without a checkmark; at least four choices, single selection, click again to clear; two columns desktop, stacked on mobile |
 | Collection pills | Dark surface, gray border; existing collection-name chevrons with sample direction/strength; selected lime outline without a checkmark; multiple selection |
-| Question pills | Existing Answers suggestion style, gray collection border, lime sparkle and text centered together; two columns desktop, one mobile |
+| Question pills | Existing Answers suggestion style, gray collection border; lime sparkle sits inline, 8px before the first word, so wrapped questions remain centered without a detached icon; two columns desktop, one mobile |
 | Article alternatives | Existing compact story link: 48px square thumbnail plus uppercase Barlow Condensed headline; two columns desktop, stacked mobile |
 | Primary CTA | Existing lime primary button, Take me to the Feed below articles |
 

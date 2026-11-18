@@ -48,8 +48,12 @@ function syncChoices() {
   const noun = step === 'topics' ? 'topic' : 'collection';
   status.textContent = `${count} ${noun}${count === 1 ? '' : 's'} selected`;
 }
+function huntQuestionLabel(question) {
+  const [firstWord] = question.split(' ');
+  return `<span class="onboarding-hunt-label"><span class="onboarding-hunt-lead"><span class="answers-sparkle" aria-hidden="true"></span>${escapeText(firstWord)}</span>${escapeText(question.slice(firstWord.length))}</span>`;
+}
 function suggestedHunts() {
-  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}"><span class="answers-sparkle" aria-hidden="true"></span><span>${escapeText(hunt.question)}</span></a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(articleUrl(story.href))}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
+  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}">${huntQuestionLabel(hunt.question)}</a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(articleUrl(story.href))}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
 }
 function render({ focus = true } = {}) {
   ({ step, editingReview } = readOnboardingRoute(location.hash));
