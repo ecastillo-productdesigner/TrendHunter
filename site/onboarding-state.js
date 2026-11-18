@@ -1,5 +1,5 @@
-import { COLLECTIONS } from './onboarding-data.js';
-import { TOPIC_STORAGE_KEY, readSelectedTopics, FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './onboarding-preferences.js';
+import { COLLECTIONS } from './onboarding-data.js?v=collection-chevrons-6';
+import { TOPIC_STORAGE_KEY, readSelectedTopics, FOLLOWED_COLLECTIONS_KEY, readFollowedCollections } from './onboarding-preferences.js?v=collection-chevrons-6';
 
 // Curated prototype suggestions; no live popularity claims.
 export const ONBOARDING_DRAFT_KEY = 'trendhunter.onboarding-draft.v2';

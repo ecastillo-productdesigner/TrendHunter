@@ -8,7 +8,7 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 | Choice spacing | `--spacing-component-ms` (12px), `--spacing-component-sm` (8px), `--spacing-component-xs` (4px) |
 | Topic tiles | Unselected background matches the collection pills; nine existing selected topic colors; `aria-pressed` buttons, multiple selection |
 | Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime outline without a checkmark; at least four choices, single selection, click again to clear; two columns desktop, stacked on mobile |
-| Collection pills | Dark surface, gray border; selected lime outline without a checkmark; multiple selection |
+| Collection pills | Dark surface, gray border; existing collection-name chevrons with sample direction/strength; selected lime outline without a checkmark; multiple selection |
 | Question pills | Existing Answers suggestion style, gray collection border, lime sparkle and text centered together; two columns desktop, one mobile |
 | Article alternatives | Existing compact story link: 48px square thumbnail plus uppercase Barlow Condensed headline; two columns desktop, stacked mobile |
 | Primary CTA | Existing lime primary button, Take me to the Feed below articles |
@@ -21,9 +21,9 @@ The About you and Collections headings use the full onboarding content width so 
 
 Mind & Body maps to Health/Beauty/Fitness; Everyday Living to Food/Home/Tech/Family; Experiences to Culture/Travel. The largest selected group wins, with ties resolved by first selected interest. The first topic within that group chooses one stable question; Culture plus Travel chooses the say-yes question. All ten questions have at least four answers; curated fourth options retain the original choices and map to related collections. Topic or answer changes prune stale answers and unrelated collection selections.
 
-Collections lists direct answer matches first and fills with curated neighboring collections to a minimum of four. Skipped answers use topics; skipped interests use curated defaults. Metadata represents prototype recommendations, not measured popularity.
+Collections lists direct answer matches first and fills with curated neighboring collections to a minimum of four. Skipped answers use topics; skipped interests use curated defaults. Chevrons reuse the main prototype’s SVG and DS colors: rising points right in green, falling points left in red; lit segments represent the existing fixed sample percentage in quarter ranges. These are static illustrative values, not live analytics, and do not change with selection.
 
-Suggested Hunts always shows four unique questions and two matching article links. Selected collections take priority. The heading/subtitle-to-questions gap and questions-to-article-heading gap both use 48px; article heading-to-content uses 24px including row padding. Both helper headings use centered Inter body type, with no final period. Skip has no underline.
+The Suggested Hunts stage is headed “Start with a hunt” with no subheading. It always shows four unique questions and two matching article links. Selected collections take priority. The heading-to-questions gap and questions-to-article-heading gap both use 48px; article heading-to-content uses 24px including row padding. The centered “Or try these articles” heading uses Inter body type with no final period. Skip has no underline.
 
 ## Interaction and exits
 

@@ -1,5 +1,5 @@
-import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=four-answers-5';
-import { COLLECTION_STORIES } from './onboarding-data.js';
+import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=collection-chevrons-6';
+import { COLLECTION_STORIES } from './onboarding-data.js?v=collection-chevrons-6';
 import { answerUrl } from './onboarding-destinations.js';
 
 // Curated prompts open the existing fictional Answers prototype; no live AI service is implied.

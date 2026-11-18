@@ -5,7 +5,7 @@ The `Onboarding` branch is a standalone prototype. It starts at **Your interests
 1. **Your interests** — choose any of nine topics, or Skip
 2. **About you** — answer one topic-matched question with at least four choices, or Skip
 3. **Collections** — follow matching collections; at least four direct or related suggestions
-4. **Suggested Hunts** — four questions, two article alternatives and a **Take me to the Feed** CTA
+4. **Start with a hunt** — four questions, two article alternatives and a **Take me to the Feed** CTA
 
 The logo resets the onboarding draft and returns to the beginning. Answers reuse the collection pill component with centered uppercase labels, rounded shapes, gray borders and a lime outline when selected, without a checkmark. Both support click-again deselection; answers allow one selection and collections allow several. Existing DS fonts, colors and spacing are preserved.
 

@@ -3,6 +3,8 @@
   --color-background-surface: #0F0F0F;
   --color-background-surface-raised: #0F0F0F;
   --color-accent-foreground: #BEFC4F;
+  --color-interest-rising: var(--color-accent-foreground);
+  --color-interest-falling: #EF4444;
   --color-border-default: rgba(255, 255, 255, 0.25);
   --color-border-focus: var(--color-accent-foreground);
   --color-white-10: rgba(255, 255, 255, 0.1);
@@ -195,6 +197,15 @@ button {
 .pill-button:hover {
   background-color: var(--buttons-tertiary-bg-hover);
 }
+/* Existing collection chevrons. Values are static prototype samples. */
+.collection-momentum { --collection-momentum-color: var(--color-interest-rising); display: inline-flex; flex: 0 0 auto; align-items: center; color: var(--collection-momentum-color); vertical-align: middle; }
+.collection-momentum--falling { --collection-momentum-color: var(--color-interest-falling); }
+.collection-momentum-track { display: block; width: var(--icon-size-md); height: var(--type-size-14); --momentum-lit: 25%; background: linear-gradient(to right, var(--collection-momentum-color) 0 var(--momentum-lit), color-mix(in srgb, var(--collection-momentum-color) 22%, transparent) var(--momentum-lit) 100%); mask: url("assets/feed/icon-interest-chevrons.svg") center / contain no-repeat; -webkit-mask: url("assets/feed/icon-interest-chevrons.svg") center / contain no-repeat; }
+.collection-momentum--falling .collection-momentum-track { transform: rotate(180deg); }
+.collection-momentum[data-level="2"] .collection-momentum-track { --momentum-lit: 50%; }
+.collection-momentum[data-level="3"] .collection-momentum-track { --momentum-lit: 75%; }
+.collection-momentum[data-level="4"] .collection-momentum-track { --momentum-lit: 100%; }
+.pill-button:has(.collection-momentum) { flex-wrap: wrap; padding-inline: var(--spacing-layout-md); text-align: center; }
 .button-primary {
   display: inline-flex;
   align-items: center;

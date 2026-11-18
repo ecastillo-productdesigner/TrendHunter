@@ -1,6 +1,6 @@
 import { FEED_URL, articleUrl } from './onboarding-destinations.js';
-import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=four-answers-5';
-import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=four-answers-5';
+import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=collection-chevrons-6';
+import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=collection-chevrons-6';
 
 const app = document.querySelector('[data-onboarding]');
 const progress = document.querySelector('[data-onboarding-progress]');
@@ -24,10 +24,16 @@ let editingReview = false;
 let finishing = false;
 const labels = { topics: 'Your interests', 'about-you': 'About you', collections: 'Collections', 'suggested-hunts': 'Suggested Hunts' };
 const topicTile = topic => `<button class="topic-tile" type="button" data-topic="${topic.id}" data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></button>`;
-const choicePill = (label, pressed, attributes, className = '') => `<button class="pill-button onboarding-collection ${className}" type="button" ${attributes} aria-pressed="${pressed}"><span class="onboarding-collection-label">${escapeText(label)}</span></button>`;
-const collectionChoice = collection => choicePill(collection.name, draft.collections.includes(collection.href), `data-choice="collections" data-value="${escapeText(collection.href)}"`);
+const choicePill = (label, pressed, attributes, { className = '', trailing = '' } = {}) => `<button class="pill-button onboarding-collection ${className}" type="button" ${attributes} aria-pressed="${pressed}"><span class="onboarding-collection-label">${escapeText(label)}</span>${trailing}</button>`;
+const collectionChevrons = collection => {
+  const direction = collection.direction === 'falling' ? 'falling' : 'rising';
+  const percentage = Math.max(0, Math.min(100, Number(collection.percentage) || 0));
+  const level = Math.max(1, Math.ceil(percentage / 25));
+  return `<span class="collection-momentum collection-momentum--${direction}" data-level="${level}" role="img" aria-label="Interest ${direction} ${percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span></span>`;
+};
+const collectionChoice = collection => choicePill(collection.name, draft.collections.includes(collection.href), `data-choice="collections" data-value="${escapeText(collection.href)}"`, { trailing: collectionChevrons(collection) });
 // Reuse collection pills while keeping one answer and click-again deselection.
-const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-collections onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, 'onboarding-answer')).join('')}</div></fieldset>`;
+const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-collections onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, { className: 'onboarding-answer' })).join('')}</div></fieldset>`;
 
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));
@@ -69,7 +75,7 @@ function render({ focus = true } = {}) {
     topics: ['What topics interest you?', 'Pick as many as you like'],
     'about-you': ['Make this Hunt a Little More About You', ''],
     collections: ['Collections you’ll want to explore', ''],
-    'suggested-hunts': ['Suggested Hunts', 'Pick a question to start exploring'],
+    'suggested-hunts': ['Start with a hunt', ''],
   }[step];
   [heading.textContent, subtitle.textContent] = copy;
   subtitle.hidden = !copy[1];
