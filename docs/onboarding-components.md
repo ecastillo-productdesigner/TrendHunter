@@ -7,7 +7,7 @@ This branch keeps the existing Trend Hunter design system's Barlow Condensed dis
 | Page spacing | `--spacing-page-2xl` (48px), `--spacing-layout-xl` (32px), `--spacing-layout-lg` (24px), `--spacing-layout-md` (16px) |
 | Choice spacing | `--spacing-component-ms` (12px), `--spacing-component-sm` (8px), `--spacing-component-xs` (4px) |
 | Topic tiles | Nine existing topic colors; `aria-pressed` buttons, multiple selection |
-| Answer tiles | Three choices; dark surface, lime border; filled lime circle and plain black tick at bottom right; single selection, click again to clear |
+| Answer pills | Reuse the collection pill component: centered uppercase Barlow Condensed label, rounded shape, dark surface and gray border; selected lime border and right-side plain lime tick; three choices, single selection, click again to clear; three columns desktop, stacked on mobile |
 | Collection pills | Dark surface, gray border; selected lime border and right-side plain lime tick; multiple selection |
 | Question pills | Existing Answers suggestion style, gray collection border, lime sparkle; two columns desktop, one mobile |
 | Article alternatives | Existing compact story link: 48px square thumbnail plus uppercase Barlow Condensed headline; two columns desktop, stacked mobile |

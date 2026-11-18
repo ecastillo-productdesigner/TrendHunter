@@ -392,14 +392,6 @@ button {
 .onboarding-question legend { width: 100%; margin-bottom: var(--spacing-layout-lg); padding: 0; font: var(--type-editorial-h3); color: var(--color-text-primary); text-align: center; }
 .onboarding-question legend:focus { outline: none; }
 .onboarding-answer-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-component-ms); }
-.onboarding-answer { display: flex; position: relative; min-width: 0; border-radius: var(--radius-sm); text-align: left; cursor: pointer; }
-.onboarding-answer-surface { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; align-items: flex-start; gap: var(--spacing-layout-md); height: 100%; min-height: calc(var(--icon-size-2xl) * 2 + var(--spacing-layout-lg)); padding: var(--spacing-layout-md); padding-inline-end: calc(var(--spacing-layout-md) + var(--icon-size-md) + var(--spacing-component-sm)); border: var(--stroke-default) solid var(--color-border-default); border-radius: var(--radius-sm); background: var(--topic-tile-background); color: var(--color-text-secondary); font: var(--type-body); transition: background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease; }
-.onboarding-answer:hover .onboarding-answer-surface { border-color: var(--color-border-focus); }
-.onboarding-answer[aria-pressed="true"] .onboarding-answer-surface { border-color: var(--color-border-focus); background: var(--topic-tile-background); color: var(--color-text-secondary); }
-.onboarding-answer-check { display: block; position: absolute; inset-inline-end: var(--spacing-layout-md); bottom: var(--spacing-layout-md); width: var(--icon-size-md); height: var(--icon-size-md); border-radius: var(--radius-circle); background: var(--color-border-focus); color: var(--buttons-primary-text-default); visibility: hidden; }
-.onboarding-answer-check::after { content: ''; position: absolute; inset: var(--spacing-component-xs); background: currentColor; mask: url("assets/predictions/check.svg") center / contain no-repeat; -webkit-mask: url("assets/predictions/check.svg") center / contain no-repeat; }
-.onboarding-answer[aria-pressed="true"] .onboarding-answer-check { visibility: visible; }
-.onboarding-answer:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: var(--spacing-component-xs); }
 .onboarding-collections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-layout-lg) var(--spacing-page-2xl); }
 .onboarding-collection { display: grid; grid-template-columns: var(--icon-size-md) minmax(0, 1fr) var(--icon-size-md); position: relative; cursor: pointer; }
 .onboarding-collection-label { grid-column: 2; }
@@ -432,9 +424,7 @@ button {
 .onboarding-step { font: var(--type-editorial-eyebrow); }
 .onboarding-collections { grid-template-columns: 1fr; gap: var(--spacing-layout-md); }
 .onboarding-choices { margin-block: var(--spacing-layout-xl); }
-.onboarding-answer-options { gap: var(--spacing-component-sm); }
-.onboarding-answer-surface { padding: var(--spacing-component-ms); padding-bottom: calc(var(--spacing-component-ms) + var(--icon-size-md) + var(--spacing-component-sm)); font: var(--type-editorial-h5); }
-.onboarding-answer-check { inset-inline-end: var(--spacing-component-ms); bottom: var(--spacing-component-ms); }
+.onboarding-answer-options { grid-template-columns: 1fr; gap: var(--spacing-layout-md); }
 }
 html[data-account-setup] body > :not(.account-setup) { visibility: hidden; }
 .account-setup { position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: var(--spacing-layout-lg); border: 0; background: var(--color-background-surface); color: var(--color-text-primary); overflow-y: auto; }
