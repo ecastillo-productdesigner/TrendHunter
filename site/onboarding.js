@@ -1,6 +1,6 @@
-import { TOPICS, STEPS, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, onboardingCreators, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingHasPicks } from './onboarding-state.js?v=7';
-import { COLLECTIONS } from './collection-data.js';
-import { PEOPLE } from './people-data.js';
+import { FEED_URL, articleUrl } from './onboarding-destinations.js';
+import { TOPICS, STEPS, cleanDraft, resetOnboardingDraft, readOnboardingDraft, saveOnboardingDraft, onboardingCollections, completeOnboarding, onboardingSelectionCount, skipOnboardingStep, onboardingQuestion, onboardingSteps, readOnboardingRoute, onboardingStepHash } from './onboarding-state.js?v=main-onboarding-11';
+import { onboardingHunts, onboardingArticles } from './onboarding-hunts.js?v=main-onboarding-11';
 
 const app = document.querySelector('[data-onboarding]');
 const progress = document.querySelector('[data-onboarding-progress]');
@@ -18,98 +18,137 @@ let storage, session;
 try { storage = localStorage; session = sessionStorage; } catch {}
 const draft = readOnboardingDraft(storage, session);
 const escapeText = text => String(text).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
-let furthest = Math.max(0, STEPS.indexOf(location.hash.slice(1).split('/')[0]));
+let furthest = Math.max(0, STEPS.indexOf(readOnboardingRoute(location.hash).step));
 let step = 'topics';
 let editingReview = false;
 let finishing = false;
-const mobileSummary = window.matchMedia('(max-width: 959px)');
-function placeSummaryAction() {
-  const actions = document.querySelector('.onboarding-actions');
-  if (step === 'review' && mobileSummary.matches) choices.before(actions);
-  else choices.after(actions);
-}
-mobileSummary.addEventListener('change', placeSummaryAction);
-const topicTile = (topic, summary = false) => `<${summary ? 'div' : 'button'} class="topic-tile" ${summary ? '' : 'type="button"'} data-topic="${topic.id}" ${summary ? 'data-selected="true"' : `data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"`}><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></${summary ? 'div' : 'button'}>`;
-const collectionChoice = collection => `<button class="pill-button onboarding-collection" type="button" data-choice="collections" data-value="${collection.href}" aria-pressed="${draft.collections.includes(collection.href)}">${escapeText(collection.name)}</button>`;
-const creator = (person, summary = false) => `<${summary ? 'div' : 'button'} class="onboarding-person" ${summary ? '' : 'type="button"'} ${summary ? '' : `data-choice="people" data-value="${person.id}" aria-pressed="${draft.people.includes(person.id)}"`}><span class="onboarding-person-portrait"><img src="${person.image}" alt="" class="profile-avatar"></span><span class="profile-identity"><span class="profile-name">${escapeText(person.name)}</span><span class="profile-role">${escapeText(person.role)}</span></span></${summary ? 'div' : 'button'}>`;
+const labels = { topics: 'Your interests', 'about-you': 'About you', collections: 'Collections', 'suggested-hunts': 'Suggested Hunts' };
+const topicTile = topic => `<button class="topic-tile" type="button" data-topic="${topic.id}" data-choice="topics" data-value="${topic.id}" aria-pressed="${draft.topics.includes(topic.id)}"><span class="topic-icon" aria-hidden="true">${topic.icon}</span><span class="topic-label">${escapeText(topic.name)}</span></button>`;
+const choicePill = (label, pressed, attributes, { className = '', trailing = '' } = {}) => `<button class="pill-button onboarding-collection ${className}" type="button" ${attributes} aria-pressed="${pressed}"><span class="onboarding-collection-label">${escapeText(label)}</span>${trailing}</button>`;
+const collectionChevrons = collection => {
+  const direction = collection.direction === 'falling' ? 'falling' : 'rising';
+  const percentage = Math.max(0, Math.min(100, Number(collection.percentage) || 0));
+  const level = Math.max(1, Math.ceil(percentage / 25));
+  return `<span class="collection-momentum collection-momentum--${direction}" data-level="${level}" role="img" aria-label="Interest ${direction} ${percentage}% · prototype sample"><span class="collection-momentum-track" aria-hidden="true"></span></span>`;
+};
+const collectionChoice = collection => choicePill(collection.name, draft.collections.includes(collection.href), `data-choice="collections" data-value="${escapeText(collection.href)}"`, { trailing: collectionChevrons(collection) });
+// Reuse collection pills while keeping one answer and click-again deselection.
+const questionChoices = question => `<fieldset class="onboarding-question"><legend tabindex="-1">${escapeText(question.question)}</legend><div class="onboarding-collections onboarding-answer-options" data-options="${question.options.length}">${question.options.map(([value, label]) => choicePill(label, draft.answers[question.id] === value, `value="${escapeText(value)}" data-onboarding-answer="${escapeText(question.id)}"`, { className: 'onboarding-answer' })).join('')}</div></fieldset>`;
 
 function syncChoices() {
   for (const button of choices.querySelectorAll('[data-choice]')) button.setAttribute('aria-pressed', String(draft[button.dataset.choice].includes(button.dataset.value)));
-  if (step !== 'review') {
-    const count = onboardingSelectionCount(draft, step);
-    next.disabled = count === 0;
-    const noun = step === 'trend-setters' ? 'trendsetter' : step === 'topics' ? 'topic' : 'collection';
-    status.textContent = `${count} ${noun}${count === 1 ? '' : 's'} selected`;
+  for (const button of choices.querySelectorAll('[data-onboarding-answer]')) button.setAttribute('aria-pressed', String(draft.answers[button.dataset.onboardingAnswer] === button.value));
+  if (step === 'suggested-hunts') return;
+  const count = onboardingSelectionCount(draft, step);
+  next.disabled = count === 0;
+  if (step === 'about-you') {
+    status.textContent = count ? 'Answer selected. Continue to collections.' : 'Choose one answer, or skip this question.';
+    return;
   }
+  const noun = step === 'topics' ? 'topic' : 'collection';
+  status.textContent = `${count} ${noun}${count === 1 ? '' : 's'} selected`;
 }
-function summary() {
-  const people = PEOPLE.filter(person => person.kind === 'creators' && draft.people.includes(person.id));
-  const topics = TOPICS.filter(topic => draft.topics.includes(topic.id));
-  const collections = COLLECTIONS.filter(collection => draft.collections.includes(collection.href));
-  choices.dataset.groups = [topics, collections, people].filter(group => group.length).length;
-  return `${topics.length ? `<section class="onboarding-summary-group"><h2>Your topics</h2><div class="onboarding-summary-topics onboarding-summary-picks">${topics.map(topic => topicTile(topic, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="topics" aria-label="Add more topics">Add More</button></section>` : ''}
-  ${collections.length ? `<section class="onboarding-summary-group"><h2>Collections</h2><ul class="onboarding-summary-collections onboarding-summary-picks">${collections.map(collection => `<li><span class="pill-button">${escapeText(collection.name)}</span></li>`).join('')}</ul><button class="onboarding-summary-add" type="button" data-edit="collections" aria-label="Add more collections">Add More</button></section>` : ''}
-  ${people.length ? `<section class="onboarding-summary-group"><h2>Trendsetters</h2><div class="onboarding-people onboarding-summary-picks">${people.map(person => creator(person, true)).join('')}</div><button class="onboarding-summary-add" type="button" data-edit="trend-setters" aria-label="Add more trendsetters">Add More</button></section>` : ''}
-  ${!people.length && !topics.length && !collections.length ? '<p class="onboarding-empty">Start exploring, and choose your interests whenever you’re ready.</p><button class="onboarding-edit" type="button" data-edit="topics">Choose interests</button>' : ''}`;
+function huntQuestionLabel(question) {
+  const [firstWord] = question.split(' ');
+  return `<span class="onboarding-hunt-label"><span class="onboarding-hunt-lead"><span class="answers-sparkle" aria-hidden="true"></span>${escapeText(firstWord)}</span>${escapeText(question.slice(firstWord.length))}</span>`;
+}
+function suggestedHunts() {
+  return `<ul class="onboarding-hunts" aria-label="Suggested hunts">${onboardingHunts(draft).map(hunt => `<li><a class="answers-suggestion" data-onboarding-hunt href="${escapeText(hunt.href)}">${huntQuestionLabel(hunt.question)}</a></li>`).join('')}</ul><section class="onboarding-articles-section" aria-labelledby="onboarding-articles-heading"><h2 class="onboarding-articles-heading" id="onboarding-articles-heading">Or try these articles</h2><ul class="onboarding-articles changing-collection-story-list">${onboardingArticles(draft).map(story => `<li><a class="changing-collection-story-link" data-onboarding-article href="${escapeText(articleUrl(story.href))}"><img class="changing-collection-story-image" src="${escapeText(story.image)}" alt="" width="48" height="48" loading="lazy" decoding="async"><span class="changing-collection-story-title">${escapeText(story.title)}</span></a></li>`).join('')}</ul></section>`;
 }
 function render({ focus = true } = {}) {
-  const [requested, mode] = location.hash.slice(1).split('/');
-  step = STEPS.includes(requested) ? requested : 'topics';
-  editingReview = mode === 'edit' && requested === step && step !== 'review';
-  placeSummaryAction();
-  const index = STEPS.indexOf(step);
-  furthest = Math.max(furthest, editingReview ? STEPS.length - 1 : index);
+  ({ step, editingReview } = readOnboardingRoute(location.hash));
+  if (step === 'about-you' && !onboardingQuestion(draft.topics)) {
+    location.replace(onboardingStepHash(editingReview ? 'suggested-hunts' : 'collections'));
+    return;
+  }
+  const canonicalHash = onboardingStepHash(step, { editingReview });
+  if (location.hash !== canonicalHash) history.replaceState(null, '', canonicalHash);
+  const steps = onboardingSteps(draft.topics);
+  const index = steps.indexOf(step);
+  furthest = Math.max(furthest, editingReview ? STEPS.length - 1 : STEPS.indexOf(step));
   app.dataset.step = step;
-  back.href = editingReview ? '#review' : index ? `#${STEPS[index - 1]}` : 'feed.html';
-  back.setAttribute('aria-label', editingReview ? 'Back to Great picks' : index ? `Back to ${['Your interests', 'Collections', 'Trendsetters'][index - 1]}` : 'Back to feed');
-  const labels = ['Your interests', 'Collections', 'Trendsetters'];
-  progress.innerHTML = labels.map((label, i) => {
-    const complete = i < index && onboardingSelectionCount(draft, STEPS[i]) > 0;
-    return `<li><button type="button" class="onboarding-step" data-step="${STEPS[i]}" ${i > furthest ? 'disabled' : ''} ${i === index ? 'aria-current="step"' : ''} data-complete="${complete}"><span>${complete ? '<span class="onboarding-progress-check" aria-hidden="true"></span>' : ''}${label}</span><span class="onboarding-step-line" aria-hidden="true"></span></button></li>`;
+  const previous = steps[index - 1];
+  back.hidden = step === 'topics';
+  back.href = editingReview ? '#suggested-hunts' : onboardingStepHash(previous || 'topics');
+  back.setAttribute('aria-label', editingReview ? 'Back to Suggested Hunts' : index ? `Back to ${labels[previous]}` : 'Back');
+  progress.innerHTML = STEPS.map((item, position) => {
+    const current = item === step;
+    const passed = position < STEPS.indexOf(step);
+    const complete = passed && onboardingSelectionCount(draft, item) > 0;
+    const skipped = passed && !complete;
+    const state = current ? 'current' : complete ? 'complete' : skipped ? 'skipped' : 'upcoming';
+    const description = current ? 'Current step' : complete ? 'Completed' : skipped ? 'Skipped' : 'Upcoming step';
+    const disabled = position > furthest || (item === 'about-you' && !onboardingQuestion(draft.topics));
+    return `<li data-state="${state}" data-complete="${complete}"><button type="button" class="onboarding-step" data-step="${item}" ${disabled ? 'disabled' : ''} ${current ? 'aria-current="step"' : ''} data-complete="${complete}" aria-label="${labels[item]}, ${description}"><span class="onboarding-step-node" aria-hidden="true">${complete ? '<span class="onboarding-progress-check"></span>' : position + 1}</span><span class="onboarding-step-label">${labels[item]}</span></button></li>`;
   }).join('');
   const copy = {
-    topics: ['What topics interest you?', 'Your picks shape the stories and predictions you see.', ''],
-    collections: ['Collections you will like', 'Based on your interests, here are collections to follow.', ''],
-    'trend-setters': ['Trendsetters that will keep you on track', 'These experts are talking about the topics you like.', ''],
-    review: ['Great picks', draft.topics.length || draft.collections.length || draft.people.length ? 'These will show up on your feed first.' : 'Your next discovery is waiting.', ''],
+    topics: ['Pick the topics you’re curious about', ''],
+    'about-you': ['Make this Hunt a Little More About You', ''],
+    collections: ['Collections you’ll want to explore', ''],
+    'suggested-hunts': ['Start with a hunt', ''],
   }[step];
-  [heading.textContent, subtitle.textContent, note.textContent] = copy;
-  progress.closest('nav').hidden = step === 'review';
-  skip.hidden = step === 'review';
-  note.hidden = !copy[2];
-  document.querySelector('[data-onboarding-secondary]').hidden = step === 'review';
+  [heading.textContent, subtitle.textContent] = copy;
+  subtitle.hidden = !copy[1];
+  progress.closest('nav').hidden = false;
+  skip.hidden = step === 'suggested-hunts';
+  skip.textContent = 'Skip';
+  note.hidden = true;
+  document.querySelector('[data-onboarding-secondary]').hidden = step === 'suggested-hunts';
   error.hidden = true;
-  next.textContent = step === 'review' ? 'See your feed' : 'Continue';
+  next.textContent = step === 'suggested-hunts' ? 'Take me to the Feed' : 'Continue';
+  next.hidden = false;
   next.disabled = false;
   choices.className = `onboarding-choices onboarding-choices--${step}`;
   if (step === 'topics') choices.innerHTML = `<div class="topic-grid" role="group" aria-label="Choose topics">${TOPICS.map(topic => topicTile(topic)).join('')}</div>`;
-  else if (step === 'collections') choices.innerHTML = `<div class="onboarding-collections" role="group" aria-label="Choose collections">${onboardingCollections(draft.topics, draft.collections).map(collectionChoice).join('')}</div>`;
-  else if (step === 'trend-setters') choices.innerHTML = `<div class="onboarding-people" role="group" aria-label="Choose trendsetters">${onboardingCreators(draft.people).map(person => creator(person)).join('')}</div>`;
-  else { choices.innerHTML = summary(); status.textContent = 'Review your selected topics, collections and trendsetters.'; }
+  else if (step === 'about-you') choices.innerHTML = questionChoices(onboardingQuestion(draft.topics));
+  else if (step === 'collections') {
+    const suggestions = onboardingCollections(draft.topics, draft.answers);
+    choices.innerHTML = suggestions.length ? `<div class="onboarding-collections" role="group" aria-label="Choose collections">${suggestions.map(collectionChoice).join('')}</div>` : '<p class="onboarding-empty">No matching collections for this answer yet. You can skip to continue.</p>';
+  }
+  else { choices.innerHTML = suggestedHunts(); status.textContent = 'Choose one of four suggested hunts to open its answer.'; }
   syncChoices();
-  if (step === 'review' && !onboardingHasPicks(draft) && finish()) return;
-  if (focus) { heading.focus({ preventScroll: true }); app.scrollIntoView({ block: 'start' }); }
+  if (focus) { (step === 'about-you' ? choices.querySelector('legend') : heading).focus({ preventScroll: true }); app.scrollIntoView({ block: 'start' }); }
 }
 function advance() {
   saveOnboardingDraft(draft, session);
-  const destination = editingReview ? 'review' : STEPS[Math.min(STEPS.indexOf(step) + 1, STEPS.length - 1)];
-  if (destination === 'review' && !onboardingHasPicks(draft) && finish()) return;
-  location.hash = destination;
+  const steps = onboardingSteps(draft.topics);
+  // Changing interests from Suggested Hunts asks the new question only if its answer is missing.
+  const needsAnswer = step === 'topics' && onboardingQuestion(draft.topics) && !onboardingSelectionCount(draft, 'about-you');
+  const destination = editingReview ? needsAnswer ? 'about-you' : 'suggested-hunts' : steps[Math.min(steps.indexOf(step) + 1, steps.length - 1)];
+  location.hash = onboardingStepHash(destination, { editingReview: editingReview && destination !== 'suggested-hunts' });
 }
 choices.addEventListener('click', event => {
-  const edit = event.target.closest('[data-edit]');
-  if (edit) { location.hash = `${edit.dataset.edit}/edit`; return; }
+  const hunt = event.target.closest('[data-onboarding-hunt], [data-onboarding-article]');
+  if (hunt) {
+    if (!completeOnboarding(draft, storage, session)) {
+      event.preventDefault();
+      error.textContent = 'Your choices could not be saved. Please try again.';
+      error.hidden = false;
+    }
+    return;
+  }
+  const answer = event.target.closest('[data-onboarding-answer]');
+  if (answer) {
+    const question = answer.dataset.onboardingAnswer;
+    draft.answers = draft.answers[question] === answer.value ? {} : { [question]: answer.value };
+    Object.assign(draft, cleanDraft(draft));
+    saveOnboardingDraft(draft, session);
+    syncChoices();
+    return;
+  }
   const button = event.target.closest('[data-choice]');
   if (!button) return;
   const values = new Set(draft[button.dataset.choice]);
   if (values.has(button.dataset.value)) values.delete(button.dataset.value); else values.add(button.dataset.value);
   draft[button.dataset.choice] = [...values];
+  // A different interest group must not inherit an answer to another question.
+  Object.assign(draft, cleanDraft(draft));
   saveOnboardingDraft(draft, session);
   syncChoices();
 });
 progress.addEventListener('click', event => {
   const button = event.target.closest('[data-step]');
-  if (button && !button.disabled) { saveOnboardingDraft(draft, session); location.hash = `${button.dataset.step}${editingReview ? '/edit' : ''}`; }
+  if (button && !button.disabled) { saveOnboardingDraft(draft, session); location.hash = onboardingStepHash(button.dataset.step, { editingReview }); }
 });
 skip.addEventListener('click', () => {
   Object.assign(draft, skipOnboardingStep(draft, step));
@@ -118,21 +157,27 @@ skip.addEventListener('click', () => {
 document.querySelector('[data-onboarding-form]').addEventListener('submit', event => {
   event.preventDefault();
   if (next.disabled) return;
-  if (step !== 'review') { advance(); return; }
-  finish();
-});
-function finish() {
-  if (finishing) return true;
+  if (step !== 'suggested-hunts') { advance(); return; }
+  if (finishing) return;
   if (!completeOnboarding(draft, storage, session, { keepDraft: true })) {
-    error.textContent = 'Your choices could not be saved. Please try again.'; error.hidden = false; return false;
+    error.textContent = 'Your choices could not be saved. Please try again.';
+    error.hidden = false;
+    return;
   }
   finishing = true;
   next.disabled = true;
-  // Keep any prediction calls, bookmarks and profile data already in this session.
-  window.navigateWithAccountSetup('feed.html#for-you', { minimumDuration: 8000 });
-  return true;
-}
+  window.navigateWithAccountSetup(FEED_URL, { minimumDuration: 8000 });
+});
+document.querySelector('[data-onboarding-restart]').addEventListener('click', () => {
+  Object.assign(draft, resetOnboardingDraft(session));
+  furthest = 0;
+  finishing = false;
+  history.replaceState(null, '', '#topics');
+  render();
+  window.scrollTo({ top: 0 });
+});
 window.addEventListener('hashchange', () => render());
 render({ focus: false });
-
 window.addEventListener('pageshow', event => { if (event.persisted) { finishing = false; render({ focus: false }); } });
+
+window.addEventListener('onboarding-setup-cancel', () => { finishing = false; render({ focus: false }); next.focus(); });

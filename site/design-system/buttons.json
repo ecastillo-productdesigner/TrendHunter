@@ -2493,12 +2493,12 @@
       ]
     },
     {
-      "key": "button:onboarding-edit",
-      "classes": "onboarding-edit",
+      "key": "button:onboarding-brand",
+      "classes": "onboarding-brand",
       "tag": "button",
-      "name": "Choose interests",
+      "name": "Restart onboarding",
       "sources": [
-        "onboarding.js"
+        "onboarding.html"
       ]
     },
     {
@@ -2516,19 +2516,8 @@
       "key": "button:onboarding-step",
       "classes": "onboarding-step",
       "tag": "button",
-      "name": "furthest ? 'disabled' : ''}  data-complete=\"\">",
+      "name": "${labels[item]}, ${description}",
       "sources": [
-        "onboarding.js"
-      ]
-    },
-    {
-      "key": "button:onboarding-summary-add",
-      "classes": "onboarding-summary-add",
-      "tag": "button",
-      "name": "Add More",
-      "sources": [
-        "onboarding.js",
-        "onboarding.js",
         "onboarding.js"
       ]
     },
@@ -2928,10 +2917,10 @@
       ]
     },
     {
-      "key": "button:pill-button onboarding-collection",
-      "classes": "pill-button onboarding-collection",
+      "key": "button:pill-button onboarding-collection ${className}",
+      "classes": "pill-button onboarding-collection ${className}",
       "tag": "button",
-      "name": "pill-button onboarding-collection",
+      "name": "pill-button onboarding-collection ${className}",
       "sources": [
         "onboarding.js"
       ]
@@ -4434,7 +4423,8 @@
         "feed-topics.js",
         "feed-topics.js",
         "feed-topics.js",
-        "feed-topics.js"
+        "feed-topics.js",
+        "onboarding.js"
       ]
     },
     {
