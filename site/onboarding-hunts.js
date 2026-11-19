@@ -1,5 +1,5 @@
-import { cleanDraft, onboardingCollections, onboardingQuestion } from './onboarding-state.js?v=collection-chevrons-6';
-import { COLLECTION_STORIES } from './onboarding-data.js?v=collection-chevrons-6';
+import { cleanDraft, onboardingCollections } from './onboarding-state.js?v=three-questions-9';
+import { COLLECTION_STORIES } from './onboarding-data.js?v=three-questions-9';
 import { answerUrl } from './onboarding-destinations.js';
 
 // Curated prompts open the existing fictional Answers prototype; no live AI service is implied.
@@ -12,9 +12,13 @@ const pools = {
   tech: ['How is AI changing everyday routines?', 'What could make AI assistants more useful?', 'How will AI change shopping?', 'What’s next for smart home tech?'],
   beauty: ['What’s next for beauty routines?', 'How is health tech shaping skincare?', 'What are new wellness trends?', 'How are everyday beauty rituals changing?'],
   wellness: ['What are new wellness trends?', 'How is health tech evolving?', 'How are recovery rituals changing?', 'What’s next for everyday wellness routines?'],
-  learning: ['What’s next for learning experiences?', 'How are reading clubs bringing people together?', 'How are people discovering their next good book?', 'What could make learning a more social experience?'],
+  family: ['How are family wellbeing routines changing?', 'What could make family mornings easier?', 'How are families making more time for outdoor activities?', 'What’s next for screen-free family time?'],
+  value: ['How are people making everyday budgets go further?', 'What makes an experience feel worth the money?', 'How are shoppers finding quality that lasts?', 'What’s next for affordable everyday upgrades?'],
 };
 const focusByCollection = {
+  'andropause-hormonal-midlife': 'wellness', 'preventive-health': 'wellness',
+  'mind-body-for-families': 'family', 'back-to-school-transitions': 'family',
+  'budgeted-living': 'value', 'everyday-living': 'value',
   'sleep-medicine': 'sleep', 'regulated-living': 'sleep',
   'adventure-active-travel': 'travel', 'solo-travel': 'travel',
   'smart-home-energy': 'home', 'tactile-home-design': 'home',
@@ -36,14 +40,8 @@ function collectionQuestions(collection) {
 }
 export function onboardingHunts(draft) {
   const clean = cleanDraft(draft);
-  const question = onboardingQuestion(clean.topics);
-  let sources;
-  if (question?.id === 'say-yes' && clean.answers[question.id] === 'learning') sources = [pools.learning];
-  else {
-    const matches = onboardingCollections(clean.topics, clean.answers);
-    const selected = matches.filter(collection => clean.collections.includes(collection.href));
-    sources = (selected.length ? selected : matches).map(collectionQuestions);
-  }
+  const matches = onboardingCollections(clean.topics, clean.answers, clean.preferredCollections);
+  let sources = matches.map(collectionQuestions);
   if (!sources.length) sources = [pools.wellness];
   const questions = [];
   for (let index = 0; index < 4; index++) {
@@ -58,15 +56,14 @@ export function onboardingHunts(draft) {
 
 export function onboardingArticles(draft) {
   const clean = cleanDraft(draft);
-  const matches = onboardingCollections(clean.topics, clean.answers);
-  const selected = matches.filter(collection => clean.collections.includes(collection.href));
-  const ordered = [...new Set([...selected, ...matches].map(collection => collection.href))];
+  const matches = onboardingCollections(clean.topics, clean.answers, clean.preferredCollections);
+  const ordered = matches.map(collection => collection.href);
   const articles = [];
+  // Take one story per matching collection before taking a second from any one collection.
   for (const href of ordered) {
-    for (const story of COLLECTION_STORIES) {
-      if (story.collections.includes(href) && !articles.some(item => item.href === story.href)) articles.push(story);
-      if (articles.length === 2) return articles;
-    }
+    const story = COLLECTION_STORIES.find(story => story.collections.includes(href) && !articles.some(item => item.href === story.href));
+    if (story) articles.push(story);
+    if (articles.length === 2) return articles;
   }
   return articles;
 }

@@ -1,4 +1,4 @@
-import { COLLECTIONS } from './onboarding-data.js?v=collection-chevrons-6';
+import { COLLECTIONS } from './onboarding-data.js?v=three-questions-9';
 
 // Browser-local demo preferences. Separate origins do not share this storage.
 export const TOPIC_STORAGE_KEY = 'trendhunter.selected-topics.v1';

@@ -1,6 +1,6 @@
 # Standalone Trend Hunter onboarding
 
-- This branch contains only onboarding, starting at Your interests. Keep feed, authentication, profiles, predictions, Answers and article screens in the separate main prototype.
+- This branch contains only onboarding: Mind & Body, Everyday Living, Experiences and Suggested Hunts. The first three pages each show one question with four answers; interests and collection selection pages have been removed. Keep feed, authentication, profiles, predictions, Answers and article screens in the separate main prototype.
 - Editable plain HTML/CSS/JavaScript lives in `site/`. `index.html` is the entry; build also creates an `onboarding.html` compatibility alias.
 - Reuse the existing DS tokens in `site/onboarding.css`: Barlow Condensed for display and Inter for body. Update `docs/onboarding-components.md` when shared behavior or styles change.
 - Recommendation metadata and thumbnail assets support onboarding only. Destination URLs are centralized in `site/onboarding-destinations.js` and point to the existing public main app.
